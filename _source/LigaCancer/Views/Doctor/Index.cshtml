@@ -48,7 +48,7 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <div class="btn-group">
-                                            <a id="createEditDoctorModal" asp-action="AddDoctor" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-primary">
+                                            <a asp-action="AddDoctor" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-primary">
                                                 <i class="glyphicon glyphicon-plus"></i> Adicionar Médico
                                             </a>
                                         </div>
@@ -80,13 +80,13 @@
                                                     @Html.DisplayFor(modelItem => item.CRM)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.DoctorId" class="btn btn-primary">
+                                                    <a asp-action="DetailsDoctor" asp-route-id="@item.DoctorId" class="btn btn-primary">
                                                         <i class="glyphicon glyphicon-pencil"></i> Mostrar
                                                     </a>
-                                                    <a asp-action="Details" asp-route-id="@item.DoctorId" class="btn btn-info">
+                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor"  class="btn btn-info">
                                                         <i class="glyphicon glyphicon-pencil"></i> Editar
                                                     </a>
-                                                    <a asp-action="Delete" asp-route-id="@item.DoctorId" class="btn btn-danger">
+                                                    <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor"  class="btn btn-danger">
                                                         <i class="glyphicon glyphicon-trash"></i> Deletar
                                                     </a>
                                                 </td>

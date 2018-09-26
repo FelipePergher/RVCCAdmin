@@ -1,0 +1,27 @@
+﻿@model LigaCancer.Models.MedicalViewModels.DoctorViewModel
+
+<form asp-action="EditDoctor" role="form" data-ajax="true" data-ajax-method="POST" data-ajax-failure="AjaxError" data-ajax-success="AjaxSuccess">
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Editar Médico" })
+    <div class="modal-body form-horizontal">
+        <h4>Médico</h4>
+        <hr />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CRM" class="control-label"></label>
+            <input asp-for="CRM" class="form-control" />
+            <span asp-validation-for="CRM" class="text-danger"></span>
+        </div>
+    </div>
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

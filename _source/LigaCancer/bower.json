@@ -1,0 +1,8 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery-ajax-unobtrusive": "^3.2.5",
+    "fontawesome": "font-awesome#5.3.1"
+  }
+}

@@ -8,6 +8,8 @@ namespace LigaCancer.Models.MedicalViewModels
 {
     public class DoctorViewModel
     {
+        public int DoctorId { get; set; }
+
         [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Name { get; set; }
 

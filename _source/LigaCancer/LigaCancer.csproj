@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-LigaCancer-64C21C05-246D-44A3-913D-874313CD67E8</UserSecretsId>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +26,15 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Doctor\_DeleteDoctor.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Doctor\_EditDoctor.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

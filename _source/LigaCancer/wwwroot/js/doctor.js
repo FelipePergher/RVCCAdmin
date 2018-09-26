@@ -29,7 +29,8 @@ $("#modal-action-doctor").on("show.bs.modal", function (e) {
 });
 
 function AjaxError($xhr) {
-    swal("Oops...", "Something went wrong!\nThe server response was:\n\n'" + $xhr.statusText + "'", "error");
+    console.log($xhr);
+    swal("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
 function AjaxSuccess(data) {
