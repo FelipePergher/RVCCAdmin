@@ -1,0 +1,17 @@
+﻿using LigaCancer.Code;
+using System.ComponentModel.DataAnnotations;
+
+namespace LigaCancer.Data.Models.Patient
+{
+    public class Phone : RegisterData
+    {
+        [Key]
+        public int PhoneId { get; set; }
+
+        public string Number { get; set; }
+
+        public PhoneType PhoneType { get; set; }
+
+        public string ObservationNote { get; set; }
+    }
+}
