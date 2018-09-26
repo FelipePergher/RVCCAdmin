@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v2.0.0
+* @link https://coreui.io
+* Copyright (c) 2018 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+<html lang="pt-br">
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Liga Videirense do Câncer</title>
+
+    <link href="css/fonts/fontawesome.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <header class="app-header navbar">
+        <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img class="navbar-brand-full" src="img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
+            <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+        </a>
+        <button class="navbar-toggler sidebar-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <ul class="nav navbar-nav ml-auto"></ul>
+    </header>
+    <div class="app-body">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="nav-icon fas fa-tachometer-alt"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-title">Pacientes</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-child"></i> Pacientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-clipboard-list"></i> Presença
+                        </a>
+                    </li>
+                    <li class="nav-title">Benefícios</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-gift"></i> Benefícios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
+                        </a>
+                    </li>
+                    <li class="nav-title">Informações Médicas</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-capsules"></i> Remédios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-notes-medical"></i> Tipos de Câncer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-hospital-alt"></i> Locais de tratamento
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-user-md"></i> Médicos
+                        </a>
+                    </li>
+                    <li class="nav-title">Relatórios</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-file-medical"></i> Relatórios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
+                        </a>
+                    </li>
+                    <li class="nav-title">Usuários</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blank.html">
+                            <i class="nav-icon fa fa-users"></i> Usuários
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <main class="main">
+            <div class="container-fluid">
+                <div id="ui-view" style="opacity: 1;">
+                    <div class="animated fadeIn">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card card-default">
+                                    <div class="card-header">
+                                        Filtro
+                                    </div>
+
+                                    <div id="collapseExample" class="">
+                                        <form id="filterForm" asp-controller="Child" asp-action="Index" method="get">
+                                            <div class="card-block ">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 form-control-label">Nome</label>
+                                                        <div class="col-md-9">
+                                                            <input class="form-control" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-footer ">
+                                                <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Limpar</button>
+                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Enviar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fa fa-address-card-o"></i> Página atual
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <div class="btn-group">
+
+                                                    <a class="btn btn-primary">
+                                                        <i class="glyphicon glyphicon-plus"></i> Adicionar informação
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <table class="table table-bordered table-striped table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Dados</th>
+                                                    <th>Dados</th>
+                                                    <th>Dados</th>
+                                                    <th>Dados</th>
+                                                    <th>Dados</th>
+                                                    <th>Dados</th>
+                                                    <th>Imagem</th>
+                                                    <th>Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>Exemplo de dados</td>
+                                                    <td>
+                                                        <img width="100" />
+                                                        <input type="file" class="imageUploadForm" accept="image/*" />
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-primary">
+                                                            <i class="glyphicon glyphicon-pencil"></i> Mostrar
+                                                        </a>
+                                                        <a class="btn btn-info">
+                                                            <i class="glyphicon glyphicon-pencil"></i> Editar
+                                                        </a>
+                                                        <a class="btn btn-danger">
+                                                            <i class="glyphicon glyphicon-trash"></i> Deletar
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/col-->
+
+                        </div>
+                        <!--/row-->
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+
+    </div>
+    <footer class="app-footer">
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://github.com/felipepergher" target="_blank">Felipe</a>
+        </div>
+    </footer>
+    <script src="scripts/jquery.min.js"></script>
+    <!--<script src="scripts/chart.min.js"></script>-->
+    <!--<script src="scripts/coreui.min.js"></script>-->
+    <!--<script src="scripts/custom-tooltips.min.js"></script>-->
+    <!--<script src="scripts/main.js"></script>-->
+</body>
+</html>
