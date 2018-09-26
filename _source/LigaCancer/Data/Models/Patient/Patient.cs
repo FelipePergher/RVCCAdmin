@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.Patient
 {

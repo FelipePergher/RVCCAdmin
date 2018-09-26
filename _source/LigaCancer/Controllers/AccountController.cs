@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MyNurseryPal.Models;
-using MyNurseryPal.Models.AccountViewModels;
 
-namespace MyNurseryPal.Controllers
+namespace LigaCancer.Controllers
 {
-    using Code;
-    using Data;
     using Data.Models;
+    using LigaCancer.Models.AccountViewModels;
     using Microsoft.AspNetCore.Authentication;
-    using Services;
 
 
     [Authorize]
@@ -38,7 +28,6 @@ namespace MyNurseryPal.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        //
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
@@ -51,7 +40,6 @@ namespace MyNurseryPal.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -62,11 +50,6 @@ namespace MyNurseryPal.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
-                if (!(bool)applicationUser.Enabled)
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -94,8 +77,6 @@ namespace MyNurseryPal.Controllers
         }
 
       
-
-        //
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,9 +87,6 @@ namespace MyNurseryPal.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-      
-
-        //
         // GET /Account/AccessDenied
         [HttpGet]
         public IActionResult AccessDenied()

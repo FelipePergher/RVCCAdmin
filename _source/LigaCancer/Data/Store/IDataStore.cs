@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LigaCancer.Code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace LigaCancer.Data.Store
 
         Task<T> FindByIdAsync(string id, string[] include = null);
 
-        Task<T> CreateAsync(T model);
+        Task<TaskResult> CreateAsync(T model);
 
-        Task<T> UpdateAsync(T model);
+        Task<TaskResult> UpdateAsync(T model);
 
-        Task<T> DeleteAsync(T model);
+        Task<TaskResult> DeleteAsync(T model);
 
         int Count();
 

@@ -1,0 +1,12 @@
+﻿@model LigaCancer.Models.ModalFooter
+
+<div class="modal-footer">
+
+    <button id="@Model.CancelButtonId" type="button" class="btn btn-secondary" data-dismiss="modal">@Model.CancelButtonText</button>
+    @if (!Model.OnlyCancelButton)
+    {
+        <button class="btn btn-primary" id="@Model.SubmitButtonId" type="submit">
+            @Model.SubmitButtonText
+        </button>
+    }
+</div>

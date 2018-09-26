@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code;
 using System.ComponentModel.DataAnnotations;
+using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.Patient
 {

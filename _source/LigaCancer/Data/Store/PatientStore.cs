@@ -1,4 +1,5 @@
-﻿using LigaCancer.Data.Models.Patient;
+﻿using LigaCancer.Code;
+using LigaCancer.Data.Models.Patient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,41 +17,29 @@ namespace LigaCancer.Data.Store
             _context = context;
         }
 
-        #region Default Methods
-
         public int Count()
-        {
-            return 1;
-        }
-
-        public Task<Patient> CreateAsync(Patient model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Patient> DeleteAsync(Patient model)
+        public Task<TaskResult> CreateAsync(Patient model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TaskResult> DeleteAsync(Patient model)
         {
             throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-            _context?.Dispose();
+            throw new NotImplementedException();
         }
 
         public Task<Patient> FindByIdAsync(string id, string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return Task.FromResult(query.FirstOrDefault(b => b.PatientId.ToString() == id));
+            throw new NotImplementedException();
         }
 
         public Task<List<Patient>> GetAllAsync(string[] include = null)
@@ -58,11 +47,9 @@ namespace LigaCancer.Data.Store
             throw new NotImplementedException();
         }
 
-        public Task<Patient> UpdateAsync(Patient model)
+        public Task<TaskResult> UpdateAsync(Patient model)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }
