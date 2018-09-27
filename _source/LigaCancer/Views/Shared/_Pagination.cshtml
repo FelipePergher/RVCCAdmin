@@ -1,0 +1,59 @@
+﻿@model PaginatedList<LigaCancer.Data.Models.Patient.Doctor>
+@using LigaCancer.Code
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var lastDisabled = Model.PageIndex == Model.TotalPages ? "disabled" : "";
+    var firstDisabled = !(Model.PageIndex > 1) ? "disabled" : "";
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @firstDisabled">
+            <a class="page-link" asp-action="Index" asp-route-page="1">Início</a>
+        </li>
+        <li class="page-item @prevDisabled">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">
+                Anterior
+            </a>
+        </li>
+        @if (Model.HasPreviousPage)
+        {
+            @if (Model.PageIndex > 2)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 2)">@(Model.PageIndex - 2)</a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">@(Model.PageIndex - 1)</a>
+            </li>
+        }
+        <li class="page-item active">
+            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageIndex">@Model.PageIndex</a>
+        </li>
+        @if (Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">@(Model.PageIndex + 1)</a>
+            </li>
+            @if (Model.PageIndex + 1 < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 2)">@(Model.PageIndex + 2)</a>
+                </li>
+            }
+        }
+
+        <li class="page-item @nextDisabled">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">
+                Próximo
+            </a>
+        </li>
+        <li class="page-item @lastDisabled">
+            <a class="page-link" asp-action="Index" asp-route-page="@Model.TotalPages">
+                Última
+            </a>
+        </li>
+    </ul>
+</nav>
