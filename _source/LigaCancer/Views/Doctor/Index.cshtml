@@ -69,6 +69,14 @@
                                         <tr>
                                             <th>
                                                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-page="@Model.PageIndex">
+                                                    @if (ViewData["NameSortParm"].ToString() == "name_desc")
+                                                    {
+                                                        <span class="fa fa-sort-alpha-down"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fa fa-sort-alpha-up"></span>
+                                                    }
                                                     @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
                                                 </a>
                                             </th>
