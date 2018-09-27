@@ -31,7 +31,7 @@ namespace LigaCancer.Controllers
 
         public async Task<IActionResult> Index(int? page)
         {
-            int pageSize = 2;
+            int pageSize = 4;
 
             IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
 
