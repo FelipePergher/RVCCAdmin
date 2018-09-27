@@ -63,8 +63,8 @@ namespace LigaCancer.Controllers
 
             int pageSize = 4;
 
-
-            return View(await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize));
+            PaginatedList<Doctor> paginateList = await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize);
+            return View(paginateList);
         }
 
         public IActionResult AddDoctor()
