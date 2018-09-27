@@ -1,5 +1,5 @@
 ﻿using LigaCancer.Code;
-using LigaCancer.Data.Models.Patient;
+using LigaCancer.Data.Models.PatientModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

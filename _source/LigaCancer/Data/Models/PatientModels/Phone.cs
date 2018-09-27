@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static LigaCancer.Code.Globals;
 
-namespace LigaCancer.Data.Models.Patient
+namespace LigaCancer.Data.Models.PatientModels
 {
     public class Phone : RegisterData
     {
