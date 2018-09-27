@@ -29,26 +29,26 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
         {
             IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            if (searchString != null)
+            if (searchNameString != null)
             {
                 page = 1;
             }
             else
             {
-                searchString = currentFilter;
+                searchNameString = currentSearchNameFilter;
             }
 
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentSearchNameFilter"] = searchNameString;
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchNameString))
             {
-                doctors = doctors.Where(s => s.Name.Contains(searchString));
+                doctors = doctors.Where(s => s.Name.Contains(searchNameString));
             }
 
             switch (sortOrder)
