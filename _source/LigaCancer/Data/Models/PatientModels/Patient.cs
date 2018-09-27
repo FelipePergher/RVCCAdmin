@@ -37,6 +37,8 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public DateTime DateOfBirth { get; set; }
 
+        public Naturality Naturality { get; set; }
+
         public Family Family { get; set; }
 
         public PatientInformation PatientInformation { get; set; }
@@ -50,7 +52,6 @@ namespace LigaCancer.Data.Models.PatientModels
         #region Relations
 
         public ICollection<PatientProfession> PatientProfessions { get; set; }
-        public ICollection<PatientNaturality> PatientNaturalities { get; set; }
 
         #endregion
     }

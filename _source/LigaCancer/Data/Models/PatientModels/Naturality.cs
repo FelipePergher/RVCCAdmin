@@ -14,11 +14,5 @@ namespace LigaCancer.Data.Models.PatientModels
         public string State { get; set; }
 
         public string Country { get; set; }
-
-        #region Relations
-
-        public ICollection<PatientNaturality> PatientNaturalities { get; set; }
-
-        #endregion
     }
 }

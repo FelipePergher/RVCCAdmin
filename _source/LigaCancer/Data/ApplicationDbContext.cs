@@ -101,20 +101,6 @@ namespace LigaCancer.Data
                 .WithMany(c => c.PatientProfessions)
                 .HasForeignKey(bc => bc.ProfessionId);
 
-            //Patient with Naturality
-            builder.Entity<PatientNaturality>()
-              .HasKey(bc => new { bc.PatientId, bc.NaturalityId });
-
-            builder.Entity<PatientNaturality>()
-                .HasOne(bc => bc.Patient)
-                .WithMany(b => b.PatientNaturalities)
-                .HasForeignKey(bc => bc.PatientId);
-
-            builder.Entity<PatientNaturality>()
-                .HasOne(bc => bc.Naturality)
-                .WithMany(c => c.PatientNaturalities)
-                .HasForeignKey(bc => bc.NaturalityId);
-
             #endregion
 
             #region Entity Filters
@@ -140,6 +126,17 @@ namespace LigaCancer.Data
 
             #endregion
 
+            #region Unique
+            builder.Entity<CancerType>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Doctor>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Medicine>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
+            builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
+            builder.Entity<Profession>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<ResidenceType>().HasIndex(p => p.Type).IsUnique();
+            builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
+
+            #endregion
         }
 
         public DbSet<ActivePatient> ActivePatients { get; set; }
