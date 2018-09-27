@@ -170,9 +170,7 @@ namespace LigaCancer.Controllers
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
                 if (doctor != null)
                 {
-                    doctor.IsDeleted = true;
-                    doctor.DeletedDate = DateTime.Now;
-                    TaskResult result = await _doctorService.UpdateAsync(doctor);
+                    TaskResult result = await _doctorService.DeleteAsync(doctor);
 
                     if (result.Succeeded)
                     {
