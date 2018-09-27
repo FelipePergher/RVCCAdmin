@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LigaCancer.Data.Models.Patient;
+﻿using LigaCancer.Data.Models.Patient;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +9,31 @@ namespace LigaCancer.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Configure entity filters
+            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<ActivePatient>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Address>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Attachments>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<CancerType>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Family>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<FamilyMembers>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<FileAttachment>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Medicine>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Naturality>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<PatientInformation>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Phone>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Profession>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Residence>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<ResidenceType>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
         }
 
         public DbSet<ActivePatient> ActivePatients { get; set; }

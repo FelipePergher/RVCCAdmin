@@ -47,7 +47,6 @@ namespace LigaCancer
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //Application Services
-            services.AddTransient<IDataStore<Patient>, PatientStore>();
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
         }
 
@@ -147,8 +146,7 @@ namespace LigaCancer
                     IdentityResult result = await userManager.CreateAsync(user, "Admin123!");
                     if (result.Succeeded)
                     {
-
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Administrator");
+                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Admin");
                         if (applicationRole != null)
                         {
                             IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);

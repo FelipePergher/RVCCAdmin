@@ -29,9 +29,13 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _doctorService.GetAllAsync());
+            int pageSize = 2;
+
+            IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
+
+            return View(await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize));
         }
 
         public IActionResult AddDoctor()
@@ -137,8 +141,10 @@ namespace LigaCancer.Controllers
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
                 if (doctor != null)
                 {
-                    //Todo: Mudar para não deletar os dados, apenas desativa-los
-                    TaskResult result = await _doctorService.DeleteAsync(doctor);
+                    doctor.IsDeleted = true;
+                    doctor.DeletedDate = DateTime.Now;
+                    TaskResult result = await _doctorService.UpdateAsync(doctor);
+
                     if (result.Succeeded)
                     {
                         return StatusCode(200, "200");
@@ -150,6 +156,7 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
+        //Todo: Delete this view
         public async Task<IActionResult> DetailsDoctor(string id)
         {
             if (string.IsNullOrEmpty(id))

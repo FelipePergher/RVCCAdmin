@@ -21,5 +21,9 @@ namespace LigaCancer.Data.Models
 
         public ApplicationUser LastUserUpdate { get; set; }
 
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime DeletedDate { get; set; }
     }
 }

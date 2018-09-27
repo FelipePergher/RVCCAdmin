@@ -16,5 +16,10 @@ namespace LigaCancer.Data.Models
         public DateTime RegisterDate { get; set; }
 
         public string CreatedBy { get; set; }
+
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime DeletedDate { get; set; }
     }
 }

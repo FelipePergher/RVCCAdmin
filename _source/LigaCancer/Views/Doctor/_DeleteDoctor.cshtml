@@ -5,7 +5,7 @@
 
     <div class="modal-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        Você quer deletar o Médico <strong>@Model</strong>?
+        Você quer apagar o Médico <strong>@Model</strong>?
     </div>
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "Apagar" })
 </form>
