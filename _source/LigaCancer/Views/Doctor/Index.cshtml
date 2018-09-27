@@ -24,23 +24,24 @@
                                 Filtro
                             </div>
 
-                            <div id="collapseExample" class="">
-                                <form id="filterForm" asp-controller="Child" asp-action="Index" method="get">
+                            <div id="collapseExample">
+                                <form asp-action="Index" method="get">
                                     <div class="card-block ">
                                         <div class="form-horizontal">
                                             <div class="form-group row">
                                                 <label class="col-md-3 form-control-label">Nome</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" type="text">
+                                                    <input class="form-control" name="SearchString" value="@ViewData["currentFilter"]" type="text">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="card-footer ">
-                                        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Limpar</button>
+                                        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Resetar</button>
                                         <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle"></i> Enviar</button>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -67,7 +68,9 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                                                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-page="@Model.PageIndex">
+                                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                                                </a>
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.FirstOrDefault().CRM)
@@ -88,14 +91,14 @@
                                                     @Html.DisplayFor(modelItem => item.CRM)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="DetailsDoctor" asp-route-id="@item.DoctorId" class="btn btn-primary">
-                                                        <i class="glyphicon glyphicon-pencil"></i> Mostrar
+                                                    <a asp-action="DetailsDoctor" asp-route-id="@item.DoctorId" class="btn btn-info">
+                                                        Mostrar
                                                     </a>
-                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-info">
-                                                        <i class="glyphicon glyphicon-pencil"></i> Editar
+                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-warning">
+                                                        Editar
                                                     </a>
                                                     <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-danger">
-                                                        <i class="glyphicon glyphicon-trash"></i> Deletar
+                                                        Deletar
                                                     </a>
                                                 </td>
                                             </tr>
