@@ -18,6 +18,7 @@
             <input asp-for="CRM" class="form-control" />
             <span asp-validation-for="CRM" class="text-danger"></span>
         </div>
+        <input type="hidden" asp-for="DoctorId" value="@Model.DoctorId" />
     </div>
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
 </form>
