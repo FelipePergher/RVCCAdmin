@@ -1,6 +1,13 @@
 ﻿@model LigaCancer.Models.MedicalViewModels.DoctorViewModel
 
-<form asp-action="EditDoctor" role="form" data-ajax="true" data-ajax-method="POST" data-ajax-failure="AjaxError" data-ajax-success="AjaxSuccess">
+<form asp-action="EditDoctor"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
     @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Editar Médico" })
     <div class="modal-body form-horizontal">
         <h4>Médico</h4>

@@ -1,6 +1,13 @@
 ﻿@model string
 
-<form asp-action="DeleteDoctor" role="form" data-ajax="true" data-ajax-method="POST" data-ajax-failure="AjaxError" data-ajax-success="AjaxSuccess">
+<form asp-action="DeleteDoctor"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
     @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Apagar Médico" })
 
     <div class="modal-body form-horizontal">
