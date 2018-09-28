@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LigaCancer.Data;
-using LigaCancer.Data.Models.Patient;
+using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.MedicalViewModels;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
@@ -29,13 +29,42 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
         {
+            IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchNameString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchNameString = currentSearchNameFilter;
+            }
+
+            ViewData["CurrentSearchNameFilter"] = searchNameString;
+
+            if (!string.IsNullOrEmpty(searchNameString))
+            {
+                doctors = doctors.Where(s => s.Name.Contains(searchNameString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    doctors = doctors.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    doctors = doctors.OrderBy(s => s.Name);
+                    break;
+            }
+
             int pageSize = 4;
 
-            IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
-
-            return View(await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize));
+            PaginatedList<Doctor> paginateList = await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize);
+            return View(paginateList);
         }
 
         public IActionResult AddDoctor()
@@ -141,9 +170,7 @@ namespace LigaCancer.Controllers
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
                 if (doctor != null)
                 {
-                    doctor.IsDeleted = true;
-                    doctor.DeletedDate = DateTime.Now;
-                    TaskResult result = await _doctorService.UpdateAsync(doctor);
+                    TaskResult result = await _doctorService.DeleteAsync(doctor);
 
                     if (result.Succeeded)
                     {

@@ -32,3 +32,4 @@ msbuild.wrn
 .vs/
 
 _source/LigaCancer/wwwroot/lib/
+_source/LigaCancer/Properties/PublishProfiles/

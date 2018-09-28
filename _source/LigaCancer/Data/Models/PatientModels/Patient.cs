@@ -1,4 +1,5 @@
 ﻿using LigaCancer.Code;
+using LigaCancer.Data.Models.ManyToManyModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static LigaCancer.Code.Globals;
 
-namespace LigaCancer.Data.Models.Patient
+namespace LigaCancer.Data.Models.PatientModels
 {
     public class Patient : RegisterData
     {
@@ -38,8 +39,6 @@ namespace LigaCancer.Data.Models.Patient
 
         public Naturality Naturality { get; set; }
 
-        public Profession Profession { get; set; }
-
         public Family Family { get; set; }
 
         public PatientInformation PatientInformation { get; set; }
@@ -49,5 +48,11 @@ namespace LigaCancer.Data.Models.Patient
         public ICollection<Address> Addresses { get; set; }
 
         public ICollection<Attachments> Attachments { get; set; }
+
+        #region Relations
+
+        public ICollection<PatientProfession> PatientProfessions { get; set; }
+
+        #endregion
     }
 }

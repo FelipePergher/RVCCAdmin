@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Store;
-using LigaCancer.Data.Models.Patient;
+using LigaCancer.Data.Models.PatientModels;
 
 namespace LigaCancer
 {

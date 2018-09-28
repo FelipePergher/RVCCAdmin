@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LigaCancer.Data.Models.ManyToManyModels;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Data.Models.Patient
+namespace LigaCancer.Data.Models.PatientModels
 {
     public class Naturality : RegisterData
     {

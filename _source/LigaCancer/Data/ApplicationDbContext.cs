@@ -1,4 +1,5 @@
-﻿using LigaCancer.Data.Models.Patient;
+﻿using LigaCancer.Data.Models.ManyToManyModels;
+using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,95 @@ namespace LigaCancer.Data
         {
             base.OnModelCreating(builder);
 
-            // Configure entity filters
+            #region Many to Many Relations
+            //Patient Information and Cancer Type
+            builder.Entity<PatientInformationCancerType>()
+                .HasKey(bc => new { bc.PatientInformationId, bc.CancerTypeId });
+
+            builder.Entity<PatientInformationCancerType>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationCancerTypes)
+                .HasForeignKey(bc => bc.PatientInformationId);
+
+            builder.Entity<PatientInformationCancerType>()
+                .HasOne(bc => bc.CancerType)
+                .WithMany(c => c.PatientInformationCancerTypes)
+                .HasForeignKey(bc => bc.CancerTypeId);
+
+            //Patient Information and Doctor
+            builder.Entity<PatientInformationDoctor>()
+               .HasKey(bc => new { bc.PatientInformationId, bc.DoctorId });
+
+            builder.Entity<PatientInformationDoctor>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationDoctors)
+                .HasForeignKey(bc => bc.PatientInformationId);
+
+            builder.Entity<PatientInformationDoctor>()
+                .HasOne(bc => bc.Doctor)
+                .WithMany(c => c.PatientInformationDoctors)
+                .HasForeignKey(bc => bc.DoctorId);
+
+            //Patient Information and Treatment Place
+            builder.Entity<PatientInformationTreatmentPlace>()
+               .HasKey(bc => new { bc.PatientInformationId, bc.TreatmentPlaceId });
+
+            builder.Entity<PatientInformationTreatmentPlace>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationTreatmentPlaces)
+                .HasForeignKey(bc => bc.PatientInformationId);
+
+            builder.Entity<PatientInformationTreatmentPlace>()
+                .HasOne(bc => bc.TreatmentPlace)
+                .WithMany(c => c.PatientInformationTreatmentPlaces)
+                .HasForeignKey(bc => bc.TreatmentPlaceId);
+
+            //Patient Information and Medicine
+            builder.Entity<PatientInformationMedicine>()
+              .HasKey(bc => new { bc.PatientInformationId, bc.MedicineId });
+
+            builder.Entity<PatientInformationMedicine>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationMedicines)
+                .HasForeignKey(bc => bc.PatientInformationId);
+
+            builder.Entity<PatientInformationMedicine>()
+                .HasOne(bc => bc.Medicine)
+                .WithMany(c => c.PatientInformationMedicines)
+                .HasForeignKey(bc => bc.MedicineId);
+
+            //Residence with Residence Type
+            builder.Entity<ResidenceTypeResidence>()
+              .HasKey(bc => new { bc.ResidenceId, bc.ResidenceTypeId });
+
+            builder.Entity<ResidenceTypeResidence>()
+                .HasOne(bc => bc.ResidenceType)
+                .WithMany(b => b.ResidenceTypeResidences)
+                .HasForeignKey(bc => bc.ResidenceTypeId);
+
+            builder.Entity<ResidenceTypeResidence>()
+                .HasOne(bc => bc.Residence)
+                .WithMany(c => c.ResidenceTypeResidences)
+                .HasForeignKey(bc => bc.ResidenceId);
+
+            //Patient with Profession
+            builder.Entity<PatientProfession>()
+              .HasKey(bc => new { bc.PatientId, bc.ProfessionId });
+
+            builder.Entity<PatientProfession>()
+                .HasOne(bc => bc.Patient)
+                .WithMany(b => b.PatientProfessions)
+                .HasForeignKey(bc => bc.PatientId);
+
+            builder.Entity<PatientProfession>()
+                .HasOne(bc => bc.Profession)
+                .WithMany(c => c.PatientProfessions)
+                .HasForeignKey(bc => bc.ProfessionId);
+
+            #endregion
+
+            #region Entity Filters
+
             builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<ActivePatient>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Address>().HasQueryFilter(p => !p.IsDeleted);
@@ -34,6 +123,20 @@ namespace LigaCancer.Data
             builder.Entity<Residence>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<ResidenceType>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
+
+            #endregion
+
+            #region Unique
+            builder.Entity<CancerType>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Doctor>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Medicine>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
+            builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
+            builder.Entity<Profession>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<ResidenceType>().HasIndex(p => p.Type).IsUnique();
+            builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
+
+            #endregion
         }
 
         public DbSet<ActivePatient> ActivePatients { get; set; }

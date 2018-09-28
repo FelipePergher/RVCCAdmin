@@ -1,4 +1,4 @@
-﻿@model PaginatedList<LigaCancer.Data.Models.Patient.Doctor>
+﻿@model PaginatedList<LigaCancer.Data.Models.PatientModels.Doctor>
 @using LigaCancer.Code
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -9,11 +9,11 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-5">
-        @if (Model.InitValue == Model.EndValue)
+        @if (Model.InitValue == Model.EndValue && Model.EndValue != 0)
         {
             <div>Mostrando elemento @Model.InitValue de um total de @Model.CountTotal registros</div>
         }
-        else
+        else if(Model.EndValue != 0)
         {
             <div>Mostrando @Model.InitValue à @Model.EndValue de um total de @Model.CountTotal registros</div>
         }
@@ -23,52 +23,109 @@
     <div class="col-sm-12 col-md-7">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
-                <li class="page-item @firstDisabled">
-                    <a class="page-link" asp-action="Index" asp-route-page="1">Início</a>
-                </li>
-                <li class="page-item @prevDisabled">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">
-                        Anterior
-                    </a>
-                </li>
+                @if (Model.TotalPages > 1)
+                {
+                    <li class="page-item @firstDisabled">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="1"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">Início</a>
+                    </li>
+
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(Model.PageIndex - 1)"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            Anterior
+                        </a>
+                    </li>
+                }
+
                 @if (Model.HasPreviousPage)
                 {
                     @if (Model.PageIndex > 2)
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 2)">@(Model.PageIndex - 2)</a>
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(Model.PageIndex - 2)"
+                               asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]">@(Model.PageIndex - 2)</a>
                         </li>
                     }
                     <li class="page-item">
-                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">@(Model.PageIndex - 1)</a>
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(Model.PageIndex - 1)"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            @(Model.PageIndex - 1)
+                        </a>
                     </li>
                 }
-                <li class="page-item active">
-                    <a class="page-link" asp-action="Index" asp-route-page="@Model.PageIndex">@Model.PageIndex</a>
-                </li>
+
+                @if (Model.TotalPages > 1)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@Model.PageIndex"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            @Model.PageIndex
+                        </a>
+                    </li>
+                }
+
                 @if (Model.HasNextPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">@(Model.PageIndex + 1)</a>
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(Model.PageIndex + 1)"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            @(Model.PageIndex + 1)
+                        </a>
                     </li>
                     @if (Model.PageIndex + 1 < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 2)">@(Model.PageIndex + 2)</a>
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(Model.PageIndex + 2)"
+                               asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]">
+                                @(Model.PageIndex + 2)
+                            </a>
                         </li>
                     }
                 }
 
-                <li class="page-item @nextDisabled">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">
-                        Próximo
-                    </a>
-                </li>
-                <li class="page-item @lastDisabled">
-                    <a class="page-link" asp-action="Index" asp-route-page="@Model.TotalPages">
-                        Última
-                    </a>
-                </li>
+                @if (Model.TotalPages > 1)
+                {
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(Model.PageIndex + 1)"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            Próximo
+                        </a>
+                    </li>
+                    <li class="page-item @lastDisabled">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@Model.TotalPages"
+                           asp-route-currentSearchNameFilter="@ViewData["CurrentSearchNameFilter"]"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]">
+                            Última
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     </div>

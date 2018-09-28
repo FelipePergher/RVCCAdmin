@@ -1,5 +1,5 @@
 ﻿using LigaCancer.Code;
-using LigaCancer.Data.Models.Patient;
+using LigaCancer.Data.Models.PatientModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,12 +46,13 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> DeleteAsync(Doctor model)
         {
-            //Todo ver do softdelete
             TaskResult result = new TaskResult();
             try
             {
                 Doctor doctor = _context.Doctors.FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                _context.Remove(doctor);
+                doctor.IsDeleted = true;
+                doctor.DeletedDate = DateTime.Now;
+                _context.Update(doctor);
 
                 _context.SaveChanges();
                 result.Succeeded = true;
