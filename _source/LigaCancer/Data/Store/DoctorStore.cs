@@ -52,7 +52,7 @@ namespace LigaCancer.Data.Store
                 Doctor doctor = _context.Doctors.FirstOrDefault(b => b.DoctorId == model.DoctorId);
                 doctor.IsDeleted = true;
                 doctor.DeletedDate = DateTime.Now;
-                doctor.CRM = DateTime.Now.ToShortDateString() + "||" + doctor.CRM;
+                doctor.CRM = DateTime.Now + "||" + doctor.CRM;
                 _context.Update(doctor);
 
                 _context.SaveChanges();
