@@ -128,7 +128,7 @@ namespace LigaCancer.Data
 
             #region Unique
             builder.Entity<CancerType>().HasIndex(p => p.Name).IsUnique();
-            builder.Entity<Doctor>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Doctor>().HasIndex(p => p.CRM).IsUnique();
             builder.Entity<Medicine>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();

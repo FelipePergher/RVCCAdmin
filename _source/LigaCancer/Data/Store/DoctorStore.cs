@@ -138,5 +138,15 @@ namespace LigaCancer.Data.Store
 
             return query;
         }
+
+        #region
+
+        public Task<Doctor> FindByCRMAsync(string crm, int DoctorId)
+        {
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.CRM == crm && x.DoctorId != DoctorId);
+            return Task.FromResult(doctor);
+        }
+
+        #endregion
     }
 }

@@ -200,5 +200,23 @@ namespace LigaCancer.Controllers
             return View(doctor);
         }
 
+        #region Custom Methods
+
+        public JsonResult IsCRMExist(string Crm, int DoctorId)
+        {
+            Doctor doctor = ((DoctorStore)_doctorService).FindByCRMAsync(Crm, DoctorId).Result;
+
+            if (doctor != null)
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
+
+        #endregion
+
     }
 }
