@@ -1,0 +1,22 @@
+﻿@model string
+
+<form asp-action="DeleteCancerType"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Apagar Tipo de Câncer" })
+
+    <div class="modal-body form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        Você quer apagar o tipo de câncer <strong>@Model</strong>?
+    </div>
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "Apagar" })
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

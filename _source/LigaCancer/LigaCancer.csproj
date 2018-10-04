@@ -29,6 +29,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\CancerType\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\CancerType\_AddCancerType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\CancerType\_DeleteCancerType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\CancerType\_EditCancerType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\CancerType\_PaginationCancerType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Doctor\_DeleteDoctor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
