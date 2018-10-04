@@ -1,0 +1,130 @@
+﻿@model PaginatedList<LigaCancer.Data.Models.PatientModels.Patient>
+@using LigaCancer.Code
+@{
+    ViewData["Title"] = "Pacientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            Pacientes
+        </li>
+    </ol>
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-default">
+                            <div class="card-header">
+                                Filtro
+                            </div>
+
+                            <div id="collapseExample">
+                                <form asp-action="Index" method="get">
+                                    <div class="card-block ">
+                                        <div class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 form-control-label">Nome</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" name="searchNameString" value="@ViewData["CurrentSearchNameFilter"]" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer ">
+                                        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Resetar</button>
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle"></i> Enviar</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-address-card-o"></i> Pacientes
+                            </div>
+                            <div class="card-block">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <div class="btn-group">
+                                            <a asp-action="AddPatient" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-primary">
+                                                <i class="glyphicon glyphicon-plus"></i> Adicionar Paciente
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-page="@Model.PageIndex">
+                                                    @if (ViewData["NameSortParm"].ToString() == "name_desc")
+                                                    {
+                                                        <span class="fa fa-sort-alpha-down"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fa fa-sort-alpha-up"></span>
+                                                    }
+                                                    @Html.DisplayNameFor(model => model.FirstOrDefault().FirstName)
+                                                </a>
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
+                                                        Editar
+                                                    </a>
+                                                    <a asp-action="DeletePatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                        Deletar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                @{await Html.RenderPartialAsync("_PaginationPatient", Model);}
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/col-->
+
+                </div>
+                <!--/row-->
+
+            </div>
+        </div>
+    </div>
+    <!-- /.conainer-fluid -->
+</main>
+
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-patient", AreaLabeledId = "modal-action-patient-label", Size = ModalSize.Medium })
+
+@section scripts
+    {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/patient.js"></script>
+}
