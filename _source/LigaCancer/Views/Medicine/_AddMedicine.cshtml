@@ -1,6 +1,6 @@
-﻿@model LigaCancer.Models.MedicalViewModels.CancerTypeViewModel
+﻿@model LigaCancer.Models.MedicalViewModels.MedicineViewModel
 
-<form asp-action="EditCancerType"
+<form asp-action="AddMedicine"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
@@ -8,9 +8,9 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Editar Tipo de Câncer" })
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Adicionar Remédio" })
     <div class="modal-body form-horizontal">
-        <h4>Tipo de Câncer</h4>
+        <h4>Remédio</h4>
         <hr />
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -20,7 +20,6 @@
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="CancerTypeId" value="@Model.CancerTypeId" />
     </div>
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
 </form>

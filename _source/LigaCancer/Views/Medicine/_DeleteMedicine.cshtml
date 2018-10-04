@@ -1,6 +1,6 @@
 ﻿@model string
 
-<form asp-action="DeleteTreatmentPlace"
+<form asp-action="DeleteMedicine"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
@@ -8,11 +8,11 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Apagar Cidade" })
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Apagar Remédio" })
 
     <div class="modal-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        Você quer apagar a cidade <strong>@Model</strong>?
+        Você quer apagar o remédio <strong>@Model</strong>?
     </div>
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "Apagar" })
 </form>
