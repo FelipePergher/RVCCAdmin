@@ -148,6 +148,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(patient);
         }
 
+        public Task<List<Profession>> GetAllProfessions()
+        {
+            List<Profession> professions = _context.Professions.ToList();
+            return Task.FromResult(professions);
+        }
+
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,8 @@ namespace LigaCancer.Models.MedicalViewModels
         public PatientViewModel()
         {
             DateOfBirth = DateTime.Now;
+            Naturality = new NaturalityViewModel();
+            PatientInformation = new PatientInformationViewModel();
         }
 
         public int PatientId { get; set; }
@@ -43,11 +46,17 @@ namespace LigaCancer.Models.MedicalViewModels
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
+        public List<SelectListItem>  SelectProfessions { get; set; }
+
+        [Display(Name = "Profissão")]
+        public string Profession { get; set; }
+
         public NaturalityViewModel Naturality { get; set; }
 
-        public FamilyViewModel Family { get; set; }
-
         public PatientInformationViewModel PatientInformation { get; set; }
+
+        //Todo:
+        public FamilyViewModel Family { get; set; }
 
         public ICollection<PhoneViewModel> Phones { get; set; }
 

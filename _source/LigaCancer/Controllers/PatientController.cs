@@ -69,7 +69,19 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddPatient()
         {
-            return PartialView("_AddPatient", new PatientViewModel());
+            PatientViewModel patientViewModel = new PatientViewModel
+            {
+                SelectProfessions = ((PatientStore)_patientService).GetAllProfessions().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.ProfessionId.ToString()
+                }).ToList()
+            };
+
+
+
+
+            return PartialView("_AddPatient", patientViewModel);
         }
 
         [HttpPost]
