@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class DoctorStore : IDataStore<Doctor>
+    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>
     {
         private ApplicationDbContext _context;
 
-        public DoctorStore(ApplicationDbContext context)
+        public TreatmentPlaceStore(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.Doctors.Count();
+            return _context.TreatmentPlaces.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Doctor model)
+        public Task<TaskResult> CreateAsync(TreatmentPlace model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Doctors.Add(model);
+                _context.TreatmentPlaces.Add(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -44,16 +44,16 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Doctor model)
+        public Task<TaskResult> DeleteAsync(TreatmentPlace model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Doctor doctor = _context.Doctors.FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                doctor.IsDeleted = true;
-                doctor.DeletedDate = DateTime.Now;
-                doctor.CRM = DateTime.Now + "||" + doctor.CRM;
-                _context.Update(doctor);
+                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
+                treatmentPlace.IsDeleted = true;
+                treatmentPlace.DeletedDate = DateTime.Now;
+                treatmentPlace.City = DateTime.Now + "||" + treatmentPlace.City;
+                _context.Update(treatmentPlace);
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -75,9 +75,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Doctor> FindByIdAsync(string id, string[] include = null)
+        public Task<TreatmentPlace> FindByIdAsync(string id, string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
             if (include != null)
             {
@@ -87,12 +87,12 @@ namespace LigaCancer.Data.Store
                 }
             }
 
-            return Task.FromResult(query.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.TreatmentPlaceId == int.Parse(id)));
         }
 
-        public Task<List<Doctor>> GetAllAsync(string[] include = null)
+        public Task<List<TreatmentPlace>> GetAllAsync(string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
             if (include != null)
             {
@@ -105,7 +105,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Doctor model)
+        public Task<TaskResult> UpdateAsync(TreatmentPlace model)
         {
             TaskResult result = new TaskResult();
             try
@@ -125,9 +125,9 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<Doctor> GetAllQueryable(string[] include = null)
+        public IQueryable<TreatmentPlace> GetAllQueryable(string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
             if (include != null)
             {
@@ -142,10 +142,10 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<Doctor> FindByCRMAsync(string crm, int DoctorId)
+        public Task<TreatmentPlace> FindByCityAsync(string city, int TreatmentPlaceId)
         {
-            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != DoctorId);
-            return Task.FromResult(doctor);
+            TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != TreatmentPlaceId);
+            return Task.FromResult(treatmentPlace);
         }
 
         #endregion
