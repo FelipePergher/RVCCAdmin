@@ -24,26 +24,23 @@
                                 Filtro
                             </div>
 
-                            <div id="collapseExample">
-                                <form asp-action="Index" method="get">
-                                    <div class="card-block ">
-                                        <div class="form-horizontal">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 form-control-label">Nome</label>
-                                                <div class="col-md-9">
-                                                    <input class="form-control" name="searchNameString" value="@ViewData["CurrentSearchNameFilter"]" type="text">
-                                                </div>
+                            <form asp-action="Index" method="get">
+                                <div class="card-block ">
+                                    <div class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 form-control-label">Nome</label>
+                                            <div class="col-md-9">
+                                                <input class="form-control" name="searchNameString" value="@ViewData["CurrentSearchNameFilter"]" type="text">
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="card-footer ">
-                                        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Resetar</button>
-                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle"></i> Enviar</button>
-                                    </div>
-
-                                </form>
-                            </div>
+                                <div class="card-footer ">
+                                    <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Resetar</button>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle"></i> Enviar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -81,7 +81,7 @@ namespace LigaCancer.Controllers
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
                 Patient patient = new Patient
                 {
-                    FirstName = model.Name,
+                    FirstName = model.FirstName,
                     UserCreated = user
                 };
 
@@ -109,7 +109,7 @@ namespace LigaCancer.Controllers
                     patientViewModel = new PatientViewModel
                     {
                         PatientId = patient.PatientId,
-                        Name = patient.FirstName
+                        FirstName = patient.FirstName
                     };
                 }
             }
@@ -126,7 +126,7 @@ namespace LigaCancer.Controllers
                 Patient patient = await _patientService.FindByIdAsync(id);
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                patient.FirstName = model.Name;
+                patient.FirstName = model.FirstName;
                 patient.LastUpdatedDate = DateTime.Now;
                 patient.LastUserUpdate = user;
 
