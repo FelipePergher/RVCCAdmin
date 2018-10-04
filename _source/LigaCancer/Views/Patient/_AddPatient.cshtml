@@ -1,4 +1,5 @@
 ﻿@model LigaCancer.Models.MedicalViewModels.PatientViewModel
+@using LigaCancer.Code
 
 <form asp-action="AddPatient"
       role="form"
@@ -16,10 +17,87 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="Surname" class="control-label"></label>
+            <input asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="RG" class="control-label"></label>
+            <input asp-for="RG" class="form-control" />
+            <span asp-validation-for="RG" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CPF" class="control-label"></label>
+            <input asp-for="CPF" class="form-control" />
+            <span asp-validation-for="CPF" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Sex" class="control-label"></label>
+            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control"></select>
+            <span asp-validation-for="Sex" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CivilState" class="control-label"></label>
+            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control"></select>
+            <span asp-validation-for="CivilState" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateOfBirth" class="control-label"></label>
+            <input asp-for="DateOfBirth" asp-format="" class="form-control" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="FamiliarityGroup" /> @Html.DisplayNameFor(model => model.FamiliarityGroup)
+                </label>
+            </div>
+        </div>
+
+        <h4>
+            Naturalidade
+            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed fa fa-arrow-alt-circle-down" style="margin-left: 1rem;"></a>
+        </h4>
+        <hr />
+        <div id="accordion" role="tablist">
+            <div class="collapse" id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                <div class="form-group">
+                    <label asp-for="Naturality.City" class="control-label"></label>
+                    <input asp-for="Naturality.City" class="form-control" />
+                    <span asp-validation-for="Naturality.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Naturality.State" class="control-label"></label>
+                    <input asp-for="Naturality.State" class="form-control" />
+                    <span asp-validation-for="Naturality.State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Naturality.Country" class="control-label"></label>
+                    <input asp-for="Naturality.Country" class="form-control" />
+                    <span asp-validation-for="Naturality.Country" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="card-header" id="headingOne" role="tab">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">Collapsible Group Item #1</a>
+            </h5>
+        </div>
+        <div class="collapse" id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
+                aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat
+                craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>*@
+
+
     </div>
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
 </form>
