@@ -26,6 +26,7 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
         private readonly IDataStore<CancerType> _cancerTypeService;
         private readonly IDataStore<Medicine> _medicineService;
+        private readonly IDataStore<Profession> _professionService;
 
         public PatientController(
             IDataStore<Patient> patientService, 
@@ -33,6 +34,7 @@ namespace LigaCancer.Controllers
             IDataStore<TreatmentPlace> treatmentPlaceService, 
             IDataStore<CancerType> cancerTypeService, 
             IDataStore<Medicine> medicineService, 
+            IDataStore<Profession> professionService, 
             UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
@@ -40,6 +42,7 @@ namespace LigaCancer.Controllers
             _doctorService = doctorService;
             _cancerTypeService = cancerTypeService;
             _treatmentPlaceService = treatmentPlaceService;
+            _professionService = professionService;
             _medicineService = medicineService;
         }
 
@@ -85,7 +88,7 @@ namespace LigaCancer.Controllers
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = ((PatientStore)_patientService).GetProfessions().Result.Select(x => new SelectListItem
+                SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.ProfessionId.ToString()

@@ -9,10 +9,6 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Name { get; set; }
 
-        #region Relations
-
-        public ICollection<PatientProfession> PatientProfessions { get; set; }
-
-        #endregion
+        public ICollection<Patient> Patients { get; set; }
     }
 }

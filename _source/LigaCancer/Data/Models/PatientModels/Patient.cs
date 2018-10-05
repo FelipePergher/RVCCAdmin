@@ -39,6 +39,8 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public Naturality Naturality { get; set; }
 
+        public Profession Profession { get; set; }
+
         public Family Family { get; set; }
 
         public PatientInformation PatientInformation { get; set; }
@@ -49,10 +51,5 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public ICollection<Attachments> Attachments { get; set; }
 
-        #region Relations
-
-        public ICollection<PatientProfession> PatientProfessions { get; set; }
-
-        #endregion
     }
 }

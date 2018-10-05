@@ -3,14 +3,16 @@ using System;
 using LigaCancer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181005031338_ChangedProfessionRelation")]
+    partial class ChangedProfessionRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -458,7 +460,7 @@ namespace LigaCancer.Migrations
 
                     b.Property<int?>("PatientInformationId");
 
-                    b.Property<int?>("ProfessionId");
+                    b.Property<int?>("ProfessionsProfessionId");
 
                     b.Property<string>("RG");
 
@@ -483,7 +485,7 @@ namespace LigaCancer.Migrations
 
                     b.HasIndex("PatientInformationId");
 
-                    b.HasIndex("ProfessionId");
+                    b.HasIndex("ProfessionsProfessionId");
 
                     b.HasIndex("RG")
                         .IsUnique();
@@ -1086,9 +1088,9 @@ namespace LigaCancer.Migrations
                         .WithMany()
                         .HasForeignKey("PatientInformationId");
 
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Profession", "Profession")
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Profession", "Professions")
                         .WithMany("Patients")
-                        .HasForeignKey("ProfessionId");
+                        .HasForeignKey("ProfessionsProfessionId");
 
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()

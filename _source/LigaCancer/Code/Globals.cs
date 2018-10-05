@@ -11,13 +11,12 @@ namespace LigaCancer.Code
        
         public enum Sex
         {
-            [Display(Name = "Homem")]
-            Male = 0,
-            [Display(Name = "Mulher")]
-            Female = 1,
             [Display(Name = "Não especificado")]
-            NotSpecified = 2,
-
+            NotSpecified,
+            [Display(Name = "Homem")]
+            Male,
+            [Display(Name = "Mulher")]
+            Female
         }
 
         public enum CivilState

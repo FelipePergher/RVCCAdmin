@@ -7,6 +7,14 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class PatientInformation : RegisterData
     {
+        public PatientInformation()
+        {
+            PatientInformationCancerTypes = new List<PatientInformationCancerType>();
+            PatientInformationDoctors = new List<PatientInformationDoctor>();
+            PatientInformationMedicines = new List<PatientInformationMedicine>();
+            PatientInformationTreatmentPlaces = new List<PatientInformationTreatmentPlace>();
+        }
+
         [Key]
         public int PatientInformationId { get; set; }
 
@@ -17,10 +25,10 @@ namespace LigaCancer.Data.Models.PatientModels
         
         #region Relations
 
-        public ICollection<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
-        public ICollection<PatientInformationDoctor> PatientInformationDoctors { get; set; }
-        public ICollection<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
-        public ICollection<PatientInformationMedicine> PatientInformationMedicines { get; set; }
+        public List<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
+        public List<PatientInformationDoctor> PatientInformationDoctors { get; set; }
+        public List<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
+        public List<PatientInformationMedicine> PatientInformationMedicines { get; set; }
         
         #endregion
     }

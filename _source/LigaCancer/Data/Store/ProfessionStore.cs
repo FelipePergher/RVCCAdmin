@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class PatientStore : IDataStore<Patient>
+    public class ProfessionStore : IDataStore<Profession>
     {
         private ApplicationDbContext _context;
 
-        public PatientStore(ApplicationDbContext context)
+        public ProfessionStore(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.Patients.Count();
+            return _context.Professions.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Patient model)
+        public Task<TaskResult> CreateAsync(Profession model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Patients.Add(model);
+                _context.Professions.Add(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -44,16 +44,16 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Patient model)
+        public Task<TaskResult> DeleteAsync(Profession model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
-                patient.IsDeleted = true;
-                patient.DeletedDate = DateTime.Now;
-                patient.FirstName = DateTime.Now + "||" + patient.FirstName;
-                _context.Update(patient);
+                Profession profession = _context.Professions.FirstOrDefault(b => b.ProfessionId == model.ProfessionId);
+                profession.IsDeleted = true;
+                profession.DeletedDate = DateTime.Now;
+                profession.Name = DateTime.Now + "||" + profession.Name;
+                _context.Update(profession);
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -75,9 +75,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, string[] include = null)
+        public Task<Profession> FindByIdAsync(string id, string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Profession> query = _context.Professions;
 
             if (include != null)
             {
@@ -87,12 +87,12 @@ namespace LigaCancer.Data.Store
                 }
             }
 
-            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.ProfessionId == int.Parse(id)));
         }
 
-        public Task<List<Patient>> GetAllAsync(string[] include = null)
+        public Task<List<Profession>> GetAllAsync(string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Profession> query = _context.Professions;
 
             if (include != null)
             {
@@ -105,7 +105,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Patient model)
+        public Task<TaskResult> UpdateAsync(Profession model)
         {
             TaskResult result = new TaskResult();
             try
@@ -125,9 +125,9 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<Patient> GetAllQueryable(string[] include = null)
+        public IQueryable<Profession> GetAllQueryable(string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Profession> query = _context.Professions;
 
             if (include != null)
             {
@@ -140,14 +140,5 @@ namespace LigaCancer.Data.Store
             return query;
         }
 
-        #region Custom Methods
-
-        public Task<Patient> FindByNameAsync(string name, int PatientId)
-        {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.FirstName == name && x.PatientId != PatientId);
-            return Task.FromResult(patient);
-        }
-
-        #endregion
     }
 }
