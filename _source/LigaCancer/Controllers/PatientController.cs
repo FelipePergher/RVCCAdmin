@@ -22,11 +22,25 @@ namespace LigaCancer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Patient> _patientService;
+        private readonly IDataStore<Doctor> _doctorService;
+        private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
+        private readonly IDataStore<CancerType> _cancerTypeService;
+        private readonly IDataStore<Medicine> _medicineService;
 
-        public PatientController(IDataStore<Patient> patientService, UserManager<ApplicationUser> userManager)
+        public PatientController(
+            IDataStore<Patient> patientService, 
+            IDataStore<Doctor> doctorService, 
+            IDataStore<TreatmentPlace> treatmentPlaceService, 
+            IDataStore<CancerType> cancerTypeService, 
+            IDataStore<Medicine> medicineService, 
+            UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
             _userManager = userManager;
+            _doctorService = doctorService;
+            _cancerTypeService = cancerTypeService;
+            _treatmentPlaceService = treatmentPlaceService;
+            _medicineService = medicineService;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
@@ -71,11 +85,31 @@ namespace LigaCancer.Controllers
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = ((PatientStore)_patientService).GetAllProfessions().Result.Select(x => new SelectListItem
+                SelectProfessions = ((PatientStore)_patientService).GetProfessions().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.ProfessionId.ToString()
-                }).ToList()
+                }).ToList(),
+                SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.DoctorId.ToString()
+                }).ToList(),
+                SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.CancerTypeId.ToString()
+                }).ToList(),
+                SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.MedicineId.ToString()
+                }).ToList(),
+                SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.City,
+                    Value = x.TreatmentPlaceId.ToString()
+                }).ToList(),
             };
 
 

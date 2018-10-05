@@ -24,7 +24,7 @@ namespace LigaCancer.Models.MedicalViewModels
         [Display(Name = "Nome"), Required]
         public string FirstName { get; set; }
 
-        [Display(Name = "Surname"), Required]
+        [Display(Name = "Sobrenome"), Required]
         public string Surname { get; set; }
 
         [Required]
@@ -46,8 +46,6 @@ namespace LigaCancer.Models.MedicalViewModels
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-        public List<SelectListItem>  SelectProfessions { get; set; }
-
         [Display(Name = "Profissão")]
         public string Profession { get; set; }
 
@@ -55,14 +53,14 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public PatientInformationViewModel PatientInformation { get; set; }
 
-        //Todo:
-        public FamilyViewModel Family { get; set; }
+        #region Selects
 
-        public ICollection<PhoneViewModel> Phones { get; set; }
+        public List<SelectListItem> SelectProfessions { get; set; }
+        public List<SelectListItem> SelectDoctors { get; set; }
+        public List<SelectListItem> SelectTreatmentPlaces { get; set; }
+        public List<SelectListItem> SelectMedicines { get; set; }
+        public List<SelectListItem> SelectCancerTypes { get; set; }
 
-        public ICollection<AddressViewModel> Addresses { get; set; }
-
-        public ICollection<AttachmentsViewModel> Attachments { get; set; }
-
+        #endregion
     }
 }
