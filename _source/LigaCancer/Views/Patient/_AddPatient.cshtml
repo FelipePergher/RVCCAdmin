@@ -42,7 +42,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Profession" class="control-label"></label>
-                <select asp-for="Profession" asp-items="Model.SelectProfessions" class="form-control"></select>
+                <select asp-for="Profession" asp-items="Model.SelectProfessions" class="form-control" data-tags="true" data-placeholder="Informe a profissão" data-allow-clear="true"></select>
                 <span asp-validation-for="Profession" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -100,22 +100,22 @@
         <div class="collapse" id="collapsePatientInformation" role="tabpanel" aria-labelledby="headingOne">
             <div class="form-group">
                 <label asp-for="PatientInformation.CancerTypes" class="control-label"></label>
-                <select asp-for="PatientInformation.CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control"></select>
+                <select asp-for="PatientInformation.CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control" data-tags="true"></select>
                 <span asp-validation-for="PatientInformation.CancerTypes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PatientInformation.Medicines" class="control-label"></label>
-                <select asp-for="PatientInformation.Medicines" asp-items="Model.SelectMedicines" class="form-control"></select>
+                <select asp-for="PatientInformation.Medicines" asp-items="Model.SelectMedicines" class="form-control" data-tags="true"></select>
                 <span asp-validation-for="PatientInformation.Medicines" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PatientInformation.Doctors" class="control-label"></label>
-                <select asp-for="PatientInformation.Doctors" asp-items="Model.SelectDoctors" class="form-control"></select>
+                <select asp-for="PatientInformation.Doctors" asp-items="Model.SelectDoctors" class="form-control" data-tags="true"></select>
                 <span asp-validation-for="PatientInformation.Doctors" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PatientInformation.TreatmentPlaces" class="control-label"></label>
-                <select asp-for="PatientInformation.TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control"></select>
+                <select asp-for="PatientInformation.TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control" data-tags="true"></select>
                 <span asp-validation-for="PatientInformation.TreatmentPlaces" class="text-danger"></span>
             </div>
         </div>

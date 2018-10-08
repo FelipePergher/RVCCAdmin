@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles{
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+}
+
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -123,8 +128,8 @@
 
 @await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-patient", AreaLabeledId = "modal-action-patient-label", Size = ModalSize.Medium })
 
-@section scripts
-    {
+@section scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/js/patient.js"></script>
 }
