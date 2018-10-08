@@ -90,6 +90,9 @@
                                                     @Html.DisplayFor(modelItem => item.FirstName)
                                                 </td>
                                                 <td>
+                                                    <a asp-action="DetailsPatient" asp-route-id="@item.PatientId" class="btn btn-info">
+                                                        Mostrar
+                                                    </a>
                                                     <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
                                                         Editar
                                                     </a>

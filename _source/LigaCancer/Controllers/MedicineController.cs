@@ -180,23 +180,6 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
-        //Todo: Delete this view
-        public async Task<IActionResult> DetailsMedicine(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-
-            var medicine = await _medicineService.FindByIdAsync(id.ToString());
-            if (medicine == null)
-            {
-                return NotFound();
-            }
-
-            return View(medicine);
-        }
-
         #region Custom Methods
 
         public JsonResult IsNameExist(string Name, int MedicineId)

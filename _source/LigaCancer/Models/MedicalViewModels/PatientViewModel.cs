@@ -21,16 +21,16 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public int PatientId { get; set; }
 
-        [Display(Name = "Nome"), Required]
+        [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Sobrenome"), Required]
+        [Display(Name = "Sobrenome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Surname { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string RG { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string CPF { get; set; }
 
         [Display(Name = "Grupo de Convivência")]

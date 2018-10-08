@@ -14,6 +14,7 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using LigaCancer.Data.Models.ManyToManyModels;
 
 namespace LigaCancer.Controllers
 {
@@ -115,9 +116,6 @@ namespace LigaCancer.Controllers
                 }).ToList(),
             };
 
-
-
-
             return PartialView("_AddPatient", patientViewModel);
         }
 
@@ -128,11 +126,101 @@ namespace LigaCancer.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
                 Patient patient = new Patient
                 {
                     FirstName = model.FirstName,
+                    Surname = model.Surname,
+                    RG = model.RG,
+                    CPF = model.CPF,
+                    FamiliarityGroup = model.FamiliarityGroup,
+                    Sex = model.Sex,
+                    CivilState = model.CivilState,
+                    DateOfBirth = model.DateOfBirth,
+                    Naturality = new Naturality
+                    {
+                        City = model.Naturality.City,
+                        State = model.Naturality.State,
+                        Country = model.Naturality.Country,
+                        UserCreated = user,
+                    },
                     UserCreated = user
                 };
+
+                Profession profession = await _professionService.FindByIdAsync(model.Profession);
+                if (profession == null)
+                {
+                    profession = new Profession
+                    {
+                        Name = model.Profession,
+                        UserCreated = user
+                    };
+                    TaskResult taskResult = await _professionService.CreateAsync(profession);
+                    if (taskResult.Succeeded)
+                    {
+                        patient.Profession = profession;
+                    }
+                }
+                else
+                {
+                    patient.Profession = profession;
+                }
+
+                //Added Cancer Types to Patient Information
+                foreach (var item in model.PatientInformation.CancerTypes)
+                {
+                    CancerType cancerType = await _cancerTypeService.FindByIdAsync(item);
+                    if(cancerType == null)
+                    {
+                        //Todo: salvar no bd o novo nome
+                    }
+                    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
+                    {
+                        CancerType = cancerType
+                    });
+                }
+
+                //Added Doctor to Patient Information
+                foreach (var item in model.PatientInformation.Doctors)
+                {
+                    Doctor doctor = await _doctorService.FindByIdAsync(item);
+                    if (doctor == null)
+                    {
+                        //Todo: salvar no bd o novo nome
+                    }
+                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
+                    {
+                        Doctor = doctor
+                    });
+                }
+
+                //Added Treatment Place to Patient Information
+                foreach (var item in model.PatientInformation.TreatmentPlaces)
+                {
+                    TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(item);
+                    if (treatmentPlace == null)
+                    {
+                        //Todo: salvar no bd o novo nome
+                    }
+                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
+                    {
+                        TreatmentPlace = treatmentPlace
+                    });
+                }
+
+                //Added Medicine to Patient Information
+                foreach (var item in model.PatientInformation.Medicines)
+                {
+                    Medicine medicine = await _medicineService.FindByIdAsync(item);
+                    if (medicine == null)
+                    {
+                        //Todo: salvar no bd o novo nome
+                    }
+                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
+                    {
+                        Medicine = medicine
+                    });
+                }
 
                 TaskResult result = await _patientService.CreateAsync(patient);
                 if (result.Succeeded)
@@ -141,6 +229,37 @@ namespace LigaCancer.Controllers
                 }
                 ModelState.AddErrors(result);
             }
+
+            model.SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ProfessionId.ToString()
+            }).ToList();
+
+            model.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.DoctorId.ToString()
+            }).ToList();
+
+            model.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.CancerTypeId.ToString()
+            }).ToList();
+
+            model.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.MedicineId.ToString()
+            }).ToList();
+
+            model.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.City,
+                Value = x.TreatmentPlaceId.ToString()
+            }).ToList();
+
 
             return PartialView("_AddPatient", model);
         }
@@ -229,7 +348,6 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
-        //Todo: Delete this view
         public async Task<IActionResult> DetailsPatient(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -263,6 +381,5 @@ namespace LigaCancer.Controllers
         }
 
         #endregion
-
     }
 }

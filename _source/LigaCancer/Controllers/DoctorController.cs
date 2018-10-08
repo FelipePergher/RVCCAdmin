@@ -183,23 +183,6 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
-        //Todo: Delete this view
-        public async Task<IActionResult> DetailsDoctor(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-
-            var doctor = await _doctorService.FindByIdAsync(id.ToString());
-            if (doctor == null)
-            {
-                return NotFound();
-            }
-
-            return View(doctor);
-        }
-
         #region Custom Methods
 
         public JsonResult IsCRMExist(string Crm, int DoctorId)

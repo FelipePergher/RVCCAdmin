@@ -1,0 +1,128 @@
+﻿@model LigaCancer.Data.Models.PatientModels.Patient
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index">Pacientes</a>
+        </li>
+        <li class="breadcrumb-item active">Detalhes @Model.FirstName @Model.Surname</li>
+    </ol>
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-address-card-o"></i> Detalhes
+                            </div>
+                            <div class="card-block">
+                                <div>
+                                    <h4>Paciente</h4>
+                                    <hr />
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.FirstName)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.FirstName)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Surname)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Surname)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.RG)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.RG)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.CPF)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.CPF)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.FamiliarityGroup)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.FamiliarityGroup)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.Sex)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.Sex)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.CivilState)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.CivilState)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.DateOfBirth)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.DateOfBirth)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.RegisterDate)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.RegisterDate)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.LastUpdatedDate)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.LastUpdatedDate)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.IsDeleted)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.IsDeleted)
+                                        </dd>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.DeletedDate)
+                                        </dt>
+                                        <dd>
+                                            @Html.DisplayFor(model => model.DeletedDate)
+                                        </dd>
+                                    </dl>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/col-->
+
+                </div>
+                <!--/row-->
+
+            </div>
+        </div>
+    </div>
+    <!-- /.conainer-fluid -->
+</main>
+
+
+
+
+
+
+
+
+
