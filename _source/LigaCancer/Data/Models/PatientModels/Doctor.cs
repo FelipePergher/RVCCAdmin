@@ -9,6 +9,7 @@ namespace LigaCancer.Data.Models.PatientModels
         [Key]
         public int DoctorId { get; set; }
 
+        [Display(Name = "Nome")]
         public string Name { get; set; }
 
         public string CRM { get; set; }

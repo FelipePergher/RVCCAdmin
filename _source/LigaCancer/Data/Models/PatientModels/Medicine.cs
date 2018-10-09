@@ -9,6 +9,7 @@ namespace LigaCancer.Data.Models.PatientModels
         [Key]
         public int MedicineId { get; set; }
 
+        [Display(Name = "Remédio")]
         public string Name { get; set; }
 
         #region Relations

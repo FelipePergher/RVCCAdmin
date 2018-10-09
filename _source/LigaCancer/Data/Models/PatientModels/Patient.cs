@@ -22,6 +22,7 @@ namespace LigaCancer.Data.Models.PatientModels
         [Key]
         public int PatientId { get; set; }
 
+        [Display(Name = "Nome")]
         public string FirstName { get; set; }
 
         public string Surname { get; set; }
