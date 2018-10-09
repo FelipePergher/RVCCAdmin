@@ -726,6 +726,8 @@ namespace LigaCancer.Controllers
                 Patient patient = await _patientService.FindByIdAsync(id);
                 if (patient != null)
                 {
+                    patient.RG = DateTime.Now + "-" + patient.RG;
+                    patient.CPF = DateTime.Now + "-" + patient.CPF;
                     TaskResult result = await _patientService.DeleteAsync(patient);
 
                     if (result.Succeeded)
