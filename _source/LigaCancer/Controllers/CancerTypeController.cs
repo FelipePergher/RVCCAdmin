@@ -18,20 +18,20 @@ using Microsoft.AspNetCore.Authorization;
 namespace LigaCancer.Controllers
 {
     //[Authorize]
-    public class DoctorController : Controller
+    public class CancerTypeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IDataStore<Doctor> _doctorService;
+        private readonly IDataStore<CancerType> _cancerTypeService;
 
-        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager)
+        public CancerTypeController(IDataStore<CancerType> cancerTypeService, UserManager<ApplicationUser> userManager)
         {
-            _doctorService = doctorService;
+            _cancerTypeService = cancerTypeService;
             _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
         {
-            IQueryable<Doctor> doctors = _doctorService.GetAllQueryable();
+            IQueryable<CancerType> cancerTypes = _cancerTypeService.GetAllQueryable();
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
@@ -48,45 +48,44 @@ namespace LigaCancer.Controllers
 
             if (!string.IsNullOrEmpty(searchNameString))
             {
-                doctors = doctors.Where(s => s.Name.Contains(searchNameString));
+                cancerTypes = cancerTypes.Where(s => s.Name.Contains(searchNameString));
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    doctors = doctors.OrderByDescending(s => s.Name);
+                    cancerTypes = cancerTypes.OrderByDescending(s => s.Name);
                     break;
                 default:
-                    doctors = doctors.OrderBy(s => s.Name);
+                    cancerTypes = cancerTypes.OrderBy(s => s.Name);
                     break;
             }
 
             int pageSize = 4;
 
-            PaginatedList<Doctor> paginateList = await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize);
+            PaginatedList<CancerType> paginateList = await PaginatedList<CancerType>.CreateAsync(cancerTypes.AsNoTracking(), page ?? 1, pageSize);
             return View(paginateList);
         }
 
-        public IActionResult AddDoctor()
+        public IActionResult AddCancerType()
         {
-            return PartialView("_AddDoctor", new DoctorViewModel());
+            return PartialView("_AddCancerType", new CancerTypeViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDoctor(DoctorViewModel model)
+        public async Task<IActionResult> AddCancerType(CancerTypeViewModel model)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                Doctor doctor = new Doctor
+                CancerType cancerType = new CancerType
                 {
-                    CRM = model.CRM,
                     Name = model.Name,
                     UserCreated = user
                 };
 
-                TaskResult result = await _doctorService.CreateAsync(doctor);
+                TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
                 if (result.Succeeded)
                 {
                     return StatusCode(200, "200");
@@ -94,46 +93,44 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_AddDoctor", model);
+            return PartialView("_AddCancerType", model);
         }
 
 
-        public async Task<IActionResult> EditDoctor(string id)
+        public async Task<IActionResult> EditCancerType(string id)
         {
-            DoctorViewModel doctorViewModel = new DoctorViewModel();
+            CancerTypeViewModel cancerTypeViewModel = new CancerTypeViewModel();
 
             if (!string.IsNullOrEmpty(id))
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if(doctor != null)
+                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
+                if(cancerType != null)
                 {
-                    doctorViewModel = new DoctorViewModel
+                    cancerTypeViewModel = new CancerTypeViewModel
                     {
-                        DoctorId = doctor.DoctorId,
-                        CRM = doctor.CRM,
-                        Name = doctor.Name
+                        CancerTypeId = cancerType.CancerTypeId,
+                        Name = cancerType.Name
                     };
                 }
             }
 
-            return PartialView("_EditDoctor", doctorViewModel);
+            return PartialView("_EditCancerType", cancerTypeViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDoctor(string id, DoctorViewModel model)
+        public async Task<IActionResult> EditCancerType(string id, CancerTypeViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
+                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                doctor.Name = model.Name;
-                doctor.CRM = model.CRM;
-                doctor.LastUpdatedDate = DateTime.Now;
-                doctor.LastUserUpdate = user;
+                cancerType.Name = model.Name;
+                cancerType.LastUpdatedDate = DateTime.Now;
+                cancerType.LastUserUpdate = user;
 
-                TaskResult result = await _doctorService.UpdateAsync(doctor);
+                TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
                 if (result.Succeeded)
                 {
                     return StatusCode(200, "200");
@@ -141,43 +138,43 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_EditDoctor", model);
+            return PartialView("_EditCancerType", model);
         }
 
 
-        public async Task<IActionResult> DeleteDoctor(string id)
+        public async Task<IActionResult> DeleteCancerType(string id)
         {
             string name = string.Empty;
 
             if (!string.IsNullOrEmpty(id))
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
+                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
+                if (cancerType != null)
                 {
-                    name = doctor.Name;
+                    name = cancerType.Name;
                 }
             }
 
-            return PartialView("_DeleteDoctor", name);
+            return PartialView("_DeleteCancerType", name);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDoctor(string id, IFormCollection form)
+        public async Task<IActionResult> DeleteCancerType(string id, IFormCollection form)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
+                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
+                if (cancerType != null)
                 {
-                    TaskResult result = await _doctorService.DeleteAsync(doctor);
+                    TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
 
                     if (result.Succeeded)
                     {
                         return StatusCode(200, "200");
                     }
                     ModelState.AddErrors(result);
-                    return PartialView("_DeleteDoctor", doctor.Name);
+                    return PartialView("_DeleteCancerType", cancerType.Name);
                 }
             }
             return RedirectToAction("Index");
@@ -185,11 +182,11 @@ namespace LigaCancer.Controllers
 
         #region Custom Methods
 
-        public JsonResult IsCRMExist(string Crm, int DoctorId)
+        public JsonResult IsNameExist(string Name, int CancerTypeId)
         {
-            Doctor doctor = ((DoctorStore)_doctorService).FindByCRMAsync(Crm, DoctorId).Result;
+            CancerType cancerType = ((CancerTypeStore)_cancerTypeService).FindByNameAsync(Name, CancerTypeId).Result;
 
-            if (doctor != null)
+            if (cancerType != null)
             {
                 return Json(false);
             }

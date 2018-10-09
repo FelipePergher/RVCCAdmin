@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class DoctorStore : IDataStore<Doctor>
+    public class CancerTypeStore : IDataStore<CancerType>
     {
         private ApplicationDbContext _context;
 
-        public DoctorStore(ApplicationDbContext context)
+        public CancerTypeStore(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.Doctors.Count();
+            return _context.CancerTypes.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Doctor model)
+        public Task<TaskResult> CreateAsync(CancerType model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Doctors.Add(model);
+                _context.CancerTypes.Add(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -44,16 +44,16 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Doctor model)
+        public Task<TaskResult> DeleteAsync(CancerType model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Doctor doctor = _context.Doctors.FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                doctor.IsDeleted = true;
-                doctor.DeletedDate = DateTime.Now;
-                doctor.CRM = DateTime.Now + "||" + doctor.CRM;
-                _context.Update(doctor);
+                CancerType cancerType = _context.CancerTypes.FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
+                cancerType.IsDeleted = true;
+                cancerType.DeletedDate = DateTime.Now;
+                cancerType.Name = DateTime.Now + "||" + cancerType.Name;
+                _context.Update(cancerType);
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -75,9 +75,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Doctor> FindByIdAsync(string id, string[] include = null)
+        public Task<CancerType> FindByIdAsync(string id, string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<CancerType> query = _context.CancerTypes;
 
             if (include != null)
             {
@@ -87,12 +87,12 @@ namespace LigaCancer.Data.Store
                 }
             }
 
-            return Task.FromResult(query.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
         }
 
-        public Task<List<Doctor>> GetAllAsync(string[] include = null)
+        public Task<List<CancerType>> GetAllAsync(string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<CancerType> query = _context.CancerTypes;
 
             if (include != null)
             {
@@ -105,7 +105,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Doctor model)
+        public Task<TaskResult> UpdateAsync(CancerType model)
         {
             TaskResult result = new TaskResult();
             try
@@ -125,9 +125,9 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<Doctor> GetAllQueryable(string[] include = null)
+        public IQueryable<CancerType> GetAllQueryable(string[] include = null)
         {
-            IQueryable<Doctor> query = _context.Doctors;
+            IQueryable<CancerType> query = _context.CancerTypes;
 
             if (include != null)
             {
@@ -142,21 +142,20 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<Doctor> FindByCRMAsync(string crm, int DoctorId)
+        public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
-            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != DoctorId);
-            return Task.FromResult(doctor);
-        }
-
-        public Task<Doctor> FindByNameAsync(string Name)
-        {
-            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == Name);
-            if (doctor != null && doctor.IsDeleted)
+            if (CancerTypeId == -1)
             {
-                doctor.IsDeleted = false;
-                doctor.LastUpdatedDate = DateTime.Now;
+                CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
+                if (cancerType != null && cancerType.IsDeleted)
+                {
+                    cancerType.IsDeleted = false;
+                    cancerType.LastUpdatedDate = DateTime.Now;
+                }
+                return Task.FromResult(cancerType);
             }
-            return Task.FromResult(doctor);
+
+            return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
         }
 
         #endregion

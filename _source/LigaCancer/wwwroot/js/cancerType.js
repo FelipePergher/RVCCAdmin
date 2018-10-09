@@ -1,13 +1,13 @@
 ﻿$(function () {
-    $("#modal-action-doctor").on('loaded.bs.modal', function (e) {
+    $("#modal-action-cancerType").on('loaded.bs.modal', function (e) {
     }).on('hidden.bs.modal', function (e) {
         $(this).removeData('bs.modal');
     });
 });
 
-$("#modal-action-doctor").on("show.bs.modal", function (e) {
+$("#modal-action-cancerType").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function (e) {
+    $(this).find(".modal-content").load(link.attr("href"), function () {
         $.validator.unobtrusive.parse('form');
     });
 });

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,27 +11,33 @@ namespace LigaCancer.Code
        
         public enum Sex
         {
-            Male = 0,
-            Female = 1,
-            NotSpecified = 2,
-
+            [Display(Name = "Não especificado")]
+            NotSpecified,
+            [Display(Name = "Homem")]
+            Male,
+            [Display(Name = "Mulher")]
+            Female
         }
 
         public enum CivilState
         {
+            [Display(Name = "Solteiro(a)")]
             Single,
+            [Display(Name = "Casado(a)")]
             Married,
-            Widowed,
+            [Display(Name = "Separado(a)")]
+            Separate,
+            [Display(Name = "Divorciado(a)")]
             Divorced,
-            Engaged,
-            Relationship,
-            StableUnion,
-            Cohabitating
+            [Display(Name = "Viúvo(a)")]
+            Widowed,
         }
 
         public enum PhoneType
         {
+            [Display(Name = "Fixo")]
             landline,
+            [Display(Name = "Celular")]
             cellphone
         }
     }

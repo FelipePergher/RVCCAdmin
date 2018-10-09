@@ -48,6 +48,11 @@ namespace LigaCancer
 
             //Application Services
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
+            services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
+            services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();
+            services.AddTransient<IDataStore<Medicine>, MedicineStore>();
+            services.AddTransient<IDataStore<Patient>, PatientStore>();
+            services.AddTransient<IDataStore<Profession>, ProfessionStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

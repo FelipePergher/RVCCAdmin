@@ -1,8 +1,13 @@
-﻿@model PaginatedList<LigaCancer.Data.Models.PatientModels.Doctor>
+﻿@model PaginatedList<LigaCancer.Data.Models.PatientModels.Patient>
 @using LigaCancer.Code
 @{
-    ViewData["Title"] = "Médicos";
+    ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
 }
 
 <main class="main">
@@ -11,7 +16,7 @@
             <a href="/">Home</a>
         </li>
         <li class="breadcrumb-item">
-            Médicos
+            Pacientes
         </li>
     </ol>
     <div class="container-fluid">
@@ -48,14 +53,14 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-address-card-o"></i> Médicos
+                                <i class="fa fa-address-card-o"></i> Pacientes
                             </div>
                             <div class="card-block">
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <div class="btn-group">
-                                            <a asp-action="AddDoctor" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-primary">
-                                                <i class="glyphicon glyphicon-plus"></i> Adicionar Médico
+                                            <a asp-action="AddPatient" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-primary">
+                                                <i class="glyphicon glyphicon-plus"></i> Adicionar Paciente
                                             </a>
                                         </div>
                                     </div>
@@ -74,11 +79,8 @@
                                                     {
                                                         <span class="fa fa-sort-alpha-up"></span>
                                                     }
-                                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                                                    @Html.DisplayNameFor(model => model.FirstOrDefault().FirstName)
                                                 </a>
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.FirstOrDefault().CRM)
                                             </th>
                                             <th>
                                                 Ações
@@ -90,16 +92,16 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                    @Html.DisplayFor(modelItem => item.FirstName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CRM)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-warning">
+                                                    <a asp-action="DetailsPatient" asp-route-id="@item.PatientId" class="btn btn-info disabled">
+                                                        Mostrar
+                                                    </a>
+                                                    <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning disabled">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-danger">
+                                                    <a asp-action="DeletePatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
                                                         Deletar
                                                     </a>
                                                 </td>
@@ -108,7 +110,7 @@
                                     </tbody>
                                 </table>
 
-                                @{await Html.RenderPartialAsync("_PaginationDoctor", Model);}
+                                @{await Html.RenderPartialAsync("_PaginationPatient", Model);}
 
                             </div>
                         </div>
@@ -124,10 +126,10 @@
     <!-- /.conainer-fluid -->
 </main>
 
-@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-doctor", AreaLabeledId = "modal-action-doctor-label", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-patient", AreaLabeledId = "modal-action-patient-label", Size = ModalSize.Medium })
 
-@section scripts
-    {
+@section scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script src="~/js/doctor.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/js/patient.js"></script>
 }

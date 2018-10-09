@@ -87,20 +87,6 @@ namespace LigaCancer.Data
                 .WithMany(c => c.ResidenceTypeResidences)
                 .HasForeignKey(bc => bc.ResidenceId);
 
-            //Patient with Profession
-            builder.Entity<PatientProfession>()
-              .HasKey(bc => new { bc.PatientId, bc.ProfessionId });
-
-            builder.Entity<PatientProfession>()
-                .HasOne(bc => bc.Patient)
-                .WithMany(b => b.PatientProfessions)
-                .HasForeignKey(bc => bc.PatientId);
-
-            builder.Entity<PatientProfession>()
-                .HasOne(bc => bc.Profession)
-                .WithMany(c => c.PatientProfessions)
-                .HasForeignKey(bc => bc.ProfessionId);
-
             #endregion
 
             #region Entity Filters

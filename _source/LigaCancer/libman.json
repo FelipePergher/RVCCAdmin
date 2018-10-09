@@ -43,6 +43,21 @@
       "files": [
         "Chart.min.js"
       ]
+    },
+    {
+      "library": "select2@4.0.5",
+      "destination": "wwwroot/lib/select2",
+      "files": [
+        "css/select2.min.css",
+        "js/select2.min.js"
+      ]
+    },
+    {
+      "library": "select2-bootstrap-theme@0.1.0-beta.10",
+      "destination": "wwwroot/lib/select2/theme",
+      "files": [
+        "select2-bootstrap.min.css"
+      ]
     }
   ]
 }
