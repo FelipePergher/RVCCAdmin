@@ -11427,12 +11427,12 @@ canvas {
 .tab-content {
   margin-top: -1px;
   background: #fff;
-  border: 1px solid #c8ced3;
+  /*border: 1px solid #c8ced3;*/
 }
 
-.tab-content .tab-pane {
+/*.tab-content .tab-pane {
   padding: 1rem;
-}
+}*/
 
 .card-block {
     padding: 1.25rem;
