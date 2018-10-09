@@ -142,10 +142,20 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<TreatmentPlace> FindByCityAsync(string city, int TreatmentPlaceId)
+        public Task<TreatmentPlace> FindByCityAsync(string city, int TreatmentPlaceId = -1)
         {
-            TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != TreatmentPlaceId);
-            return Task.FromResult(treatmentPlace);
+            if(TreatmentPlaceId == -1)
+            {
+                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city);
+                if (treatmentPlace != null && treatmentPlace.IsDeleted)
+                {
+                    treatmentPlace.IsDeleted = false;
+                    treatmentPlace.LastUpdatedDate = DateTime.Now;
+                }
+                return Task.FromResult(treatmentPlace);
+            }
+
+            return Task.FromResult(_context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != TreatmentPlaceId));
         }
 
         #endregion

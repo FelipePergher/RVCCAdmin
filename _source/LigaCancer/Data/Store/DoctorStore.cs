@@ -148,6 +148,17 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(doctor);
         }
 
+        public Task<Doctor> FindByNameAsync(string Name)
+        {
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == Name);
+            if (doctor != null && doctor.IsDeleted)
+            {
+                doctor.IsDeleted = false;
+                doctor.LastUpdatedDate = DateTime.Now;
+            }
+            return Task.FromResult(doctor);
+        }
+
         #endregion
     }
 }

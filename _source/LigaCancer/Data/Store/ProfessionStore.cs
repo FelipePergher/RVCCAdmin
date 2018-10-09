@@ -140,5 +140,14 @@ namespace LigaCancer.Data.Store
             return query;
         }
 
+        #region Custom Methods
+
+        public Task<Profession> FindByNameAsync(string name)
+        {
+            return Task.FromResult(_context.Professions.FirstOrDefault(x => x.Name == name));
+        }
+
+        #endregion
+
     }
 }

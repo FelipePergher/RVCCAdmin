@@ -142,10 +142,20 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<CancerType> FindByNameAsync(string name, int CancerTypeId)
+        public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
-            CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId);
-            return Task.FromResult(cancerType);
+            if (CancerTypeId == -1)
+            {
+                CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
+                if (cancerType != null && cancerType.IsDeleted)
+                {
+                    cancerType.IsDeleted = false;
+                    cancerType.LastUpdatedDate = DateTime.Now;
+                }
+                return Task.FromResult(cancerType);
+            }
+
+            return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
         }
 
         #endregion

@@ -142,9 +142,15 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<Patient> FindByNameAsync(string name, int PatientId)
+        public Task<Patient> FindByCpfAsync(string Cpf, int PatientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.FirstName == name && x.PatientId != PatientId);
+            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == Cpf && x.PatientId != PatientId);
+            return Task.FromResult(patient);
+        }
+
+        public Task<Patient> FindByRgAsync(string Rg, int PatientId)
+        {
+            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == Rg && x.PatientId != PatientId);
             return Task.FromResult(patient);
         }
 

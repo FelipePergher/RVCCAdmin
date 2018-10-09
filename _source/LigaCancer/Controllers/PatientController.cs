@@ -30,12 +30,12 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<Profession> _professionService;
 
         public PatientController(
-            IDataStore<Patient> patientService, 
-            IDataStore<Doctor> doctorService, 
-            IDataStore<TreatmentPlace> treatmentPlaceService, 
-            IDataStore<CancerType> cancerTypeService, 
-            IDataStore<Medicine> medicineService, 
-            IDataStore<Profession> professionService, 
+            IDataStore<Patient> patientService,
+            IDataStore<Doctor> doctorService,
+            IDataStore<TreatmentPlace> treatmentPlaceService,
+            IDataStore<CancerType> cancerTypeService,
+            IDataStore<Medicine> medicineService,
+            IDataStore<Profession> professionService,
             UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
@@ -147,7 +147,8 @@ namespace LigaCancer.Controllers
                     UserCreated = user
                 };
 
-                Profession profession = await _professionService.FindByIdAsync(model.Profession);
+                Profession profession = int.TryParse(model.Profession, out int num) ? 
+                    await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
                 if (profession == null)
                 {
                     profession = new Profession
@@ -169,57 +170,123 @@ namespace LigaCancer.Controllers
                 //Added Cancer Types to Patient Information
                 foreach (var item in model.PatientInformation.CancerTypes)
                 {
-                    CancerType cancerType = await _cancerTypeService.FindByIdAsync(item);
-                    if(cancerType == null)
+                    CancerType cancerType = int.TryParse(item, out num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
+                    if (cancerType == null)
                     {
-                        //Todo: salvar no bd o novo nome
+                        cancerType = new CancerType
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                        TaskResult taskResult = await _cancerTypeService.CreateAsync(cancerType);
+                        if (taskResult.Succeeded)
+                        {
+                            patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
+                            {
+                                CancerType = cancerType
+                            });
+                        }
                     }
-                    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
+                    else
                     {
-                        CancerType = cancerType
-                    });
+                        patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
+                        {
+                            CancerType = cancerType
+                        });
+                    }
+                    
                 }
 
                 //Added Doctor to Patient Information
                 foreach (var item in model.PatientInformation.Doctors)
                 {
-                    Doctor doctor = await _doctorService.FindByIdAsync(item);
+                    Doctor doctor = int.TryParse(item, out num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
                     if (doctor == null)
                     {
-                        //Todo: salvar no bd o novo nome
+                        doctor = new Doctor
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                        TaskResult taskResult = await _doctorService.CreateAsync(doctor);
+                        if (taskResult.Succeeded)
+                        {
+                            patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
+                            {
+                                Doctor = doctor
+                            });
+                        }
                     }
-                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
+                    else
                     {
-                        Doctor = doctor
-                    });
+                        patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
+                        {
+                            Doctor = doctor
+                        });
+                    }
                 }
 
                 //Added Treatment Place to Patient Information
                 foreach (var item in model.PatientInformation.TreatmentPlaces)
                 {
-                    TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(item);
+                    TreatmentPlace treatmentPlace = int.TryParse(item, out num) ? 
+                        await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
                     if (treatmentPlace == null)
                     {
-                        //Todo: salvar no bd o novo nome
+                        treatmentPlace = new TreatmentPlace
+                        {
+                            City = item,
+                            UserCreated = user
+                        };
+                        TaskResult taskResult = await _treatmentPlaceService.CreateAsync(treatmentPlace);
+                        if (taskResult.Succeeded)
+                        {
+                            patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
+                            {
+                                TreatmentPlace = treatmentPlace
+                            });
+                        }
                     }
-                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
+                    else
                     {
-                        TreatmentPlace = treatmentPlace
-                    });
+                        patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
+                        {
+                            TreatmentPlace = treatmentPlace
+                        });
+                    }
+                    
                 }
 
                 //Added Medicine to Patient Information
                 foreach (var item in model.PatientInformation.Medicines)
                 {
-                    Medicine medicine = await _medicineService.FindByIdAsync(item);
+                    Medicine medicine = int.TryParse(item, out num) ?
+                        await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
+
                     if (medicine == null)
                     {
-                        //Todo: salvar no bd o novo nome
+                        medicine = new Medicine
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                        TaskResult taskResult = await _medicineService.CreateAsync(medicine);
+                        if (taskResult.Succeeded)
+                        {
+                            patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
+                            {
+                                Medicine = medicine
+                            });
+                        }
                     }
-                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
+                    else
                     {
-                        Medicine = medicine
-                    });
+                        patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
+                        {
+                            Medicine = medicine
+                        });
+                    }
+                    
                 }
 
                 TaskResult result = await _patientService.CreateAsync(patient);
@@ -260,7 +327,6 @@ namespace LigaCancer.Controllers
                 Value = x.TreatmentPlaceId.ToString()
             }).ToList();
 
-
             return PartialView("_AddPatient", model);
         }
 
@@ -272,7 +338,7 @@ namespace LigaCancer.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 Patient patient = await _patientService.FindByIdAsync(id);
-                if(patient != null)
+                if (patient != null)
                 {
                     patientViewModel = new PatientViewModel
                     {
@@ -319,7 +385,7 @@ namespace LigaCancer.Controllers
                 Patient patient = await _patientService.FindByIdAsync(id);
                 if (patient != null)
                 {
-                    name = patient.FirstName;
+                    name = patient.FirstName + " " + patient.Surname;
                 }
             }
 
@@ -366,9 +432,9 @@ namespace LigaCancer.Controllers
 
         #region Custom Methods
 
-        public JsonResult IsNameExist(string Name, int PatientId)
+        public JsonResult IsCpfExist(string Cpf, int PatientId)
         {
-            Patient patient = ((PatientStore)_patientService).FindByNameAsync(Name, PatientId).Result;
+            Patient patient = ((PatientStore)_patientService).FindByCpfAsync(Cpf, PatientId).Result;
 
             if (patient != null)
             {
@@ -378,6 +444,21 @@ namespace LigaCancer.Controllers
             {
                 return Json(true);
             }
+        }
+
+        public JsonResult IsRgExist(string Rg, int PatientId)
+        {
+            Patient patient = ((PatientStore)_patientService).FindByRgAsync(Rg, PatientId).Result;
+
+            if (patient != null)
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
+
         }
 
         #endregion
