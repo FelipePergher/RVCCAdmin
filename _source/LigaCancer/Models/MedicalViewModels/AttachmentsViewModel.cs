@@ -7,8 +7,15 @@ namespace LigaCancer.Models.MedicalViewModels
 {
     public class AttachmentsViewModel
     {
-        public ICollection<string> PersonalDocuments { get; set; }
-        public ICollection<string> MedicalDocuments { get; set; }
-        public ICollection<string> OtherDocuments { get; set; }
+        public AttachmentsViewModel()
+        {
+            PersonalDocuments = new List<string>();
+            MedicalDocuments = new List<string>();
+            OtherDocuments = new List<string>();
+        }
+
+        public List<string> PersonalDocuments { get; set; }
+        public List<string> MedicalDocuments { get; set; }
+        public List<string> OtherDocuments { get; set; }
     }
 }

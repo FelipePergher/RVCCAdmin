@@ -8,6 +8,15 @@ namespace LigaCancer.Models.MedicalViewModels
 {
     public class PatientInformationViewModel
     {
+        public PatientInformationViewModel()
+        {
+            CancerTypes = new List<string>();
+            Medicines = new List<string>();
+            Doctors = new List<string>();
+            TreatmentPlaces = new List<string>();
+        }
+
+
         [Display(Name = "Tipos de Câncer")]
         public List<string> CancerTypes { get; set; }
 

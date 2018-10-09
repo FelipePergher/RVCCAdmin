@@ -26,7 +26,6 @@ namespace LigaCancer.Models.MedicalViewModels
 
         [Display(Name = "Sobrenome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Surname { get; set; }
-
         
         [Required(ErrorMessage = "Este campo é obrigatório!"), Remote("IsRgExist", "Patient", AdditionalFields = "PatientId", ErrorMessage = "RG já registrado!")]
         public string RG { get; set; }

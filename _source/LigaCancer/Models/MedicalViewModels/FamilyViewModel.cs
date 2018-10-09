@@ -7,6 +7,11 @@ namespace LigaCancer.Models.MedicalViewModels
 {
     public class FamilyViewModel
     {
+        public FamilyViewModel()
+        {
+            FamilyMembers = new List<FamilyMembersViewModel>();
+        }
+
         public double MonthlyIncome { get; set; }
 
         public double FamilyIncome { get; set; }
@@ -15,6 +20,6 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public string Residence { get; set; }
 
-        public ICollection<FamilyMembersViewModel> FamilyMembers { get; set; }
+        public List<FamilyMembersViewModel> FamilyMembers { get; set; }
     }
 }
