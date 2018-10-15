@@ -748,13 +748,39 @@ namespace LigaCancer.Controllers
                 return NotFound();
             }
 
-            var patient = await _patientService.FindByIdAsync(id.ToString());
+            Patient patient = await _patientService.FindByIdAsync(id, new string[] {
+                    "Naturality", "PatientInformation", "Profession",
+                    "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                    "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
+                    "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
+                    "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
+                });
+
             if (patient == null)
             {
                 return NotFound();
             }
 
-            return View(patient);
+            PatientShowViewModel patientViewModel = new PatientShowViewModel
+            {
+                Name = patient.FirstName + " " + patient.Surname,
+                CivilState = patient.CivilState,
+                CPF = patient.CPF,
+                DateOfBirth = patient.DateOfBirth,
+                FamiliarityGroup = patient.FamiliarityGroup,
+                Profession = patient.Profession.Name,
+                RG = patient.RG,
+                Sex = patient.Sex,
+                PatientInformation = new PatientInformationViewModel
+                {
+                    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
+                    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
+                    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.Name).ToList(),
+                    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.City).ToList(),
+                }
+            };
+
+            return View(patientViewModel);
         }
 
         #region Custom Methods

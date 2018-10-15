@@ -1,4 +1,4 @@
-﻿@model LigaCancer.Data.Models.PatientModels.Patient
+﻿@model LigaCancer.Models.MedicalViewModels.PatientShowViewModel
 
 @{
     ViewData["Title"] = "View";
@@ -13,16 +13,16 @@
         <li class="breadcrumb-item">
             <a asp-action="Index">Pacientes</a>
         </li>
-        <li class="breadcrumb-item active">Detalhes @Model.FirstName @Model.Surname</li>
+        <li class="breadcrumb-item active">Detalhes @Model.Name</li>
     </ol>
     <div class="container-fluid">
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-address-card-o"></i> Detalhes
+                                <i class="fa fa-address-card"></i> Paciente
                             </div>
                             <div class="card-block">
                                 <div>
@@ -30,17 +30,11 @@
                                     <hr />
                                     <dl class="dl-horizontal">
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.FirstName)
+                                            @Html.DisplayNameFor(model => model.Name)
                                         </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.FirstName)
-                                        </dd>
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.Surname)
+                                            @Html.DisplayFor(model => model.Name)
                                         </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.Surname)
-                                        </dd>
                                         <dt>
                                             @Html.DisplayNameFor(model => model.RG)
                                         </dt>
@@ -52,12 +46,6 @@
                                         </dt>
                                         <dd>
                                             @Html.DisplayFor(model => model.CPF)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.FamiliarityGroup)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.FamiliarityGroup)
                                         </dd>
                                         <dt>
                                             @Html.DisplayNameFor(model => model.Sex)
@@ -78,28 +66,10 @@
                                             @Html.DisplayFor(model => model.DateOfBirth)
                                         </dd>
                                         <dt>
-                                            @Html.DisplayNameFor(model => model.RegisterDate)
+                                            @Html.DisplayNameFor(model => model.FamiliarityGroup)
                                         </dt>
                                         <dd>
-                                            @Html.DisplayFor(model => model.RegisterDate)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.LastUpdatedDate)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.LastUpdatedDate)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.IsDeleted)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.IsDeleted)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.DeletedDate)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.DeletedDate)
+                                            @Html.DisplayFor(model => model.FamiliarityGroup)
                                         </dd>
                                     </dl>
 
@@ -107,10 +77,64 @@
                             </div>
                         </div>
                     </div>
-                    <!--/col-->
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Informações do paciente
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action active show" id="list-home-list" data-toggle="tab" href="#list-home" role="tab" aria-controls="list-home" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.CancerTypes)</a>
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="tab" href="#list-profile" role="tab" aria-controls="list-profile" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Medicines)</a>
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="tab" href="#list-messages" role="tab" aria-controls="list-messages" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Doctors)</a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="tab" href="#list-settings" role="tab" aria-controls="list-settings" aria-selected="true">@Html.DisplayNameFor(model => model.PatientInformation.TreatmentPlaces)</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                                                <ul class="list-group">
+                                                    @foreach (var item in Model.PatientInformation.CancerTypes)
+                                                    {
+                                                        <li class="list-group-item">@item</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                                                <ul class="list-group">
+                                                    @foreach (var item in Model.PatientInformation.Medicines)
+                                                    {
+                                                        <li class="list-group-item">@item</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                                                <ul class="list-group">
+                                                    @foreach (var item in Model.PatientInformation.Doctors)
+                                                    {
+                                                        <li class="list-group-item">@item</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                                                <ul class="list-group">
+                                                    @foreach (var item in Model.PatientInformation.TreatmentPlaces)
+                                                    {
+                                                        <li class="list-group-item">@item</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-                <!--/row-->
 
             </div>
         </div>
