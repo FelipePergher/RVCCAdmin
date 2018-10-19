@@ -118,10 +118,10 @@
     <!-- /.conainer-fluid -->
 </main>
 
-@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-treatmentPlace", AreaLabeledId = "modal-action-treatmentPlace-label", Size = ModalSize.Medium })
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-treatmentPlace", AreaLabeledId = "modal-action-treatmentPlace-label", Size = ModalSize.Medium }' />
 
 @section scripts
     {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/treatmentPlace.js"></script>
 }
