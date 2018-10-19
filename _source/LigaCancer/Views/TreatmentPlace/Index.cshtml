@@ -93,9 +93,19 @@
                                                     <a asp-action="EditTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-warning">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeleteTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-danger">
-                                                        Deletar
-                                                    </a>
+                                                    @if (item.PatientInformationTreatmentPlaces.Count == 0)
+                                                    {
+                                                        <a asp-action="DeleteTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-danger">
+                                                            Deletar
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-danger disabled">
+                                                            Deletar
+                                                        </a>
+                                                    }
+
                                                 </td>
                                             </tr>
                                         }

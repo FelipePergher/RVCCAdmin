@@ -49,7 +49,16 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                Medicine medicine = _context.Medicines.FirstOrDefault(b => b.MedicineId == model.MedicineId);
+                Medicine medicine = _context.Medicines.Include(x => x.PatientInformationMedicines).FirstOrDefault(b => b.MedicineId == model.MedicineId);
+                if (medicine.PatientInformationMedicines.Count >= 0)
+                {
+                    result.Errors.Add(new TaskError
+                    {
+                        Code = "Acesso Negado",
+                        Description = "Não é possível apagar este médico"
+                    });
+                    return Task.FromResult(result);
+                }
                 medicine.IsDeleted = true;
                 medicine.DeletedDate = DateTime.Now;
                 medicine.Name = DateTime.Now + "||" + medicine.Name;

@@ -99,9 +99,18 @@
                                                     <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-warning">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-danger">
-                                                        Deletar
-                                                    </a>
+                                                    @if (item.PatientInformationDoctors.Count == 0)
+                                                    {
+                                                        <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-danger">
+                                                            Deletar
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-danger disabled">
+                                                            Deletar
+                                                        </a>
+                                                    }
                                                 </td>
                                             </tr>
                                         }
