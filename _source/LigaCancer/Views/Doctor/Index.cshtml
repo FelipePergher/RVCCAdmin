@@ -108,7 +108,7 @@
                                     </tbody>
                                 </table>
 
-                                @{await Html.RenderPartialAsync("_PaginationDoctor", Model);}
+                                <partial name="_PaginationDoctor" model="Model" />
 
                             </div>
                         </div>
