@@ -763,6 +763,7 @@ namespace LigaCancer.Controllers
 
             PatientShowViewModel patientViewModel = new PatientShowViewModel
             {
+                PatientId = patient.PatientId,
                 Name = patient.FirstName + " " + patient.Surname,
                 CivilState = patient.CivilState,
                 CPF = patient.CPF,
@@ -812,6 +813,21 @@ namespace LigaCancer.Controllers
                 return Json(true);
             }
 
+        }
+
+        public IActionResult AddPhone()
+        {
+            return PartialView("_AddPhone");
+        }
+
+        public IActionResult AddAddress()
+        {
+            return PartialView("_AddAddress");
+        }
+
+        public IActionResult AddfamilyMember()
+        {
+            return PartialView("_AddFamilyMember");
         }
 
         #endregion

@@ -34,6 +34,12 @@
     <Content Update="Views\Patient\_AddPatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Patient\_AddFamilyMember.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Patient\_AddAddress.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Patient\_DeletePatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
