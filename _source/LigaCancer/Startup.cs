@@ -53,6 +53,7 @@ namespace LigaCancer
             services.AddTransient<IDataStore<Medicine>, MedicineStore>();
             services.AddTransient<IDataStore<Patient>, PatientStore>();
             services.AddTransient<IDataStore<Profession>, ProfessionStore>();
+            services.AddTransient<IDataStore<Phone>, PhoneStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

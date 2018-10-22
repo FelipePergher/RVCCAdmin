@@ -1,0 +1,45 @@
+﻿@model LigaCancer.Models.MedicalViewModels.PhoneViewModel
+@using LigaCancer.Code
+
+<form asp-action="AddPhone"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Telefone" }' />
+
+    <div class="modal-body form-horizontal" id="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>
+            Adicionar Telefone
+        </h4>
+
+        <div class="form-group">
+            <label asp-for="Number" class="control-label"></label>
+            <input asp-for="Number" class="form-control" />
+            <span asp-validation-for="Number" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneType" class="control-label"></label>
+            <select asp-for="PhoneType" asp-items="Html.GetEnumSelectList<Globals.PhoneType>()" class="form-control"></select>
+            <span asp-validation-for="PhoneType" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ObservationNote" class="control-label"></label>
+            <input asp-for="ObservationNote" class="form-control" />
+            <span asp-validation-for="ObservationNote" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

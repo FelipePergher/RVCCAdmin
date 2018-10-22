@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class PatientStore : IDataStore<Patient>
+    public class PhoneStore : IDataStore<Phone>
     {
         private ApplicationDbContext _context;
 
-        public PatientStore(ApplicationDbContext context)
+        public PhoneStore(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.Patients.Count();
+            return _context.Phones.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Patient model)
+        public Task<TaskResult> CreateAsync(Phone model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Patients.Add(model);
+                _context.Phones.Add(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -44,16 +44,15 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Patient model)
+        public Task<TaskResult> DeleteAsync(Phone model)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
-                patient.IsDeleted = true;
-                patient.DeletedDate = DateTime.Now;
-                patient.FirstName = DateTime.Now + "||" + patient.FirstName;
-                _context.Update(patient);
+                Phone phone = _context.Phones.FirstOrDefault(b => b.PhoneId == model.PhoneId);
+                phone.IsDeleted = true;
+                phone.DeletedDate = DateTime.Now;
+                _context.Update(phone);
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -75,9 +74,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, string[] include = null)
+        public Task<Phone> FindByIdAsync(string id, string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Phone> query = _context.Phones;
 
             if (include != null)
             {
@@ -87,12 +86,12 @@ namespace LigaCancer.Data.Store
                 }
             }
 
-            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.PhoneId == int.Parse(id)));
         }
 
-        public Task<List<Patient>> GetAllAsync(string[] include = null)
+        public Task<List<Phone>> GetAllAsync(string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Phone> query = _context.Phones;
 
             if (include != null)
             {
@@ -105,7 +104,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Patient model)
+        public Task<TaskResult> UpdateAsync(Phone model)
         {
             TaskResult result = new TaskResult();
             try
@@ -125,9 +124,9 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<Patient> GetAllQueryable(string[] include = null)
+        public IQueryable<Phone> GetAllQueryable(string[] include = null)
         {
-            IQueryable<Patient> query = _context.Patients;
+            IQueryable<Phone> query = _context.Phones;
 
             if (include != null)
             {
@@ -140,44 +139,5 @@ namespace LigaCancer.Data.Store
             return query;
         }
 
-        #region Custom Methods
-
-        public Task<Patient> FindByCpfAsync(string Cpf, int PatientId)
-        {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == Cpf && x.PatientId != PatientId);
-            return Task.FromResult(patient);
-        }
-
-        public Task<Patient> FindByRgAsync(string Rg, int PatientId)
-        {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == Rg && x.PatientId != PatientId);
-            return Task.FromResult(patient);
-        }
-
-        public async Task<TaskResult> AddPhone(Phone phone, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.Phones.Add(phone);
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
-        }
-
-        #endregion
     }
 }

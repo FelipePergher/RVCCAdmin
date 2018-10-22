@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LigaCancer.Data.Models.PatientModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public PatientInformationViewModel PatientInformation { get; set; }
 
-        public List<PhoneViewModel> Phones { get; set; }
+        public ICollection<Phone> Phones { get; set; }
 
         public List<AddressViewModel> Addresses { get; set; }
 

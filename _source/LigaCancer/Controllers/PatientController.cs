@@ -749,7 +749,7 @@ namespace LigaCancer.Controllers
             }
 
             Patient patient = await _patientService.FindByIdAsync(id, new string[] {
-                    "Naturality", "PatientInformation", "Profession",
+                    "Naturality", "PatientInformation", "Profession", "Phones",
                     "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                     "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
                     "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
@@ -772,6 +772,7 @@ namespace LigaCancer.Controllers
                 Profession = patient.Profession.Name,
                 RG = patient.RG,
                 Sex = patient.Sex,
+                Phones = patient.Phones,
                 PatientInformation = new PatientInformationViewModel
                 {
                     CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
@@ -813,11 +814,6 @@ namespace LigaCancer.Controllers
                 return Json(true);
             }
 
-        }
-
-        public IActionResult AddPhone()
-        {
-            return PartialView("_AddPhone");
         }
 
         public IActionResult AddAddress()
