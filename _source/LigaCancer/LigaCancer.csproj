@@ -85,6 +85,9 @@
     <Content Update="Views\Doctor\_EditDoctor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Phone\_EditPhone.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\TreatmentPlace\_PaginationTreatmentPlace.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -221,16 +221,16 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    aa
+                                                    @item.Number
                                                 </td>
                                                 <td>
-                                                    Mostrar
+                                                    @Html.DisplayFor(m => m.Phones.FirstOrDefault(x => x == item).PhoneType)
                                                 </td>
                                                 <td>
-                                                    Mostrar
+                                                    @item.ObservationNote
                                                 </td>
                                                 <td>
-                                                    <a asp-action="EditPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
+                                                    <a asp-action="EditPhone" asp-controller="Phone" asp-route-id="@item.PhoneId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">

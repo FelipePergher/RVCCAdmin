@@ -80,6 +80,7 @@ namespace LigaCancer.Controllers
                 {
                     phoneViewModel = new PhoneViewModel
                     {
+                        PhoneId = id,
                         Number = phone.Number,
                         PhoneType = phone.PhoneType,
                         ObservationNote = phone.ObservationNote

@@ -9,7 +9,7 @@ namespace LigaCancer.Models.MedicalViewModels
 {
     public class PhoneViewModel
     {
-
+        public string PhoneId { get; set; }
         public string PatientId { get; set; }
 
         [Display(Name = "Número"), Required(ErrorMessage = "Este campo é obrigatório")]
