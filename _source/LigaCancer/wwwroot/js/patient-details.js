@@ -14,7 +14,7 @@
             orderable: false
         }],
         language: {
-            emptyTable: "Nenhuma informação adicionada ainda!"
+            emptyTable: "Nenhuma informação cadastrada!"
         }
     });
 
@@ -28,7 +28,7 @@
             orderable: false
         }],
         language: {
-            emptyTable: "Nenhuma informação adicionada ainda!"
+            emptyTable: "Nenhuma informação cadastrada!"
         }
     });
 
@@ -42,7 +42,7 @@
             orderable: false
         }],
         language: {
-            emptyTable: "Nenhuma informação adicionada ainda!"
+            emptyTable: "Nenhuma informação cadastrada!"
         }
     });
 
@@ -56,7 +56,7 @@
             orderable: false
         }],
         language: {
-            emptyTable: "Nenhuma informação adicionada ainda!"
+            emptyTable: "Nenhuma informação cadastrada!"
         }
     });
 });
