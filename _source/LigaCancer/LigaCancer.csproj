@@ -28,6 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\FamilyMember\_AddFamilyMember.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FamilyMember\_DeleteFamilyMember.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\FamilyMember\_EditFamilyMember.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Patient\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

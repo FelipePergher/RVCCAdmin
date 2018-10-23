@@ -370,7 +370,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Membros Familiares
                                 <div class="card-header-actions">
-                                    <a asp-action="AddFamilyMember" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#familyMembersCollapse" aria-expanded="true">
@@ -379,6 +379,26 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="familyMembersCollapse">
+                               
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        @* Todo: colocar o tipo de residência *@
+                                        <strong> Tipo de residência:</strong>
+                                    </div>
+                                    @if (Model.Family != null && Model.Family.FamilyMembers.Count() > 0)
+                                    {
+
+                                        <div class="col-lg-4">
+                                            <strong>Renda Familiar:</strong>  @Model.Family.FamilyIncome
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong> Renda Per Capita:</strong>  @Model.Family.PerCapitaIncome
+                                        </div>
+                                    }
+                                </div>
+
+                                <hr />
+
                                 <table class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
@@ -392,7 +412,7 @@
                                                 Idade
                                             </th>
                                             <th>
-                                                Sexo
+                                                Gênero
                                             </th>
                                             <th>
                                                 Renda
@@ -410,25 +430,25 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        aa
+                                                        @item.Name
                                                     </td>
                                                     <td>
-                                                        Mostrar
+                                                        @item.Kinship
                                                     </td>
                                                     <td>
-                                                        Mostraraa
+                                                        @item.Age
                                                     </td>
                                                     <td>
-                                                        Mostrar
+                                                        @Html.DisplayFor(x => x.Family.FamilyMembers.FirstOrDefault(y => y == item).Sex)
                                                     </td>
                                                     <td>
-                                                        Mostrar
+                                                        @item.MonthlyIncome
                                                     </td>
                                                     <td>
-                                                        <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
+                                                        <a asp-action="EditFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                        <a asp-action="DeleteFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
                                                             <i class="fa fa-times"></i>
                                                         </a>
                                                     </td>

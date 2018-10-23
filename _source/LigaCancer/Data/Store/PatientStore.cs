@@ -202,6 +202,38 @@ namespace LigaCancer.Data.Store
             return result;
         }
 
+        public async Task<TaskResult> AddFamilyMember(FamilyMember familyMember, string patientId)
+        {
+            TaskResult result = new TaskResult();
+
+            try
+            {
+                Patient patient = await FindByIdAsync(patientId, new string[] { "Family", "Family.FamilyMembers" });
+                if(patient.Family == null)
+                {
+                    patient.Family = new Family();
+                }
+                patient.Family.FamilyIncome += familyMember.MonthlyIncome;
+                patient.Family.FamilyMembers.Add(familyMember);
+
+                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / patient.Family.FamilyMembers.Count();
+
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                });
+
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

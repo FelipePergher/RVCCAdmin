@@ -73,20 +73,6 @@ namespace LigaCancer.Data
                 .WithMany(c => c.PatientInformationMedicines)
                 .HasForeignKey(bc => bc.MedicineId);
 
-            //Residence with Residence Type
-            builder.Entity<ResidenceTypeResidence>()
-              .HasKey(bc => new { bc.ResidenceId, bc.ResidenceTypeId });
-
-            builder.Entity<ResidenceTypeResidence>()
-                .HasOne(bc => bc.ResidenceType)
-                .WithMany(b => b.ResidenceTypeResidences)
-                .HasForeignKey(bc => bc.ResidenceTypeId);
-
-            builder.Entity<ResidenceTypeResidence>()
-                .HasOne(bc => bc.Residence)
-                .WithMany(c => c.ResidenceTypeResidences)
-                .HasForeignKey(bc => bc.ResidenceId);
-
             #endregion
 
             #region Entity Filters
@@ -98,7 +84,7 @@ namespace LigaCancer.Data
             builder.Entity<CancerType>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Family>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<FamilyMembers>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<FamilyMember>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<FileAttachment>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Medicine>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Naturality>().HasQueryFilter(p => !p.IsDeleted);
@@ -106,8 +92,6 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformation>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Phone>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Profession>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Residence>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<ResidenceType>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
 
             #endregion
@@ -119,7 +103,6 @@ namespace LigaCancer.Data
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
             builder.Entity<Profession>().HasIndex(p => p.Name).IsUnique();
-            builder.Entity<ResidenceType>().HasIndex(p => p.Type).IsUnique();
             builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
 
             #endregion
@@ -137,7 +120,7 @@ namespace LigaCancer.Data
 
         public DbSet<Family> Families { get; set; }
 
-        public DbSet<FamilyMembers> FamilyMembers { get; set; }
+        public DbSet<FamilyMember> FamilyMembers { get; set; }
 
         public DbSet<FileAttachment> FileAttachments { get; set; }
 
@@ -152,10 +135,6 @@ namespace LigaCancer.Data
         public DbSet<Phone> Phones { get; set; }
 
         public DbSet<Profession> Professions { get; set; }
-
-        public DbSet<Residence> Residences { get; set; }
-
-        public DbSet<ResidenceType> ResidenceTypes { get; set; }
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
     }

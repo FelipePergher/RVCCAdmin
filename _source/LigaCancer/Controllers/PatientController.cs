@@ -824,11 +824,6 @@ namespace LigaCancer.Controllers
 
         }
 
-        public IActionResult AddfamilyMember()
-        {
-            return PartialView("_AddFamilyMember");
-        }
-
         #endregion
     }
 }
