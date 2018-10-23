@@ -8,6 +8,7 @@
 @section Styles{
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
 <main class="main">
@@ -34,7 +35,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse" id="patientCollapse">
+                            <div class="card-body collapse show" id="patientCollapse">
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <p><strong>@Html.DisplayNameFor(model => model.Name)</strong></p>
@@ -81,13 +82,13 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse" id="patientInformationCollapse">
+                            <div class="card-body collapse show" id="patientInformationCollapse">
                                 <div class="row">
                                     @if (
-                                    Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
-                                    Model.PatientInformation.Doctors.Count() == 0 &&
-                                    Model.PatientInformation.Medicines.Count() == 0 &&
-                                    Model.PatientInformation.CancerTypes.Count() == 0)
+                                        Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
+                                        Model.PatientInformation.Doctors.Count() == 0 &&
+                                        Model.PatientInformation.Medicines.Count() == 0 &&
+                                        Model.PatientInformation.CancerTypes.Count() == 0)
                                     {
                                         <div class="col-lg-12">
                                             <p>Nenhuma informação cadastrada.</p>
@@ -175,13 +176,13 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse" id="naturalityCollapse">
+                            <div class="card-body collapse show" id="naturalityCollapse">
                                 <div class="row">
 
                                     @if (
-                            string.IsNullOrEmpty(Model.Naturality.City) &&
-                            string.IsNullOrEmpty(Model.Naturality.Country) &&
-                            string.IsNullOrEmpty(Model.Naturality.State))
+                                        string.IsNullOrEmpty(Model.Naturality.City) &&
+                                        string.IsNullOrEmpty(Model.Naturality.Country) &&
+                                        string.IsNullOrEmpty(Model.Naturality.State))
                                     {
                                         <div class="col-lg-12">
                                             <p>Nenhuma informação cadastrada.</p>
@@ -238,8 +239,8 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse" id="phoneCollapse">
-                                <table class="table table-bordered table-striped table-condensed">
+                            <div class="card-body collapse show" id="phoneCollapse">
+                                <table id="phoneTable" class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
                                             <th>
@@ -299,8 +300,8 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse" id="addressCollapse">
-                                <table class="table table-bordered table-striped table-condensed">
+                            <div class="card-body collapse show" id="addressCollapse">
+                                <table id="addressTable" class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
                                             <th>
@@ -379,7 +380,7 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="familyMembersCollapse">
-                               
+
                                 <div class="row">
                                     <div class="col-lg-4">
                                         @* Todo: colocar o tipo de residência *@
@@ -399,7 +400,7 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed">
+                                <table id="familyMemberTable" class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
                                             <th>
@@ -476,7 +477,7 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="attachmentsCollapse">
-                                <table class="table table-bordered table-striped table-condensed">
+                                <table id="attachmentsTable" class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
                                             <th>
@@ -521,6 +522,7 @@
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/js/patient-details.js"></script>
 }
