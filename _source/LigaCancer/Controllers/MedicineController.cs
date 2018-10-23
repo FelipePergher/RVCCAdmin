@@ -31,7 +31,7 @@ namespace LigaCancer.Controllers
 
         public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
         {
-            IQueryable<Medicine> medicines = _medicineService.GetAllQueryable();
+            IQueryable<Medicine> medicines = _medicineService.GetAllQueryable(new string[] { "PatientInformationMedicines" });
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 

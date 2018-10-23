@@ -14,7 +14,7 @@ namespace LigaCancer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationCancerType", b =>
@@ -67,19 +67,6 @@ namespace LigaCancer.Migrations
                     b.HasIndex("TreatmentPlaceId");
 
                     b.ToTable("PatientInformationTreatmentPlace");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.ResidenceTypeResidence", b =>
-                {
-                    b.Property<int>("ResidenceId");
-
-                    b.Property<int>("ResidenceTypeId");
-
-                    b.HasKey("ResidenceId", "ResidenceTypeId");
-
-                    b.HasIndex("ResidenceTypeId");
-
-                    b.ToTable("ResidenceTypeResidence");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
@@ -265,13 +252,9 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("LastUserUpdateId");
 
-                    b.Property<double>("MonthlyIncome");
-
                     b.Property<double>("PerCapitaIncome");
 
                     b.Property<DateTime>("RegisterDate");
-
-                    b.Property<int?>("ResidenceId");
 
                     b.Property<string>("UserCreatedId");
 
@@ -279,14 +262,12 @@ namespace LigaCancer.Migrations
 
                     b.HasIndex("LastUserUpdateId");
 
-                    b.HasIndex("ResidenceId");
-
                     b.HasIndex("UserCreatedId");
 
                     b.ToTable("Families");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMembers", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
                 {
                     b.Property<int>("FamilyMemberId")
                         .ValueGeneratedOnAdd();
@@ -592,65 +573,6 @@ namespace LigaCancer.Migrations
                     b.ToTable("Professions");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Residence", b =>
-                {
-                    b.Property<int>("ResidenceId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
-                    b.Property<DateTime>("RegisterDate");
-
-                    b.Property<string>("ResidenceObservation");
-
-                    b.Property<string>("UserCreatedId");
-
-                    b.HasKey("ResidenceId");
-
-                    b.HasIndex("LastUserUpdateId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.ToTable("Residences");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ResidenceType", b =>
-                {
-                    b.Property<int>("ResidenceTypeId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
-                    b.Property<DateTime>("RegisterDate");
-
-                    b.Property<string>("Type");
-
-                    b.Property<string>("UserCreatedId");
-
-                    b.HasKey("ResidenceTypeId");
-
-                    b.HasIndex("LastUserUpdateId");
-
-                    b.HasIndex("Type")
-                        .IsUnique();
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.ToTable("ResidenceTypes");
-                });
-
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
                 {
                     b.Property<int>("TreatmentPlaceId")
@@ -917,19 +839,6 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.ResidenceTypeResidence", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Residence", "Residence")
-                        .WithMany("ResidenceTypeResidences")
-                        .HasForeignKey("ResidenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.ResidenceType", "ResidenceType")
-                        .WithMany("ResidenceTypeResidences")
-                        .HasForeignKey("ResidenceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
@@ -999,16 +908,12 @@ namespace LigaCancer.Migrations
                         .WithMany()
                         .HasForeignKey("LastUserUpdateId");
 
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Residence", "Residence")
-                        .WithMany()
-                        .HasForeignKey("ResidenceId");
-
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()
                         .HasForeignKey("UserCreatedId");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMembers", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Family")
                         .WithMany("FamilyMembers")
@@ -1126,28 +1031,6 @@ namespace LigaCancer.Migrations
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Profession", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Residence", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ResidenceType", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
                         .WithMany()

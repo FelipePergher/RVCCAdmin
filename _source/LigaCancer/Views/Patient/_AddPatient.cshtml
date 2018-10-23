@@ -9,7 +9,8 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Adicionar Paciente" })
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Paciente" }' />
+
     <div class="modal-body form-horizontal" id="">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -18,7 +19,7 @@
             <a data-toggle="collapse" href="#collapsePatient" aria-expanded="false" aria-controls="collapseOne" class="collapsed fa fa-arrow-alt-circle-down" style="margin-left: 1rem;"></a>
         </h4>
         <hr />
-        
+
         <div class="collapse show" id="collapsePatient" role="tabpanel" aria-labelledby="headingOne">
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -122,9 +123,11 @@
 
 
     </div>
-    @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
 </form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

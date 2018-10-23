@@ -8,20 +8,16 @@ namespace LigaCancer.Data.Models.PatientModels
     {
         public Family()
         {
-            FamilyMembers = new HashSet<FamilyMembers>();
+            FamilyMembers = new HashSet<FamilyMember>();
         }
 
         [Key]
         public int FamilyId { get; set; }
 
-        public double MonthlyIncome { get; set; }
-
         public double FamilyIncome { get; set; }
 
         public double PerCapitaIncome { get; set; }
 
-        public Residence Residence { get; set; }
-
-        public ICollection<FamilyMembers> FamilyMembers { get; set; }
+        public ICollection<FamilyMember> FamilyMembers { get; set; }
     }
 }

@@ -93,16 +93,25 @@
                                                     <a asp-action="EditCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-warning">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeleteCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-danger">
-                                                        Deletar
-                                                    </a>
+                                                    @if (item.PatientInformationCancerTypes.Count == 0)
+                                                    {
+                                                        <a asp-action="DeleteCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-danger">
+                                                            Deletar
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-danger disabled">
+                                                            Deletar
+                                                        </a>
+                                                    }
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
 
-                                @{await Html.RenderPartialAsync("_PaginationCancerType", Model);}
+                                <partial name="_PaginationCancerType" model="Model" />
 
                             </div>
                         </div>
@@ -118,10 +127,10 @@
     <!-- /.conainer-fluid -->
 </main>
 
-@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-cancerType", AreaLabeledId = "modal-action-cancerType-label", Size = ModalSize.Medium })
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-cancerType", AreaLabeledId = "modal-action-cancerType-label", Size = ModalSize.Medium }' />
 
 @section scripts
     {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/cancerType.js"></script>
 }

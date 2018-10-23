@@ -4,9 +4,8 @@ using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
-    public class FamilyMembers : RegisterData
+    public class FamilyMember : RegisterData
     {
-
         [Key]
         public int FamilyMemberId { get; set; }
 

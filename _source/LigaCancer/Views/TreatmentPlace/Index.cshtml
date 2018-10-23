@@ -93,16 +93,26 @@
                                                     <a asp-action="EditTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-warning">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeleteTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-danger">
-                                                        Deletar
-                                                    </a>
+                                                    @if (item.PatientInformationTreatmentPlaces.Count == 0)
+                                                    {
+                                                        <a asp-action="DeleteTreatmentPlace" asp-route-id="@item.TreatmentPlaceId" data-toggle="modal" data-target="#modal-action-treatmentPlace" class="btn btn-danger">
+                                                            Deletar
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-danger disabled">
+                                                            Deletar
+                                                        </a>
+                                                    }
+
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
 
-                                @{await Html.RenderPartialAsync("_PaginationTreatmentPlace", Model);}
+                                <partial name="_PaginationTreatmentPlace" model="Model"/>
 
                             </div>
                         </div>
@@ -118,10 +128,10 @@
     <!-- /.conainer-fluid -->
 </main>
 
-@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-treatmentPlace", AreaLabeledId = "modal-action-treatmentPlace-label", Size = ModalSize.Medium })
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-treatmentPlace", AreaLabeledId = "modal-action-treatmentPlace-label", Size = ModalSize.Medium }' />
 
 @section scripts
     {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/treatmentPlace.js"></script>
 }

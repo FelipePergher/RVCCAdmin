@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LigaCancer.Data.Models.PatientModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace LigaCancer.Models.MedicalViewModels
         [Display(Name = "Grupo de Convivência")]
         public bool FamiliarityGroup { get; set; }
 
-        [Display(Name = "Sexo")]
+        [Display(Name = "Gênero")]
         public Sex Sex { get; set; }
 
         [Display(Name = "Estado Civil")]
@@ -38,11 +39,11 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public PatientInformationViewModel PatientInformation { get; set; }
 
-        public List<PhoneViewModel> Phones { get; set; }
+        public ICollection<Phone> Phones { get; set; }
 
-        public List<AddressViewModel> Addresses { get; set; }
+        public ICollection<Address> Addresses { get; set; }
 
-        public FamilyViewModel Family { get; set; }
+        public Family Family { get; set; }
 
         public AttachmentsViewModel Attachments { get; set; }
     }

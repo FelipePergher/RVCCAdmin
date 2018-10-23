@@ -1,0 +1,27 @@
+﻿@using LigaCancer.Code
+
+<form asp-action="AddFamilyMember"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Membro Familiar" }' />
+
+    <div class="modal-body form-horizontal" id="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>
+            Adicionar Membro Familiar
+        </h4>
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,8 +1,14 @@
 ﻿@model LigaCancer.Models.MedicalViewModels.PatientShowViewModel
-
+@using LigaCancer.Code
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
 <main class="main">
@@ -19,134 +25,504 @@
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-address-card"></i> Paciente
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="card-block">
-                                <div>
-                                    <h4>Paciente</h4>
-                                    <hr />
-                                    <dl class="dl-horizontal">
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.Name)
-                                        </dt>
-                                        <dt>
-                                            @Html.DisplayFor(model => model.Name)
-                                        </dt>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.RG)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.RG)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.CPF)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.CPF)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.Sex)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.Sex)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.CivilState)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.CivilState)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.DateOfBirth)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.DateOfBirth)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.FamiliarityGroup)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.FamiliarityGroup)
-                                        </dd>
-                                    </dl>
-
+                            <div class="card-body collapse show" id="patientCollapse">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p><strong>@Html.DisplayNameFor(model => model.Name)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.RG)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.CPF)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.Sex)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.CivilState)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.DateOfBirth)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.Profession)</strong></p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p>@Html.DisplayFor(model => model.Name)</p>
+                                        <p>@Html.DisplayFor(model => model.RG)</p>
+                                        <p>@Html.DisplayFor(model => model.CPF)</p>
+                                        <p>@Html.DisplayFor(model => model.Sex)</p>
+                                        <p>@Html.DisplayFor(model => model.CivilState)</p>
+                                        <p>@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                                        <p>@Html.DisplayFor(model => model.Profession)</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (Model.FamiliarityGroup)
+                                        {
+                                            <p> <i class="fa fa-check-circle"></i> <strong>Partipa do grupo de convivência</strong></p>
+                                        }
+                                        else
+                                        {
+                                            <p><i class="fa fa-times-circle"></i> <strong>Não partipa do grupo de convivência</strong></p>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Informações do paciente
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#patientInformationCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body collapse show" id="patientInformationCollapse">
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="list-group" id="list-tab" role="tablist">
-                                            <a class="list-group-item list-group-item-action active show" id="list-home-list" data-toggle="tab" href="#list-home" role="tab" aria-controls="list-home" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.CancerTypes)</a>
-                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="tab" href="#list-profile" role="tab" aria-controls="list-profile" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Medicines)</a>
-                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="tab" href="#list-messages" role="tab" aria-controls="list-messages" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Doctors)</a>
-                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="tab" href="#list-settings" role="tab" aria-controls="list-settings" aria-selected="true">@Html.DisplayNameFor(model => model.PatientInformation.TreatmentPlaces)</a>
+                                    @if (
+                                        Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
+                                        Model.PatientInformation.Doctors.Count() == 0 &&
+                                        Model.PatientInformation.Medicines.Count() == 0 &&
+                                        Model.PatientInformation.CancerTypes.Count() == 0)
+                                    {
+                                        <div class="col-lg-12">
+                                            <p>Nenhuma informação cadastrada!</p>
                                         </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                                                <ul class="list-group">
-                                                    @foreach (var item in Model.PatientInformation.CancerTypes)
-                                                    {
-                                                        <li class="list-group-item">@item</li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                                                <ul class="list-group">
-                                                    @foreach (var item in Model.PatientInformation.Medicines)
-                                                    {
-                                                        <li class="list-group-item">@item</li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-                                                <ul class="list-group">
-                                                    @foreach (var item in Model.PatientInformation.Doctors)
-                                                    {
-                                                        <li class="list-group-item">@item</li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                                                <ul class="list-group">
-                                                    @foreach (var item in Model.PatientInformation.TreatmentPlaces)
-                                                    {
-                                                        <li class="list-group-item">@item</li>
-                                                    }
-                                                </ul>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-4">
+                                            <div class="list-group" id="list-tab" role="tablist">
+                                                @{
+                                                    string className = "active show";
+                                                }
+                                                @if (Model.PatientInformation.CancerTypes.Count() > 0)
+                                                {
+                                                    <a class="list-group-item list-group-item-action @className" id="list-home-list" data-toggle="tab" href="#list-home" role="tab" aria-controls="list-home" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.CancerTypes)</a>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.Medicines.Count() > 0)
+                                                {
+                                                    <a class="list-group-item list-group-item-action @className" id="list-profile-list" data-toggle="tab" href="#list-profile" role="tab" aria-controls="list-profile" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Medicines)</a>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.Doctors.Count() > 0)
+                                                {
+                                                    <a class="list-group-item list-group-item-action @className" id="list-messages-list" data-toggle="tab" href="#list-messages" role="tab" aria-controls="list-messages" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Doctors)</a>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.TreatmentPlaces.Count() > 0)
+                                                {
+                                                    <a class="list-group-item list-group-item-action @className" id="list-settings-list" data-toggle="tab" href="#list-settings" role="tab" aria-controls="list-settings" aria-selected="true">@Html.DisplayNameFor(model => model.PatientInformation.TreatmentPlaces)</a>
+                                                    className = "";
+                                                }
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="col-8">
+                                            <div class="tab-content" id="nav-tabContent">
+                                                <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                                                    <ul class="list-group">
+                                                        @foreach (var item in Model.PatientInformation.CancerTypes)
+                                                        {
+                                                            <li class="list-group-item">@item</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                                <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                                                    <ul class="list-group">
+                                                        @foreach (var item in Model.PatientInformation.Medicines)
+                                                        {
+                                                            <li class="list-group-item">@item</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                                                    <ul class="list-group">
+                                                        @foreach (var item in Model.PatientInformation.Doctors)
+                                                        {
+                                                            <li class="list-group-item">@item</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                                                    <ul class="list-group">
+                                                        @foreach (var item in Model.PatientInformation.TreatmentPlaces)
+                                                        {
+                                                            <li class="list-group-item">@item</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Naturalidade
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#naturalityCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="naturalityCollapse">
+                                <div class="row">
 
+                                    @if (
+                                        string.IsNullOrEmpty(Model.Naturality.City) &&
+                                        string.IsNullOrEmpty(Model.Naturality.Country) &&
+                                        string.IsNullOrEmpty(Model.Naturality.State))
+                                    {
+                                        <div class="col-lg-12">
+                                            <p>Nenhuma informação cadastrada!</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-lg-4">
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.City))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.City)</strong></p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.State))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.State)</strong></p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.Country))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.Country)</strong></p>
+                                            }
+
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.City))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.City)</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.State))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.State)</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.Country))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.Country)</p>
+                                            }
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Telefones
+                                <div class="card-header-actions">
+                                    <a asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#phoneCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="phoneCollapse">
+                                <table id="phoneTable" class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Numero
+                                            </th>
+                                            <th>
+                                                Tipo
+                                            </th>
+                                            <th>
+                                                Observação
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Phones)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Number
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(m => m.Phones.FirstOrDefault(x => x == item).PhoneType)
+                                                </td>
+                                                <td>
+                                                    @item.ObservationNote
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditPhone" asp-controller="Phone" asp-route-id="@item.PhoneId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a asp-action="DeletePhone" asp-controller="Phone" asp-route-id="@item.PhoneId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Endereços
+                                <div class="card-header-actions">
+                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="addressCollapse">
+                                <table id="addressTable" class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Rua
+                                            </th>
+                                            <th>
+                                                Bairro
+                                            </th>
+                                            <th>
+                                                Cidade
+                                            </th>
+                                            <th>
+                                                Nº
+                                            </th>
+                                            <th>
+                                                Complemento
+                                            </th>
+                                            <th>
+                                                Observação
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Addresses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Street
+                                                </td>
+                                                <td>
+                                                    @item.Neighborhood
+                                                </td>
+                                                <td>
+                                                    @item.City
+                                                </td>
+                                                <td>
+                                                    @item.HouseNumber
+                                                </td>
+                                                <td>
+                                                    @item.Complement
+                                                </td>
+                                                <td>
+                                                    @item.ObservationAddress
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a asp-action="DeleteAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Membros Familiares
+                                <div class="card-header-actions">
+                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#familyMembersCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="familyMembersCollapse">
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        @* Todo: colocar o tipo de residência *@
+                                        <strong> Tipo de residência:</strong>
+                                    </div>
+                                    @if (Model.Family != null && Model.Family.FamilyMembers.Count() > 0)
+                                    {
+
+                                        <div class="col-lg-4">
+                                            <strong>Renda Familiar:</strong>  @Model.Family.FamilyIncome
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong> Renda Per Capita:</strong>  @Model.Family.PerCapitaIncome
+                                        </div>
+                                    }
+                                </div>
+
+                                <hr />
+
+                                <table id="familyMemberTable" class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Nome
+                                            </th>
+                                            <th>
+                                                Parentesco
+                                            </th>
+                                            <th>
+                                                Idade
+                                            </th>
+                                            <th>
+                                                Gênero
+                                            </th>
+                                            <th>
+                                                Renda
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Family != null)
+                                        {
+
+                                            foreach (var item in Model.Family.FamilyMembers)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.Name
+                                                    </td>
+                                                    <td>
+                                                        @item.Kinship
+                                                    </td>
+                                                    <td>
+                                                        @item.Age
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(x => x.Family.FamilyMembers.FirstOrDefault(y => y == item).Sex)
+                                                    </td>
+                                                    <td>
+                                                        @item.MonthlyIncome
+                                                    </td>
+                                                    <td>
+                                                        <a asp-action="EditFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a asp-action="DeleteFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Arquivos
+                                <div class="card-header-actions">
+                                    <a asp-action="AddAttachment" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#attachmentsCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="attachmentsCollapse">
+                                <table id="attachmentsTable" class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Categoria arquivo
+                                            </th>
+                                            <th>
+                                                Arquivo
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                Mostrar
+                                            </td>
+                                            <td>
+                                                Mostrar
+                                            </td>
+                                            <td>
+                                                <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- /.conainer-fluid -->
+    <!-- /.container-fluid -->
 </main>
 
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-patient-details", AreaLabeledId = "modal-action-patient-details-label", Size = ModalSize.Medium }' />
 
-
-
-
-
-
-
-
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/js/patient-details.js"></script>
+}

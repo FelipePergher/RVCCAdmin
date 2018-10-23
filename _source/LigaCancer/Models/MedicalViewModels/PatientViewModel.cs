@@ -36,7 +36,7 @@ namespace LigaCancer.Models.MedicalViewModels
         [Display(Name = "Grupo de Convivência")]
         public bool FamiliarityGroup { get; set; }
 
-        [Display(Name = "Sexo")]
+        [Display(Name = "Gênero")]
         public Sex Sex { get; set; }
 
         [Display(Name = "Estado Civil")]
