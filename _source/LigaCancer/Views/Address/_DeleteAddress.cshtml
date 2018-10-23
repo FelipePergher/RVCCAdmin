@@ -1,0 +1,24 @@
+﻿@model string
+
+<form asp-action="DeleteAddress"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Apagar Endereço" }' />
+
+    <div class="modal-body form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        Você quer apagar o endereço <strong>@Model</strong>?
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { SubmitButtonText = "Apagar" }' />
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

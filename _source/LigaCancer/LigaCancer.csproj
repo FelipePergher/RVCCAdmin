@@ -40,6 +40,15 @@
     <Content Update="Views\Patient\_AddAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Address\_AddAddress.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Address\_DeleteAddress.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Address\_EditAddress.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Phone\_DeletePhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

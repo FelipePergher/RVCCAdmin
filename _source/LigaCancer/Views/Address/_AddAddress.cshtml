@@ -1,0 +1,60 @@
+﻿@model LigaCancer.Models.MedicalViewModels.AddressViewModel
+@using LigaCancer.Code
+
+<form asp-action="AddAddress"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Endereço" }' />
+
+    <div class="modal-body form-horizontal" id="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>
+            Adicionar Endereço
+        </h4>
+
+        <div class="form-group">
+            <label asp-for="Street" class="control-label"></label>
+            <input asp-for="Street" class="form-control" />
+            <span asp-validation-for="Street" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Neighborhood" class="control-label"></label>
+            <input asp-for="Neighborhood" class="form-control" />
+            <span asp-validation-for="Neighborhood" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="City" class="control-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="HouseNumber" class="control-label"></label>
+            <input asp-for="HouseNumber" class="form-control" />
+            <span asp-validation-for="HouseNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Complement" class="control-label"></label>
+            <input asp-for="Complement" class="form-control" />
+            <span asp-validation-for="Complement" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ObservationAddress" class="control-label"></label>
+            <input asp-for="ObservationAddress" class="form-control" />
+            <span asp-validation-for="ObservationAddress" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

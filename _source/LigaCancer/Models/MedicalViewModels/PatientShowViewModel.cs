@@ -41,9 +41,9 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public ICollection<Phone> Phones { get; set; }
 
-        public List<AddressViewModel> Addresses { get; set; }
+        public ICollection<Address> Addresses { get; set; }
 
-        public FamilyViewModel Family { get; set; }
+        public Family Family { get; set; }
 
         public AttachmentsViewModel Attachments { get; set; }
     }

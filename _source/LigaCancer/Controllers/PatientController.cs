@@ -749,7 +749,7 @@ namespace LigaCancer.Controllers
             }
 
             Patient patient = await _patientService.FindByIdAsync(id, new string[] {
-                    "Naturality", "PatientInformation", "Profession", "Phones",
+                    "Naturality", "PatientInformation", "Profession", "Phones", "Family", "Family.FamilyMembers", "Addresses",
                     "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                     "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
                     "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
@@ -773,6 +773,14 @@ namespace LigaCancer.Controllers
                 RG = patient.RG,
                 Sex = patient.Sex,
                 Phones = patient.Phones,
+                Family = patient.Family,
+                Addresses = patient.Addresses,
+                Naturality = new NaturalityViewModel
+                {
+                    City = patient.Naturality.City,
+                    Country = patient.Naturality.Country,
+                    State = patient.Naturality.State
+                },
                 PatientInformation = new PatientInformationViewModel
                 {
                     CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
@@ -814,11 +822,6 @@ namespace LigaCancer.Controllers
                 return Json(true);
             }
 
-        }
-
-        public IActionResult AddAddress()
-        {
-            return PartialView("_AddAddress");
         }
 
         public IActionResult AddfamilyMember()

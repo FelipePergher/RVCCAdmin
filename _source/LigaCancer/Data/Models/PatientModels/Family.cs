@@ -6,11 +6,6 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class Family : RegisterData
     {
-        public Family()
-        {
-            FamilyMembers = new HashSet<FamilyMembers>();
-        }
-
         [Key]
         public int FamilyId { get; set; }
 

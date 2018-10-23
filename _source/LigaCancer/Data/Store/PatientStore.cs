@@ -178,6 +178,30 @@ namespace LigaCancer.Data.Store
             return result;
         }
 
+        public async Task<TaskResult> AddAddress(Address address, string patientId)
+        {
+            TaskResult result = new TaskResult();
+
+            try
+            {
+                Patient patient = await FindByIdAsync(patientId);
+                patient.Addresses.Add(address);
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                });
+
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

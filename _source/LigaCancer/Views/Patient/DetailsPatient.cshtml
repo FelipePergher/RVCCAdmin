@@ -34,55 +34,38 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse show" id="patientCollapse">
-                                <div>
-                                    <dl class="dl-horizontal">
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.Name)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.Name)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.RG)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.RG)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.CPF)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.CPF)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.Sex)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.Sex)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.CivilState)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.CivilState)
-                                        </dd>
-                                        <dt>
-                                            @Html.DisplayNameFor(model => model.DateOfBirth)
-                                        </dt>
-                                        <dd>
-                                            @Html.DisplayFor(model => model.DateOfBirth)
-                                        </dd>
+                            <div class="card-body collapse" id="patientCollapse">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p><strong>@Html.DisplayNameFor(model => model.Name)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.RG)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.CPF)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.Sex)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.CivilState)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.DateOfBirth)</strong></p>
+                                        <p><strong>@Html.DisplayNameFor(model => model.Profession)</strong></p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p>@Html.DisplayFor(model => model.Name)</p>
+                                        <p>@Html.DisplayFor(model => model.RG)</p>
+                                        <p>@Html.DisplayFor(model => model.CPF)</p>
+                                        <p>@Html.DisplayFor(model => model.Sex)</p>
+                                        <p>@Html.DisplayFor(model => model.CivilState)</p>
+                                        <p>@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                                        <p>@Html.DisplayFor(model => model.Profession)</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         @if (Model.FamiliarityGroup)
                                         {
-                                            <dt>Partipa do grupo de convivência</dt>
+                                            <p> <i class="fa fa-check-circle"></i> <strong>Partipa do grupo de convivência</strong></p>
                                         }
                                         else
                                         {
-                                            <dt>Não partipa do grupo de convivência</dt>
+                                            <p><i class="fa fa-times-circle"></i> <strong>Não partipa do grupo de convivência</strong></p>
                                         }
-                                    </dl>
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -98,13 +81,13 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse show" id="patientInformationCollapse">
+                            <div class="card-body collapse" id="patientInformationCollapse">
                                 <div class="row">
                                     @if (
-                              Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
-                              Model.PatientInformation.Doctors.Count() == 0 &&
-                              Model.PatientInformation.Medicines.Count() == 0 &&
-                              Model.PatientInformation.CancerTypes.Count() == 0)
+                                    Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
+                                    Model.PatientInformation.Doctors.Count() == 0 &&
+                                    Model.PatientInformation.Medicines.Count() == 0 &&
+                                    Model.PatientInformation.CancerTypes.Count() == 0)
                                     {
                                         <div class="col-lg-12">
                                             <p>Nenhuma informação cadastrada.</p>
@@ -182,10 +165,67 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="row">
                     <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Naturalidade
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#naturalityCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse" id="naturalityCollapse">
+                                <div class="row">
+
+                                    @if (
+                            string.IsNullOrEmpty(Model.Naturality.City) &&
+                            string.IsNullOrEmpty(Model.Naturality.Country) &&
+                            string.IsNullOrEmpty(Model.Naturality.State))
+                                    {
+                                        <div class="col-lg-12">
+                                            <p>Nenhuma informação cadastrada.</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-lg-4">
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.City))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.City)</strong></p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.State))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.State)</strong></p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.Country))
+                                            {
+                                                <p><strong>@Html.DisplayNameFor(model => model.Naturality.Country)</strong></p>
+                                            }
+
+                                        </div>
+                                        <div class="col-lg-8">
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.City))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.City)</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.State))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.State)</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Naturality.Country))
+                                            {
+                                                <p>@Html.DisplayFor(model => model.Naturality.Country)</p>
+                                            }
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Telefones
@@ -198,7 +238,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse show" id="phoneCollapse">
+                            <div class="card-body collapse" id="phoneCollapse">
                                 <table class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
@@ -246,12 +286,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Endereços
                                 <div class="card-header-actions">
-                                    <a asp-action="AddAddress" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true">
@@ -259,7 +299,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-body collapse show" id="addressCollapse">
+                            <div class="card-body collapse" id="addressCollapse">
                                 <table class="table table-bordered table-striped table-condensed">
                                     <thead>
                                         <tr>
@@ -287,34 +327,37 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                aa
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        @foreach (var item in Model.Addresses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Street
+                                                </td>
+                                                <td>
+                                                    @item.Neighborhood
+                                                </td>
+                                                <td>
+                                                    @item.City
+                                                </td>
+                                                <td>
+                                                    @item.HouseNumber
+                                                </td>
+                                                <td>
+                                                    @item.Complement
+                                                </td>
+                                                <td>
+                                                    @item.ObservationAddress
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-warning">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a asp-action="DeleteAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
 
@@ -322,9 +365,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
@@ -363,26 +403,82 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if (Model.Family != null)
+                                        {
+
+                                            foreach (var item in Model.Family.FamilyMembers)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        aa
+                                                    </td>
+                                                    <td>
+                                                        Mostrar
+                                                    </td>
+                                                    <td>
+                                                        Mostraraa
+                                                    </td>
+                                                    <td>
+                                                        Mostrar
+                                                    </td>
+                                                    <td>
+                                                        Mostrar
+                                                    </td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-align-justify"></i> Arquivos
+                                <div class="card-header-actions">
+                                    <a asp-action="AddAttachment" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#attachmentsCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="attachmentsCollapse">
+                                <table class="table table-bordered table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Categoria arquivo
+                                            </th>
+                                            <th>
+                                                Arquivo
+                                            </th>
+                                            <th>
+                                                Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <tr>
                                             <td>
-                                                aa
-                                            </td>
-                                            <td>
                                                 Mostrar
                                             </td>
                                             <td>
                                                 Mostrar
                                             </td>
                                             <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
                                                 <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
                                                     <i class="fa fa-times"></i>
                                                 </a>
@@ -394,7 +490,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
