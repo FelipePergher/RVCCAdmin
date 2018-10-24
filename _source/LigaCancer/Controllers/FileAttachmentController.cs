@@ -58,10 +58,8 @@ namespace LigaCancer.Controllers
                 Patient patient = await _patientService.FindByIdAsync(model.PatientId);
                 FileAttachment fileAttachment = new FileAttachment
                 {
-                    //todo salvar no bd com um guid 
                     ArchiveCategorie = model.FileCategory,
                     FileName = $"{model.FileName}{Path.GetExtension(model.File.FileName)}",
-                    //FileName = $"{Guid.NewGuid()}.{System.IO.Path.GetExtension(model.File.FileName)}",
                     UserCreated = user
                 };
 
@@ -99,10 +97,9 @@ namespace LigaCancer.Controllers
                 }
                 ModelState.AddErrors(result);
             }
-            //todo ver como aparecer success e tru de arquivos
+            //todo ver como aparecer success e error de arquivos
             return PartialView("_AddFileAttachment", model);
         }
-
 
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
