@@ -80,7 +80,6 @@ namespace LigaCancer.Data
             builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<ActivePatient>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Address>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Attachments>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<CancerType>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Family>().HasQueryFilter(p => !p.IsDeleted);
@@ -112,7 +111,7 @@ namespace LigaCancer.Data
 
         public DbSet<Address> Addresses { get; set; }
 
-        public DbSet<Attachments> Attachments { get; set; }
+        public DbSet<FileAttachment> FileAttachments { get; set; }
 
         public DbSet<CancerType> CancerTypes { get; set; }
 
@@ -121,8 +120,6 @@ namespace LigaCancer.Data
         public DbSet<Family> Families { get; set; }
 
         public DbSet<FamilyMember> FamilyMembers { get; set; }
-
-        public DbSet<FileAttachment> FileAttachments { get; set; }
 
         public DbSet<Medicine> Medicines { get; set; }
 

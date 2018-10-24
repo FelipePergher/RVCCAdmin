@@ -3,14 +3,16 @@ using System;
 using LigaCancer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181024015754_ChangeAttachment")]
+    partial class ChangeAttachment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,6 +143,36 @@ namespace LigaCancer.Migrations
                     b.HasIndex("UserCreatedId");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Attachment", b =>
+                {
+                    b.Property<int>("AttachmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DeletedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedDate");
+
+                    b.Property<string>("LastUserUpdateId");
+
+                    b.Property<int?>("PatientId");
+
+                    b.Property<DateTime>("RegisterDate");
+
+                    b.Property<string>("UserCreatedId");
+
+                    b.HasKey("AttachmentId");
+
+                    b.HasIndex("LastUserUpdateId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("UserCreatedId");
+
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
@@ -282,7 +314,11 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FileAttachmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ArchiveCategorie");
+                    b.Property<int?>("AttachmentId");
+
+                    b.Property<int?>("AttachmentId1");
+
+                    b.Property<int?>("AttachmentId2");
 
                     b.Property<DateTime>("DeletedDate");
 
@@ -296,17 +332,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("LastUserUpdateId");
 
-                    b.Property<int?>("PatientId");
-
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<string>("UserCreatedId");
 
                     b.HasKey("FileAttachmentId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasIndex("AttachmentId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("AttachmentId1");
+
+                    b.HasIndex("AttachmentId2");
+
+                    b.HasIndex("LastUserUpdateId");
 
                     b.HasIndex("UserCreatedId");
 
@@ -831,6 +869,21 @@ namespace LigaCancer.Migrations
                         .HasForeignKey("UserCreatedId");
                 });
 
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Attachment", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
+                        .WithMany()
+                        .HasForeignKey("LastUserUpdateId");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
+                        .WithMany("Attachments")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+                });
+
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
@@ -881,13 +934,21 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
                 {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachment")
+                        .WithMany("MedicalDocuments")
+                        .HasForeignKey("AttachmentId");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachment")
+                        .WithMany("OtherDocuments")
+                        .HasForeignKey("AttachmentId1");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachment")
+                        .WithMany("PersonalDocuments")
+                        .HasForeignKey("AttachmentId2");
+
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
                         .WithMany()
                         .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
-                        .WithMany("FileAttachments")
-                        .HasForeignKey("PatientId");
 
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()

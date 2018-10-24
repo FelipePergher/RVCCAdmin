@@ -468,7 +468,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Arquivos
                                 <div class="card-header-actions">
-                                    <a asp-action="AddAttachment" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddFileAttachment" asp-controller="FileAttachment" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#attachmentsCollapse" aria-expanded="true">
@@ -492,19 +492,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                Mostrar
-                                            </td>
-                                            <td>
-                                                <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        @foreach (var item in Model.FileAttachments)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.ArchiveCategorie
+                                                </td>
+                                                <td>
+                                                    @item.FileName
+                                                </td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
 

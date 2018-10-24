@@ -15,7 +15,7 @@ namespace LigaCancer.Data.Models.PatientModels
         {
             Phones = new HashSet<Phone>();
             Addresses = new HashSet<Address>();
-            Attachments = new HashSet<Attachments>();
+            FileAttachments = new HashSet<FileAttachment>();
             PatientInformation = new PatientInformation();
         }
 
@@ -51,7 +51,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public ICollection<Address> Addresses { get; set; }
 
-        public ICollection<Attachments> Attachments { get; set; }
+        public ICollection<FileAttachment> FileAttachments { get; set; }
 
     }
 }

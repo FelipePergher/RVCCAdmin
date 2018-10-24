@@ -749,7 +749,7 @@ namespace LigaCancer.Controllers
             }
 
             Patient patient = await _patientService.FindByIdAsync(id, new string[] {
-                    "Naturality", "PatientInformation", "Profession", "Phones", "Family", "Family.FamilyMembers", "Addresses",
+                    "Naturality", "PatientInformation", "Profession", "Phones", "Family", "Family.FamilyMembers", "Addresses", "FileAttachments",
                     "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                     "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
                     "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
@@ -760,7 +760,7 @@ namespace LigaCancer.Controllers
             {
                 return NotFound();
             }
-
+            
             PatientShowViewModel patientViewModel = new PatientShowViewModel
             {
                 PatientId = patient.PatientId,
@@ -781,6 +781,7 @@ namespace LigaCancer.Controllers
                     Country = patient.Naturality.Country,
                     State = patient.Naturality.State
                 },
+                FileAttachments = patient.FileAttachments,
                 PatientInformation = new PatientInformationViewModel
                 {
                     CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
