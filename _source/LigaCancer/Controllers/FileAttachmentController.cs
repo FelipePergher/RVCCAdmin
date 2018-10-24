@@ -14,21 +14,29 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LigaCancer.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class FileAttachmentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<FileAttachment> _fileAttachmentService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public FileAttachmentController(IDataStore<FileAttachment> fileAttachmentService, IDataStore<Patient> patientService, UserManager<ApplicationUser> userManager)
+        public FileAttachmentController(IDataStore<FileAttachment> fileAttachmentService,
+            IDataStore<Patient> patientService,
+            UserManager<ApplicationUser> userManager,
+            IHostingEnvironment hostingEnvironment
+            )
         {
             _fileAttachmentService = fileAttachmentService;
             _userManager = userManager;
             _patientService = patientService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult AddFileAttachment(string id)
@@ -47,14 +55,42 @@ namespace LigaCancer.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                Patient patient = await _patientService.FindByIdAsync(model.PatientId);
                 FileAttachment fileAttachment = new FileAttachment
                 {
                     //todo salvar no bd com um guid 
                     ArchiveCategorie = model.FileCategory,
-                    FileName = $"{model.FileName}.{System.IO.Path.GetExtension(model.File.FileName)}",
+                    FileName = $"{model.FileName}{Path.GetExtension(model.File.FileName)}",
                     //FileName = $"{Guid.NewGuid()}.{System.IO.Path.GetExtension(model.File.FileName)}",
                     UserCreated = user
                 };
+
+                if (model.File != null && model.File.Length > 0)
+                {
+                    if (patient != null)
+                    {
+                        string path = $"uploads\\files\\{patient.FirstName}-{patient.Surname}";
+                        var uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
+                        try
+                        {
+                            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                            string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(model.File.FileName)}";
+                            using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+                            {
+                                await model.File.CopyToAsync(fileStream);
+                            }
+                            var imageUrl = Path.Combine(path + "\\" + fileName);
+                            fileAttachment.FilePath = imageUrl;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            return StatusCode(500, e.Message);
+                        }
+
+                    }
+                }
 
                 TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, model.PatientId);
                 if (result.Succeeded)

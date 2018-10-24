@@ -499,10 +499,10 @@
                                                     @item.ArchiveCategorie
                                                 </td>
                                                 <td>
-                                                    @item.FileName
+                                                    <a class="fa fa-file" href="~/@item.FilePath" download="@item.FileName"> @item.FileName</a>
                                                 </td>
                                                 <td>
-                                                    <a data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                    <a asp-action="DeleteFileAttachment" asp-controller="FileAttachment" asp-route-id="@item.FileAttachmentId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
                                                         <i class="fa fa-times"></i>
                                                     </a>
                                                 </td>

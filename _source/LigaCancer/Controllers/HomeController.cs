@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LigaCancer.Controllers
 {
-//    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()

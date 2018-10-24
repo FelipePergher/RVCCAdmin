@@ -77,9 +77,6 @@ namespace LigaCancer.Controllers
         }
 
       
-        // POST: /Account/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

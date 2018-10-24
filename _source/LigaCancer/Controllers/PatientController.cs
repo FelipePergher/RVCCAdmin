@@ -18,7 +18,7 @@ using LigaCancer.Data.Models.ManyToManyModels;
 
 namespace LigaCancer.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class PatientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
