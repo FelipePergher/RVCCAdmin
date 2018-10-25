@@ -1,7 +1,7 @@
 ﻿@model LigaCancer.Models.MedicalViewModels.FileAttachmentViewModel
 @using LigaCancer.Code
 
-<form asp-action="AddFileAttachment" method="post" enctype="multipart/form-data">
+<form id="form" asp-action="AddFileAttachment" method="post" enctype="multipart/form-data">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Arquivo" }' />
 
@@ -33,7 +33,3 @@
     <partial name="_ModalFooter" model='new ModalFooter { }' />
 
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
