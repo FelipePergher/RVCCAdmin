@@ -45,6 +45,6 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public Family Family { get; set; }
 
-        public AttachmentsViewModel Attachments { get; set; }
+        public IEnumerable<FileAttachment> FileAttachments { get; set; }
     }
 }

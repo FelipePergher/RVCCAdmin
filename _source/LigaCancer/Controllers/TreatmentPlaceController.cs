@@ -13,9 +13,11 @@ using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LigaCancer.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TreatmentPlaceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

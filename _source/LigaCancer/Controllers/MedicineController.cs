@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LigaCancer.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class MedicineController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

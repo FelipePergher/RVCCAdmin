@@ -234,6 +234,31 @@ namespace LigaCancer.Data.Store
             return result;
         }
 
+        public async Task<TaskResult> AddFileAttachment(FileAttachment fileAttachment, string patientId)
+        {
+            TaskResult result = new TaskResult();
+
+            try
+            {
+                Patient patient = await FindByIdAsync(patientId);
+                patient.FileAttachments.Add(fileAttachment);
+
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                });
+
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

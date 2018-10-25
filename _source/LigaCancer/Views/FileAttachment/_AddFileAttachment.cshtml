@@ -1,0 +1,35 @@
+﻿@model LigaCancer.Models.MedicalViewModels.FileAttachmentViewModel
+@using LigaCancer.Code
+
+<form id="formAddFile" asp-action="AddFileAttachment" method="post" enctype="multipart/form-data">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Arquivo" }' />
+
+    <div class="modal-body form-horizontal" id="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>
+            Adicionar Arquivo
+        </h4>
+
+        <div class="form-group">
+            <label asp-for="FileName" class="control-label"></label>
+            <input asp-for="FileName" class="form-control" />
+            <span asp-validation-for="FileName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FileCategory" class="control-label"></label>
+            <select asp-for="FileCategory" asp-items="Html.GetEnumSelectList<Globals.ArchiveCategorie>()" class="form-control"></select>
+            <span asp-validation-for="FileCategory" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="File" class="control-label"></label>
+            <input asp-for="File" class="form-control" />
+            <span asp-validation-for="File" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
+</form>

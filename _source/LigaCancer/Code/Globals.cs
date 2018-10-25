@@ -40,5 +40,15 @@ namespace LigaCancer.Code
             [Display(Name = "Celular")]
             cellphone
         }
+
+        public enum ArchiveCategorie
+        {
+            [Display(Name = "Pessoal")]
+            Personal,
+            [Display(Name = "Médico")]
+            Medical,
+            [Display(Name = "Outros")]
+            Other
+        }
     }
 }
