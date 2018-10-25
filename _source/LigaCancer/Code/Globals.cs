@@ -50,5 +50,17 @@ namespace LigaCancer.Code
             [Display(Name = "Outros")]
             Other
         }
+
+        public enum ResidenceType
+        {
+            [Display(Name = "Própria")]
+            Owner,
+            [Display(Name = "Cedida")]
+            ceded,
+            [Display(Name = "Alugada")]
+            leased,
+            [Display(Name = "Outros")]
+            Other
+        }
     }
 }

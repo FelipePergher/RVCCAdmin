@@ -70,6 +70,19 @@ $("#modal-action-patient-details").on("show.bs.modal", function (e) {
             theme: "bootstrap"
         });
 
+        $("#ResidenceType").select2({
+            theme: "bootstrap",
+            placeholder: "Selecione o tipo de residência",
+            allowClear: true
+        }).on('select2:close', function (e) {
+            let selected = $("#ResidenceType").val();
+            if (selected !== "") {
+                $("#monthlyResidence").show();
+            } else {
+                $("#monthlyResidence").hide();
+            }
+        });
+
         $("#formAddFile").submit(function (e) {
             e.preventDefault();
             let form = $(this);

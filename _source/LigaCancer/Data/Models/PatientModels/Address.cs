@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LigaCancer.Code;
+using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -18,5 +19,9 @@ namespace LigaCancer.Data.Models.PatientModels
         public string Complement { get; set; }
 
         public string ObservationAddress { get; set; }
+
+        public Globals.ResidenceType? ResidenceType { get; set; }
+
+        public double MonthlyAmmountResidence { get; set; }
     }
 }

@@ -57,7 +57,9 @@ namespace LigaCancer.Controllers
                         HouseNumber = model.HouseNumber,
                         Neighborhood = model.Neighborhood,
                         ObservationAddress = model.ObservationAddress,
-                        Street = model.Street
+                        Street = model.Street,
+                        ResidenceType = model.ResidenceType,
+                        MonthlyAmmountResidence = model.MonthlyAmmountResidence
                     }, model.PatientId);
 
                 if (result.Succeeded)
@@ -87,7 +89,9 @@ namespace LigaCancer.Controllers
                         HouseNumber = address.HouseNumber,
                         Neighborhood = address.Neighborhood,
                         ObservationAddress = address.ObservationAddress,
-                        Street = address.Street
+                        Street = address.Street,
+                        ResidenceType = address.ResidenceType,
+                        MonthlyAmmountResidence = address.MonthlyAmmountResidence
                     };
                 }
             }
@@ -109,6 +113,8 @@ namespace LigaCancer.Controllers
                 address.HouseNumber = model.HouseNumber;
                 address.Neighborhood = model.Neighborhood;
                 address.ObservationAddress = model.ObservationAddress;
+                address.ResidenceType = model.ResidenceType;
+                address.MonthlyAmmountResidence = model.MonthlyAmmountResidence;
                 address.Street = model.Street;
                 address.LastUpdatedDate = DateTime.Now;
                 address.LastUserUpdate = user;

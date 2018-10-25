@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace LigaCancer.Models.MedicalViewModels
     {
         public string PatientId { get; set; }
 
-        [Display(Name = "Rua")]
+        [Display(Name = "Rua"), Required(ErrorMessage = "Este campo é Obrigatório!")]
         public string Street { get; set; }
 
         [Display(Name = "Bairro")]
@@ -27,5 +29,11 @@ namespace LigaCancer.Models.MedicalViewModels
 
         [Display(Name = "Observação")]
         public string ObservationAddress { get; set; }
+
+        [Display(Name = "Tipo de Residência")]
+        public Globals.ResidenceType? ResidenceType { get; set; }
+
+        [Display(Name = "Valor Mensal Residência")]
+        public double MonthlyAmmountResidence { get; set; }
     }
 }
