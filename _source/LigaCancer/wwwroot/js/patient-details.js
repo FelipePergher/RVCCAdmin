@@ -70,6 +70,45 @@ $("#modal-action-patient-details").on("show.bs.modal", function (e) {
             theme: "bootstrap"
         });
 
+        $("#formAddFile").submit(function (e) {
+            e.preventDefault();
+            let form = $(this);
+            
+            if (form.valid()) {
+                var formData = new FormData();
+                formData.append("FileCategory", $("#FileCategory").val());
+                formData.append("File", document.getElementById("File").files[0]);
+                formData.append("__RequestVerificationToken", $("input[name=__RequestVerificationToken]").val());
+                formData.append("FileName", $("#FileName").val());
+                formData.append("PatientId", $("#PatientId").val());
+
+                $("#submitSpinner").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: form.attr("action"),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $("#submitSpinner").hide();
+                        if (response) {
+                            location.reload();
+                        } else {
+                            swal("Oops...", "Algo deu errado!\n", "Erro");
+                        }
+                    },
+                    error: function (error) {
+                        $("#submitSpinner").hide();
+                        swal("Oops...", "Algo deu errado!\nO servidor respondeu com:\n\n'" + error.statusText + "'", "Erro");
+                    },
+                    done: function () {
+                    }
+                });
+
+            }
+        });
+
     });
 });
 

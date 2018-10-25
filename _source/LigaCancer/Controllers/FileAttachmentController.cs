@@ -93,12 +93,12 @@ namespace LigaCancer.Controllers
                 TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, model.PatientId);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("DetailsPatient", "Patient", new { id = model.PatientId });
+                    return StatusCode(200, true);
                 }
                 ModelState.AddErrors(result);
+                return StatusCode(500, result.Errors.First().Description);
             }
-            //todo ver como aparecer success e error de arquivos
-            return PartialView("_AddFileAttachment", model);
+            return StatusCode(500, "Invalid");
         }
 
         public async Task<IActionResult> DeleteFileAttachment(string id)
