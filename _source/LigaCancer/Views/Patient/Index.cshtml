@@ -96,13 +96,13 @@
                                                 </td>
                                                 <td>
                                                     <a asp-action="DetailsPatient" asp-route-id="@item.PatientId" class="btn btn-info">
-                                                        Mostrar
+                                                        Detalhes
                                                     </a>
-                                                    <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-warning">
+                                                    <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-secondary">
                                                         Editar
                                                     </a>
-                                                    <a asp-action="DeletePatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
-                                                        Deletar
+                                                    <a asp-action="DisablePatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
+                                                        Desativar
                                                     </a>
                                                 </td>
                                             </tr>

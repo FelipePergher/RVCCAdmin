@@ -64,7 +64,7 @@
     <Content Update="Views\FileAttachment\_DeleteFileAttachment.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\_DeletePatient.cshtml">
+    <Content Update="Views\Patient\_DisablePatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Patient\_EditPatient.cshtml">

@@ -90,7 +90,7 @@
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="EditCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-warning">
+                                                    <a asp-action="EditCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-secondary">
                                                         Editar
                                                     </a>
                                                     @if (item.PatientInformationCancerTypes.Count == 0)

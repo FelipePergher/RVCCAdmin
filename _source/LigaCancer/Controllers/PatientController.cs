@@ -114,6 +114,7 @@ namespace LigaCancer.Controllers
                     Text = x.City,
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList(),
+                DateOfBirth = DateTime.Now
             };
 
             return PartialView("_AddPatient", patientViewModel);
@@ -701,33 +702,34 @@ namespace LigaCancer.Controllers
             return PartialView("_EditPatient", model);
         }
 
-        public async Task<IActionResult> DeletePatient(string id)
+        public IActionResult DisablePatient(string id)
         {
-            string name = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                Patient patient = await _patientService.FindByIdAsync(id);
-                if (patient != null)
-                {
-                    name = patient.FirstName + " " + patient.Surname;
-                }
-            }
-
-            return PartialView("_DeletePatient", name);
+            DisablePatientViewModel disablePatientViewModel = new DisablePatientViewModel {
+                DateTime = DateTime.Now
+            };
+            return PartialView("_DisablePatient", disablePatientViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePatient(string id, IFormCollection form)
+        public async Task<IActionResult> DisablePatient(string id, DisablePatientViewModel model)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Patient patient = await _patientService.FindByIdAsync(id);
+                Patient patient = await _patientService.FindByIdAsync(id, new string[] { "PatientInformation", "PatientInformation.ActivePatient" });
                 if (patient != null)
                 {
-                    patient.RG = DateTime.Now + "-" + patient.RG;
-                    patient.CPF = DateTime.Now + "-" + patient.CPF;
+                    if(model.DisablePatientType == Globals.DisablePatientType.death)
+                    {
+                        patient.PatientInformation.ActivePatient.Death = true;
+                        patient.PatientInformation.ActivePatient.DeathDate = model.DateTime;
+                    }
+                    else if (model.DisablePatientType == Globals.DisablePatientType.discharge)
+                    {
+                        patient.PatientInformation.ActivePatient.Discharge = true;
+                        patient.PatientInformation.ActivePatient.DischargeDate = model.DateTime;
+                    }
+
                     TaskResult result = await _patientService.DeleteAsync(patient);
 
                     if (result.Succeeded)

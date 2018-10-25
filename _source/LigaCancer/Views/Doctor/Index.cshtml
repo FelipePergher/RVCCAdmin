@@ -96,7 +96,7 @@
                                                     @Html.DisplayFor(modelItem => item.CRM)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-warning">
+                                                    <a asp-action="EditDoctor" asp-route-id="@item.DoctorId" data-toggle="modal" data-target="#modal-action-doctor" class="btn btn-secondary">
                                                         Editar
                                                     </a>
                                                     @if (item.PatientInformationDoctors.Count == 0)

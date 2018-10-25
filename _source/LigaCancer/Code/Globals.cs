@@ -62,5 +62,13 @@ namespace LigaCancer.Code
             [Display(Name = "Outros")]
             Other
         }
+
+        public enum DisablePatientType
+        {
+            [Display(Name = "Alta")]
+            discharge,
+            [Display(Name = "Óbito")]
+            death
+        }
     }
 }

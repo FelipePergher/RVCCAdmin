@@ -52,7 +52,6 @@ namespace LigaCancer.Data.Store
                 Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
                 patient.IsDeleted = true;
                 patient.DeletedDate = DateTime.Now;
-                patient.FirstName = DateTime.Now + "||" + patient.FirstName;
                 _context.Update(patient);
 
                 _context.SaveChanges();
