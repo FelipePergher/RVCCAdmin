@@ -67,7 +67,7 @@ namespace LigaCancer.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
                     return View(model);
                 }
             }

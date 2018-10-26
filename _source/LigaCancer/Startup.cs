@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Code;
 
 namespace LigaCancer
 {
@@ -96,7 +97,7 @@ namespace LigaCancer
 
     public static class SeedData
     {
-        private static readonly string[] Roles = new string[] { "Admin", "User" };
+        private static readonly string[] Roles = new string[] { Globals.Roles.Admin.ToString(), Globals.Roles.User.ToString() };
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
@@ -141,21 +142,21 @@ namespace LigaCancer
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
+                if (!userManager.GetUsersInRoleAsync(Globals.Roles.Admin.ToString()).Result.Any())
                 {
                     ApplicationUser user = new ApplicationUser
                     {
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        UserName = "admin@admin.com",
-                        Email = "admin@admin.com",
+                        FirstName = "Felipe",
+                        LastName = "Pergher",
+                        UserName = "felipepergher_10@hotmail.com",
+                        Email = "felipepergher_10@hotmail.com",
                         RegisterDate = DateTime.Now,
                         CreatedBy = "System"
                     };
-                    IdentityResult result = await userManager.CreateAsync(user, "Admin123!");
+                    IdentityResult result = await userManager.CreateAsync(user, "password");
                     if (result.Succeeded)
                     {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Admin");
+                        IdentityRole applicationRole = await roleManager.FindByNameAsync(Globals.Roles.Admin.ToString());
                         if (applicationRole != null)
                         {
                             IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);

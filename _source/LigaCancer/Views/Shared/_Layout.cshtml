@@ -34,13 +34,13 @@
             <nav class="sidebar-nav">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">
+                        <a asp-action="Index" asp-controller="Home" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i> Home
                         </a>
                     </li>
                     <li class="nav-title">Pacientes</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/patient">
+                        <a asp-action="Index" asp-controller="Patient" class="nav-link">
                             <i class="nav-icon fa fa-child"></i> Pacientes
                         </a>
                     </li>
@@ -62,22 +62,22 @@
                     </li>*@
                     <li class="nav-title">Informações Médicas</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/medicine">
+                        <a asp-action="Index" asp-controller="Medicine" class="nav-link">
                             <i class="nav-icon fa fa-capsules"></i> Remédios
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cancertype">
+                        <a asp-action="Index" asp-controller="CancerType"class="nav-link">
                             <i class="nav-icon fa fa-notes-medical"></i> Tipos de Câncer
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/treatmentplace">
+                        <a asp-action="Index" asp-controller="TreatmentPlace"class="nav-link">
                             <i class="nav-icon fa fa-hospital-alt"></i> Locais de tratamento
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/doctor">
+                        <a asp-action="Index" asp-controller="Doctor" class="nav-link">
                             <i class="nav-icon fa fa-user-md"></i> Médicos
                         </a>
                     </li>
@@ -92,12 +92,14 @@
                             <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
                         </a>
                     </li> *@
-                    <li class="nav-title">Administrativo</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-users"></i> Usuários
-                        </a>
-                    </li>
+                    @if(User.IsInRole("Admin")){ 
+                        <li class="nav-title">Administrativo</li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="User" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i> Usuários
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
         </div>
