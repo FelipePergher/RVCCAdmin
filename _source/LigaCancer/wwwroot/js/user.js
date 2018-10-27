@@ -3,6 +3,19 @@
     }).on('hidden.bs.modal', function (e) {
         $(this).removeData('bs.modal');
     });
+
+    $("#userTable").DataTable({
+        paginate: false,
+        filter: false,
+        order: [[0, "asc"]],
+        columnDefs: [{
+            targets: 3,
+            orderable: false
+        }],
+        language: {
+            emptyTable: "Nenhuma informação cadastrada!"
+        }
+    });
 });
 
 $("#modal-action-user").on("show.bs.modal", function (e) {

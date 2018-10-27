@@ -85,10 +85,10 @@
                             <div class="card-body collapse show" id="patientInformationCollapse">
                                 <div class="row">
                                     @if (
-                                       Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
-                                       Model.PatientInformation.Doctors.Count() == 0 &&
-                                       Model.PatientInformation.Medicines.Count() == 0 &&
-                                       Model.PatientInformation.CancerTypes.Count() == 0)
+                                   Model.PatientInformation.TreatmentPlaces.Count() == 0 &&
+                                   Model.PatientInformation.Doctors.Count() == 0 &&
+                                   Model.PatientInformation.Medicines.Count() == 0 &&
+                                   Model.PatientInformation.CancerTypes.Count() == 0)
                                     {
                                         <div class="col-lg-12">
                                             <p>Nenhuma informação cadastrada!</p>
@@ -180,9 +180,9 @@
                                 <div class="row">
 
                                     @if (
-                                        string.IsNullOrEmpty(Model.Naturality.City) &&
-                                        string.IsNullOrEmpty(Model.Naturality.Country) &&
-                                        string.IsNullOrEmpty(Model.Naturality.State))
+                                   string.IsNullOrEmpty(Model.Naturality.City) &&
+                                   string.IsNullOrEmpty(Model.Naturality.Country) &&
+                                   string.IsNullOrEmpty(Model.Naturality.State))
                                     {
                                         <div class="col-lg-12">
                                             <p>Nenhuma informação cadastrada!</p>
@@ -538,6 +538,7 @@
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/js/patient-details.js"></script>
 }

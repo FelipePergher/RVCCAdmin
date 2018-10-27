@@ -71,6 +71,7 @@
       "destination": "wwwroot/lib/datatables",
       "files": [
         "css/jquery.dataTables.min.css",
+        "css/dataTables.bootstrap.min.css",
         "css/dataTables.bootstrap4.min.css",
         "js/jquery.dataTables.min.js",
         "js/dataTables.bootstrap4.min.js"

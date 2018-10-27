@@ -89,11 +89,6 @@ namespace LigaCancer.Controllers
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.ProfessionId.ToString()
-                }).ToList(),
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -116,6 +111,12 @@ namespace LigaCancer.Controllers
                 }).ToList(),
                 DateOfBirth = DateTime.Now
             };
+
+            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ProfessionId.ToString()
+            }).ToList());
 
             return PartialView("_AddPatient", patientViewModel);
         }
