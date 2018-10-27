@@ -16,7 +16,7 @@ function BuildDataTable() {
         },
         order: [[0, "asc"]],
         columns: [
-            //{ data: "name", width: "50%" },
+            { data: "name", width: "50%" },
             {
                 "render": function (data, type, row, meta) {
                     let link = $("#linkEdit");
