@@ -109,9 +109,6 @@
     <Content Update="Views\Doctor\_EditDoctor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\TreatmentPlace\_PaginationTreatmentPlace.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\User\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

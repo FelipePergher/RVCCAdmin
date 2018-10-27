@@ -40,8 +40,8 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed" id="userTable">
-                                    <thead class="text-center">
+                                <table class="table table-bordered table-striped table-condensed text-center" id="userTable">
+                                    <thead>
                                         <tr>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.FirstName)
@@ -57,7 +57,7 @@
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="text-center">
+                                    <tbody>
                                         @foreach (var item in Model)
                                         {
                                             <tr>

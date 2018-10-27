@@ -1,6 +1,8 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Requests;
+using LigaCancer.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>
+    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>, IDataTable<TreatmentPlace>
     {
         private ApplicationDbContext _context;
 
@@ -148,6 +150,22 @@ namespace LigaCancer.Data.Store
             }
 
             return query;
+        }
+
+        //IDataTable
+        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<TreatmentPlace> spec)
+        {
+            var data = await _context.Set<TreatmentPlace>()
+                            .IncludeExpressions(spec.Includes)
+                            .IncludeByNames(spec.IncludeStrings)
+                            .GetOptionResponseAsync(options);
+
+            return data;
+        }
+
+        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
+        {
+            return await _context.Set<TreatmentPlace>().GetOptionResponseAsync(options);
         }
 
         #region Custom Methods
