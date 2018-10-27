@@ -9,8 +9,6 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
-using LigaCancer.Data.Requests;
 using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
@@ -20,13 +18,11 @@ namespace LigaCancer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Doctor> _doctorService;
-        protected readonly ILogger<HomeController> _logger;
 
-        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
+        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager)
         {
             _doctorService = doctorService;
             _userManager = userManager;
-            _logger = logger;
         }
 
         public IActionResult Index()

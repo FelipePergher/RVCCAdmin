@@ -17,12 +17,10 @@ namespace LigaCancer.Controllers.Api
     public class DoctorApiController : Controller
     {
         private readonly IDataStore<Doctor> _doctorService;
-        protected readonly ILogger<HomeController> _logger;
 
-        public DoctorApiController(IDataStore<Doctor> doctorService, ILogger<HomeController> logger)
+        public DoctorApiController(IDataStore<Doctor> doctorService)
         {
             _doctorService = doctorService;
-            _logger = logger;
         }
 
         public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
@@ -32,9 +30,8 @@ namespace LigaCancer.Controllers.Api
                 BaseSpecification<Doctor> specs = new BaseSpecification<Doctor>(x => x.PatientInformationDoctors);
                 return Ok(await ((DoctorStore)_doctorService).GetOptionResponseWithSpec(options, specs));
             }
-            catch (Exception e)
+            catch
             {
-                _logger.LogError("Error Occurred While Running GetOptions @ HomeController : \n" + e.Message);
                 return BadRequest();
             }
         }

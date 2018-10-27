@@ -14,21 +14,21 @@ using Microsoft.Extensions.Logging;
 namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin")]
-    public class MedicineApiController : Controller
+    public class CancerTypeApiController : Controller
     {
-        private readonly IDataStore<Medicine> _medicineService;
+        private readonly IDataStore<CancerType> _cancerTypeService;
 
-        public MedicineApiController(IDataStore<Medicine> medicineService)
+        public CancerTypeApiController(IDataStore<CancerType> cancerTypeService)
         {
-            _medicineService = medicineService;
+            _cancerTypeService = cancerTypeService;
         }
 
         public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
         {
             try
             {
-                BaseSpecification<Medicine> specs = new BaseSpecification<Medicine>(x => x.PatientInformationMedicines);
-                return Ok(await ((MedicineStore)_medicineService).GetOptionResponseWithSpec(options, specs));
+                BaseSpecification<CancerType> specs = new BaseSpecification<CancerType>(x => x.PatientInformationCancerTypes);
+                return Ok(await ((CancerTypeStore)_cancerTypeService).GetOptionResponseWithSpec(options, specs));
             }
             catch
             {

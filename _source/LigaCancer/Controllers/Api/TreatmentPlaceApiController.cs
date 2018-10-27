@@ -17,12 +17,10 @@ namespace LigaCancer.Controllers.Api
     public class TreatmentPlaceApiController : Controller
     {
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
-        protected readonly ILogger<HomeController> _logger;
 
-        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService, ILogger<HomeController> logger)
+        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService)
         {
             _treatmentPlaceService = treatmentPlaceService;
-            _logger = logger;
         }
 
         public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
@@ -32,9 +30,8 @@ namespace LigaCancer.Controllers.Api
                 BaseSpecification<TreatmentPlace> specs = new BaseSpecification<TreatmentPlace>(x => x.PatientInformationTreatmentPlaces);
                 return Ok(await ((TreatmentPlaceStore)_treatmentPlaceService).GetOptionResponseWithSpec(options, specs));
             }
-            catch (Exception e)
+            catch
             {
-                _logger.LogError("Error Occurred While Running GetOptions @ HomeController : \n" + e.Message);
                 return BadRequest();
             }
         }

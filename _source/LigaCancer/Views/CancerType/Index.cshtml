@@ -1,8 +1,11 @@
-﻿@model PaginatedList<LigaCancer.Data.Models.PatientModels.CancerType>
-@using LigaCancer.Code
+﻿@using LigaCancer.Code
 @{
     ViewData["Title"] = "Tipos de Câncer";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
 <main class="main">
@@ -19,33 +22,6 @@
             <div class="animated fadeIn">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card card-default">
-                            <div class="card-header">
-                                Filtro
-                            </div>
-
-                            <form asp-action="Index" method="get">
-                                <div class="card-block ">
-                                    <div class="form-horizontal">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 form-control-label">Nome</label>
-                                            <div class="col-md-9">
-                                                <input class="form-control" name="searchNameString" value="@ViewData["CurrentSearchNameFilter"]" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card-footer ">
-                                    <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Resetar</button>
-                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle"></i> Enviar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-address-card-o"></i> Tipos de Câncer
@@ -54,64 +30,28 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <div class="btn-group">
-                                            <a asp-action="AddCancerType" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-primary">
+                                            <a asp-action="AddCancerType" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
                                                 <i class="fa fa-plus"></i> Adicionar Tipo de Câncer
                                             </a>
                                         </div>
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped table-condensed">
+                                <hr />
+
+                                <table class="table table-bordered table-striped table-condensed" id="cancerTypeTable">
                                     <thead>
                                         <tr>
                                             <th>
-                                                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-page="@Model.PageIndex">
-                                                    @if (ViewData["NameSortParm"].ToString() == "name_desc")
-                                                    {
-                                                        <span class="fa fa-sort-alpha-down"></span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="fa fa-sort-alpha-up"></span>
-                                                    }
-                                                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
-                                                </a>
+                                                Nome
                                             </th>
                                             <th>
                                                 Ações
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="EditCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-secondary">
-                                                        Editar
-                                                    </a>
-                                                    @if (item.PatientInformationCancerTypes.Count == 0)
-                                                    {
-                                                        <a asp-action="DeleteCancerType" asp-route-id="@item.CancerTypeId" data-toggle="modal" data-target="#modal-action-cancerType" class="btn btn-danger">
-                                                            Deletar
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a class="btn btn-danger disabled">
-                                                            Deletar
-                                                        </a>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
-
-                                <partial name="_PaginationCancerType" model="Model" />
 
                             </div>
                         </div>
@@ -127,10 +67,16 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-cancerType", AreaLabeledId = "modal-action-cancerType-label", Size = ModalSize.Medium }' />
+<a id="linkDelete" asp-action="DeleteCancerType" data-toggle="modal" data-target="#modal-action"></a>
+<a id="linkEdit" asp-action="EditCancerType" data-toggle="modal" data-target="#modal-action"></a>
+<a id="linkAjaxDT" asp-action="GetDTResponseAsync" asp-controller="CancerTypeApi" data-toggle="modal" data-target="#modal-action"></a>
+
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts
     {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/cancerType.js"></script>
 }

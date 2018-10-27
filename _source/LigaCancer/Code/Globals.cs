@@ -72,6 +72,13 @@ namespace LigaCancer.Code
             death
         }
 
+        public enum ModalSize
+        {
+            Small,
+            Large,
+            Medium
+        }
+
         public enum Roles
         {
             [Display(Name = "Administrador")]

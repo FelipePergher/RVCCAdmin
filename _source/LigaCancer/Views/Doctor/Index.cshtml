@@ -74,7 +74,7 @@
 <a id="linkEdit" asp-action="EditDoctor" data-toggle="modal" data-target="#modal-action"></a>
 <a id="linkAjaxDT" asp-action="GetDTResponseAsync" asp-controller="DoctorApi" data-toggle="modal" data-target="#modal-action"></a>
 
-<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = ModalSize.Medium }' />
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts
     {

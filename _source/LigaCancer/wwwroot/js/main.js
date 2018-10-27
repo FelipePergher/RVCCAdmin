@@ -30,7 +30,11 @@ function AjaxSuccess(data) {
         if (dataTable !== null) {
             dataTable.ajax.reload();
         }
-        swal("Sucesso...", "Registro salvo com sucesso", "success");
+        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+            if (dataTable === null) {
+                location.reload();
+            }
+        });
     }
     else {
         $("#modal-content").html(data);

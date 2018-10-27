@@ -7,7 +7,6 @@ function BuildDataTable() {
         pageLength: 10,
         language: language,
         order: [[0, "asc"]],
-        
         columnDefs: [
             { "orderable": false, "targets": [-1] },
             { "searchable": false, "targets": [-1] },
