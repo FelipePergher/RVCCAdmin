@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,7 +20,9 @@ namespace LigaCancer.Models.UserViewModels
         [Display(Name = "Sobrenome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string LastName { get; set; }
 
-        [EmailAddress(ErrorMessage = "Insira um email válido!"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [EmailAddress(ErrorMessage = "Insira um email válido!"), 
+            Required(ErrorMessage = "Este campo é obrigatório!"),
+            Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
         public string Email { get; set; }
 
         [Display(Name = "Senha"), DataType(DataType.Password), Required(ErrorMessage = "Este campo é obrigatório!")]

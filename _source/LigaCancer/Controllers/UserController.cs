@@ -232,5 +232,26 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
+        #region Custom Methods
+
+        public JsonResult IsEmailUsed(string Email, string UserId)
+        {
+            ApplicationUser user = _userManager.FindByEmailAsync(Email).Result;
+
+            if (user != null)
+            {
+                if(user.Id == UserId)
+                {
+                    return Json(true);
+                }
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
+
+        #endregion
     }
 }
