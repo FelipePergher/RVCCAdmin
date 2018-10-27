@@ -99,64 +99,82 @@
                                         <div class="col-4">
                                             <div class="list-group" id="list-tab" role="tablist">
                                                 @{
-                                                    string className = "active show";
+                                                    string className = "active";
                                                 }
                                                 @if (Model.PatientInformation.CancerTypes.Count() > 0)
                                                 {
-                                                    <a class="list-group-item list-group-item-action @className" id="list-home-list" data-toggle="tab" href="#list-home" role="tab" aria-controls="list-home" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.CancerTypes)</a>
+                                                    <a class="list-group-item list-group-item-action @className" id="linkListCancerType" data-toggle="tab" href="#listCancerType" role="tab" aria-controls="listCancerType" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.CancerTypes)</a>
                                                     className = "";
                                                 }
                                                 @if (Model.PatientInformation.Medicines.Count() > 0)
                                                 {
-                                                    <a class="list-group-item list-group-item-action @className" id="list-profile-list" data-toggle="tab" href="#list-profile" role="tab" aria-controls="list-profile" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Medicines)</a>
+                                                    <a class="list-group-item list-group-item-action @className" id="linkListMedicine" data-toggle="tab" href="#listMedicine" role="tab" aria-controls="listMedicine" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Medicines)</a>
                                                     className = "";
                                                 }
                                                 @if (Model.PatientInformation.Doctors.Count() > 0)
                                                 {
-                                                    <a class="list-group-item list-group-item-action @className" id="list-messages-list" data-toggle="tab" href="#list-messages" role="tab" aria-controls="list-messages" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Doctors)</a>
+                                                    <a class="list-group-item list-group-item-action @className" id="linkListDoctor" data-toggle="tab" href="#listDoctor" role="tab" aria-controls="listDoctor" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.Doctors)</a>
                                                     className = "";
                                                 }
                                                 @if (Model.PatientInformation.TreatmentPlaces.Count() > 0)
                                                 {
-                                                    <a class="list-group-item list-group-item-action @className" id="list-settings-list" data-toggle="tab" href="#list-settings" role="tab" aria-controls="list-settings" aria-selected="true">@Html.DisplayNameFor(model => model.PatientInformation.TreatmentPlaces)</a>
+                                                    <a class="list-group-item list-group-item-action @className" id="linkListTreatmentPlace" data-toggle="tab" href="#listTreatmentPlace" role="tab" aria-controls="listTreatmentPlace" aria-selected="false">@Html.DisplayNameFor(model => model.PatientInformation.TreatmentPlaces)</a>
                                                     className = "";
                                                 }
                                             </div>
                                         </div>
                                         <div class="col-8">
                                             <div class="tab-content" id="nav-tabContent">
-                                                <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                                                    <ul class="list-group">
-                                                        @foreach (var item in Model.PatientInformation.CancerTypes)
-                                                        {
-                                                            <li class="list-group-item">@item</li>
-                                                        }
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                                                    <ul class="list-group">
-                                                        @foreach (var item in Model.PatientInformation.Medicines)
-                                                        {
-                                                            <li class="list-group-item">@item</li>
-                                                        }
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-                                                    <ul class="list-group">
-                                                        @foreach (var item in Model.PatientInformation.Doctors)
-                                                        {
-                                                            <li class="list-group-item">@item</li>
-                                                        }
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                                                    <ul class="list-group">
-                                                        @foreach (var item in Model.PatientInformation.TreatmentPlaces)
-                                                        {
-                                                            <li class="list-group-item">@item</li>
-                                                        }
-                                                    </ul>
-                                                </div>
+                                                @{
+                                                    className = "active show";
+                                                }
+                                                @if (Model.PatientInformation.CancerTypes.Count() > 0)
+                                                {
+                                                    <div class="tab-pane fade @className" id="listCancerType" role="tabpanel" aria-labelledby="linkListCancerType">
+                                                        <ul class="list-group">
+                                                            @foreach (var item in Model.PatientInformation.CancerTypes)
+                                                            {
+                                                                <li class="list-group-item">@item</li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.Medicines.Count() > 0)
+                                                {
+                                                    <div class="tab-pane fade @className" id="listMedicine" role="tabpanel" aria-labelledby="list-profile-list">
+                                                        <ul class="list-group">
+                                                            @foreach (var item in Model.PatientInformation.Medicines)
+                                                            {
+                                                                <li class="list-group-item">@item</li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.Doctors.Count() > 0)
+                                                {
+                                                    <div class="tab-pane fade @className" id="listDoctor" role="tabpanel" aria-labelledby="list-messages-list">
+                                                        <ul class="list-group">
+                                                            @foreach (var item in Model.PatientInformation.Doctors)
+                                                            {
+                                                                <li class="list-group-item">@item</li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                    className = "";
+                                                }
+                                                @if (Model.PatientInformation.TreatmentPlaces.Count() > 0)
+                                                {
+                                                    <div class="tab-pane fade @className" id="listTreatmentPlace" role="tabpanel" aria-labelledby="list-settings-list">
+                                                        <ul class="list-group">
+                                                            @foreach (var item in Model.PatientInformation.TreatmentPlaces)
+                                                            {
+                                                                <li class="list-group-item">@item</li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                     }
