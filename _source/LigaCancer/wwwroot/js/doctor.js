@@ -9,7 +9,7 @@ function BuildDataTable() {
         serverSide: true,
         language: language,
         ajax: {
-            url: "/Doctor/GetDTResponseAsync",
+            url: $("#linkAjaxDT").attr("href"),
             type: "POST",
             error: function (ex) {
             }

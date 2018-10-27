@@ -150,20 +150,6 @@ namespace LigaCancer.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
-        {
-            try
-            {
-                var specs = new BaseSpecification<Doctor>(x => x.PatientInformationDoctors);
-                return Ok(await ((DoctorStore)_doctorService).GetOptionResponseWithSpec(options, specs));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError("Error Occurred While Running GetOptions @ HomeController : \n" + e.Message);
-                return BadRequest();
-            }
-        }
-
         #region Custom Methods
 
         public JsonResult IsCRMExist(string Crm, int DoctorId)
