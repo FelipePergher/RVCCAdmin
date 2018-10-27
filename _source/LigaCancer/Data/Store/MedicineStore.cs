@@ -1,6 +1,8 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Requests;
+using LigaCancer.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class MedicineStore : IDataStore<Medicine>
+    public class MedicineStore : IDataStore<Medicine>, IDataTable<Medicine>
     {
         private ApplicationDbContext _context;
 
@@ -51,12 +53,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 Medicine medicine = _context.Medicines.Include(x => x.PatientInformationMedicines).FirstOrDefault(b => b.MedicineId == model.MedicineId);
-                if (medicine.PatientInformationMedicines.Count >= 0)
+                if (medicine.PatientInformationMedicines.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
                         Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
+                        Description = "Não é possível apagar este remédio"
                     });
                     return Task.FromResult(result);
                 }
@@ -148,6 +150,22 @@ namespace LigaCancer.Data.Store
             }
 
             return query;
+        }
+
+        //IDataTable
+        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Medicine> spec)
+        {
+            var data = await _context.Set<Medicine>()
+                            .IncludeExpressions(spec.Includes)
+                            .IncludeByNames(spec.IncludeStrings)
+                            .GetOptionResponseAsync(options);
+
+            return data;
+        }
+
+        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
+        {
+            return await _context.Set<Medicine>().GetOptionResponseAsync(options);
         }
 
         #region Custom Methods

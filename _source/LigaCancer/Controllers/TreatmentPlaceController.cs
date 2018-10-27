@@ -27,42 +27,9 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentSearchCityFilter, string searchCityString, int? page)
+        public async Task<IActionResult> Index()
         {
-            IQueryable<TreatmentPlace> treatmentPlaces = _treatmentPlaceService.GetAllQueryable(new string[] { "PatientInformationTreatmentPlaces" });
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["CitySortParm"] = string.IsNullOrEmpty(sortOrder) ? "city_desc" : "";
-
-            if (searchCityString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchCityString = currentSearchCityFilter;
-            }
-
-            ViewData["CurrentSearchCityFilter"] = searchCityString;
-
-            if (!string.IsNullOrEmpty(searchCityString))
-            {
-                treatmentPlaces = treatmentPlaces.Where(s => s.City.Contains(searchCityString));
-            }
-
-            switch (sortOrder)
-            {
-                case "city_desc":
-                    treatmentPlaces = treatmentPlaces.OrderByDescending(s => s.City);
-                    break;
-                default:
-                    treatmentPlaces = treatmentPlaces.OrderBy(s => s.City);
-                    break;
-            }
-
-            int pageSize = 4;
-
-            PaginatedList<TreatmentPlace> paginateList = await PaginatedList<TreatmentPlace>.CreateAsync(treatmentPlaces.AsNoTracking(), page ?? 1, pageSize);
-            return View(paginateList);
+            return View();
         }
 
         public IActionResult AddTreatmentPlace()

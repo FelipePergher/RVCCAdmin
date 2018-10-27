@@ -51,12 +51,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 CancerType cancerType = _context.CancerTypes.Include(x => x.PatientInformationCancerTypes).FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
-                if (cancerType.PatientInformationCancerTypes.Count >= 0)
+                if (cancerType.PatientInformationCancerTypes.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
                         Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
+                        Description = "Não é possível apagar este tipo de cancêr"
                     });
                     return Task.FromResult(result);
                 }

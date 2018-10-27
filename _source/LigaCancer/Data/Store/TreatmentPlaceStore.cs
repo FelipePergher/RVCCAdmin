@@ -53,12 +53,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 TreatmentPlace treatmentPlace = _context.TreatmentPlaces.Include(x => x.PatientInformationTreatmentPlaces).FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
-                if (treatmentPlace.PatientInformationTreatmentPlaces.Count >= 0)
+                if (treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
                         Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
+                        Description = "Não é possível apagar esta cidade"
                     });
                     return Task.FromResult(result);
                 }

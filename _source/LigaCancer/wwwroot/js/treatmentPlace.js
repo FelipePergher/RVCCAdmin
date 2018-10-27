@@ -20,13 +20,13 @@ function BuildDataTable() {
             {
                 "render": function (data, type, row, meta) {
                     let link = $("#linkEdit");
-                    let options = '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
+                    let options = '<a href="' + link.attr("href") + '/' + row.treatmentPlaceId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
 
                     if (row.patientInformationTreatmentPlaces.length === 0) {
                         link = $("#linkDelete");
 
                         options = options.concat(
-                            '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
+                            '<a href="' + link.attr("href") + '/' + row.treatmentPlaceId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
                         );
                     } else {
                         options = options.concat(
