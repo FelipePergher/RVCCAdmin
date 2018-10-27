@@ -1,4 +1,5 @@
 ﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using Microsoft.EntityFrameworkCore;
 using System;

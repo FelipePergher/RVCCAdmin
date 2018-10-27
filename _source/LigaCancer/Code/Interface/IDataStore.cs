@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Data.Store
+namespace LigaCancer.Code.Interface
 {
     public interface IDataStore<T> : IDisposable where T : class
     {

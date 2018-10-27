@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles{
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -138,5 +142,7 @@
 @section scripts
     {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/doctor.js"></script>
 }
