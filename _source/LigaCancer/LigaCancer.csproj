@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Api\" />
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
   </ItemGroup>
 

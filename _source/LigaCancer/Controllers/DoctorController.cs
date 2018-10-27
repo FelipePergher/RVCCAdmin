@@ -9,6 +9,9 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using LigaCancer.Data.Requests;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
@@ -17,49 +20,18 @@ namespace LigaCancer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Doctor> _doctorService;
+        protected readonly ILogger<HomeController> _logger;
 
-        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager)
+        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
         {
             _doctorService = doctorService;
             _userManager = userManager;
+            _logger = logger;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
+        public IActionResult Index()
         {
-            IQueryable<Doctor> doctors = _doctorService.GetAllQueryable(new string[] { "PatientInformationDoctors" });
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
-            if (searchNameString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchNameString = currentSearchNameFilter;
-            }
-
-            ViewData["CurrentSearchNameFilter"] = searchNameString;
-
-            if (!string.IsNullOrEmpty(searchNameString))
-            {
-                doctors = doctors.Where(s => s.Name.Contains(searchNameString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    doctors = doctors.OrderByDescending(s => s.Name);
-                    break;
-                default:
-                    doctors = doctors.OrderBy(s => s.Name);
-                    break;
-            }
-
-            int pageSize = 4;
-
-            PaginatedList<Doctor> paginateList = await PaginatedList<Doctor>.CreateAsync(doctors.AsNoTracking(), page ?? 1, pageSize);
-            return View(paginateList);
+            return View();
         }
 
         public IActionResult AddDoctor()
@@ -176,6 +148,20 @@ namespace LigaCancer.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
+        {
+            try
+            {
+                var specs = new BaseSpecification<Doctor>(x => x.PatientInformationDoctors);
+                return Ok(await ((DoctorStore)_doctorService).GetOptionResponseWithSpec(options, specs));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error Occurred While Running GetOptions @ HomeController : \n" + e.Message);
+                return BadRequest();
+            }
         }
 
         #region Custom Methods

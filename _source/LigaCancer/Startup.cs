@@ -44,9 +44,14 @@ namespace LigaCancer
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddLogging();
+            
             //Application Services
+            services.AddTransient(typeof(ISpecification<>), typeof(BaseSpecification<>));
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
             services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
             services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();

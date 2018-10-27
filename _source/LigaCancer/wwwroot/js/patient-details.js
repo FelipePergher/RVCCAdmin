@@ -124,17 +124,3 @@ $("#modal-action-patient-details").on("show.bs.modal", function (e) {
 
     });
 });
-
-function AjaxError($xhr) {
-    console.log($xhr);
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
-}
-
-function AjaxSuccess(data) {
-    if (data === "200") {
-        location.reload();
-    }
-    else {
-        $("#modal-content").html(data);
-    }
-}
