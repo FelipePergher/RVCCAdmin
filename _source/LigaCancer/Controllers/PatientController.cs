@@ -118,7 +118,7 @@ namespace LigaCancer.Controllers
 
                 Profession profession = int.TryParse(model.Profession, out int num) ? 
                     await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null)
+                if (profession == null && model.Profession != null)
                 {
                     profession = new Profession
                     {
@@ -131,7 +131,7 @@ namespace LigaCancer.Controllers
                         patient.Profession = profession;
                     }
                 }
-                else
+                else if(profession != null)
                 {
                     patient.Profession = profession;
                 }
@@ -304,11 +304,6 @@ namespace LigaCancer.Controllers
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.ProfessionId.ToString()
-                }).ToList(),
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -330,6 +325,12 @@ namespace LigaCancer.Controllers
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList(),
             };
+
+            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ProfessionId.ToString()
+            }).ToList());
 
             if (!string.IsNullOrEmpty(id))
             {
@@ -358,7 +359,7 @@ namespace LigaCancer.Controllers
                         Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
                         TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
                     };
-                    patientViewModel.Profession = patient.Profession.ProfessionId.ToString();
+                    patientViewModel.Profession = patient.Profession?.ProfessionId.ToString();
                     patientViewModel.RG = patient.RG;
                     patientViewModel.Sex = patient.Sex;
                     patientViewModel.Surname = patient.Surname;
@@ -385,7 +386,7 @@ namespace LigaCancer.Controllers
 
                 Profession profession = int.TryParse(model.Profession, out int num) ?
                     await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null)
+                if (profession == null && model.Profession != null)
                 {
                     profession = new Profession
                     {
@@ -398,7 +399,7 @@ namespace LigaCancer.Controllers
                         patient.Profession = profession;
                     }
                 }
-                else
+                else if(profession != null)
                 {
                     patient.Profession = profession;
                 }
