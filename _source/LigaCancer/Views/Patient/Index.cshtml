@@ -41,7 +41,7 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed" id="patientTable"></table>
+                                <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
 
                             </div>
                         </div>
@@ -57,7 +57,8 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<a id="linkDelete" asp-action="DeletePatient" data-toggle="modal" data-target="#modal-action"></a>
+<a id="linkShow" asp-action="DetailsPatient"></a>
+<a id="linkDelete" asp-action="DisablePatient" data-toggle="modal" data-target="#modal-action"></a>
 <a id="linkEdit" asp-action="EditPatient" data-toggle="modal" data-target="#modal-action"></a>
 <a id="linkAjaxDT" asp-action="GetDTResponseAsync" asp-controller="PatientApi" data-toggle="modal" data-target="#modal-action"></a>
 

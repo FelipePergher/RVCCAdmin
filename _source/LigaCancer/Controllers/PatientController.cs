@@ -739,7 +739,7 @@ namespace LigaCancer.Controllers
                 CPF = patient.CPF,
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
-                Profession = patient.Profession.Name,
+                Profession = patient.Profession?.Name,
                 RG = patient.RG,
                 Sex = patient.Sex,
                 Phones = patient.Phones,

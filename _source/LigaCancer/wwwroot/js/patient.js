@@ -23,20 +23,18 @@ function BuildDataTable() {
             {
                 title: "Ações",
                 render: function (data, type, row, meta) {
-                    let link = $("#linkEdit");
-                    let options = '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
+                    let link = $("#linkShow");
+                    let options = '<a href="' + link.attr("href") + '/' + row.patientId + '" class="btn btn-info">Detalhes</a>';
 
-                    //if (row.patientInformationMedicines.length === 0) {
-                    //    link = $("#linkDelete");
+                    link = $("#linkEdit");
+                    options = options.concat(
+                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary ml-1">Editar</a>'
+                    );
 
-                    //    options = options.concat(
-                    //        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
-                    //    );
-                    //} else {
-                    //    options = options.concat(
-                    //        '<a class="btn btn-danger ml-1 disabled">Deletar</a>'
-                    //    );
-                    //}
+                    link = $("#linkDelete");
+                    options = options.concat(
+                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
+                    );
                     return options;
                 }
             }
