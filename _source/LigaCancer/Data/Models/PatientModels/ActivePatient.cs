@@ -8,7 +8,9 @@ namespace LigaCancer.Data.Models.PatientModels
         [Key]
         public int ActivePatientId { get; set; }
 
-        public bool Active { get; set; }
+        public bool Death { get; set; }
+
+        public bool Discharge { get; set; }
 
         public DateTime DeathDate { get; set; }
 

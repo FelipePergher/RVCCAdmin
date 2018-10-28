@@ -17,6 +17,14 @@ namespace LigaCancer.Models.MedicalViewModels
             DateOfBirth = DateTime.Now;
             Naturality = new NaturalityViewModel();
             PatientInformation = new PatientInformationViewModel();
+            SelectProfessions = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "",
+                    Value = ""
+                }
+            };
         }
 
         public int PatientId { get; set; }

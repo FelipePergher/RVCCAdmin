@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>@ViewData["Title"] - Liga Videirense de Combate ao Câncer</title>
+    <title>@ViewData["Title"] - Rede Videirense de Combate ao Câncer</title>
     <base href="./">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link href="~/lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet" />
-    <link href="~/css/custom.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/custom.css" rel="stylesheet" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 
@@ -19,8 +19,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-            <img class="navbar-brand-full" src="~/images/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
-            <img class="navbar-brand-minimized" src="~/images/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+            <img class="navbar-brand-full" src="~/img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
+            <img class="navbar-brand-minimized" src="~/img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
         </a>
         <button class="navbar-toggler sidebar-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>
@@ -34,70 +34,73 @@
             <nav class="sidebar-nav">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">
+                        <a asp-action="Index" asp-controller="Home" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i> Home
                         </a>
                     </li>
                     <li class="nav-title">Pacientes</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/patient">
+                        <a asp-action="Index" asp-controller="Patient" class="nav-link">
                             <i class="nav-icon fa fa-child"></i> Pacientes
                         </a>
                     </li>
                     @*<li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-clipboard-list"></i> Presença
-                        </a>
-                    </li>*@
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-clipboard-list"></i> Presença
+                            </a>
+                        </li>*@
                     @*<li class="nav-title">Benefícios</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-gift"></i> Benefícios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
-                        </a>
-                    </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-gift"></i> Benefícios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
+                            </a>
+                        </li>*@
                     <li class="nav-title">Informações Médicas</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/medicine">
+                        <a asp-action="Index" asp-controller="Medicine" class="nav-link">
                             <i class="nav-icon fa fa-capsules"></i> Remédios
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cancertype">
+                        <a asp-action="Index" asp-controller="CancerType" class="nav-link">
                             <i class="nav-icon fa fa-notes-medical"></i> Tipos de Câncer
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/treatmentplace">
+                        <a asp-action="Index" asp-controller="TreatmentPlace" class="nav-link">
                             <i class="nav-icon fa fa-hospital-alt"></i> Locais de tratamento
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/doctor">
+                        <a asp-action="Index" asp-controller="Doctor" class="nav-link">
                             <i class="nav-icon fa fa-user-md"></i> Médicos
                         </a>
                     </li>
                     @*<li class="nav-title">Relatórios</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-file-medical"></i> Relatórios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
-                        </a>
-                    </li> *@
-                    <li class="nav-title">Administrativo</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-users"></i> Usuários
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical"></i> Relatórios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
+                            </a>
+                        </li> *@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-title">Administrativo</li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="User" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i> Usuários
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
         </div>
@@ -111,9 +114,10 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/core-ui/coreui.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/core-ui/coreui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 

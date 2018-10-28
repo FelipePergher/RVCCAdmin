@@ -1,32 +1,49 @@
 ﻿$(function () {
-    $("#modal-action-patient").on('loaded.bs.modal', function (e) {
-    }).on('hidden.bs.modal', function (e) {
-        $(this).removeData('bs.modal');
-    });
+    dataTable = BuildDataTable();
 });
 
-$("#modal-action-patient").on("show.bs.modal", function (e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function () {
-        $.validator.unobtrusive.parse('form');
+function BuildDataTable() {
+    return $("#patientTable").DataTable({
+        pageLength: 10,
+        processing: true,
+        serverSide: true,
+        language: language,
+        ajax: {
+            url: $("#linkAjaxDT").attr("href"),
+            type: "POST",
+            error: function (ex) {
+            }
+        },
+        order: [[0, "asc"]],
+        columns: [
+            { data: "firstName", title: "Nome" },
+            { data: "surname", title: "Sobrenome"},
+            { data: "rg", title: "RG"},
+            { data: "cpf", title: "CPF"},
+            {
+                title: "Ações",
+                render: function (data, type, row, meta) {
+                    let link = $("#linkShow");
+                    let options = '<a href="' + link.attr("href") + '/' + row.patientId + '" class="btn btn-info">Detalhes</a>';
 
-        $("select").select2({
-            theme: "bootstrap"
-        });
+                    link = $("#linkEdit");
+                    options = options.concat(
+                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary ml-1">Editar</a>'
+                    );
 
+                    link = $("#linkDelete");
+                    options = options.concat(
+                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
+                    );
+                    return options;
+                }
+            }
+        ],
+        columnDefs: [
+            { "orderable": false, "targets": [-1] },
+            { "searchable": false, "targets": [-1] },
+            { "orderable": true, "targets": [0, 1] },
+            { "searchable": true, "targets": [0, 1, 2, 3] }
+        ]
     });
-});
-
-function AjaxError($xhr) {
-    console.log($xhr);
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
-}
-
-function AjaxSuccess(data) {
-    if (data === "200") {
-        location.reload();
-    }
-    else {
-        $("#modal-content").html(data);
-    }
 }

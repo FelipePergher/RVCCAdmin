@@ -1,5 +1,8 @@
 ﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Requests;
+using LigaCancer.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class DoctorStore : IDataStore<Doctor>
+    public class DoctorStore : IDataStore<Doctor>, IDataTable<Doctor>
     {
         private ApplicationDbContext _context;
 
@@ -50,7 +53,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 Doctor doctor = _context.Doctors.Include(x => x.PatientInformationDoctors).FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                if(doctor.PatientInformationDoctors.Count >= 0)
+                if (doctor.PatientInformationDoctors.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
@@ -147,6 +150,22 @@ namespace LigaCancer.Data.Store
             }
 
             return query;
+        }
+
+        //IDataTable
+        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Doctor> spec)
+        {
+            var data = await _context.Set<Doctor>()
+                            .IncludeExpressions(spec.Includes)
+                            .IncludeByNames(spec.IncludeStrings)
+                            .GetOptionResponseAsync(options);
+
+            return data;
+        }
+
+        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
+        {
+            return await _context.Set<Doctor>().GetOptionResponseAsync(options);
         }
 
         #region Custom Methods

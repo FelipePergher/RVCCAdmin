@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LigaCancer.Data;
@@ -15,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer
 {
@@ -44,9 +44,14 @@ namespace LigaCancer
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddLogging();
+            
             //Application Services
+            services.AddTransient(typeof(ISpecification<>), typeof(BaseSpecification<>));
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
             services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
             services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();
@@ -57,6 +62,13 @@ namespace LigaCancer
             services.AddTransient<IDataStore<Address>, AddressStore>();
             services.AddTransient<IDataStore<FamilyMember>, FamilyMemberStore>();
             services.AddTransient<IDataStore<FileAttachment>, FileAttachmentStore>();
+
+            //DataTable Services
+            services.AddTransient<IDataTable<Patient>, PatientStore>();
+            services.AddTransient<IDataTable<TreatmentPlace>, TreatmentPlaceStore>();
+            services.AddTransient<IDataTable<Medicine>, MedicineStore>();
+            services.AddTransient<IDataTable<CancerType>, CancerTypeStore>();
+            services.AddTransient<IDataTable<Doctor>, DoctorStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,7 +108,7 @@ namespace LigaCancer
 
     public static class SeedData
     {
-        private static readonly string[] Roles = new string[] { "Admin", "User" };
+        private static readonly string[] Roles = new string[] { Globals.Roles.Admin.ToString(), Globals.Roles.User.ToString() };
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
@@ -141,21 +153,21 @@ namespace LigaCancer
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
+                if (!userManager.GetUsersInRoleAsync(Globals.Roles.Admin.ToString()).Result.Any())
                 {
                     ApplicationUser user = new ApplicationUser
                     {
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        UserName = "admin@admin.com",
-                        Email = "admin@admin.com",
+                        FirstName = "Felipe",
+                        LastName = "Pergher",
+                        UserName = "felipepergher_10@hotmail.com",
+                        Email = "felipepergher_10@hotmail.com",
                         RegisterDate = DateTime.Now,
                         CreatedBy = "System"
                     };
-                    IdentityResult result = await userManager.CreateAsync(user, "Admin123!");
+                    IdentityResult result = await userManager.CreateAsync(user, "password");
                     if (result.Succeeded)
                     {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Admin");
+                        IdentityRole applicationRole = await roleManager.FindByNameAsync(Globals.Roles.Admin.ToString());
                         if (applicationRole != null)
                         {
                             IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);

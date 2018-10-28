@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Models;
 using Microsoft.AspNetCore.Authorization;
-using LigaCancer.Data.Store;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {

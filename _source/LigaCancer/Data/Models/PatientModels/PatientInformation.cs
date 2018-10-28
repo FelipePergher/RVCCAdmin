@@ -13,6 +13,7 @@ namespace LigaCancer.Data.Models.PatientModels
             PatientInformationDoctors = new List<PatientInformationDoctor>();
             PatientInformationMedicines = new List<PatientInformationMedicine>();
             PatientInformationTreatmentPlaces = new List<PatientInformationTreatmentPlace>();
+            ActivePatient = new ActivePatient();
         }
 
         [Key]

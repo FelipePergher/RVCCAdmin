@@ -6,7 +6,7 @@
     {
         public string Id { get; set; }
         public string AreaLabeledId { get; set; }
-        public ModalSize Size { get; set; }
+        public Globals.ModalSize Size { get; set; }
         public string Message { get; set; }
         public string ModalSizeClass
         {
@@ -14,11 +14,11 @@
             {
                 switch (this.Size)
                 {
-                    case ModalSize.Small:
+                    case Globals.ModalSize.Small:
                         return "modal-sm";
-                    case ModalSize.Large:
+                    case Globals.ModalSize.Large:
                         return "modal-lg";
-                    case ModalSize.Medium:
+                    case Globals.ModalSize.Medium:
                     default:
                         return "";
                 }

@@ -1,5 +1,8 @@
 ﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Requests;
+using LigaCancer.Data.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class CancerTypeStore : IDataStore<CancerType>
+    public class CancerTypeStore : IDataStore<CancerType>, IDataTable<CancerType>
     {
         private ApplicationDbContext _context;
 
@@ -50,12 +53,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 CancerType cancerType = _context.CancerTypes.Include(x => x.PatientInformationCancerTypes).FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
-                if (cancerType.PatientInformationCancerTypes.Count >= 0)
+                if (cancerType.PatientInformationCancerTypes.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
                         Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
+                        Description = "Não é possível apagar este tipo de cancêr"
                     });
                     return Task.FromResult(result);
                 }
@@ -147,6 +150,22 @@ namespace LigaCancer.Data.Store
             }
 
             return query;
+        }
+
+        //IDataTable
+        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
+        {
+            var data = await _context.Set<CancerType>()
+                            .IncludeExpressions(spec.Includes)
+                            .IncludeByNames(spec.IncludeStrings)
+                            .GetOptionResponseAsync(options);
+
+            return data;
+        }
+
+        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
+        {
+            return await _context.Set<CancerType>().GetOptionResponseAsync(options);
         }
 
         #region Custom Methods

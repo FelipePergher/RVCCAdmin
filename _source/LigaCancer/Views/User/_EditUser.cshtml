@@ -1,0 +1,49 @@
+﻿@model LigaCancer.Models.UserViewModels.EditUserViewModel
+@using LigaCancer.Code
+
+<form asp-action="EditUser"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxError"
+      data-ajax-success="AjaxSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Usuário" }' />
+
+    <div class="modal-body form-horizontal" id="">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>
+            Editar Usuário
+        </h4>
+
+        <div class="form-group">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        @if (Model.Email != "felipepergher_10@hotmail.com")
+        {
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select asp-for="Role" asp-items="@Model.ApplicationRoles" class="form-control"></select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+        }
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="UserId" />
+    </div>
+
+    <partial name="_ModalFooter" model='new ModalFooter { }' />
+
+</form>

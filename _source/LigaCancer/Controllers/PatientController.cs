@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LigaCancer.Data;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.MedicalViewModels;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Data.Models.ManyToManyModels;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
@@ -47,53 +46,15 @@ namespace LigaCancer.Controllers
             _medicineService = medicineService;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
+        public IActionResult Index()
         {
-            IQueryable<Patient> patients = _patientService.GetAllQueryable();
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
-            if (searchNameString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchNameString = currentSearchNameFilter;
-            }
-
-            ViewData["CurrentSearchNameFilter"] = searchNameString;
-
-            if (!string.IsNullOrEmpty(searchNameString))
-            {
-                patients = patients.Where(s => s.FirstName.Contains(searchNameString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    patients = patients.OrderByDescending(s => s.FirstName);
-                    break;
-                default:
-                    patients = patients.OrderBy(s => s.FirstName);
-                    break;
-            }
-
-            int pageSize = 4;
-
-            PaginatedList<Patient> paginateList = await PaginatedList<Patient>.CreateAsync(patients.AsNoTracking(), page ?? 1, pageSize);
-            return View(paginateList);
+            return View();
         }
 
         public IActionResult AddPatient()
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.ProfessionId.ToString()
-                }).ToList(),
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -114,7 +75,14 @@ namespace LigaCancer.Controllers
                     Text = x.City,
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList(),
+                DateOfBirth = DateTime.Now
             };
+
+            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ProfessionId.ToString()
+            }).ToList());
 
             return PartialView("_AddPatient", patientViewModel);
         }
@@ -149,7 +117,7 @@ namespace LigaCancer.Controllers
 
                 Profession profession = int.TryParse(model.Profession, out int num) ? 
                     await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null)
+                if (profession == null && model.Profession != null)
                 {
                     profession = new Profession
                     {
@@ -162,7 +130,7 @@ namespace LigaCancer.Controllers
                         patient.Profession = profession;
                     }
                 }
-                else
+                else if(profession != null)
                 {
                     patient.Profession = profession;
                 }
@@ -335,11 +303,6 @@ namespace LigaCancer.Controllers
         {
             PatientViewModel patientViewModel = new PatientViewModel
             {
-                SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.ProfessionId.ToString()
-                }).ToList(),
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -361,6 +324,12 @@ namespace LigaCancer.Controllers
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList(),
             };
+
+            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ProfessionId.ToString()
+            }).ToList());
 
             if (!string.IsNullOrEmpty(id))
             {
@@ -389,7 +358,7 @@ namespace LigaCancer.Controllers
                         Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
                         TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
                     };
-                    patientViewModel.Profession = patient.Profession.ProfessionId.ToString();
+                    patientViewModel.Profession = patient.Profession?.ProfessionId.ToString();
                     patientViewModel.RG = patient.RG;
                     patientViewModel.Sex = patient.Sex;
                     patientViewModel.Surname = patient.Surname;
@@ -416,7 +385,7 @@ namespace LigaCancer.Controllers
 
                 Profession profession = int.TryParse(model.Profession, out int num) ?
                     await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null)
+                if (profession == null && model.Profession != null)
                 {
                     profession = new Profession
                     {
@@ -429,7 +398,7 @@ namespace LigaCancer.Controllers
                         patient.Profession = profession;
                     }
                 }
-                else
+                else if(profession != null)
                 {
                     patient.Profession = profession;
                 }
@@ -701,33 +670,34 @@ namespace LigaCancer.Controllers
             return PartialView("_EditPatient", model);
         }
 
-        public async Task<IActionResult> DeletePatient(string id)
+        public IActionResult DisablePatient(string id)
         {
-            string name = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                Patient patient = await _patientService.FindByIdAsync(id);
-                if (patient != null)
-                {
-                    name = patient.FirstName + " " + patient.Surname;
-                }
-            }
-
-            return PartialView("_DeletePatient", name);
+            DisablePatientViewModel disablePatientViewModel = new DisablePatientViewModel {
+                DateTime = DateTime.Now
+            };
+            return PartialView("_DisablePatient", disablePatientViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePatient(string id, IFormCollection form)
+        public async Task<IActionResult> DisablePatient(string id, DisablePatientViewModel model)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Patient patient = await _patientService.FindByIdAsync(id);
+                Patient patient = await _patientService.FindByIdAsync(id, new string[] { "PatientInformation", "PatientInformation.ActivePatient" });
                 if (patient != null)
                 {
-                    patient.RG = DateTime.Now + "-" + patient.RG;
-                    patient.CPF = DateTime.Now + "-" + patient.CPF;
+                    if(model.DisablePatientType == Globals.DisablePatientType.death)
+                    {
+                        patient.PatientInformation.ActivePatient.Death = true;
+                        patient.PatientInformation.ActivePatient.DeathDate = model.DateTime;
+                    }
+                    else if (model.DisablePatientType == Globals.DisablePatientType.discharge)
+                    {
+                        patient.PatientInformation.ActivePatient.Discharge = true;
+                        patient.PatientInformation.ActivePatient.DischargeDate = model.DateTime;
+                    }
+
                     TaskResult result = await _patientService.DeleteAsync(patient);
 
                     if (result.Succeeded)
@@ -769,7 +739,7 @@ namespace LigaCancer.Controllers
                 CPF = patient.CPF,
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
-                Profession = patient.Profession.Name,
+                Profession = patient.Profession?.Name,
                 RG = patient.RG,
                 Sex = patient.Sex,
                 Phones = patient.Phones,

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LigaCancer.Data;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.MedicalViewModels;
 using LigaCancer.Code;
@@ -14,6 +11,7 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
@@ -29,42 +27,9 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
+        public IActionResult Index()
         {
-            IQueryable<CancerType> cancerTypes = _cancerTypeService.GetAllQueryable(new string[] { "PatientInformationCancerTypes" });
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
-            if (searchNameString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchNameString = currentSearchNameFilter;
-            }
-
-            ViewData["CurrentSearchNameFilter"] = searchNameString;
-
-            if (!string.IsNullOrEmpty(searchNameString))
-            {
-                cancerTypes = cancerTypes.Where(s => s.Name.Contains(searchNameString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    cancerTypes = cancerTypes.OrderByDescending(s => s.Name);
-                    break;
-                default:
-                    cancerTypes = cancerTypes.OrderBy(s => s.Name);
-                    break;
-            }
-
-            int pageSize = 4;
-
-            PaginatedList<CancerType> paginateList = await PaginatedList<CancerType>.CreateAsync(cancerTypes.AsNoTracking(), page ?? 1, pageSize);
-            return View(paginateList);
+            return View();
         }
 
         public IActionResult AddCancerType()

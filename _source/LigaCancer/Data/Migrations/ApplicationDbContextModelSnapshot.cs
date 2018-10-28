@@ -74,11 +74,13 @@ namespace LigaCancer.Migrations
                     b.Property<int>("ActivePatientId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Active");
+                    b.Property<bool>("Death");
 
                     b.Property<DateTime>("DeathDate");
 
                     b.Property<DateTime>("DeletedDate");
+
+                    b.Property<bool>("Discharge");
 
                     b.Property<DateTime>("DischargeDate");
 
@@ -120,6 +122,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("LastUserUpdateId");
 
+                    b.Property<double>("MonthlyAmmountResidence");
+
                     b.Property<string>("Neighborhood");
 
                     b.Property<string>("ObservationAddress");
@@ -127,6 +131,8 @@ namespace LigaCancer.Migrations
                     b.Property<int?>("PatientId");
 
                     b.Property<DateTime>("RegisterDate");
+
+                    b.Property<int?>("ResidenceType");
 
                     b.Property<string>("Street");
 

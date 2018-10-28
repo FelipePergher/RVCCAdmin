@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LigaCancer.Data;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.MedicalViewModels;
 using LigaCancer.Code;
@@ -14,6 +9,7 @@ using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
@@ -57,7 +53,9 @@ namespace LigaCancer.Controllers
                         HouseNumber = model.HouseNumber,
                         Neighborhood = model.Neighborhood,
                         ObservationAddress = model.ObservationAddress,
-                        Street = model.Street
+                        Street = model.Street,
+                        ResidenceType = model.ResidenceType,
+                        MonthlyAmmountResidence = model.MonthlyAmmountResidence
                     }, model.PatientId);
 
                 if (result.Succeeded)
@@ -87,7 +85,9 @@ namespace LigaCancer.Controllers
                         HouseNumber = address.HouseNumber,
                         Neighborhood = address.Neighborhood,
                         ObservationAddress = address.ObservationAddress,
-                        Street = address.Street
+                        Street = address.Street,
+                        ResidenceType = address.ResidenceType,
+                        MonthlyAmmountResidence = address.MonthlyAmmountResidence
                     };
                 }
             }
@@ -109,6 +109,8 @@ namespace LigaCancer.Controllers
                 address.HouseNumber = model.HouseNumber;
                 address.Neighborhood = model.Neighborhood;
                 address.ObservationAddress = model.ObservationAddress;
+                address.ResidenceType = model.ResidenceType;
+                address.MonthlyAmmountResidence = model.MonthlyAmmountResidence;
                 address.Street = model.Street;
                 address.LastUpdatedDate = DateTime.Now;
                 address.LastUserUpdate = user;
