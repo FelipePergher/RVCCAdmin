@@ -16,10 +16,12 @@ function BuildDataTable() {
         },
         order: [[0, "asc"]],
         columns: [
-            { data: "name", width: "30%" },
-            { data: "crm", width: "30%" },
+            { data: "name", title: "Nome", width: "33%" },
+            { data: "crm", title: "CRM", width: "33%" },
             {
-                "render": function (data, type, row, meta) {
+                title: "Ações",
+                width: "33%",
+                render: function (data, type, row, meta) {
                     let link = $("#linkEdit");
                     let options = '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
 
@@ -41,8 +43,8 @@ function BuildDataTable() {
         columnDefs: [
             { "orderable": false, "targets": [-1] },
             { "searchable": false, "targets": [-1] },
-            { "orderable": true, "targets": [0, 1, 2] },
-            { "searchable": true, "targets": [0, 1, 2] }
+            { "orderable": true, "targets": [0, 1] },
+            { "searchable": true, "targets": [0, 1] }
         ]
     });
 }
