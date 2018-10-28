@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181023025806_FamilyChanges")]
-    partial class FamilyChanges
+    [Migration("20181028022112_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,11 +76,13 @@ namespace LigaCancer.Migrations
                     b.Property<int>("ActivePatientId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Active");
+                    b.Property<bool>("Death");
 
                     b.Property<DateTime>("DeathDate");
 
                     b.Property<DateTime>("DeletedDate");
+
+                    b.Property<bool>("Discharge");
 
                     b.Property<DateTime>("DischargeDate");
 
@@ -122,6 +124,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("LastUserUpdateId");
 
+                    b.Property<double>("MonthlyAmmountResidence");
+
                     b.Property<string>("Neighborhood");
 
                     b.Property<string>("ObservationAddress");
@@ -129,6 +133,8 @@ namespace LigaCancer.Migrations
                     b.Property<int?>("PatientId");
 
                     b.Property<DateTime>("RegisterDate");
+
+                    b.Property<int?>("ResidenceType");
 
                     b.Property<string>("Street");
 
@@ -143,36 +149,6 @@ namespace LigaCancer.Migrations
                     b.HasIndex("UserCreatedId");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Attachments", b =>
-                {
-                    b.Property<int>("AttachmentsId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
-                    b.Property<int?>("PatientId");
-
-                    b.Property<DateTime>("RegisterDate");
-
-                    b.Property<string>("UserCreatedId");
-
-                    b.HasKey("AttachmentsId");
-
-                    b.HasIndex("LastUserUpdateId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
@@ -314,13 +290,11 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FileAttachmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AttachmentsId");
-
-                    b.Property<int?>("AttachmentsId1");
-
-                    b.Property<int?>("AttachmentsId2");
+                    b.Property<int>("ArchiveCategorie");
 
                     b.Property<DateTime>("DeletedDate");
+
+                    b.Property<string>("FileName");
 
                     b.Property<string>("FilePath");
 
@@ -330,19 +304,17 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("LastUserUpdateId");
 
+                    b.Property<int?>("PatientId");
+
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<string>("UserCreatedId");
 
                     b.HasKey("FileAttachmentId");
 
-                    b.HasIndex("AttachmentsId");
-
-                    b.HasIndex("AttachmentsId1");
-
-                    b.HasIndex("AttachmentsId2");
-
                     b.HasIndex("LastUserUpdateId");
+
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
 
@@ -867,21 +839,6 @@ namespace LigaCancer.Migrations
                         .HasForeignKey("UserCreatedId");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Attachments", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
-                        .WithMany("Attachments")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
@@ -932,21 +889,13 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
                 {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachments")
-                        .WithMany("MedicalDocuments")
-                        .HasForeignKey("AttachmentsId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachments")
-                        .WithMany("OtherDocuments")
-                        .HasForeignKey("AttachmentsId1");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Attachments")
-                        .WithMany("PersonalDocuments")
-                        .HasForeignKey("AttachmentsId2");
-
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
                         .WithMany()
                         .HasForeignKey("LastUserUpdateId");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
+                        .WithMany("FileAttachments")
+                        .HasForeignKey("PatientId");
 
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()
