@@ -46,10 +46,9 @@ namespace LigaCancer.Controllers
             _medicineService = medicineService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            
-            return View(await _patientService.GetAllAsync());
+            return View();
         }
 
         public IActionResult AddPatient()

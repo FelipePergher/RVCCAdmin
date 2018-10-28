@@ -45,5 +45,9 @@ $("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
         $.validator.unobtrusive.parse('form');
+
+        $("select").select2({
+            theme: "bootstrap"
+        });
     });
 });

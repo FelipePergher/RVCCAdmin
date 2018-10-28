@@ -16,11 +16,11 @@ namespace LigaCancer.Controllers.Api
     [Authorize(Roles = "Admin")]
     public class TreatmentPlaceApiController : Controller
     {
-        private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
+        private readonly IDataTable<TreatmentPlace> _treatmentDataTable;
 
-        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService)
+        public TreatmentPlaceApiController(IDataTable<TreatmentPlace> treatmentDataTable)
         {
-            _treatmentPlaceService = treatmentPlaceService;
+            _treatmentDataTable = treatmentDataTable;
         }
 
         public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
@@ -28,7 +28,7 @@ namespace LigaCancer.Controllers.Api
             try
             {
                 BaseSpecification<TreatmentPlace> specs = new BaseSpecification<TreatmentPlace>(x => x.PatientInformationTreatmentPlaces);
-                return Ok(await ((TreatmentPlaceStore)_treatmentPlaceService).GetOptionResponseWithSpec(options, specs));
+                return Ok(await _treatmentDataTable.GetOptionResponseWithSpec(options, specs));
             }
             catch
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Code.Interface
 {
-    interface IDataTable<T> : IDisposable where T : class
+    public interface IDataTable<T> : IDisposable where T : class
     {
         Task<DataTableResponse> GetOptionResponse(DataTableOptions options);
 

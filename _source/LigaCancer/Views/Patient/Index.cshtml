@@ -1,5 +1,4 @@
-﻿@model IEnumerable<LigaCancer.Data.Models.PatientModels.Patient>
-@using LigaCancer.Code
+﻿@using LigaCancer.Code
 @{
     ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,6 +7,7 @@
 @section Styles{
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
 <main class="main">
@@ -32,46 +32,16 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <div class="btn-group">
-                                            <a asp-action="AddPatient" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-primary">
+                                            <a asp-action="AddPatient" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
                                                 <i class="fa fa-plus"></i> Adicionar Paciente
                                             </a>
                                         </div>
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Nome
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.Surname)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="DetailsPatient" asp-route-id="@item.PatientId" class="btn btn-info">
-                                                        Detalhes
-                                                    </a>
-                                                    <a asp-action="EditPatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-secondary">
-                                                        Editar
-                                                    </a>
-                                                    <a asp-action="DisablePatient" asp-route-id="@item.PatientId" data-toggle="modal" data-target="#modal-action-patient" class="btn btn-danger">
-                                                        Desativar
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                <hr />
+
+                                <table class="table table-bordered table-striped table-condensed" id="patientTable"></table>
 
                             </div>
                         </div>
@@ -87,10 +57,16 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-patient", AreaLabeledId = "modal-action-patient-label", Size = Globals.ModalSize.Medium }' /> 
+<a id="linkDelete" asp-action="DeletePatient" data-toggle="modal" data-target="#modal-action"></a>
+<a id="linkEdit" asp-action="EditPatient" data-toggle="modal" data-target="#modal-action"></a>
+<a id="linkAjaxDT" asp-action="GetDTResponseAsync" asp-controller="PatientApi" data-toggle="modal" data-target="#modal-action"></a>
+
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/patient.js"></script>
 }

@@ -70,9 +70,6 @@
     <Content Update="Views\Patient\_EditPatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\_PaginationPatient.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Medicine\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

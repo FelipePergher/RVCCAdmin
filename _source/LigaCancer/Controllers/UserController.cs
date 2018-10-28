@@ -32,7 +32,7 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string name, string organization, string role, string email)
+        public IActionResult Index()
         {
             List<UserListViewModel> model = new List<UserListViewModel>();
             var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();

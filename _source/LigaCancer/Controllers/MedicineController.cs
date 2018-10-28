@@ -27,42 +27,9 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentSearchNameFilter, string searchNameString, int? page)
+        public IActionResult Index()
         {
-            IQueryable<Medicine> medicines = _medicineService.GetAllQueryable(new string[] { "PatientInformationMedicines" });
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
-            if (searchNameString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchNameString = currentSearchNameFilter;
-            }
-
-            ViewData["CurrentSearchNameFilter"] = searchNameString;
-
-            if (!string.IsNullOrEmpty(searchNameString))
-            {
-                medicines = medicines.Where(s => s.Name.Contains(searchNameString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    medicines = medicines.OrderByDescending(s => s.Name);
-                    break;
-                default:
-                    medicines = medicines.OrderBy(s => s.Name);
-                    break;
-            }
-
-            int pageSize = 4;
-
-            PaginatedList<Medicine> paginateList = await PaginatedList<Medicine>.CreateAsync(medicines.AsNoTracking(), page ?? 1, pageSize);
-            return View(paginateList);
+            return View();
         }
 
         public IActionResult AddMedicine()
