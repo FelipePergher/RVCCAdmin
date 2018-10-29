@@ -66,10 +66,6 @@ $("#modal-action-patient-details").on("show.bs.modal", function (e) {
     $(this).find(".modal-content").load(link.attr("href"), function () {
         $.validator.unobtrusive.parse('form');
 
-        $("select").select2({
-            theme: "bootstrap"
-        });
-
         $("#ResidenceType").select2({
             theme: "bootstrap",
             placeholder: "Selecione o tipo de residência",

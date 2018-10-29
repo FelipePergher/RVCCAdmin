@@ -46,8 +46,10 @@ $("#modal-action").on("show.bs.modal", function (e) {
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
         $.validator.unobtrusive.parse('form');
 
-        $("select").select2({
-            theme: "bootstrap"
-        });
+        if ($(".select2").length > 0) {
+            $(".select2").select2({
+                theme: "bootstrap"
+            });
+        }
     });
 });
