@@ -77,19 +77,19 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, string[] include = null)
+        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null)
         {
-            IQueryable<Patient> query = _context.Patients;
-
-            if (include != null)
+            if(specification != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                return Task.FromResult(_context.Patients
+                .IncludeExpressions(specification.Includes)
+                .IncludeByNames(specification.IncludeStrings)
+                .FirstOrDefault(x => x.PatientId == int.Parse(id)));
             }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+            else
+            {
+                return Task.FromResult(_context.Patients.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+            }
         }
 
         public Task<List<Patient>> GetAllAsync(string[] include = null)
@@ -128,11 +128,11 @@ namespace LigaCancer.Data.Store
         }
 
         //DataTable Methods
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Patient> spec)
+        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Patient> specification)
         {
             var data = await _context.Set<Patient>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
+                            .IncludeExpressions(specification.Includes)
+                            .IncludeByNames(specification.IncludeStrings)
                             .GetOptionResponseAsync(options);
 
             return data;
@@ -211,7 +211,8 @@ namespace LigaCancer.Data.Store
 
             try
             {
-                Patient patient = await FindByIdAsync(patientId, new string[] { "Family", "Family.FamilyMembers" });
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family, x => x.Family.FamilyMembers);
+                Patient patient = await FindByIdAsync(patientId, specification);
                 if(patient.Family == null)
                 {
                     patient.Family = new Family();

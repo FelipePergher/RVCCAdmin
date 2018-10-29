@@ -75,19 +75,13 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Phone> FindByIdAsync(string id, string[] include = null)
+        public Task<Phone> FindByIdAsync(string id, ISpecification<Phone> specification = null)
         {
-            IQueryable<Phone> query = _context.Phones;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.PhoneId == int.Parse(id)));
+            return Task.FromResult(
+                _context.Phones
+                .IncludeExpressions(specification.Includes)
+                .IncludeByNames(specification.IncludeStrings)
+                .FirstOrDefault(x => x.PhoneId == int.Parse(id)));
         }
 
         public Task<List<Phone>> GetAllAsync(string[] include = null)
