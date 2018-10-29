@@ -136,22 +136,7 @@ namespace LigaCancer.Data.Store
 
             return Task.FromResult(result);
         }
-
-        public IQueryable<CancerType> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<CancerType> query = _context.CancerTypes;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
+        
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
         {

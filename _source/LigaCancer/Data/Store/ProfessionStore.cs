@@ -126,21 +126,6 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<Profession> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<Profession> query = _context.Professions;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
         #region Custom Methods
 
         public Task<Profession> FindByNameAsync(string name)

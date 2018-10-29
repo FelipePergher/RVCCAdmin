@@ -125,20 +125,5 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<FileAttachment> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<FileAttachment> query = _context.FileAttachments;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
     }
 }

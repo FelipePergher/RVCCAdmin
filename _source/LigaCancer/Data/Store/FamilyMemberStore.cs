@@ -146,22 +146,6 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public IQueryable<FamilyMember> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<FamilyMember> query = _context.FamilyMembers;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
-
         #region Custom Methods
 
         public Task<TaskResult> UpdateFamilyIncomeByFamilyMember(FamilyMember familyMember)
