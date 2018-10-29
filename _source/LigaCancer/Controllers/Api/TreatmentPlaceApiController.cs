@@ -27,8 +27,8 @@ namespace LigaCancer.Controllers.Api
         {
             try
             {
-                BaseSpecification<TreatmentPlace> specs = new BaseSpecification<TreatmentPlace>(x => x.PatientInformationTreatmentPlaces);
-                return Ok(await _treatmentDataTable.GetOptionResponseWithSpec(options, specs));
+                BaseSpecification<TreatmentPlace> specification = new BaseSpecification<TreatmentPlace>(x => x.PatientInformationTreatmentPlaces);
+                return Ok(await _treatmentDataTable.GetOptionResponseWithSpec(options, specification));
             }
             catch
             {

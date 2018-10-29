@@ -11,6 +11,6 @@ namespace LigaCancer.Code.Interface
     {
         Task<DataTableResponse> GetOptionResponse(DataTableOptions options);
 
-        Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<T> spec);
+        Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<T> specification);
     }
 }
