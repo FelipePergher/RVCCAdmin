@@ -64,7 +64,7 @@ namespace LigaCancer.Controllers
                 {
                     if (patient != null)
                     {
-                        string path = $"uploads\\files\\{patient.FirstName}-{patient.Surname}";
+                        string path = $"uploads\\files\\{patient.PatientId}";
                         var uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
                         try
                         {
