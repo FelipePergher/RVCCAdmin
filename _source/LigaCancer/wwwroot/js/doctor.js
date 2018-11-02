@@ -23,17 +23,19 @@ function BuildDataTable() {
                 width: "33%",
                 render: function (data, type, row, meta) {
                     let link = $("#linkEdit");
-                    let options = '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
+                    let options = '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
+                        '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
 
                     if (row.patientInformationDoctors.length === 0) {
                         link = $("#linkDelete");
 
                         options = options.concat(
-                            '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
+                            '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
+                            '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
                     } else {
                         options = options.concat(
-                            '<a class="btn btn-danger ml-1 disabled">Deletar</a>'
+                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
                     }
                     return options;
