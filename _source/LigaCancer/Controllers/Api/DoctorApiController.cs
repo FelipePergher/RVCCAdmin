@@ -23,7 +23,8 @@ namespace LigaCancer.Controllers.Api
             _doctorDataTable = doctorDataTable;
         }
 
-        public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
+        [HttpPost("~/api/GetDoctorDataTableResponseAsync")]
+        public async Task<IActionResult> GetDoctorDataTableResponseAsync(DataTableOptions options)
         {
             try
             {
