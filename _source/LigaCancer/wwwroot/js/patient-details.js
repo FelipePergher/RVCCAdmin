@@ -4,61 +4,10 @@
         $(this).removeData('bs.modal');
     });
 
-    $("#familyMemberTable").DataTable({
-        paginate: false,
-        filter: false,
-        info: false,
-        order: [[0, "asc"]],
-        columnDefs: [{
-            targets: 5,
-            orderable: false
-        }],
-        language: {
-            emptyTable: "Nenhuma informação cadastrada!"
-        }
-    });
-
-    $("#addressTable").DataTable({
-        paginate: false,
-        filter: false,
-        info: false,
-        order: [[0, "asc"]],
-        columnDefs: [{
-            targets: 6,
-            orderable: false
-        }],
-        language: {
-            emptyTable: "Nenhuma informação cadastrada!"
-        }
-    });
-
-    $("#phoneTable").DataTable({
-        paginate: false,
-        filter: false,
-        info: false,
-        order: [[0, "asc"]],
-        columnDefs: [{
-            targets: 3,
-            orderable: false
-        }],
-        language: {
-            emptyTable: "Nenhuma informação cadastrada!"
-        }
-    });
-
-    $("#attachmentsTable").DataTable({
-        paginate: false,
-        filter: false,
-        info: false,
-        order: [[0, "asc"]],
-        columnDefs: [{
-            targets: 2,
-            orderable: false
-        }],
-        language: {
-            emptyTable: "Nenhuma informação cadastrada!"
-        }
-    });
+    Tables("phoneTable", 3);
+    Tables("familyMemberTable", 5);
+    Tables("addressTable", 6);
+    Tables("attachmentsTable", 2);
 });
 
 $("#modal-action-patient-details").on("show.bs.modal", function (e) {
@@ -120,3 +69,19 @@ $("#modal-action-patient-details").on("show.bs.modal", function (e) {
 
     });
 });
+
+function Tables(elementId, countColumns) {
+    $("#" + elementId).DataTable({
+        paginate: false,
+        filter: false,
+        info: false,
+        order: [[0, "asc"]],
+        columnDefs: [{
+            targets: countColumns,
+            orderable: false
+        }],
+        language: {
+            emptyTable: "Nenhuma informação cadastrada!"
+        }
+    });
+}
