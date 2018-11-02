@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), Route("api/[action]")]
     public class DoctorApiController : Controller
     {
         private readonly IDataTable<Doctor> _doctorDataTable;
@@ -23,7 +23,7 @@ namespace LigaCancer.Controllers.Api
             _doctorDataTable = doctorDataTable;
         }
 
-        [HttpPost("~/api/GetDoctorDataTableResponseAsync")]
+        [HttpPost]
         public async Task<IActionResult> GetDoctorDataTableResponseAsync(DataTableOptions options)
         {
             try

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), Route("api/[action]")]
     public class PatientApiController : Controller
     {
         private readonly IDataTable<Patient> _patientDataTable;
@@ -18,7 +18,7 @@ namespace LigaCancer.Controllers.Api
             _patientDataTable = patientDataTable;
         }
 
-        [HttpPost("~/api/GetPatientDataTableResponseAsync")]
+        [HttpPost]
         public async Task<IActionResult> GetPatientDataTableResponseAsync(DataTableOptions options)
         {
             try
