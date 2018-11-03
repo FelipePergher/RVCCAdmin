@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace LigaCancer.Code
 {
@@ -34,11 +35,12 @@ namespace LigaCancer.Code
             Widowed,
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum PhoneType
         {
-            [Display(Name = "Fixo")]
+            [Display(Name = "Fixo"), EnumMember(Value = "Fixo")]
             landline,
-            [Display(Name = "Celular")]
+            [Display(Name = "Celular"), EnumMember(Value = "Celular")]
             cellphone
         }
 
@@ -64,11 +66,12 @@ namespace LigaCancer.Code
             Other
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum DisablePatientType
         {
-            [Display(Name = "Alta")]
+            [Display(Name = "Alta"), EnumMember(Value = "Alta")]
             discharge,
-            [Display(Name = "Óbito")]
+            [Display(Name = "Óbito"), EnumMember(Value = "Óbito")]
             death
         }
 

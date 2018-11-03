@@ -92,11 +92,18 @@ namespace LigaCancer.Data.Store
 
         public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null)
         {
-            return Task.FromResult(
-                _context.FamilyMembers
-                .IncludeExpressions(specification.Includes)
-                .IncludeByNames(specification.IncludeStrings)
-                .FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            if(specification != null)
+            {
+                return Task.FromResult(
+                    _context.FamilyMembers
+                    .IncludeExpressions(specification.Includes)
+                    .IncludeByNames(specification.IncludeStrings)
+                    .FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            }
+            else
+            {
+                return Task.FromResult(_context.FamilyMembers.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            }
         }
 
         public Task<List<FamilyMember>> GetAllAsync(string[] include = null)

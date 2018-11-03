@@ -25,7 +25,7 @@
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-address-card"></i> Paciente
@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Informações do paciente
@@ -184,7 +184,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Naturalidade
@@ -244,12 +244,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Telefones
                                 <div class="card-header-actions">
-                                    <a asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#phoneCollapse" aria-expanded="true">
@@ -258,49 +258,7 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="phoneCollapse">
-                                <table id="phoneTable" class="table table-bordered table-striped table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Numero
-                                            </th>
-                                            <th>
-                                                Tipo
-                                            </th>
-                                            <th>
-                                                Observação
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.Phones)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @item.Number
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(m => m.Phones.FirstOrDefault(x => x == item).PhoneType)
-                                                </td>
-                                                <td>
-                                                    @item.ObservationNote
-                                                </td>
-                                                <td>
-                                                    <a asp-action="EditPhone" asp-controller="Phone" asp-route-id="@item.PhoneId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-secondary">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a asp-action="DeletePhone" asp-controller="Phone" asp-route-id="@item.PhoneId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-
+                                <table id="phoneTable" class="table table-bordered table-striped table-condensed"></table>
                             </div>
                         </div>
                     </div>
@@ -310,7 +268,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Endereços
                                 <div class="card-header-actions">
-                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true">
@@ -551,7 +509,7 @@
     <!-- /.container-fluid -->
 </main>
 
-<partial name="_Modal" model='new BootstrapModel { Id = "modal-action-patient-details", AreaLabeledId = "modal-action-patient-details-label", Size = Globals.ModalSize.Medium }' />
+<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />

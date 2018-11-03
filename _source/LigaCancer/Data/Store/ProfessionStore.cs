@@ -78,11 +78,19 @@ namespace LigaCancer.Data.Store
 
         public Task<Profession> FindByIdAsync(string id, ISpecification<Profession> specification = null)
         {
-            return Task.FromResult(
+            if(specification != null)
+            {
+                return Task.FromResult(
                 _context.Professions
                 .IncludeExpressions(specification.Includes)
                 .IncludeByNames(specification.IncludeStrings)
                 .FirstOrDefault(x => x.ProfessionId == int.Parse(id)));
+            }
+            else
+            {
+                return Task.FromResult(_context.Professions.FirstOrDefault(x => x.ProfessionId == int.Parse(id)));
+            }
+            
         }
 
         public Task<List<Profession>> GetAllAsync(string[] include = null)
