@@ -53,3 +53,7 @@ $("#modal-action").on("show.bs.modal", function (e) {
         }
     });
 });
+
+function errorDataTable() {
+    swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+}

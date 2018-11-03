@@ -11,8 +11,7 @@ function BuildDataTable() {
         ajax: {
             url: $("#linkAjaxDT").attr("href"),
             type: "POST",
-            error: function (ex) {
-            }
+            error: errorDataTable
         },
         order: [[0, "asc"]],
         columns: [
