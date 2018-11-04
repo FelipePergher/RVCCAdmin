@@ -9,27 +9,24 @@ function BuildDataTable() {
         serverSide: true,
         language: language,
         ajax: {
-            url: $("#linkAjaxDT").attr("href"),
+            url: "/api/GetCancerTypeDataTableResponseAsync",
             type: "POST",
             error: errorDataTable
         },
         order: [[0, "asc"]],
         columns: [
-            { data: "name", title: "Nome", width: "50%" },
+            { data: "name", title: "Nome" },
             {
                 title: "Ações",
-                width: "50%",
+                width: "20%",
                 render: function (data, type, row, meta) {
-                    let link = $("#linkEdit");
-                    let options = '<a href="' + link.attr("href") + '/' + row.cancerTypeId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
-                        '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+                    let options = '<a href="/CancerType/EditCancerType/' + row.cancerTypeId + '" data-toggle="modal" data-target="#modal-action"' +
+                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
 
                     if (row.patientInformationCancerTypes.length === 0) {
-                        link = $("#linkDelete");
-
                         options = options.concat(
-                            '<a href="' + link.attr("href") + '/' + row.cancerTypeId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
-                            '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                            '<a href="/CancerType/DeleteCancerType/' + row.cancerTypeId + '" data-toggle="modal" data-target="#modal-action"' +
+                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
                     } else {
                         options = options.concat(

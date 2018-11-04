@@ -9,7 +9,7 @@ function BuildDataTable() {
         serverSide: true,
         language: language,
         ajax: {
-            url: $("#linkAjaxDT").attr("href"),
+            url: "/api/GetPatientDataTableResponseAsync",
             type: "POST",
             error: errorDataTable
         },
@@ -23,19 +23,18 @@ function BuildDataTable() {
                 title: "Ações",
                 width: "30%",
                 render: function (data, type, row, meta) {
-                    let link = $("#linkShow");
-                    let options = '<a href="' + link.attr("href") + '/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
+                    let options = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
 
                     link = $("#linkEdit");
                     options = options.concat(
-                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
-                        '" class="btn btn-secondary ml-1"><i class="fas fa-edit"></i> Editar</a>'
+                        '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                        ' class="btn btn-secondary ml-1"><i class="fas fa-edit"></i> Editar</a>'
                     );
 
                     link = $("#linkDelete");
                     options = options.concat(
-                        '<a href="' + link.attr("href") + '/' + row.patientId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +
-                        '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                        '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                        ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                     );
                     return options;
                 }

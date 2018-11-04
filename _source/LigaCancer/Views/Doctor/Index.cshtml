@@ -55,10 +55,6 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<a id="linkDelete" asp-action="DeleteDoctor" data-toggle="modal" data-target="#modal-action"></a>
-<a id="linkEdit" asp-action="EditDoctor" data-toggle="modal" data-target="#modal-action"></a>
-<a id="linkAjaxDT" asp-action="GetDoctorDataTableResponseAsync" asp-controller="DoctorApi" data-toggle="modal" data-target="#modal-action"></a>
-
 <partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts
