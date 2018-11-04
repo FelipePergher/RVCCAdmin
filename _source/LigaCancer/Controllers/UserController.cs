@@ -27,26 +27,14 @@ namespace LigaCancer.Controllers
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            this._userManager = userManager;
-            this._roleManager = roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<UserListViewModel> model = new List<UserListViewModel>();
-            var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
-
-            model = users.Select(x => new UserListViewModel
-            {
-                UserId = x.Id,
-                FirstName = x.FirstName ?? "",
-                LastName = x.LastName ?? "",
-                Email = x.Email ?? "",
-                Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault()
-            }).ToList();
-
-            return View(model);
+            return View();
         }
 
         [HttpGet]

@@ -1,5 +1,4 @@
-﻿@model IEnumerable<LigaCancer.Models.UserViewModels.UserListViewModel>
-@using LigaCancer.Code
+﻿@using LigaCancer.Code
 @{
     ViewData["Title"] = "Usuários";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -41,36 +40,7 @@
                                 <hr />
 
                                 <table class="table table-bordered table-striped table-condensed text-center" id="userTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Nome
-                                            </th>
-                                            <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Regra
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @item.FirstName @item.LastName
-                                                </td>
-                                                <td>
-                                                    @item.Email
-                                                </td>
-                                                <td>
-                                                    @item.Role
-                                                </td>
-                                                <td>
+                                    @*<thead>
                                                     @if (item.Email != "felipepergher_10@hotmail.com")
                                                     {
                                                         <a asp-action="EditUser" asp-route-id="@item.UserId" data-toggle="modal" data-target="#modal-action" class="btn btn-secondary">
@@ -83,7 +53,7 @@
                                                 </td>
                                             </tr>
                                         }
-                                    </tbody>
+                                    </tbody>*@
                                 </table>
                             </div>
                         </div>
