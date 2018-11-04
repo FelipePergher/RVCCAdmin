@@ -48,6 +48,13 @@ namespace LigaCancer.Code.Interface
                 .Aggregate(Set, (current, include) => current.Include(include));
         }
 
+        public static IQueryable<T> IncludeWheres<T>(this IQueryable<T> Set, IList<Expression<Func<T, bool>>> WhereExpression) where T : class
+        {
+            if (WhereExpression.Count < 1)
+                return Set;
+            return WhereExpression
+                .Aggregate(Set, (current, where) => current.Where(where));
+        }
 
         public static IQueryable<T> IncludeByNames<T>(this IQueryable<T> Set, IList<string> IncludeStrings) where T : class
         {

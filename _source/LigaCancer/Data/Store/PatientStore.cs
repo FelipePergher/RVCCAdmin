@@ -132,6 +132,7 @@ namespace LigaCancer.Data.Store
         {
             var data = await _context.Set<Patient>()
                             .IncludeExpressions(specification.Includes)
+                            .IncludeWheres(specification.Wheres)
                             .IncludeByNames(specification.IncludeStrings)
                             .GetOptionResponseAsync(options);
 

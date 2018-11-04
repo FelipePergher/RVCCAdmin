@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Data.Models.ManyToManyModels;
 using LigaCancer.Code.Interface;
+using LigaCancer.Models.SearchViewModels;
 
 namespace LigaCancer.Controllers
 {
@@ -47,7 +48,8 @@ namespace LigaCancer.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            PatientSearchViewModel patientSearchViewModel = new PatientSearchViewModel();
+            return View(patientSearchViewModel);
         }
 
         public IActionResult AddPatient()

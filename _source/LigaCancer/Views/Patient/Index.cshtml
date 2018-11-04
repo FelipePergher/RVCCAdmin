@@ -1,4 +1,5 @@
-﻿@using LigaCancer.Code
+﻿@model LigaCancer.Models.SearchViewModels.PatientSearchViewModel
+@using LigaCancer.Code
 @{
     ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -41,18 +42,44 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
+                                <div class="form-row">
+                                    <div class="col-lg-3">
+                                        <label asp-for="CivilState"></label>
+                                        <select asp-for="CivilState" asp-items="@Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Sex"></label>
+                                        <select asp-for="Sex" asp-items="@Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                    @*<div class="col-lg-2"></div>
+                                        <div class="col-lg-2 mt-4">
+                                            <input asp-for="Discharge" />
+                                            <label asp-for="Discharge"></label>
+                                        </div>
+                                        <div class="col-lg-2 mt-4">
+                                            <input asp-for="Death" />
+                                            <label asp-for="Death"></label>*@
+                                </div>
 
+                                <hr />
+
+                                <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
                             </div>
+
                         </div>
                     </div>
-                    <!--/col-->
-
                 </div>
-                <!--/row-->
+                <!--/col-->
 
             </div>
+            <!--/row-->
+
         </div>
+    </div>
     </div>
     <!-- /.conainer-fluid -->
 </main>

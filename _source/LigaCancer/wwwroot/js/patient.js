@@ -1,5 +1,9 @@
 ﻿$(function () {
     dataTable = BuildDataTable();
+
+    $('#CivilState, #Sex').change(function (e) {
+        dataTable.draw();
+    });
 });
 
 function BuildDataTable() {
@@ -11,17 +15,23 @@ function BuildDataTable() {
         ajax: {
             url: "/api/GetPatientDataTableResponseAsync",
             type: "POST",
+            data: function (d) {
+                return $.extend({}, d, {
+                    civilState: $('#CivilState').val(),
+                    Sex: $('#Sex').val()
+                });
+            },
             error: errorDataTable
         },
         order: [[0, "asc"]],
         columns: [
             { data: "firstName", title: "Nome" },
-            { data: "surname", title: "Sobrenome"},
-            { data: "rg", title: "RG"},
-            { data: "cpf", title: "CPF"},
-            { data: "sex", title: "Gênero"},
-            { data: "civilState", title: "Estado Civil"},
-            { data: "dateOfBirth", title: "Nascimento"},
+            { data: "surname", title: "Sobrenome" },
+            { data: "rg", title: "RG" },
+            { data: "cpf", title: "CPF" },
+            { data: "sex", title: "Gênero" },
+            { data: "civilState", title: "Estado Civil" },
+            { data: "dateOfBirth", title: "Nascimento" },
             {
                 title: "Ações",
                 width: "30%",
