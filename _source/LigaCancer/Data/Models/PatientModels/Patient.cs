@@ -17,6 +17,7 @@ namespace LigaCancer.Data.Models.PatientModels
             Addresses = new HashSet<Address>();
             FileAttachments = new HashSet<FileAttachment>();
             PatientInformation = new PatientInformation();
+            Family = new Family();
         }
 
         [Key]
