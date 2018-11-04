@@ -113,12 +113,12 @@ function ReloadTables(tableName) {
 
 function PhoneDataTable() {
     let columns = [
-        { data: "number", title: "Numero", width: "25%" },
-        { data: "phoneType", title: "Tipo", width: "25%" },
-        { data: "observationNote", title: "Observação", width: "25%" },
+        { data: "number", title: "Numero" },
+        { data: "phoneType", title: "Tipo" },
+        { data: "observationNote", title: "Observação"},
         {
             title: "Ações",
-            width: "25%",
+            width: "20%",
             render: function (data, type, row, meta) {
                 let options = '<a href="/Phone/EditPhone/' + row.phoneId + '" data-toggle="modal" data-target="#modal-action' +
                     '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
@@ -151,6 +151,7 @@ function AddressDataTable() {
         { data: "observationAddress", title: "Observação" },
         {
             title: "Ações",
+            width: "20%",
             render: function (data, type, row, meta) {
                 let options = '<a href="/Address/EditAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
                     '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
@@ -180,6 +181,7 @@ function FamilyMemberDataTable() {
         { data: "monthlyIncome", title: "Renda" },
         {
             title: "Ações",
+            width: "20%",
             render: function (data, type, row, meta) {
                 let options = '<a href="/FamilyMember/EditFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
                     '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
@@ -212,6 +214,7 @@ function FileAttachmentDataTable() {
         },
         {
             title: "Ações",
+            width: "20%",
             render: function (data, type, row, meta) {
                 let options = 
                     '<a href="/FileAttachment/DeleteFileAttachment/' + row.fileAttachmentId + '" data-toggle="modal" data-target="#modal-action' +

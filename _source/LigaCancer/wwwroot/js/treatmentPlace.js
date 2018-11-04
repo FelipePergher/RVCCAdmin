@@ -15,10 +15,10 @@ function BuildDataTable() {
         },
         order: [[0, "asc"]],
         columns: [
-            { data: "city", title: "Cidade", width: "50%"},
+            { data: "city", title: "Cidade"},
             {
                 title: "Ações",
-                width: "50%",
+                width: "20%",
                 render: function (data, type, row, meta) {
                     let link = $("#linkEdit");
                     let options = '<a href="' + link.attr("href") + '/' + row.treatmentPlaceId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' +

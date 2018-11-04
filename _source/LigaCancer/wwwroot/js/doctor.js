@@ -15,11 +15,11 @@ function BuildDataTable() {
         },
         order: [[0, "asc"]],
         columns: [
-            { data: "name", title: "Nome", width: "33%" },
-            { data: "crm", title: "CRM", width: "33%" },
+            { data: "name", title: "Nome" },
+            { data: "crm", title: "CRM" },
             {
                 title: "Ações",
-                width: "33%",
+                width: "20%",
                 render: function (data, type, row, meta) {
                     let link = $("#linkEdit");
                     let options = '<a href="' + link.attr("href") + '/' + row.doctorId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") +

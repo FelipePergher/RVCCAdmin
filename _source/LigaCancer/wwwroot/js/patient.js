@@ -21,6 +21,7 @@ function BuildDataTable() {
             { data: "cpf", title: "CPF"},
             {
                 title: "Ações",
+                width: "30%",
                 render: function (data, type, row, meta) {
                     let link = $("#linkShow");
                     let options = '<a href="' + link.attr("href") + '/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
