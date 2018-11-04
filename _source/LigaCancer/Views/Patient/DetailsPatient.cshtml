@@ -330,40 +330,7 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="attachmentsCollapse">
-                                <table id="attachmentsTable" class="table table-bordered table-striped table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Categoria arquivo
-                                            </th>
-                                            <th>
-                                                Arquivo
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.FileAttachments)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @item.ArchiveCategorie
-                                                </td>
-                                                <td>
-                                                    <a class="fa fa-file" href="~/@item.FilePath" download="@item.FileName"> @item.FileName</a>
-                                                </td>
-                                                <td>
-                                                    <a asp-action="DeleteFileAttachment" asp-controller="FileAttachment" asp-route-id="@item.FileAttachmentId" data-toggle="modal" data-target="#modal-action" class="btn btn-danger">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-
+                                <table id="attachmentsTable" class="table table-bordered table-striped table-condensed"></table>
                             </div>
                         </div>
                     </div>

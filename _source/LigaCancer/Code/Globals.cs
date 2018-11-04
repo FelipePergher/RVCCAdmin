@@ -44,13 +44,14 @@ namespace LigaCancer.Code
             cellphone
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum ArchiveCategorie
         {
-            [Display(Name = "Pessoal")]
+            [Display(Name = "Pessoal"), EnumMember(Value = "Pessoal")]
             Personal,
-            [Display(Name = "Médico")]
+            [Display(Name = "Médico"), EnumMember(Value = "Médico")]
             Medical,
-            [Display(Name = "Outros")]
+            [Display(Name = "Outros"), EnumMember(Value = "Outros")]
             Other
         }
 

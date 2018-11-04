@@ -12,7 +12,7 @@ $(function () {
     dataTablePhone = PhoneDataTable();
     dataTableAddress = AddressDataTable();
     dataTableFamilyMember = FamilyMemberDataTable();
-    //Tables("attachmentsTable", 2);
+    dataTableAttachmentFile = FileAttachmentDataTable();
 });
 
 $("#modal-action").on("show.bs.modal", function (e) {
@@ -53,14 +53,7 @@ $("#modal-action").on("show.bs.modal", function (e) {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
-                        $("#submitSpinner").hide();
-                        if (response) {
-                            location.reload();
-                        } else {
-                            swal("Oops...", "Algo deu errado!\n", "Erro");
-                        }
-                    },
+                    success: AjaxSuccessPatient,
                     error: function (error) {
                         $("#submitSpinner").hide();
                         swal("Oops...", "Algo deu errado!\nO servidor respondeu com:\n\n'" + error.statusText + "'", "Erro");
@@ -205,6 +198,34 @@ function FamilyMemberDataTable() {
     ];
 
     return CreateDataTable("familyMemberTable", "/api/GetFamilyMemberDataTableResponseAsync/" + patientId, columns, columnDefs);
+}
+
+function FileAttachmentDataTable() {
+    let columns = [
+        { data: "archiveCategorie", title: "Categoria arquivo" },
+        {
+            title: "Categoria arquivo",
+            render: function (data, type, row, meta) {
+                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '">' + row.fileName + '</a>';
+                return anchor;
+            }
+        },
+        {
+            title: "Ações",
+            render: function (data, type, row, meta) {
+                let options = 
+                    '<a href="/FileAttachment/DeleteFileAttachment/' + row.fileAttachmentId + '" data-toggle="modal" data-target="#modal-action' +
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>';
+                return options;
+            }
+        }
+    ];
+
+    let columnDefs = [
+        { "orderable": false, "targets": [-1] }
+    ];
+
+    return CreateDataTable("attachmentsTable", "/api/GetFileAttachmentsAsync/" + patientId, columns, columnDefs);
 }
 
 function CreateDataTable(tableId, url, columns, columnDefs) {
