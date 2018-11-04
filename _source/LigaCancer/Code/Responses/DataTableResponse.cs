@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
-using System.Threading.Tasks;
 
-namespace LigaCancer.Data.Responses
+namespace LigaCancer.Code.Responses
 {
     public class DataTableResponse : ISerializable
     {

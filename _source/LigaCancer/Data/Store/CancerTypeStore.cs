@@ -1,8 +1,8 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Requests;
-using LigaCancer.Data.Responses;
+using LigaCancer.Code.Requests;
+using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

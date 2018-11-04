@@ -1,8 +1,6 @@
-﻿using LigaCancer.Data.Requests;
-using LigaCancer.Data.Responses;
+﻿using LigaCancer.Code.Requests;
+using LigaCancer.Code.Responses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Code.Interface
