@@ -54,15 +54,16 @@ namespace LigaCancer.Code
             Other
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum ResidenceType
         {
-            [Display(Name = "Própria")]
+            [Display(Name = "Própria"), EnumMember(Value = "Própria")]
             Owner,
-            [Display(Name = "Cedida")]
+            [Display(Name = "Cedida"), EnumMember(Value = "Cedida")]
             ceded,
-            [Display(Name = "Alugada")]
+            [Display(Name = "Alugada"), EnumMember(Value = "Alugada")]
             leased,
-            [Display(Name = "Outros")]
+            [Display(Name = "Outros"), EnumMember(Value = "Outros")]
             Other
         }
 

@@ -58,7 +58,7 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, "200");
+                    return StatusCode(200, "familyMember");
                 }
                 ModelState.AddErrors(result);
             }
@@ -113,7 +113,7 @@ namespace LigaCancer.Controllers
                     result = await _familyMemberService.UpdateAsync(familyMember);
                     if (result.Succeeded)
                     {
-                        return StatusCode(200, "200");
+                        return StatusCode(200, "familyMember");
                     }
                 }
                 ModelState.AddErrors(result);
@@ -152,7 +152,7 @@ namespace LigaCancer.Controllers
 
                     if (result.Succeeded)
                     {
-                        return StatusCode(200, "200");
+                        return StatusCode(200, "familyMember");
                     }
                     ModelState.AddErrors(result);
                     return PartialView("_DeleteFamilyMember", familyMember.Name);

@@ -77,11 +77,18 @@ namespace LigaCancer.Data.Store
 
         public Task<Address> FindByIdAsync(string id, ISpecification<Address> specification = null)
         {
-            return Task.FromResult(
+            if(specification != null)
+            {
+                return Task.FromResult(
                 _context.Addresses
                 .IncludeExpressions(specification.Includes)
                 .IncludeByNames(specification.IncludeStrings)
                 .FirstOrDefault(x => x.AddressId == int.Parse(id)));
+            }
+            else
+            {
+                return Task.FromResult(_context.Addresses.FirstOrDefault(x => x.AddressId == int.Parse(id)));
+            }
         }
 
         public Task<List<Address>> GetAllAsync(string[] include = null)

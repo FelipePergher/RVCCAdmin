@@ -1,21 +1,21 @@
 ﻿var dataTablePhone;
+var dataTableAddress;
+var dataTableFamilyMember;
+var dataTableAttachmentFile;
 
 $(function () {
-    $("#modal-action-patient-details").on('loaded.bs.modal', function (e) {
+    $("#modal-action").on('loaded.bs.modal', function (e) {
     }).on('hidden.bs.modal', function (e) {
         $(this).removeData('bs.modal');
     });
 
-    
     dataTablePhone = PhoneDataTable();
-    //dataTablePhone = CreateDataTable("phoneTable", "/api/GetPhoneDataTableResponseAsync");
-    //dataTablePhone = PhoneTable();
-    //Tables("familyMemberTable", 5);
-    //Tables("addressTable", 6);
+    dataTableAddress = AddressDataTable();
+    dataTableFamilyMember = FamilyMemberDataTable();
     //Tables("attachmentsTable", 2);
 });
 
-$("#modal-action-patient-details").on("show.bs.modal", function (e) {
+$("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
     $(this).find(".modal-content").load(link.attr("href"), function () {
         $.validator.unobtrusive.parse('form');
@@ -93,10 +93,24 @@ function ReloadTables(tableName) {
     let dataTableReload;
 
     if (tableName === "phone") dataTableReload = dataTablePhone;
+    if (tableName === "address") dataTableReload = dataTableAddress;
+    if (tableName === "familyMember") {
+        dataTableReload = dataTableFamilyMember;
+        
+        $.ajax({
+            url: "/api/GetFamilyIncomeAsync/" + patientId,
+            type: "GET",
+            success: function (data) {
+                $("#familyIncome").text("$" + parseFloat(data.familyIncome).toFixed(2));
+                $("#perCapitaIncome").text("$" + parseFloat(data.perCapitaIncome).toFixed(2));
+            },
+            error: function (data) {
+                swal("Oops...", "Alguma coisa aconteceu errado!\n Se o problema persistir contate o administrador!", "error");
+            }
+        });
+    }
+    if (tableName === "attachmentFile") dataTableReload = dataTableAttachmentFile;
 
-
-
-    
     if (dataTableReload !== undefined && dataTableReload !== null) {
         dataTableReload.ajax.reload();
     } else {
@@ -129,7 +143,68 @@ function PhoneDataTable() {
         { "orderable": false, "targets": [-1] }
     ];
 
-    return CreateDataTable("phoneTable", "/api/GetPhoneDataTableResponseAsync", columns, columnDefs);
+    return CreateDataTable("phoneTable", "/api/GetPhoneDataTableResponseAsync/" + patientId, columns, columnDefs);
+}
+
+function AddressDataTable() {
+    let columns = [
+        { data: "street", title: "Rua" },
+        { data: "neighborhood", title: "Bairro" },
+        { data: "city", title: "Cidade" },
+        { data: "houseNumber", title: "Nº", },
+        { data: "complement", title: "Complemento" },
+        { data: "residenceType", title: "Residência" },
+        { data: "monthlyAmmountResidence", title: "Valor Mensal"},
+        { data: "observationAddress", title: "Observação" },
+        {
+            title: "Ações",
+            render: function (data, type, row, meta) {
+                let options = '<a href="/Address/EditAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+
+                options = options.concat(
+                    '<a href="/Address/DeleteAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                );
+                return options;
+            }
+        }
+    ];
+
+    let columnDefs = [
+        { "orderable": false, "targets": [-1] }
+    ];
+
+    return CreateDataTable("addressTable", "/api/GetAddressDataTableResponseAsync/" + patientId, columns, columnDefs);
+}
+
+function FamilyMemberDataTable() {
+    let columns = [
+        { data: "name", title: "Nome" },
+        { data: "kinship", title: "Parentesco" },
+        { data: "age", title: "Idade" },
+        { data: "sex", title: "Gênero" },
+        { data: "monthlyIncome", title: "Renda" },
+        {
+            title: "Ações",
+            render: function (data, type, row, meta) {
+                let options = '<a href="/FamilyMember/EditFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+
+                options = options.concat(
+                    '<a href="/FamilyMember/DeleteFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                );
+                return options;
+            }
+        }
+    ];
+
+    let columnDefs = [
+        { "orderable": false, "targets": [-1] }
+    ];
+
+    return CreateDataTable("familyMemberTable", "/api/GetFamilyMemberDataTableResponseAsync/" + patientId, columns, columnDefs);
 }
 
 function CreateDataTable(tableId, url, columns, columnDefs) {

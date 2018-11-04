@@ -277,79 +277,7 @@
                                 </div>
                             </div>
                             <div class="card-body collapse show" id="addressCollapse">
-                                <table id="addressTable" class="table table-bordered table-striped table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Rua
-                                            </th>
-                                            <th>
-                                                Bairro
-                                            </th>
-                                            <th>
-                                                Cidade
-                                            </th>
-                                            <th>
-                                                Nº
-                                            </th>
-                                            <th>
-                                                Complemento
-                                            </th>
-                                            <th>
-                                                Residência
-                                            </th>
-                                            <th>
-                                                Valor Mensal
-                                            </th>
-                                            <th>
-                                                Observação
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.Addresses)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @item.Street
-                                                </td>
-                                                <td>
-                                                    @item.Neighborhood
-                                                </td>
-                                                <td>
-                                                    @item.City
-                                                </td>
-                                                <td>
-                                                    @item.HouseNumber
-                                                </td>
-                                                <td>
-                                                    @item.Complement
-                                                </td>
-                                                <td>
-                                                    @item.ResidenceType
-                                                </td>
-                                                <td>
-                                                    @item.MonthlyAmmountResidence
-                                                </td>
-                                                <td>
-                                                    @item.ObservationAddress
-                                                </td>
-                                                <td>
-                                                    <a asp-action="EditAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-secondary">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a asp-action="DeleteAddress" asp-controller="Address" asp-route-id="@item.AddressId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-
+                                <table id="addressTable" class="table table-bordered table-striped table-condensed"></table>
                             </div>
                         </div>
                     </div>
@@ -359,7 +287,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Membros Familiares
                                 <div class="card-header-actions">
-                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#familyMembersCollapse" aria-expanded="true">
@@ -370,82 +298,19 @@
                             <div class="card-body collapse show" id="familyMembersCollapse">
 
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        @* Todo: colocar o tipo de residência *@
-                                        <strong> Tipo de residência:</strong>
+                                    <div class="col-lg-6">
+                                        <strong>Renda Familiar:</strong>
+                                        <span id="familyIncome">@Model.Family?.FamilyIncome.ToString("C2")</span>
                                     </div>
-                                    @if (Model.Family != null && Model.Family.FamilyMembers.Count() > 0)
-                                    {
-
-                                        <div class="col-lg-4">
-                                            <strong>Renda Familiar:</strong>  @Model.Family.FamilyIncome
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <strong> Renda Per Capita:</strong>  @Model.Family.PerCapitaIncome
-                                        </div>
-                                    }
+                                    <div class="col-lg-6">
+                                        <strong> Renda Per Capita:</strong>
+                                        <span id="perCapitaIncome">@Model.Family?.PerCapitaIncome.ToString("C2")</span>
+                                    </div>
                                 </div>
 
                                 <hr />
 
-                                <table id="familyMemberTable" class="table table-bordered table-striped table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Nome
-                                            </th>
-                                            <th>
-                                                Parentesco
-                                            </th>
-                                            <th>
-                                                Idade
-                                            </th>
-                                            <th>
-                                                Gênero
-                                            </th>
-                                            <th>
-                                                Renda
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.Family != null)
-                                        {
-
-                                            foreach (var item in Model.Family.FamilyMembers)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @item.Name
-                                                    </td>
-                                                    <td>
-                                                        @item.Kinship
-                                                    </td>
-                                                    <td>
-                                                        @item.Age
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(x => x.Family.FamilyMembers.FirstOrDefault(y => y == item).Sex)
-                                                    </td>
-                                                    <td>
-                                                        @item.MonthlyIncome
-                                                    </td>
-                                                    <td>
-                                                        <a asp-action="EditFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-secondary">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                        <a asp-action="DeleteFamilyMember" asp-controller="FamilyMember" asp-route-id="@item.FamilyMemberId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
-                                                            <i class="fa fa-times"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
+                                <table id="familyMemberTable" class="table table-bordered table-striped table-condensed"></table>
 
                             </div>
                         </div>
@@ -456,7 +321,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Arquivos
                                 <div class="card-header-actions">
-                                    <a asp-action="AddFileAttachment" asp-controller="FileAttachment" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action-patient-details">
+                                    <a asp-action="AddFileAttachment" asp-controller="FileAttachment" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#attachmentsCollapse" aria-expanded="true">
@@ -490,7 +355,7 @@
                                                     <a class="fa fa-file" href="~/@item.FilePath" download="@item.FileName"> @item.FileName</a>
                                                 </td>
                                                 <td>
-                                                    <a asp-action="DeleteFileAttachment" asp-controller="FileAttachment" asp-route-id="@item.FileAttachmentId" data-toggle="modal" data-target="#modal-action-patient-details" class="btn btn-danger">
+                                                    <a asp-action="DeleteFileAttachment" asp-controller="FileAttachment" asp-route-id="@item.FileAttachmentId" data-toggle="modal" data-target="#modal-action" class="btn btn-danger">
                                                         <i class="fa fa-times"></i>
                                                     </a>
                                                 </td>
@@ -516,5 +381,8 @@
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        var patientId = @Model.PatientId;
+    </script>
     <script src="~/js/patient-details.js"></script>
 }

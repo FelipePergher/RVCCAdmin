@@ -39,10 +39,6 @@ namespace LigaCancer.Models.MedicalViewModels
 
         public PatientInformationViewModel PatientInformation { get; set; }
 
-        public ICollection<Phone> Phones { get; set; }
-
-        public ICollection<Address> Addresses { get; set; }
-
         public Family Family { get; set; }
 
         public IEnumerable<FileAttachment> FileAttachments { get; set; }

@@ -14,23 +14,23 @@ using Microsoft.Extensions.Logging;
 namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin"), Route("api/[action]/{id?}")]
-    public class PhoneApiController : Controller
+    public class FamilyMemberApiController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
 
-        public PhoneApiController(IDataStore<Patient> patientService)
+        public FamilyMemberApiController(IDataStore<Patient> patientService)
         {
             _patientService = patientService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPhoneDataTableResponseAsync(string id)
+        public async Task<IActionResult> GetFamilyMemberDataTableResponseAsync(string id)
         {
             try
             {
-                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Phones);
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family, x => x.Family.FamilyMembers);
                 Patient patient = await _patientService.FindByIdAsync(id, specification);
-                return Ok(new { data = patient.Phones});
+                return Ok(new { data = patient.Family.FamilyMembers});
             }
             catch
             {

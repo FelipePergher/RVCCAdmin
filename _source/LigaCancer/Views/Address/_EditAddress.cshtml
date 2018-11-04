@@ -6,7 +6,7 @@
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-success="AjaxSuccessPatient"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Endereço" }' />
@@ -50,7 +50,14 @@
             </select>
             <span asp-validation-for="ResidenceType" class="text-danger"></span>
         </div>
-        <div class="form-group" id="monthlyResidence" style="display: none;">
+        @{ 
+            string style = "";
+            if(Model.ResidenceType == null)
+            {
+                style = "display: none;";
+            }
+        }
+        <div class="form-group" id="monthlyResidence" style="@style">
             <label asp-for="MonthlyAmmountResidence" class="control-label"></label>
             <input asp-for="MonthlyAmmountResidence" class="form-control" />
             <span asp-validation-for="MonthlyAmmountResidence" class="text-danger"></span>

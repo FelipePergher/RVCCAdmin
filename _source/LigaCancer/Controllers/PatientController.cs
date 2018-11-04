@@ -730,7 +730,7 @@ namespace LigaCancer.Controllers
             }
 
             BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                   x => x.Naturality, x => x.Profession, x => x.Phones, x => x.Family, x => x.Family.FamilyMembers, x => x.Addresses, x => x.FileAttachments, x => x.PatientInformation,
+                   x => x.Naturality, x => x.Profession, x => x.Family, x => x.FileAttachments, x => x.PatientInformation,
                    x => x.PatientInformation.PatientInformationCancerTypes,
                    x => x.PatientInformation.PatientInformationDoctors,
                    x => x.PatientInformation.PatientInformationMedicines,
@@ -759,9 +759,7 @@ namespace LigaCancer.Controllers
                 Profession = patient.Profession?.Name,
                 RG = patient.RG,
                 Sex = patient.Sex,
-                Phones = patient.Phones,
                 Family = patient.Family,
-                Addresses = patient.Addresses,
                 Naturality = new NaturalityViewModel
                 {
                     City = patient.Naturality.City,
