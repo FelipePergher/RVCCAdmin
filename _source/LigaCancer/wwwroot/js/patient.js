@@ -19,6 +19,9 @@ function BuildDataTable() {
             { data: "surname", title: "Sobrenome"},
             { data: "rg", title: "RG"},
             { data: "cpf", title: "CPF"},
+            { data: "sex", title: "Gênero"},
+            { data: "civilState", title: "Estado Civil"},
+            { data: "dateOfBirth", title: "Nascimento"},
             {
                 title: "Ações",
                 width: "30%",
