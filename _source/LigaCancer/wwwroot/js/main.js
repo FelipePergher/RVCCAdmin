@@ -1,11 +1,12 @@
 ﻿var dataTable = null;
 var language = {
     emptyTable: "Nenhuma informação cadastrada!",
-    processing: '<div id="loaderSpan" class="loading" ></div>',
     info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
     infoEmpty: "",
     search: "Procurar",
     lengthMenu: "Mostrar _MENU_ registros por página",
+    processing: '<span class="fa fa-spinner fa-pulse" style="font-size: 35px;" ></span>',
+    loadingRecords: '<span class="fa fa-spinner fa-pulse" style="font-size: 35px; margin-left: -60px;" ></span>',
     paginate: {
         first: "Primeiro",
         last: "Último",
