@@ -24,9 +24,22 @@ namespace LigaCancer.Controllers.Api
         {
             try
             {
-                BaseSpecification<Patient> specification = new BaseSpecification<Patient>();
-                if(int.Parse(patientSearchViewModel.CivilState) != -1) { 
-                    Globals.CivilState civilStateValue = (Globals.CivilState) int.Parse(patientSearchViewModel.CivilState);
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
+                       x => x.PatientInformation,
+                       x => x.PatientInformation.PatientInformationCancerTypes,
+                       x => x.PatientInformation.PatientInformationDoctors,
+                       x => x.PatientInformation.PatientInformationMedicines,
+                       x => x.PatientInformation.PatientInformationTreatmentPlaces
+                );
+
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationDoctors.Doctor");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationMedicines.Medicine");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationCancerTypes.CancerType");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
+
+                if (int.Parse(patientSearchViewModel.CivilState) != -1)
+                {
+                    Globals.CivilState civilStateValue = (Globals.CivilState)int.Parse(patientSearchViewModel.CivilState);
                     specification.Wheres.Add(x => x.CivilState == civilStateValue);
                 }
 

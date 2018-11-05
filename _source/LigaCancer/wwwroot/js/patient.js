@@ -36,26 +36,27 @@ function BuildDataTable() {
                 title: "Ações",
                 width: "30%",
                 render: function (data, type, row, meta) {
-                    let options = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
+                    console.log(row);
+                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
 
                     link = $("#linkEdit");
-                    options = options.concat(
+                    render = render.concat(
                         '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
                         ' class="btn btn-secondary ml-1"><i class="fas fa-edit"></i> Editar</a>'
                     );
 
                     link = $("#linkDelete");
-                    options = options.concat(
+                    render = render.concat(
                         '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
                         ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                     );
-                    return options;
+                    return render;
                 }
             }
         ],
         columnDefs: [
-            { "orderable": false, "targets": [4, 5, 6, 7] },
-            { "searchable": false, "targets": [4, 5, 6, 7] }
+            { "orderable": false, "targets": [5, 6, 7, 8] },
+            { "searchable": false, "targets": [5, 6, 7, 8] }
         ]
     });
 }

@@ -21,13 +21,13 @@ function BuildDataTable() {
                 width: "20%",
                 render: function (data, type, row, meta) {
                     if (row.email !== "felipepergher_10@hotmail.com") {
-                        let options = '<a href="/User/EditUser/' + row.userId + '" data-toggle="modal" data-target="#modal-action"' +
+                        let render = '<a href="/User/EditUser/' + row.userId + '" data-toggle="modal" data-target="#modal-action"' +
                             ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
-                        options = options.concat(
+                        render = render.concat(
                             '<a href="/User/DeleteUser/' + row.userId + '" data-toggle="modal" data-target="#modal-action"' +
                             ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
-                        return options;
+                        return render;
                     }
                     return "";
                 }
