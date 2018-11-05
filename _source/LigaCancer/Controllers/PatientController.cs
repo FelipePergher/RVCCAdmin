@@ -386,10 +386,10 @@ namespace LigaCancer.Controllers
                     x => x.PatientInformation.PatientInformationMedicines,
                     x => x.PatientInformation.PatientInformationTreatmentPlaces
                 );
-                specification.AddInclude("PatientInformation.PatientInformationDoctors.Doctor");
-                specification.AddInclude("PatientInformation.PatientInformationMedicines.Medicine");
-                specification.AddInclude("PatientInformation.PatientInformationCancerTypes.CancerType");
-                specification.AddInclude("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationDoctors.Doctor");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationMedicines.Medicine");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationCancerTypes.CancerType");
+                specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
 
                 Patient patient = await _patientService.FindByIdAsync(id, specification);
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
@@ -737,10 +737,10 @@ namespace LigaCancer.Controllers
                    x => x.PatientInformation.PatientInformationMedicines,
                    x => x.PatientInformation.PatientInformationTreatmentPlaces
                );
-            specification.AddInclude("PatientInformation.PatientInformationDoctors.Doctor");
-            specification.AddInclude("PatientInformation.PatientInformationMedicines.Medicine");
-            specification.AddInclude("PatientInformation.PatientInformationCancerTypes.CancerType");
-            specification.AddInclude("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
+            specification.IncludeStrings.Add("PatientInformation.PatientInformationDoctors.Doctor");
+            specification.IncludeStrings.Add("PatientInformation.PatientInformationMedicines.Medicine");
+            specification.IncludeStrings.Add("PatientInformation.PatientInformationCancerTypes.CancerType");
+            specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
 
             Patient patient = await _patientService.FindByIdAsync(id, specification);
 

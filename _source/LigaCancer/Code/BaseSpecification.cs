@@ -35,13 +35,5 @@ namespace LigaCancer.Code
 
         public List<Expression<Func<T, bool>>> Wheres { get; } = new List<Expression<Func<T, bool>>>();
 
-        public virtual void AddInclude(Expression<Func<T, object>> includeExpression)
-        {
-            Includes.Add(includeExpression);
-        }
-        public virtual void AddInclude(string includeString)
-        {
-            IncludeStrings.Add(includeString);
-        }
     }
 }
