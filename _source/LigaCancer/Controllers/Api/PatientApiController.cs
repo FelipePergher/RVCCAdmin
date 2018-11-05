@@ -25,7 +25,7 @@ namespace LigaCancer.Controllers.Api
             try
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                       x => x.PatientInformation,
+                       x => x.PatientInformation, x => x.Profession, x => x.Family,
                        x => x.PatientInformation.PatientInformationCancerTypes,
                        x => x.PatientInformation.PatientInformationDoctors,
                        x => x.PatientInformation.PatientInformationMedicines,

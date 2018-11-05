@@ -11,6 +11,7 @@ function BuildDataTable() {
         pageLength: 10,
         processing: true,
         serverSide: true,
+        scrollX: true,
         language: language,
         ajax: {
             url: "/api/GetPatientDataTableResponseAsync",
@@ -29,34 +30,103 @@ function BuildDataTable() {
             { data: "surname", title: "Sobrenome" },
             { data: "rg", title: "RG" },
             { data: "cpf", title: "CPF" },
+            { data: "dateOfBirth", title: "Nascimento" },
             { data: "sex", title: "Gênero" },
             { data: "civilState", title: "Estado Civil" },
-            { data: "dateOfBirth", title: "Nascimento" },
+            {
+                title: "Grupo de convivência",
+                render: function (data, type, row, meta) {
+                    let render = row.familiarityGroup ? "Participa" : "Não Participa";
+                    return render;
+                }
+            },
+            {
+                title: "Profissão",
+                render: function (data, type, row, meta) {
+                    let render = row.profession !== null ? row.profession.name : "";
+                    return render;
+                }
+            },
+            {
+                title: "Renda Familiar",
+                render: function (data, type, row, meta) {
+                    //todo problem here
+                    //console.log(row.family.familyIncome);
+                    let render = row.family.familyIncome !== 0 ? row.family.familyIncome : "";
+                    return render;
+                }
+            },
+            {
+                title: "Renda Percapita",
+                render: function (data, type, row, meta) {
+                    let render = row.family.perCapitaIncome !== 0 ? row.family.perCapitaIncome : "";
+                    return render;
+                }
+            },
+            {
+                title: "Remédios",
+                render: function (data, type, row, meta) {
+                    let render = null;
+                    jQuery.each(row.patientInformation.patientInformationMedicines, function (index, value) {
+                        render = render !== null ? render.concat(", " + value.medicine.name) : value.medicine.name;
+                    });
+                    return render;
+                }
+            },
+            {
+                title: "Cancêres",
+                render: function (data, type, row, meta) {
+                    let render = null;
+                    jQuery.each(row.patientInformation.patientInformationCancerTypes, function (index, value) {
+                        render = render !== null ? render.concat(", " + value.cancerType.name) : value.cancerType.name;
+                    });
+                    return render;
+                }
+            },
+            {
+                title: "Locais de Tratamento",
+                render: function (data, type, row, meta) {
+                    let render = null;
+                    jQuery.each(row.patientInformation.patientInformationTreatmentPlaces, function (index, value) {
+                        render = render !== null ? render.concat(", " + value.treatmentPlace.city) : value.treatmentPlace.city;
+                    });
+                    return render;
+                }
+            },
+            {
+                title: "Médicos",
+                render: function (data, type, row, meta) {
+                    let render = null;
+                    jQuery.each(row.patientInformation.patientInformationDoctors, function (index, value) {
+                        render = render !== null ? render.concat(", " + value.doctor.name) : value.doctor.name;
+                    });
+                    return render;
+                }
+            },
             {
                 title: "Ações",
-                width: "30%",
+                width: "180px",
                 render: function (data, type, row, meta) {
-                    console.log(row);
-                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info"><i class="fas fa-info"></i> Detalhes</a>';
+                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-25"><i class="fas fa-info"></i></a>';
 
                     link = $("#linkEdit");
                     render = render.concat(
                         '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary ml-1"><i class="fas fa-edit"></i> Editar</a>'
+                        ' class="btn btn-secondary w-25 ml-1"><i class="fas fa-edit"></i></a>'
                     );
 
                     link = $("#linkDelete");
                     render = render.concat(
                         '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                        ' class="btn btn-danger w-25 ml-1"><i class="fas fa-trash-alt"></i></a>'
                     );
                     return render;
                 }
             }
         ],
         columnDefs: [
-            { "orderable": false, "targets": [5, 6, 7, 8] },
-            { "searchable": false, "targets": [5, 6, 7, 8] }
+            { "orderable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+            { "searchable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
         ]
     });
 }
