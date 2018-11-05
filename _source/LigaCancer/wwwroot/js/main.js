@@ -59,3 +59,8 @@ $("#modal-action").on("show.bs.modal", function (e) {
 function errorDataTable() {
     swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
 }
+
+function DateFormat(dateOfBirth) {
+    let date = new Date(dateOfBirth);
+    return date.toLocaleDateString("pt-BR");
+}

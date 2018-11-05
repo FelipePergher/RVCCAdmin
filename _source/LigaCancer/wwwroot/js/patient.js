@@ -30,7 +30,13 @@ function BuildDataTable() {
             { data: "surname", title: "Sobrenome" },
             { data: "rg", title: "RG" },
             { data: "cpf", title: "CPF" },
-            { data: "dateOfBirth", title: "Nascimento" },
+            {
+                title: "Nascimento",
+                render: function(data, type, row, meta) {
+                    let render = row.dateOfBirth !== null ? DateFormat(row.dateOfBirth) : "";
+                    return render;
+                }
+            },
             { data: "sex", title: "Gênero" },
             { data: "civilState", title: "Estado Civil" },
             {
