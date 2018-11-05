@@ -54,10 +54,8 @@ function BuildDataTable() {
             }
         ],
         columnDefs: [
-            { "orderable": false, "targets": [-1] },
-            { "searchable": false, "targets": [-1] },
-            { "orderable": true, "targets": [0, 1] },
-            { "searchable": true, "targets": [0, 1, 2, 3] }
+            { "orderable": false, "targets": [4, 5, 6, 7] },
+            { "searchable": false, "targets": [4, 5, 6, 7] }
         ]
     });
 }
