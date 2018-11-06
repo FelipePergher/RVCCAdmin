@@ -18,14 +18,14 @@ function BuildDataTable() {
             { data: "role", title: "regra" },
             {
                 title: "Ações",
-                width: "20%",
+                width: "180px",
                 render: function (data, type, row, meta) {
                     if (row.email !== "felipepergher_10@hotmail.com") {
                         let render = '<a href="/User/EditUser/' + row.userId + '" data-toggle="modal" data-target="#modal-action"' +
-                            ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+                            ' class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
                         render = render.concat(
                             '<a href="/User/DeleteUser/' + row.userId + '" data-toggle="modal" data-target="#modal-action"' +
-                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
                         );
                         return render;
                     }

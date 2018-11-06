@@ -18,19 +18,19 @@ function BuildDataTable() {
             { data: "name", title: "Nome"},
             {
                 title: "Ações",
-                width: "20%",
+                width: "180px",
                 render: function (data, type, row, meta) {
                     let render = '<a href="/Medicine/EditMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+                        ' class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
 
                     if (row.patientInformationMedicines.length === 0) {
                         render = render.concat(
                             '<a href="/Medicine/DeleteMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
                         );
                     } else {
                         render = render.concat(
-                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i></a>'
                         );
                     }
                     return render;
