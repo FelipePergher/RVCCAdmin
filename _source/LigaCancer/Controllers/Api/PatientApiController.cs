@@ -49,6 +49,26 @@ namespace LigaCancer.Controllers.Api
                     specification.Wheres.Add(x => x.Sex == sexValue);
                 }
 
+                if(int.Parse(patientSearchViewModel.CancerType) != -1)
+                {
+                    //todo make filter
+                }
+
+                if (int.Parse(patientSearchViewModel.Medicine) != -1)
+                {
+                    //todo make filter
+                }
+
+                if (int.Parse(patientSearchViewModel.TreatmentPlace) != -1)
+                {
+                    //todo make filter
+                }
+
+                if (int.Parse(patientSearchViewModel.Doctor) != -1)
+                {
+                    //todo make filter
+                }
+
                 return Ok(await _patientDataTable.GetOptionResponseWithSpec(options, specification));
             }
             catch

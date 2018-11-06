@@ -42,7 +42,34 @@
 
                                 <hr />
 
-                                <div class="form-row">
+                                <div class="form-row form-group">
+                                    <div class="col-lg-3">
+                                        <label asp-for="CancerType"></label>
+                                        <select asp-for="CancerType" asp-items="@Model.CancerTypes" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Medicine"></label>
+                                        <select asp-for="Medicine" asp-items="@Model.Medicines" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Doctor"></label>
+                                        <select asp-for="Doctor" asp-items="@Model.Doctors" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="TreatmentPlace"></label>
+                                        <select asp-for="TreatmentPlace" asp-items="@Model.TreatmentPlaces" class="form-control">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
                                     <div class="col-lg-3">
                                         <label asp-for="CivilState"></label>
                                         <select asp-for="CivilState" asp-items="@Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">

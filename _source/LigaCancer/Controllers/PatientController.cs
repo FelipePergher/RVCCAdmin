@@ -48,7 +48,28 @@ namespace LigaCancer.Controllers
 
         public IActionResult Index()
         {
-            PatientSearchViewModel patientSearchViewModel = new PatientSearchViewModel();
+            PatientSearchViewModel patientSearchViewModel = new PatientSearchViewModel {
+                CancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.CancerTypeId.ToString()
+                }).ToList(),
+                Doctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.DoctorId.ToString()
+                }).ToList(),
+                Medicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.MedicineId.ToString()
+                }).ToList(),
+                TreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.City,
+                    Value = x.TreatmentPlaceId.ToString()
+                }).ToList()
+            };
             return View(patientSearchViewModel);
         }
 

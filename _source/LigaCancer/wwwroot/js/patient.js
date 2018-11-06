@@ -1,7 +1,7 @@
 ﻿$(function () {
     dataTable = BuildDataTable();
 
-    $('#CivilState, #Sex').change(function (e) {
+    $('#CivilState, #Sex, #CancerType, #Medicine, #Doctor, #TreatmentPlace').change(function () {
         dataTable.draw();
     });
 });
@@ -19,7 +19,11 @@ function BuildDataTable() {
             data: function (d) {
                 return $.extend({}, d, {
                     civilState: $('#CivilState').val(),
-                    Sex: $('#Sex').val()
+                    Sex: $('#Sex').val(),
+                    cancerType: $("#CancerType").val(),
+                    medicine: $("#Medicine").val(),
+                    doctor: $("#Doctor").val(),
+                    treatmentPlace: $("#TreatmentPlace").val()
                 });
             },
             error: errorDataTable

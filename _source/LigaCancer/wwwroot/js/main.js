@@ -20,8 +20,7 @@ var language = {
     }
 };
 
-function AjaxError(error = null) {
-    console.log(error);
+function AjaxError(error) {
     swal("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
