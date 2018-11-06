@@ -138,7 +138,7 @@ function BuildDataTable() {
                 render: function (data, type, row, meta) {
                     if ($("#Discharge").is(":checked")) {
                         //Todo if discharge appear to reativate
-                        return "";
+                        return '<a href="/Patient/ActivePatient/' + row.patientId + '" class="btn btn-primary w-100" data-toggle="modal" data-target="#modal-action">Reativar</a> ';
                     }
                     if ($("#Death").is(":checked")) {
                         return "";

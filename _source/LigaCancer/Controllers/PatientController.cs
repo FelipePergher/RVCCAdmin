@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Data.Models.ManyToManyModels;
 using LigaCancer.Code.Interface;
 using LigaCancer.Models.SearchViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace LigaCancer.Controllers
 {
@@ -710,8 +711,7 @@ namespace LigaCancer.Controllers
             return PartialView("_DisablePatient", disablePatientViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> DisablePatient(string id, DisablePatientViewModel model)
         {
             if (!string.IsNullOrEmpty(id))
@@ -799,6 +799,35 @@ namespace LigaCancer.Controllers
             };
 
             return View(patientViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ActivePatient(string id)
+        {
+            Patient patient = await _patientService.FindByIdAsync(id, ignoreQueryFilter: true);
+            return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivePatient(string id, IFormCollection form)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+                Patient patient = await _patientService.FindByIdAsync(id, specification, true);
+                if (patient != null)
+                {
+                    patient.PatientInformation.ActivePatient.Discharge = false;
+                    TaskResult result = ((PatientStore)_patientService).ActivePatient(patient);
+                    if (result.Succeeded)
+                    {
+                        return StatusCode(200, "200");
+                    }
+                    ModelState.AddErrors(result);
+                    return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         #region Custom Methods
