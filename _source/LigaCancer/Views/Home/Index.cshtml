@@ -168,7 +168,12 @@
 
 
 @section scripts {
-    <script src="~/lib/chart-js/Chart.min.js"></script>
-    <script src="~/lib/core-ui/custom-tooltips.min.js"></script>
-    <script src="~/js/home.js"></script>
+    <environment names="Development">
+        <script src="~/lib/chart-js/Chart.min.js"></script>
+        <script src="~/lib/core-ui/custom-tooltips.min.js"></script>
+        <script src="~/js/home.js"></script>
+    </environment>
+    <environment exclude="Development">
+        @* Todo *@
+    </environment>
 }

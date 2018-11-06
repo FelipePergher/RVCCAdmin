@@ -18,19 +18,19 @@ function BuildDataTable() {
             { data: "city", title: "Cidade"},
             {
                 title: "Ações",
-                width: "20%",
+                width: "180px",
                 render: function (data, type, row, meta) {
                     let render = '<a href="/TreatmentPlace/EditTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
+                        ' class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
 
                     if (row.patientInformationTreatmentPlaces.length === 0) {
                         render = render.concat(
                             '<a href="/TreatmentPlace/DeleteTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
-                                ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                                ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
                         );
                     } else {
                         render = render.concat(
-                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Deletar</a>'
+                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i></a>'
                         );
                     }
                     return render;
