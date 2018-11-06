@@ -44,27 +44,27 @@
 
                                 <div class="form-row form-group">
                                     <div class="col-lg-3">
-                                        <label asp-for="CancerType"></label>
-                                        <select asp-for="CancerType" asp-items="@Model.CancerTypes" class="form-control">
-                                            <option value="-1"></option>
+                                        <label asp-for="CancerTypes"></label>
+                                        <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3">
-                                        <label asp-for="Medicine"></label>
-                                        <select asp-for="Medicine" asp-items="@Model.Medicines" class="form-control">
-                                            <option value="-1"></option>
+                                        <label asp-for="Medicines"></label>
+                                        <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3">
-                                        <label asp-for="Doctor"></label>
-                                        <select asp-for="Doctor" asp-items="@Model.Doctors" class="form-control">
-                                            <option value="-1"></option>
+                                        <label asp-for="Doctors"></label>
+                                        <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3">
-                                        <label asp-for="TreatmentPlace"></label>
-                                        <select asp-for="TreatmentPlace" asp-items="@Model.TreatmentPlaces" class="form-control">
-                                            <option value="-1"></option>
+                                        <label asp-for="TreatmentPlaces"></label>
+                                        <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                 </div>
@@ -73,23 +73,28 @@
                                     <div class="col-lg-3">
                                         <label asp-for="CivilState"></label>
                                         <select asp-for="CivilState" asp-items="@Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
-                                            <option value="-1"></option>
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3">
                                         <label asp-for="Sex"></label>
                                         <select asp-for="Sex" asp-items="@Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
-                                            <option value="-1"></option>
+                                            <option value=""></option>
                                         </select>
                                     </div>
-                                    @*<div class="col-lg-2"></div>
-                                        <div class="col-lg-2 mt-4">
-                                            <input asp-for="Discharge" />
-                                            <label asp-for="Discharge"></label>
-                                        </div>
-                                        <div class="col-lg-2 mt-4">
-                                            <input asp-for="Death" />
-                                            <label asp-for="Death"></label>*@
+                                    <div class="col-lg-2 mt-4 pt-3">
+                                        <input asp-for="Discharge" />
+                                        <label asp-for="Discharge"></label>
+                                    </div>
+                                    <div class="col-lg-2 mt-4 pt-3">
+                                        <input asp-for="Death" />
+                                        <label asp-for="Death"></label>
+                                    </div>
+                                    <div class="col-lg-2 mt-4 pt-3">
+                                        <input asp-for="FamiliarityGroup" />
+                                        <label asp-for="FamiliarityGroup"></label>
+                                    </div>
+
                                 </div>
 
                                 <hr />

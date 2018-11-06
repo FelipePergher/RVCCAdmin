@@ -6,6 +6,7 @@ using LigaCancer.Code.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Models.SearchViewModels;
+using System.Linq;
 
 namespace LigaCancer.Controllers.Api
 {
@@ -37,36 +38,43 @@ namespace LigaCancer.Controllers.Api
                 specification.IncludeStrings.Add("PatientInformation.PatientInformationCancerTypes.CancerType");
                 specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
 
-                if (int.Parse(patientSearchViewModel.CivilState) != -1)
+                //Filters
+                if (!string.IsNullOrEmpty(patientSearchViewModel.CivilState))
                 {
                     Globals.CivilState civilStateValue = (Globals.CivilState)int.Parse(patientSearchViewModel.CivilState);
                     specification.Wheres.Add(x => x.CivilState == civilStateValue);
                 }
 
-                if (int.Parse(patientSearchViewModel.Sex) != -1)
+                if (!string.IsNullOrEmpty(patientSearchViewModel.Sex))
                 {
                     Globals.Sex sexValue = (Globals.Sex)int.Parse(patientSearchViewModel.Sex);
                     specification.Wheres.Add(x => x.Sex == sexValue);
                 }
 
-                if(int.Parse(patientSearchViewModel.CancerType) != -1)
+                //todo filter with death and discharge and familiarity group
+
+                foreach (var item in patientSearchViewModel.CancerTypes)
                 {
-                    //todo make filter
+                    specification.Wheres.Add(x => x.PatientInformation.PatientInformationCancerTypes
+                        .FirstOrDefault(y => y.CancerTypeId == int.Parse(item)) != null);
                 }
 
-                if (int.Parse(patientSearchViewModel.Medicine) != -1)
+                foreach (var item in patientSearchViewModel.TreatmentPlaces)
                 {
-                    //todo make filter
+                    specification.Wheres.Add(x => x.PatientInformation.PatientInformationTreatmentPlaces
+                        .FirstOrDefault(y => y.TreatmentPlaceId == int.Parse(item)) != null);
                 }
 
-                if (int.Parse(patientSearchViewModel.TreatmentPlace) != -1)
+                foreach (var item in patientSearchViewModel.Doctors)
                 {
-                    //todo make filter
+                        specification.Wheres.Add(x => x.PatientInformation.PatientInformationDoctors
+                            .FirstOrDefault(y => y.DoctorId == int.Parse(item)) != null);
                 }
 
-                if (int.Parse(patientSearchViewModel.Doctor) != -1)
+                foreach (var item in patientSearchViewModel.Medicines)
                 {
-                    //todo make filter
+                    specification.Wheres.Add(x => x.PatientInformation.PatientInformationMedicines
+                        .FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
                 }
 
                 return Ok(await _patientDataTable.GetOptionResponseWithSpec(options, specification));

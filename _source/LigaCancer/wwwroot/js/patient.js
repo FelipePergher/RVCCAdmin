@@ -1,10 +1,27 @@
 ﻿$(function () {
     dataTable = BuildDataTable();
 
-    $('#CivilState, #Sex, #CancerType, #Medicine, #Doctor, #TreatmentPlace').change(function () {
+    $('#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces').change(function () {
         dataTable.draw();
     });
+
+    BuildSelect2("CancerTypes", "Cânceres");
+    BuildSelect2("Medicines", "Remédios");
+    BuildSelect2("Doctors", "Médicos");
+    BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
+    BuildSelect2("CivilState", "Estado Civil");
+    BuildSelect2("Sex", "Gênero");
 });
+
+function BuildSelect2(elementId, placeholder) {
+    $("#" + elementId).select2({
+        theme: "bootstrap",
+        placeholder: placeholder,
+        allowClear: true
+    }).on("change", function (e) {
+        dataTable.draw();
+    });
+}
 
 function BuildDataTable() {
     return $("#patientTable").DataTable({
@@ -20,10 +37,10 @@ function BuildDataTable() {
                 return $.extend({}, d, {
                     civilState: $('#CivilState').val(),
                     Sex: $('#Sex').val(),
-                    cancerType: $("#CancerType").val(),
-                    medicine: $("#Medicine").val(),
-                    doctor: $("#Doctor").val(),
-                    treatmentPlace: $("#TreatmentPlace").val()
+                    cancerTypes: $("#CancerTypes").val(),
+                    medicines: $("#Medicines").val(),
+                    doctors: $("#Doctors").val(),
+                    treatmentPlaces: $("#TreatmentPlaces").val()
                 });
             },
             error: errorDataTable
