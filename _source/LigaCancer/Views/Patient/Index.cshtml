@@ -6,9 +6,14 @@
 }
 
 @section Styles{
-    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <environment names="Development">
+        <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+        <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/patient.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <main class="main">
@@ -84,7 +89,7 @@
                                     </div>
                                     <div class="col-lg-3">
                                         <label asp-for="FamiliarityGroup"></label>
-                                        <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control" ></select>
+                                        <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
                                     </div>
                                     <div class="col-lg-3 mt-3">
                                         <div>
@@ -114,7 +119,6 @@
 
         </div>
     </div>
-    </div>
     <!-- /.conainer-fluid -->
 </main>
 
@@ -122,8 +126,13 @@
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/lib/select2/js/select2.min.js"></script>
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/js/patient.js"></script>
+    <environment names="Development">
+        <script src="~/lib/select2/js/select2.min.js"></script>
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/js/patient.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/patient.min.js" asp-append-version="true"></script>
+    </environment>
 }
