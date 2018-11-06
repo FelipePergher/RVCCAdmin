@@ -142,5 +142,32 @@
       "outputMode": "singleLine",
       "renameLocals": true
     }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/home.min.js",
+    "inputFiles": [
+      "wwwroot/lib/chart-js/Chart.min.js",
+      "wwwroot/lib/core-ui/custom-tooltips.min.js",
+      "wwwroot/js/home.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/patient-details.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/lib/select2/js/select2.min.js",
+      "wwwroot/js/patient-details.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
   }
 ]

@@ -81,8 +81,6 @@ function BuildDataTable() {
             {
                 title: "Renda Familiar",
                 render: function (data, type, row, meta) {
-                    //todo problem here
-                    //console.log(row.family.familyIncome);
                     let render = row.family.familyIncome !== 0 ? row.family.familyIncome : "";
                     return render;
                 }
