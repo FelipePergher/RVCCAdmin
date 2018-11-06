@@ -1,7 +1,7 @@
 ﻿$(function () {
     dataTable = BuildDataTable();
 
-    $('#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces').change(function () {
+    $('#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death').change(function () {
         dataTable.draw();
     });
 
@@ -11,6 +11,7 @@
     BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
     BuildSelect2("CivilState", "Estado Civil");
     BuildSelect2("Sex", "Gênero");
+    BuildSelect2("FamiliarityGroup", "Grupo de convivência");
 });
 
 function BuildSelect2(elementId, placeholder) {
@@ -40,7 +41,10 @@ function BuildDataTable() {
                     cancerTypes: $("#CancerTypes").val(),
                     medicines: $("#Medicines").val(),
                     doctors: $("#Doctors").val(),
-                    treatmentPlaces: $("#TreatmentPlaces").val()
+                    treatmentPlaces: $("#TreatmentPlaces").val(),
+                    familiarityGroup: $("#FamiliarityGroup").val(),
+                    death: $("#Death").is(":checked"), 
+                    discharge: $("#Discharge").is(":checked")
                 });
             },
             error: errorDataTable
@@ -134,6 +138,13 @@ function BuildDataTable() {
                 title: "Ações",
                 width: "180px",
                 render: function (data, type, row, meta) {
+                    if ($("#Discharge").is(":checked")) {
+                        //Todo if discharge appear to reativate
+                        return "";
+                    }
+                    if ($("#Death").is(":checked")) {
+                        return "";
+                    }
                     let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-25"><i class="fas fa-info"></i></a>';
 
                     link = $("#linkEdit");

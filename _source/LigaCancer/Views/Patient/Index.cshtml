@@ -72,27 +72,29 @@
                                 <div class="form-row form-group">
                                     <div class="col-lg-3">
                                         <label asp-for="CivilState"></label>
-                                        <select asp-for="CivilState" asp-items="@Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                                        <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
                                             <option value=""></option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3">
                                         <label asp-for="Sex"></label>
-                                        <select asp-for="Sex" asp-items="@Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
+                                        <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
                                             <option value=""></option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-2 mt-4 pt-3">
-                                        <input asp-for="Discharge" />
-                                        <label asp-for="Discharge"></label>
-                                    </div>
-                                    <div class="col-lg-2 mt-4 pt-3">
-                                        <input asp-for="Death" />
-                                        <label asp-for="Death"></label>
-                                    </div>
-                                    <div class="col-lg-2 mt-4 pt-3">
-                                        <input asp-for="FamiliarityGroup" />
+                                    <div class="col-lg-3">
                                         <label asp-for="FamiliarityGroup"></label>
+                                        <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control" ></select>
+                                    </div>
+                                    <div class="col-lg-3 mt-3">
+                                        <div>
+                                            <input asp-for="Discharge" />
+                                            <label asp-for="Discharge"></label>
+                                        </div>
+                                        <div>
+                                            <input asp-for="Death" />
+                                            <label asp-for="Death"></label>
+                                        </div>
                                     </div>
 
                                 </div>

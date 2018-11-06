@@ -139,6 +139,18 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
+        public async Task<DataTableResponse> GetOptionResponseWithSpecIgnoreQueryFilter(DataTableOptions options, ISpecification<Patient> specification)
+        {
+            var data = await _context.Set<Patient>()
+                            .IncludeExpressions(specification.Includes)
+                            .IncludeWheres(specification.Wheres)
+                            .IncludeByNames(specification.IncludeStrings)
+                            .IgnoreQueryFilters()
+                            .GetOptionResponseAsync(options);
+
+            return data;
+        }
+
         public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
         {
             return await _context.Set<Patient>().GetOptionResponseAsync(options);

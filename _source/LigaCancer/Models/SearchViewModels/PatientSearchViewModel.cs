@@ -12,6 +12,24 @@ namespace LigaCancer.Models.SearchViewModels
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
             Medicines = new List<string>();
+            FamiliarityGroups = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "",
+                    Value = ""
+                }, 
+                new SelectListItem
+                {
+                    Text = "Participa",
+                    Value = "true"
+                },
+                new SelectListItem
+                {
+                    Text = "Não Participa",
+                    Value = "false"
+                }
+            };
         }
 
         [Display(Name = "Estado civil")]
@@ -20,14 +38,14 @@ namespace LigaCancer.Models.SearchViewModels
         [Display(Name = "Gênero")]
         public string Sex { get; set; } = "-1";
 
-        [Display(Name = "Somente Óbitos")]
+        [Display(Name = "Somente paciente com óbito")]
         public bool Death { get; set; }
 
-        [Display(Name = "Somente Alta")]
+        [Display(Name = "Somente pacientes com alta")]
         public bool Discharge { get; set; }
 
         [Display(Name = "Grupo de convivência")]
-        public bool FamiliarityGroup { get; set; }
+        public string FamiliarityGroup { get; set; }
 
         [Display(Name = "Cancêres")]
         public List<string> CancerTypes { get; set; }
@@ -50,6 +68,8 @@ namespace LigaCancer.Models.SearchViewModels
         public List<SelectListItem> SelectDoctors { get; set; }
 
         public List<SelectListItem> SelectTreatmentPlaces { get; set; }
+
+        public List<SelectListItem> FamiliarityGroups { get; set; }
 
         #endregion
     }

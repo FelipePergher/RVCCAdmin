@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Models.SearchViewModels;
 using System.Linq;
+using LigaCancer.Data.Store;
 
 namespace LigaCancer.Controllers.Api
 {
@@ -51,8 +52,6 @@ namespace LigaCancer.Controllers.Api
                     specification.Wheres.Add(x => x.Sex == sexValue);
                 }
 
-                //todo filter with death and discharge and familiarity group
-
                 foreach (var item in patientSearchViewModel.CancerTypes)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationCancerTypes
@@ -75,6 +74,32 @@ namespace LigaCancer.Controllers.Api
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationMedicines
                         .FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
+                }
+
+                if (!string.IsNullOrEmpty(patientSearchViewModel.FamiliarityGroup))
+                {
+                    bool result = bool.Parse(patientSearchViewModel.FamiliarityGroup);
+                    if (result)
+                    {
+                        specification.Wheres.Add(x => x.FamiliarityGroup);
+                    }
+                    else
+                    {
+                        specification.Wheres.Add(x => !x.FamiliarityGroup);
+                    }
+                }
+
+                //todo filter with death and discharge
+                if (patientSearchViewModel.Death)
+                {
+                    specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Death);
+                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpecIgnoreQueryFilter(options, specification));
+                }
+
+                if (patientSearchViewModel.Discharge)
+                {
+                    specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Discharge);
+                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpecIgnoreQueryFilter(options, specification));
                 }
 
                 return Ok(await _patientDataTable.GetOptionResponseWithSpec(options, specification));
