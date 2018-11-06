@@ -90,19 +90,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FamilyMember> FindByIdAsync(string id, string[] include = null)
+        public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null)
         {
-            IQueryable<FamilyMember> query = _context.FamilyMembers;
-
-            if (include != null)
+            if(specification != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                return Task.FromResult(
+                    _context.FamilyMembers
+                    .IncludeExpressions(specification.Includes)
+                    .IncludeByNames(specification.IncludeStrings)
+                    .FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
             }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            else
+            {
+                return Task.FromResult(_context.FamilyMembers.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            }
         }
 
         public Task<List<FamilyMember>> GetAllAsync(string[] include = null)
@@ -145,22 +146,6 @@ namespace LigaCancer.Data.Store
 
             return Task.FromResult(result);
         }
-
-        public IQueryable<FamilyMember> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<FamilyMember> query = _context.FamilyMembers;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
 
         #region Custom Methods
 

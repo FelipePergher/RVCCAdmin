@@ -28,6 +28,7 @@ namespace LigaCancer.Controllers
         }
 
 
+        [HttpGet]
         public IActionResult AddPhone(string id)
         {
             PhoneViewModel phoneViewModel = new PhoneViewModel
@@ -56,7 +57,7 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, "200");
+                    return StatusCode(200, "phone");
                 }
                 ModelState.AddErrors(result);
             }
@@ -64,7 +65,7 @@ namespace LigaCancer.Controllers
             return PartialView("_AddPhone", model);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditPhone(string id)
         {
             PhoneViewModel phoneViewModel = new PhoneViewModel();
@@ -104,7 +105,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _phoneService.UpdateAsync(phone);
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, "200");
+                    return StatusCode(200, "phone");
                 }
                 ModelState.AddErrors(result);
             }
@@ -113,6 +114,7 @@ namespace LigaCancer.Controllers
         }
 
 
+        [HttpGet]
         public async Task<IActionResult> DeletePhone(string id)
         {
             string number = string.Empty;
@@ -142,7 +144,7 @@ namespace LigaCancer.Controllers
 
                     if (result.Succeeded)
                     {
-                        return StatusCode(200, "200");
+                        return StatusCode(200, "phone");
                     }
                     ModelState.AddErrors(result);
                     return PartialView("_DeletePhone", phone.Number);

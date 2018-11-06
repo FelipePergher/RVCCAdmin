@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 
-namespace LigaCancer.Data.Requests
+namespace LigaCancer.Code.Requests
 {
     public class DataTableOptions
     {

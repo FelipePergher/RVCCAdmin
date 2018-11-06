@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Requests;
-using LigaCancer.Data.Store;
+using LigaCancer.Code.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), Route("api/[action]")]
     public class DoctorApiController : Controller
     {
         private readonly IDataTable<Doctor> _doctorDataTable;
@@ -23,12 +18,13 @@ namespace LigaCancer.Controllers.Api
             _doctorDataTable = doctorDataTable;
         }
 
-        public async Task<IActionResult> GetDTResponseAsync(DataTableOptions options)
+        [HttpPost]
+        public async Task<IActionResult> GetDoctorDataTableResponseAsync(DataTableOptions options)
         {
             try
             {
-                BaseSpecification<Doctor> specs = new BaseSpecification<Doctor>(x => x.PatientInformationDoctors);
-                return Ok(await _doctorDataTable.GetOptionResponseWithSpec(options, specs));
+                BaseSpecification<Doctor> specification = new BaseSpecification<Doctor>(x => x.PatientInformationDoctors);
+                return Ok(await _doctorDataTable.GetOptionResponseWithSpec(options, specification));
             }
             catch
             {

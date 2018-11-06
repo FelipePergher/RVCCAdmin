@@ -1,0 +1,146 @@
+[
+  {
+    "outputFileName": "wwwroot/dist/css/main.min.css",
+    "inputFiles": [
+      "wwwroot/lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css",
+      "wwwroot/css/style.css",
+      "wwwroot/css/custom.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/main.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.min.js",
+      "wwwroot/lib/core-ui/coreui.min.js",
+      "wwwroot/lib/bootstrap/js/bootstrap.min.js",
+      "wwwroot/js/main.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/form.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validate/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/lib/jquery-ajax-unobtrusive/src/jquery.unobtrusive-ajax.js",
+      "wwwroot/lib/sweetalert/sweetalert.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/css/patient.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/patient.min.js",
+    "inputFiles": [
+      "wwwroot/lib/select2/js/select2.min.js",
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/patient.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/css/datatables.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/treatment-place.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/treatmentPlace.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/cancer-type.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/cancerType.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/doctor.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/doctor.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/medicine.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/medicine.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/user.min.js",
+    "inputFiles": [
+      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
+      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/js/user.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  }
+]

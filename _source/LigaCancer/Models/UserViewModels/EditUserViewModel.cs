@@ -17,10 +17,10 @@ namespace LigaCancer.Models.UserViewModels
 
         public string UserId { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Sobrenome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string LastName { get; set; }
 
         [EmailAddress(ErrorMessage = "Insira um email válido!"), 
@@ -30,7 +30,7 @@ namespace LigaCancer.Models.UserViewModels
 
         public List<SelectListItem> ApplicationRoles { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Regra"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Role { get; set; }
     }
 }

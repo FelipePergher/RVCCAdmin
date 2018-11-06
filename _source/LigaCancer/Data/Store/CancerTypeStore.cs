@@ -1,8 +1,8 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Requests;
-using LigaCancer.Data.Responses;
+using LigaCancer.Code.Requests;
+using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -87,19 +87,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<CancerType> FindByIdAsync(string id, string[] include = null)
+        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null)
         {
-            IQueryable<CancerType> query = _context.CancerTypes;
-
-            if (include != null)
+            if(specification != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                return Task.FromResult(
+                    _context.CancerTypes
+                    .IncludeExpressions(specification.Includes)
+                    .IncludeByNames(specification.IncludeStrings)
+                    .FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
             }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+            else
+            {
+                return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+            }
         }
 
         public Task<List<CancerType>> GetAllAsync(string[] include = null)
@@ -136,22 +137,7 @@ namespace LigaCancer.Data.Store
 
             return Task.FromResult(result);
         }
-
-        public IQueryable<CancerType> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<CancerType> query = _context.CancerTypes;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
-        }
-
+        
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
         {

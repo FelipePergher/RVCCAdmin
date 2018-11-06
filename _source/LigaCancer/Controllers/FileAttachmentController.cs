@@ -64,7 +64,7 @@ namespace LigaCancer.Controllers
                 {
                     if (patient != null)
                     {
-                        string path = $"uploads\\files\\{patient.FirstName}-{patient.Surname}";
+                        string path = $"uploads\\files\\{patient.PatientId}";
                         var uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
                         try
                         {
@@ -90,7 +90,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, model.PatientId);
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, true);
+                    return StatusCode(200, "attachmentFile");
                 }
                 ModelState.AddErrors(result);
                 return StatusCode(500, result.Errors.First().Description);
@@ -127,7 +127,7 @@ namespace LigaCancer.Controllers
 
                     if (result.Succeeded)
                     {
-                        return StatusCode(200, "200");
+                        return StatusCode(200, "attachmentFile");
                     }
                     ModelState.AddErrors(result);
                     return PartialView("_DeleteFileAttachment", fileAttachment.FileName);

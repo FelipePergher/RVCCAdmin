@@ -9,41 +9,37 @@ function BuildDataTable() {
         serverSide: true,
         language: language,
         ajax: {
-            url: $("#linkAjaxDT").attr("href"),
+            url: "api/GetTreatmentPlaceDataTableResponseAsync",
             type: "POST",
-            error: function (ex) {
-            }
+            error: errorDataTable
         },
         order: [[0, "asc"]],
         columns: [
-            { data: "city", title: "Cidade", width: "50%"},
+            { data: "city", title: "Cidade"},
             {
                 title: "Ações",
-                width: "50%",
+                width: "20%",
                 render: function (data, type, row, meta) {
-                    let link = $("#linkEdit");
-                    let options = '<a href="' + link.attr("href") + '/' + row.treatmentPlaceId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-secondary">Editar</a>';
+                    let render = '<a href="/TreatmentPlace/EditTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
+                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar</a>';
 
                     if (row.patientInformationTreatmentPlaces.length === 0) {
-                        link = $("#linkDelete");
-
-                        options = options.concat(
-                            '<a href="' + link.attr("href") + '/' + row.treatmentPlaceId + '" data-toggle="' + $(link).data("toggle") + '" data-target="' + $(link).data("target") + '" class="btn btn-danger ml-1">Deletar</a>'
+                        render = render.concat(
+                            '<a href="/TreatmentPlace/DeleteTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
+                                ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
                     } else {
-                        options = options.concat(
-                            '<a class="btn btn-danger ml-1 disabled">Deletar</a>'
+                        render = render.concat(
+                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Deletar</a>'
                         );
                     }
-                    return options;
+                    return render;
                 }
             }
         ],
         columnDefs: [
             { "orderable": false, "targets": [-1] },
-            { "searchable": false, "targets": [-1] },
-            { "orderable": true, "targets": [0] },
-            { "searchable": true, "targets": [0] }
+            { "searchable": false, "targets": [-1] }
         ]
     });
 }

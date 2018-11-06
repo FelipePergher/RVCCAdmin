@@ -1,8 +1,8 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Requests;
-using LigaCancer.Data.Responses;
+using LigaCancer.Code.Requests;
+using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -87,19 +87,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Medicine> FindByIdAsync(string id, string[] include = null)
+        public Task<Medicine> FindByIdAsync(string id, ISpecification<Medicine> specification = null)
         {
-            IQueryable<Medicine> query = _context.Medicines;
-
-            if (include != null)
+            if(specification != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                return Task.FromResult(
+                _context.Medicines
+                .IncludeExpressions(specification.Includes)
+                .IncludeByNames(specification.IncludeStrings)
+                .FirstOrDefault(x => x.MedicineId == int.Parse(id)));
             }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
+            else
+            {
+                return Task.FromResult(_context.Medicines.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
+            }
         }
 
         public Task<List<Medicine>> GetAllAsync(string[] include = null)
@@ -135,21 +136,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        public IQueryable<Medicine> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<Medicine> query = _context.Medicines;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
         }
 
         //IDataTable

@@ -10,9 +10,7 @@ namespace LigaCancer.Code.Interface
     {
         Task<List<T>> GetAllAsync(string[] include = null);
 
-        IQueryable<T> GetAllQueryable(string[] include = null);
-
-        Task<T> FindByIdAsync(string id, string[] include = null);
+        Task<T> FindByIdAsync(string id, ISpecification<T> specification = null);
 
         Task<TaskResult> CreateAsync(T model);
 

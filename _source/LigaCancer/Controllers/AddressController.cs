@@ -27,7 +27,7 @@ namespace LigaCancer.Controllers
             _patientService = patientService;
         }
 
-
+        [HttpGet]
         public IActionResult AddAddress(string id)
         {
             AddressViewModel addressViewModel = new AddressViewModel
@@ -55,12 +55,12 @@ namespace LigaCancer.Controllers
                         ObservationAddress = model.ObservationAddress,
                         Street = model.Street,
                         ResidenceType = model.ResidenceType,
-                        MonthlyAmmountResidence = model.MonthlyAmmountResidence
+                        MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0
                     }, model.PatientId);
 
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, "200");
+                    return StatusCode(200, "address");
                 }
                 ModelState.AddErrors(result);
             }
@@ -68,7 +68,7 @@ namespace LigaCancer.Controllers
             return PartialView("_AddAddress", model);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditAddress(string id)
         {
             AddressViewModel addressViewModel = new AddressViewModel();
@@ -110,7 +110,7 @@ namespace LigaCancer.Controllers
                 address.Neighborhood = model.Neighborhood;
                 address.ObservationAddress = model.ObservationAddress;
                 address.ResidenceType = model.ResidenceType;
-                address.MonthlyAmmountResidence = model.MonthlyAmmountResidence;
+                address.MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0;
                 address.Street = model.Street;
                 address.LastUpdatedDate = DateTime.Now;
                 address.LastUserUpdate = user;
@@ -118,14 +118,13 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _addressService.UpdateAsync(address);
                 if (result.Succeeded)
                 {
-                    return StatusCode(200, "200");
+                    return StatusCode(200, "address");
                 }
                 ModelState.AddErrors(result);
             }
 
             return PartialView("_EditAddress", model);
         }
-
 
         public async Task<IActionResult> DeleteAddress(string id)
         {
@@ -156,7 +155,7 @@ namespace LigaCancer.Controllers
 
                     if (result.Succeeded)
                     {
-                        return StatusCode(200, "200");
+                        return StatusCode(200, "address");
                     }
                     ModelState.AddErrors(result);
                     return PartialView("_DeleteAddress", $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}");

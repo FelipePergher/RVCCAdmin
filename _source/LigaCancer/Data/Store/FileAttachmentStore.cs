@@ -75,19 +75,21 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FileAttachment> FindByIdAsync(string id, string[] include = null)
+        public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null)
         {
-            IQueryable<FileAttachment> query = _context.FileAttachments;
-
-            if (include != null)
+            if(specification != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                return Task.FromResult(
+                _context.FileAttachments
+                .IncludeExpressions(specification.Includes)
+                .IncludeByNames(specification.IncludeStrings)
+                .FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
             }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
+            else
+            {
+                return Task.FromResult(_context.FileAttachments.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
+            }
+            
         }
 
         public Task<List<FileAttachment>> GetAllAsync(string[] include = null)
@@ -123,21 +125,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        public IQueryable<FileAttachment> GetAllQueryable(string[] include = null)
-        {
-            IQueryable<FileAttachment> query = _context.FileAttachments;
-
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
-
-            return query;
         }
 
     }

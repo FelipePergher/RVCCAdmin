@@ -1,12 +1,16 @@
-﻿@model IEnumerable<LigaCancer.Models.UserViewModels.UserListViewModel>
-@using LigaCancer.Code
+﻿@using LigaCancer.Code
 @{
     ViewData["Title"] = "Usuários";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <environment names="Development">
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/datatables.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <main class="main">
@@ -40,51 +44,8 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed text-center" id="userTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Nome
-                                            </th>
-                                            <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Regra
-                                            </th>
-                                            <th>
-                                                Ações
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @item.FirstName @item.LastName
-                                                </td>
-                                                <td>
-                                                    @item.Email
-                                                </td>
-                                                <td>
-                                                    @item.Role
-                                                </td>
-                                                <td>
-                                                    @if (item.Email != "felipepergher_10@hotmail.com")
-                                                    {
-                                                        <a asp-action="EditUser" asp-route-id="@item.UserId" data-toggle="modal" data-target="#modal-action" class="btn btn-secondary">
-                                                            <i class="fa fa-user-edit"></i> Editar
-                                                        </a>
-                                                        <a asp-action="DeleteUser" asp-route-id="@item.UserId" data-toggle="modal" data-target="#modal-action" class="btn btn-danger">
-                                                            <i class="fa fa-times"></i> Deletar
-                                                        </a>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                <table class="table table-bordered table-striped table-condensed text-center" id="userTable"></table>
+
                             </div>
                         </div>
                     </div>
@@ -104,7 +65,12 @@
 @section scripts
     {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/js/user.js"></script>
+    <environment names="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/js/user.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/user.min.js" asp-append-version="true"></script>
+    </environment>
 }

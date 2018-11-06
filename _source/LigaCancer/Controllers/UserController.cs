@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
@@ -27,26 +24,14 @@ namespace LigaCancer.Controllers
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            this._userManager = userManager;
-            this._roleManager = roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<UserListViewModel> model = new List<UserListViewModel>();
-            var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
-
-            model = users.Select(x => new UserListViewModel
-            {
-                UserId = x.Id,
-                FirstName = x.FirstName ?? "",
-                LastName = x.LastName ?? "",
-                Email = x.Email ?? "",
-                Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault()
-            }).ToList();
-
-            return View(model);
+            return View();
         }
 
         [HttpGet]

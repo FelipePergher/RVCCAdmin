@@ -24,7 +24,7 @@
       ]
     },
     {
-      "library": "sweetalert@2.1.0",
+      "library": "sweetalert@2.1.2",
       "destination": "wwwroot/lib/sweetalert",
       "files": [
         "sweetalert.min.js"

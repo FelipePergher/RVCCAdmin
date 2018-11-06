@@ -1,13 +1,19 @@
-﻿@using LigaCancer.Code
+﻿@model LigaCancer.Models.SearchViewModels.PatientSearchViewModel
+@using LigaCancer.Code
 @{
     ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <environment names="Development">
+        <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+        <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/patient.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 }
 
 <main class="main">
@@ -26,7 +32,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-address-card-o"></i> Pacientes
+                                <i class="fa fa-male"></i> Pacientes
                             </div>
                             <div class="card-block">
                                 <div class="form-inline">
@@ -41,33 +47,92 @@
 
                                 <hr />
 
-                                <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
+                                <div class="form-row form-group">
+                                    <div class="col-lg-3">
+                                        <label asp-for="CancerTypes"></label>
+                                        <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Medicines"></label>
+                                        <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Doctors"></label>
+                                        <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="TreatmentPlaces"></label>
+                                        <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
 
+                                <div class="form-row form-group">
+                                    <div class="col-lg-3">
+                                        <label asp-for="CivilState"></label>
+                                        <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="Sex"></label>
+                                        <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label asp-for="FamiliarityGroup"></label>
+                                        <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
+                                    </div>
+                                    <div class="col-lg-3 mt-3">
+                                        <div>
+                                            <input asp-for="Discharge" />
+                                            <label asp-for="Discharge"></label>
+                                        </div>
+                                        <div>
+                                            <input asp-for="Death" />
+                                            <label asp-for="Death"></label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+
+                                <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
                             </div>
+
                         </div>
                     </div>
-                    <!--/col-->
-
                 </div>
-                <!--/row-->
+                <!--/col-->
 
             </div>
+            <!--/row-->
+
         </div>
     </div>
     <!-- /.conainer-fluid -->
 </main>
 
-<a id="linkShow" asp-action="DetailsPatient"></a>
-<a id="linkDelete" asp-action="DisablePatient" data-toggle="modal" data-target="#modal-action"></a>
-<a id="linkEdit" asp-action="EditPatient" data-toggle="modal" data-target="#modal-action"></a>
-<a id="linkAjaxDT" asp-action="GetDTResponseAsync" asp-controller="PatientApi" data-toggle="modal" data-target="#modal-action"></a>
-
 <partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/lib/select2/js/select2.min.js"></script>
-    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/js/patient.js"></script>
+    <environment names="Development">
+        <script src="~/lib/select2/js/select2.min.js"></script>
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/js/patient.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/patient.min.js" asp-append-version="true"></script>
+    </environment>
 }

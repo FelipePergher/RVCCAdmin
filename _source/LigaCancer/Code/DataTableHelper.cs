@@ -1,5 +1,5 @@
-﻿using LigaCancer.Data.Requests;
-using LigaCancer.Data.Responses;
+﻿using LigaCancer.Code.Requests;
+using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
