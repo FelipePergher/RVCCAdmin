@@ -19,11 +19,7 @@ function BuildSelect2(elementId, placeholder, allowClear = false) {
         theme: "bootstrap",
         placeholder: placeholder,
         allowClear: allowClear,
-        language: {
-            noResults: function (term) {
-                return "Não foi encontrado resultados";
-            }
-        }
+        language: languageSelect2
     }).on("change", function (e) {
         dataTable.draw();
     });

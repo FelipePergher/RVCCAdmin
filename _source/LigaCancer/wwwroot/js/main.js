@@ -53,8 +53,8 @@ $("#modal-action").on("show.bs.modal", function (e) {
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
         $.validator.unobtrusive.parse('form');
 
-        if ($(".select2").length > 0) {
-            $(".select2").select2({
+        if ($(".customSelect2").length > 0) {
+            $(".customSelect2").select2({
                 theme: "bootstrap",
                 language: languageSelect2
             });
