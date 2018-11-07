@@ -179,7 +179,13 @@ function FamilyMemberDataTable() {
         { data: "kinship", title: "Parentesco" },
         { data: "age", title: "Idade" },
         { data: "sex", title: "Gênero" },
-        { data: "monthlyIncome", title: "Renda" },
+        {
+            data: "monthlyIncome", title: "Renda",
+            render: function (data, type, row, meta) {
+                let render = row.monthlyIncome !== 0 ? "$" + row.monthlyIncome.toFixed(2) : "";
+                return render;
+            }
+        },
         {
             title: "Ações",
             width: "180px",
@@ -209,7 +215,7 @@ function FileAttachmentDataTable() {
         {
             title: "Categoria arquivo",
             render: function (data, type, row, meta) {
-                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '">' + row.fileName + '</a>';
+                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '"> ' + row.fileName + '</a>';
                 return anchor;
             }
         },

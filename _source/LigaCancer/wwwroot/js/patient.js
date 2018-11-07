@@ -82,14 +82,14 @@ function BuildDataTable() {
             {
                 title: "Renda Familiar",
                 render: function (data, type, row, meta) {
-                    let render = row.family.familyIncome !== 0 ? row.family.familyIncome : "";
+                    let render = row.family.familyIncome !== 0 ? "$" + row.family.familyIncome.toFixed(2) : "";
                     return render;
                 }
             },
             {
                 title: "Renda Percapita",
                 render: function (data, type, row, meta) {
-                    let render = row.family.perCapitaIncome !== 0 ? row.family.perCapitaIncome : "";
+                    let render = row.family.perCapitaIncome !== 0 ? "$" +  row.family.perCapitaIncome.toFixed(2) : "";
                     return render;
                 }
             },
