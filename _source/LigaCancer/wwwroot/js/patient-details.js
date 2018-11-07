@@ -23,7 +23,8 @@ $("#modal-action").on("show.bs.modal", function (e) {
         $("#ResidenceType").select2({
             theme: "bootstrap",
             placeholder: "Selecione o tipo de residência",
-            allowClear: true
+            allowClear: true,
+            language: languageSelect2
         }).on('select2:close', function (e) {
             let selected = $("#ResidenceType").val();
             if (selected !== "") {

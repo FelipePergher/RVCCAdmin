@@ -9,16 +9,21 @@
     BuildSelect2("Medicines", "Remédios");
     BuildSelect2("Doctors", "Médicos");
     BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
-    BuildSelect2("CivilState", "Estado Civil");
-    BuildSelect2("Sex", "Gênero");
-    BuildSelect2("FamiliarityGroup", "Grupo de convivência");
+    BuildSelect2("CivilState", "Estado Civil", true);
+    BuildSelect2("Sex", "Gênero", true);
+    BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
 });
 
-function BuildSelect2(elementId, placeholder) {
+function BuildSelect2(elementId, placeholder, allowClear = false) {
     $("#" + elementId).select2({
         theme: "bootstrap",
         placeholder: placeholder,
-        allowClear: true
+        allowClear: allowClear,
+        language: {
+            noResults: function (term) {
+                return "Não foi encontrado resultados";
+            }
+        }
     }).on("change", function (e) {
         dataTable.draw();
     });
