@@ -122,11 +122,11 @@ function PhoneDataTable() {
             width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/Phone/EditPhone/' + row.phoneId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/Phone/DeletePhone/' + row.phoneId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"> </i> Excluir </a>'
                 );
                 return render;
             }
@@ -152,14 +152,14 @@ function AddressDataTable() {
         { data: "observationAddress", title: "Observação" },
         {
             title: "Ações",
-            width: "180px%",
+            width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/Address/EditAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/Address/DeleteAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
                 );
                 return render;
             }
@@ -191,11 +191,11 @@ function FamilyMemberDataTable() {
             width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/FamilyMember/EditFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/FamilyMember/DeleteFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
                 );
                 return render;
             }
@@ -225,7 +225,7 @@ function FileAttachmentDataTable() {
             render: function (data, type, row, meta) {
                 let render = 
                     '<a href="/FileAttachment/DeleteFileAttachment/' + row.fileAttachmentId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>';
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>';
                 return render;
             }
         }

@@ -182,7 +182,9 @@ namespace LigaCancer
                         RegisterDate = DateTime.Now,
                         CreatedBy = "System"
                     };
-                    IdentityResult result = await userManager.CreateAsync(user, "password123");
+
+                    IdentityResult result = await userManager.CreateAsync(user, "Password123");
+
                     if (result.Succeeded)
                     {
                         IdentityRole applicationRole = await roleManager.FindByNameAsync(Globals.Roles.Admin.ToString());
