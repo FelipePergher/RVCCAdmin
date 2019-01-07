@@ -135,7 +135,7 @@ function BuildDataTable() {
             },
             {
                 title: "Ações",
-                width: "180px",
+                width: "300px",
                 render: function (data, type, row, meta) {
                     if ($("#Discharge").is(":checked")) {
                         //Todo if discharge appear to reativate
@@ -144,18 +144,18 @@ function BuildDataTable() {
                     if ($("#Death").is(":checked")) {
                         return "";
                     }
-                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-25"><i class="fas fa-info"></i></a>';
+                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-40"><i class="fas fa-info"></i> Detalhes </a>';
 
                     link = $("#linkEdit");
                     render = render.concat(
                         '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary w-25 ml-1"><i class="fas fa-edit"></i></a>'
+                        ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
                     );
 
                     link = $("#linkDelete");
                     render = render.concat(
                         '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-danger w-25 ml-1"><i class="fas fa-trash-alt"></i></a>'
+                        ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
                     );
                     return render;
                 }

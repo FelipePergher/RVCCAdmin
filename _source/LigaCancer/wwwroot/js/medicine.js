@@ -21,16 +21,16 @@ function BuildDataTable() {
                 width: "180px",
                 render: function (data, type, row, meta) {
                     let render = '<a href="/Medicine/EditMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                     if (row.patientInformationMedicines.length === 0) {
                         render = render.concat(
                             '<a href="/Medicine/DeleteMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
                         );
                     } else {
                         render = render.concat(
-                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i></a>'
+                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i>  Excluir </a>'
                         );
                     }
                     return render;
