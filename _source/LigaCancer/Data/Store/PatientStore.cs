@@ -77,19 +77,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null)
+        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null, bool ignoreQueryFilter = false)
         {
-            if(specification != null)
+            IQueryable<Patient> queryable = _context.Patients;
+            if (ignoreQueryFilter)
             {
-                return Task.FromResult(_context.Patients
-                .IncludeExpressions(specification.Includes)
-                .IncludeByNames(specification.IncludeStrings)
-                .FirstOrDefault(x => x.PatientId == int.Parse(id)));
+                queryable = queryable.IgnoreQueryFilters();
             }
-            else
+
+            if (specification != null)
             {
-                return Task.FromResult(_context.Patients.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
             }
+
+            return Task.FromResult(queryable.FirstOrDefault(x => x.PatientId == int.Parse(id)));
         }
 
         public Task<List<Patient>> GetAllAsync(string[] include = null)
@@ -170,6 +171,30 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(patient);
         }
 
+        public TaskResult ActivePatient(Patient patient)
+        {
+            TaskResult result = new TaskResult();
+            try
+            {
+                patient.IsDeleted = false;
+                patient.DeletedDate = DateTime.MinValue;
+                _context.Update(patient);
+
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                });
+            }
+
+            return result;
+        }
+
         public async Task<TaskResult> AddPhone(Phone phone, string patientId)
         {
             TaskResult result = new TaskResult();
@@ -226,14 +251,14 @@ namespace LigaCancer.Data.Store
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family, x => x.Family.FamilyMembers);
                 Patient patient = await FindByIdAsync(patientId, specification);
-                if(patient.Family == null)
+                if (patient.Family == null)
                 {
                     patient.Family = new Family();
                 }
                 patient.Family.FamilyIncome += familyMember.MonthlyIncome;
                 patient.Family.FamilyMembers.Add(familyMember);
 
-                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / patient.Family.FamilyMembers.Count();
+                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
 
                 _context.SaveChanges();
                 result.Succeeded = true;

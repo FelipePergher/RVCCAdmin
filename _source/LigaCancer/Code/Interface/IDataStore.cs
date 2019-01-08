@@ -10,7 +10,7 @@ namespace LigaCancer.Code.Interface
     {
         Task<List<T>> GetAllAsync(string[] include = null);
 
-        Task<T> FindByIdAsync(string id, ISpecification<T> specification = null);
+        Task<T> FindByIdAsync(string id, ISpecification<T> specification = null, bool ignoreQueryFilter = false);
 
         Task<TaskResult> CreateAsync(T model);
 

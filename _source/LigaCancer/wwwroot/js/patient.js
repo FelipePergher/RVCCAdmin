@@ -9,16 +9,17 @@
     BuildSelect2("Medicines", "Remédios");
     BuildSelect2("Doctors", "Médicos");
     BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
-    BuildSelect2("CivilState", "Estado Civil");
-    BuildSelect2("Sex", "Gênero");
-    BuildSelect2("FamiliarityGroup", "Grupo de convivência");
+    BuildSelect2("CivilState", "Estado Civil", true);
+    BuildSelect2("Sex", "Gênero", true);
+    BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
 });
 
-function BuildSelect2(elementId, placeholder) {
+function BuildSelect2(elementId, placeholder, allowClear = false) {
     $("#" + elementId).select2({
         theme: "bootstrap",
         placeholder: placeholder,
-        allowClear: true
+        allowClear: allowClear,
+        language: languageSelect2
     }).on("change", function (e) {
         dataTable.draw();
     });
@@ -81,16 +82,14 @@ function BuildDataTable() {
             {
                 title: "Renda Familiar",
                 render: function (data, type, row, meta) {
-                    //todo problem here
-                    //console.log(row.family.familyIncome);
-                    let render = row.family.familyIncome !== 0 ? row.family.familyIncome : "";
+                    let render = row.family.familyIncome !== 0 ? "$" + row.family.familyIncome.toFixed(2) : "";
                     return render;
                 }
             },
             {
                 title: "Renda Percapita",
                 render: function (data, type, row, meta) {
-                    let render = row.family.perCapitaIncome !== 0 ? row.family.perCapitaIncome : "";
+                    let render = row.family.perCapitaIncome !== 0 ? "$" +  row.family.perCapitaIncome.toFixed(2) : "";
                     return render;
                 }
             },
@@ -136,27 +135,27 @@ function BuildDataTable() {
             },
             {
                 title: "Ações",
-                width: "180px",
+                width: "300px",
                 render: function (data, type, row, meta) {
                     if ($("#Discharge").is(":checked")) {
                         //Todo if discharge appear to reativate
-                        return "";
+                        return '<a href="/Patient/ActivePatient/' + row.patientId + '" class="btn btn-primary w-100" data-toggle="modal" data-target="#modal-action">Reativar</a> ';
                     }
                     if ($("#Death").is(":checked")) {
                         return "";
                     }
-                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-25"><i class="fas fa-info"></i></a>';
+                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-40"><i class="fas fa-info"></i> Detalhes </a>';
 
                     link = $("#linkEdit");
                     render = render.concat(
                         '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary w-25 ml-1"><i class="fas fa-edit"></i></a>'
+                        ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
                     );
 
                     link = $("#linkDelete");
                     render = render.concat(
                         '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-danger w-25 ml-1"><i class="fas fa-trash-alt"></i></a>'
+                        ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
                     );
                     return render;
                 }

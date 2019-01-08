@@ -23,7 +23,8 @@ $("#modal-action").on("show.bs.modal", function (e) {
         $("#ResidenceType").select2({
             theme: "bootstrap",
             placeholder: "Selecione o tipo de residência",
-            allowClear: true
+            allowClear: true,
+            language: languageSelect2
         }).on('select2:close', function (e) {
             let selected = $("#ResidenceType").val();
             if (selected !== "") {
@@ -121,11 +122,11 @@ function PhoneDataTable() {
             width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/Phone/EditPhone/' + row.phoneId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/Phone/DeletePhone/' + row.phoneId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"> </i> Excluir </a>'
                 );
                 return render;
             }
@@ -151,14 +152,14 @@ function AddressDataTable() {
         { data: "observationAddress", title: "Observação" },
         {
             title: "Ações",
-            width: "180px%",
+            width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/Address/EditAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/Address/DeleteAddress/' + row.addressId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
                 );
                 return render;
             }
@@ -178,17 +179,23 @@ function FamilyMemberDataTable() {
         { data: "kinship", title: "Parentesco" },
         { data: "age", title: "Idade" },
         { data: "sex", title: "Gênero" },
-        { data: "monthlyIncome", title: "Renda" },
+        {
+            data: "monthlyIncome", title: "Renda",
+            render: function (data, type, row, meta) {
+                let render = row.monthlyIncome !== 0 ? "$" + row.monthlyIncome.toFixed(2) : "";
+                return render;
+            }
+        },
         {
             title: "Ações",
             width: "180px",
             render: function (data, type, row, meta) {
                 let render = '<a href="/FamilyMember/EditFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-secondary"><i class="fas fa-edit"></i></a>';
+                    '" class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
 
                 render = render.concat(
                     '<a href="/FamilyMember/DeleteFamilyMember/' + row.familyMemberId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>'
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
                 );
                 return render;
             }
@@ -208,7 +215,7 @@ function FileAttachmentDataTable() {
         {
             title: "Categoria arquivo",
             render: function (data, type, row, meta) {
-                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '">' + row.fileName + '</a>';
+                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '"> ' + row.fileName + '</a>';
                 return anchor;
             }
         },
@@ -218,7 +225,7 @@ function FileAttachmentDataTable() {
             render: function (data, type, row, meta) {
                 let render = 
                     '<a href="/FileAttachment/DeleteFileAttachment/' + row.fileAttachmentId + '" data-toggle="modal" data-target="#modal-action' +
-                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i></a>';
+                    '" class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>';
                 return render;
             }
         }

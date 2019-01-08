@@ -57,6 +57,9 @@ namespace LigaCancer.Models.MedicalViewModels
         [Display(Name = "Profissão")]
         public string Profession { get; set; }
 
+        [Display(Name = "Renda Mensal")]
+        public double MonthlyIncome { get; set; }
+
         public NaturalityViewModel Naturality { get; set; }
 
         public PatientInformationViewModel PatientInformation { get; set; }

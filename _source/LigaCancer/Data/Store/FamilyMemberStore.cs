@@ -54,16 +54,8 @@ namespace LigaCancer.Data.Store
                 Family family = _context.Families.Include(x => x.FamilyMembers).FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == model.FamilyMemberId) != null);
                 if (family != null)
                 {
-                    if(family.FamilyMembers.Count() == 1)
-                    {
-                        family.FamilyIncome = 0;
-                        family.PerCapitaIncome = 0;
-                    }
-                    else
-                    {
-                        family.FamilyIncome -= familyMember.MonthlyIncome;
-                        family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count() - 1);
-                    }
+                    family.FamilyIncome -= familyMember.MonthlyIncome;
+                    family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count());
                 }
 
                 familyMember.IsDeleted = true;
@@ -90,20 +82,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null)
+        public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null, bool ignoreQueryFilter = false)
         {
-            if(specification != null)
+            IQueryable<FamilyMember> queryable = _context.FamilyMembers;
+            if (ignoreQueryFilter)
             {
-                return Task.FromResult(
-                    _context.FamilyMembers
-                    .IncludeExpressions(specification.Includes)
-                    .IncludeByNames(specification.IncludeStrings)
-                    .FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+                queryable = queryable.IgnoreQueryFilters();
             }
-            else
+
+            if (specification != null)
             {
-                return Task.FromResult(_context.FamilyMembers.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
             }
+
+            return Task.FromResult(queryable.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
         }
 
         public Task<List<FamilyMember>> GetAllAsync(string[] include = null)
@@ -130,7 +122,7 @@ namespace LigaCancer.Data.Store
                 if(family != null)
                 {
                     family.FamilyIncome += model.MonthlyIncome;
-                    family.PerCapitaIncome = family.FamilyIncome / family.FamilyMembers.Count();
+                    family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count() + 1);
                 }
                 _context.SaveChanges();
                 result.Succeeded = true;

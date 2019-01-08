@@ -87,20 +87,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null)
+        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null, bool ignoreQueryFilter = false)
         {
-            if(specification != null)
+            IQueryable<CancerType> queryable = _context.CancerTypes;
+            if (ignoreQueryFilter)
             {
-                return Task.FromResult(
-                    _context.CancerTypes
-                    .IncludeExpressions(specification.Includes)
-                    .IncludeByNames(specification.IncludeStrings)
-                    .FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+                queryable = queryable.IgnoreQueryFilters();
             }
-            else
+
+            if (specification != null)
             {
-                return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
             }
+
+            return Task.FromResult(queryable.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
         }
 
         public Task<List<CancerType>> GetAllAsync(string[] include = null)

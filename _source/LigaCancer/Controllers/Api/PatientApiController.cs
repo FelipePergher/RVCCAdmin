@@ -89,7 +89,6 @@ namespace LigaCancer.Controllers.Api
                     }
                 }
 
-                //todo filter with death and discharge
                 if (patientSearchViewModel.Death)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Death);

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Data.Models.ManyToManyModels;
 using LigaCancer.Code.Interface;
 using LigaCancer.Models.SearchViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace LigaCancer.Controllers
 {
@@ -109,8 +110,7 @@ namespace LigaCancer.Controllers
             return PartialView("_AddPatient", patientViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPatient(PatientViewModel model)
         {
             if (ModelState.IsValid)
@@ -134,7 +134,13 @@ namespace LigaCancer.Controllers
                         Country = model.Naturality.Country,
                         UserCreated = user,
                     },
-                    UserCreated = user
+                    UserCreated = user,
+                    Family = new Family
+                    {
+                        MonthlyIncome = model.MonthlyIncome,
+                        FamilyIncome = model.MonthlyIncome,
+                        PerCapitaIncome = model.MonthlyIncome
+                    }
                 };
 
                 Profession profession = int.TryParse(model.Profession, out int num) ? 
@@ -356,7 +362,7 @@ namespace LigaCancer.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                    x => x.Naturality, x => x.Profession, x => x.PatientInformation,
+                    x => x.Naturality, x => x.Profession, x => x.PatientInformation, x => x.Family,
                     x => x.PatientInformation.PatientInformationCancerTypes,
                     x => x.PatientInformation.PatientInformationDoctors,
                     x => x.PatientInformation.PatientInformationMedicines,
@@ -388,20 +394,20 @@ namespace LigaCancer.Controllers
                     patientViewModel.RG = patient.RG;
                     patientViewModel.Sex = patient.Sex;
                     patientViewModel.Surname = patient.Surname;
+                    patientViewModel.MonthlyIncome = patient.Family.MonthlyIncome;
                 }
             }
 
             return PartialView("_EditPatient", patientViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPatient(string id, PatientViewModel model)
         {
             if (ModelState.IsValid)
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                    x => x.Naturality, x => x.Profession, x => x.PatientInformation,
+                    x => x.Naturality, x => x.Profession, x => x.PatientInformation, x => x.Family, x => x.Family.FamilyMembers,
                     x => x.PatientInformation.PatientInformationCancerTypes, 
                     x => x.PatientInformation.PatientInformationDoctors,
                     x => x.PatientInformation.PatientInformationMedicines,
@@ -660,6 +666,11 @@ namespace LigaCancer.Controllers
                 patient.Naturality.State = model.Naturality.State;
                 patient.Naturality.Country = model.Naturality.Country;
 
+                patient.Family.FamilyIncome -= patient.Family.MonthlyIncome;
+                patient.Family.FamilyIncome += model.MonthlyIncome;
+                patient.Family.MonthlyIncome = model.MonthlyIncome;
+
+                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
                 if (result.Succeeded)
@@ -710,8 +721,7 @@ namespace LigaCancer.Controllers
             return PartialView("_DisablePatient", disablePatientViewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> DisablePatient(string id, DisablePatientViewModel model)
         {
             if (!string.IsNullOrEmpty(id))
@@ -799,6 +809,35 @@ namespace LigaCancer.Controllers
             };
 
             return View(patientViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ActivePatient(string id)
+        {
+            Patient patient = await _patientService.FindByIdAsync(id, ignoreQueryFilter: true);
+            return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivePatient(string id, IFormCollection form)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+                Patient patient = await _patientService.FindByIdAsync(id, specification, true);
+                if (patient != null)
+                {
+                    patient.PatientInformation.ActivePatient.Discharge = false;
+                    TaskResult result = ((PatientStore)_patientService).ActivePatient(patient);
+                    if (result.Succeeded)
+                    {
+                        return StatusCode(200, "200");
+                    }
+                    ModelState.AddErrors(result);
+                    return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         #region Custom Methods

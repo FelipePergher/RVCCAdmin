@@ -25,7 +25,10 @@ namespace LigaCancer.Models.UserViewModels
             Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
         public string Email { get; set; }
 
-        [Display(Name = "Senha"), DataType(DataType.Password), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Senha"), 
+            DataType(DataType.Password), 
+            Required(ErrorMessage = "Este campo é obrigatório!"), 
+            RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
         public string Password { get; set; }
 
         [Display(Name = "Confirmação de senha"), 

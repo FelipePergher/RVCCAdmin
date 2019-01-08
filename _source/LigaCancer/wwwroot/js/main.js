@@ -1,6 +1,6 @@
 ﻿var dataTable = null;
 var language = {
-    emptyTable: "Nenhuma informação cadastrada!",
+    emptyTable: "Nenhum dado encontrado!",
     info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
     infoEmpty: "",
     search: "Procurar",
@@ -17,6 +17,12 @@ var language = {
     aria: {
         sortAscending: ": ativar ordenação ascendente",
         sortDescending: ": ativar ordenação descendente"
+    }
+};
+
+var languageSelect2 = {
+    noResults: function () {
+        return "Não foi encontrado resultados";
     }
 };
 
@@ -47,9 +53,10 @@ $("#modal-action").on("show.bs.modal", function (e) {
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
         $.validator.unobtrusive.parse('form');
 
-        if ($(".select2").length > 0) {
-            $(".select2").select2({
-                theme: "bootstrap"
+        if ($(".customSelect2").length > 0) {
+            $(".customSelect2").select2({
+                theme: "bootstrap",
+                language: languageSelect2
             });
         }
     });
