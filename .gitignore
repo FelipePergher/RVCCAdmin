@@ -31,7 +31,7 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
-_source/LigaCancer/lib/
+_source/LigaCancer/wwwroot/lib/
 _source/LigaCancer/Properties/PublishProfiles/
 _source/LigaCancer/wwwroot/uploads/
 _source/LigaCancer/wwwroot/dist/

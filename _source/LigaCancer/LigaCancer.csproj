@@ -9,26 +9,16 @@
   <ItemGroup>
     <Compile Remove="lib\**" />
     <Compile Remove="wwwroot\dist\**" />
+    <Compile Remove="wwwroot\lib\**" />
     <Content Remove="lib\**" />
     <Content Remove="wwwroot\dist\**" />
+    <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="wwwroot\dist\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="lib\**" />
     <None Remove="wwwroot\dist\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="css\custom.css" />
-    <Content Include="css\style.css" />
-    <Content Include="js\cancerType.js" />
-    <Content Include="js\doctor.js" />
-    <Content Include="js\home.js" />
-    <Content Include="js\main.js" />
-    <Content Include="js\medicine.js" />
-    <Content Include="js\patient-details.js" />
-    <Content Include="js\patient.js" />
-    <Content Include="js\treatmentPlace.js" />
-    <Content Include="js\user.js" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +27,17 @@
     <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\css\custom.css" />
+    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\js\cancerType.js" />
+    <None Include="wwwroot\js\doctor.js" />
+    <None Include="wwwroot\js\home.js" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\js\medicine.js" />
+    <None Include="wwwroot\js\patient-details.js" />
+    <None Include="wwwroot\js\patient.js" />
+    <None Include="wwwroot\js\treatmentPlace.js" />
+    <None Include="wwwroot\js\user.js" />
   </ItemGroup>
 
   <ItemGroup>
