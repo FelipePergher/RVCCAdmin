@@ -52,25 +52,25 @@ namespace LigaCancer.Controllers.Api
                     specification.Wheres.Add(x => x.Sex == sexValue);
                 }
 
-                foreach (var item in patientSearchViewModel.CancerTypes)
+                foreach (string item in patientSearchViewModel.CancerTypes)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationCancerTypes
                         .FirstOrDefault(y => y.CancerTypeId == int.Parse(item)) != null);
                 }
 
-                foreach (var item in patientSearchViewModel.TreatmentPlaces)
+                foreach (string item in patientSearchViewModel.TreatmentPlaces)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationTreatmentPlaces
                         .FirstOrDefault(y => y.TreatmentPlaceId == int.Parse(item)) != null);
                 }
 
-                foreach (var item in patientSearchViewModel.Doctors)
+                foreach (string item in patientSearchViewModel.Doctors)
                 {
                         specification.Wheres.Add(x => x.PatientInformation.PatientInformationDoctors
                             .FirstOrDefault(y => y.DoctorId == int.Parse(item)) != null);
                 }
 
-                foreach (var item in patientSearchViewModel.Medicines)
+                foreach (string item in patientSearchViewModel.Medicines)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationMedicines
                         .FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);

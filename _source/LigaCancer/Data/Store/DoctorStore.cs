@@ -13,7 +13,7 @@ namespace LigaCancer.Data.Store
 {
     public class DoctorStore : IDataStore<Doctor>, IDataTable<Doctor>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public DoctorStore(ApplicationDbContext context)
         {
@@ -53,7 +53,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 Doctor doctor = _context.Doctors.Include(x => x.PatientInformationDoctors).FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                if (doctor.PatientInformationDoctors.Count > 0)
+                if (doctor != null && doctor.PatientInformationDoctors.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
@@ -62,10 +62,14 @@ namespace LigaCancer.Data.Store
                     });
                     return Task.FromResult(result);
                 }
-                doctor.IsDeleted = true;
-                doctor.DeletedDate = DateTime.Now;
-                doctor.CRM = DateTime.Now + "||" + doctor.CRM;
-                _context.Update(doctor);
+
+                if (doctor != null)
+                {
+                    doctor.IsDeleted = true;
+                    doctor.DeletedDate = DateTime.Now;
+                    doctor.CRM = DateTime.Now + "||" + doctor.CRM;
+                    _context.Update(doctor);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -109,10 +113,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());
@@ -141,7 +142,7 @@ namespace LigaCancer.Data.Store
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Doctor> spec)
         {
-            var data = await _context.Set<Doctor>()
+            DataTableResponse data = await _context.Set<Doctor>()
                             .IncludeExpressions(spec.Includes)
                             .IncludeByNames(spec.IncludeStrings)
                             .GetOptionResponseAsync(options);
@@ -156,20 +157,19 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<Doctor> FindByCRMAsync(string crm, int DoctorId)
+        public Task<Doctor> FindByCrmAsync(string crm, int doctorId)
         {
-            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != DoctorId);
+            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != doctorId);
             return Task.FromResult(doctor);
         }
 
-        public Task<Doctor> FindByNameAsync(string Name)
+        public Task<Doctor> FindByNameAsync(string name)
         {
-            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == Name);
-            if (doctor != null && doctor.IsDeleted)
-            {
-                doctor.IsDeleted = false;
-                doctor.LastUpdatedDate = DateTime.Now;
-            }
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == name);
+            if (doctor == null || !doctor.IsDeleted) return Task.FromResult(doctor);
+
+            doctor.IsDeleted = false;
+            doctor.LastUpdatedDate = DateTime.Now;
             return Task.FromResult(doctor);
         }
 

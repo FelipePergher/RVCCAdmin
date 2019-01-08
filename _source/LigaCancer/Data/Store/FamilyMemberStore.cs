@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Store
 {
     public class FamilyMemberStore : IDataStore<FamilyMember>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public FamilyMemberStore(ApplicationDbContext context)
         {
@@ -58,9 +58,12 @@ namespace LigaCancer.Data.Store
                     family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count());
                 }
 
-                familyMember.IsDeleted = true;
-                familyMember.DeletedDate = DateTime.Now;
-                _context.Update(familyMember);
+                if (familyMember != null)
+                {
+                    familyMember.IsDeleted = true;
+                    familyMember.DeletedDate = DateTime.Now;
+                    _context.Update(familyMember);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -104,10 +107,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());

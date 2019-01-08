@@ -41,27 +41,26 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddFamilyMember(FamilyMemberViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            if (!ModelState.IsValid) return PartialView("_AddFamilyMember", model);
 
-                TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
-                    new FamilyMember
-                    {
-                        Age = model.Age,
-                        Kinship = model.Kinship,
-                        MonthlyIncome = (double)model.MonthlyIncome,
-                        Name = model.Name,
-                        Sex = model.Sex,
-                        UserCreated = user
-                    }, model.PatientId);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                if (result.Succeeded)
+            TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
+                new FamilyMember
                 {
-                    return StatusCode(200, "familyMember");
-                }
-                ModelState.AddErrors(result);
+                    Age = model.Age,
+                    Kinship = model.Kinship,
+                    MonthlyIncome = (double)model.MonthlyIncome,
+                    Name = model.Name,
+                    Sex = model.Sex,
+                    UserCreated = user
+                }, model.PatientId);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "familyMember");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddFamilyMember", model);
         }
@@ -71,20 +70,19 @@ namespace LigaCancer.Controllers
         {
             FamilyMemberViewModel familyMemberViewModel = new FamilyMemberViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditFamilyMember", familyMemberViewModel);
+
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+            if (familyMember != null)
             {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
+                familyMemberViewModel = new FamilyMemberViewModel
                 {
-                    familyMemberViewModel = new FamilyMemberViewModel
-                    {
-                        Age = familyMember.Age,
-                        Kinship = familyMember.Kinship,
-                        MonthlyIncome = (decimal)familyMember.MonthlyIncome,
-                        Name = familyMember.Name,
-                        Sex = familyMember.Sex
-                    };
-                }
+                    Age = familyMember.Age,
+                    Kinship = familyMember.Kinship,
+                    MonthlyIncome = (decimal)familyMember.MonthlyIncome,
+                    Name = familyMember.Name,
+                    Sex = familyMember.Sex
+                };
             }
 
             return PartialView("_EditFamilyMember", familyMemberViewModel);
@@ -94,30 +92,29 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditFamilyMember", model);
+
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+            TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
+            if (result.Succeeded)
             {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+                familyMember.Age = model.Age;
+                familyMember.Kinship = model.Kinship;
+                familyMember.MonthlyIncome = (double)model.MonthlyIncome;
+                familyMember.Name = model.Name;
+                familyMember.Sex = model.Sex;
+                familyMember.LastUpdatedDate = DateTime.Now;
+                familyMember.LastUserUpdate = user;
+
+                result = await _familyMemberService.UpdateAsync(familyMember);
                 if (result.Succeeded)
                 {
-                    ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                    familyMember.Age = model.Age;
-                    familyMember.Kinship = model.Kinship;
-                    familyMember.MonthlyIncome = (double)model.MonthlyIncome;
-                    familyMember.Name = model.Name;
-                    familyMember.Sex = model.Sex;
-                    familyMember.LastUpdatedDate = DateTime.Now;
-                    familyMember.LastUserUpdate = user;
-
-                    result = await _familyMemberService.UpdateAsync(familyMember);
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "familyMember");
-                    }
+                    return StatusCode(200, "familyMember");
                 }
-                ModelState.AddErrors(result);
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditFamilyMember", model);
         }
@@ -127,13 +124,12 @@ namespace LigaCancer.Controllers
         {
             string name = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteFamilyMember", name);
+
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+            if (familyMember != null)
             {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
-                {
-                    name = familyMember.Name;
-                }
+                name = familyMember.Name;
             }
 
             return PartialView("_DeleteFamilyMember", name);
@@ -143,22 +139,19 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id, IFormCollection form)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
-                {
-                    TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "familyMember");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteFamilyMember", familyMember.Name);
-                }
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+            if (familyMember == null) return RedirectToAction("Index");
+
+            TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "familyMember");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeleteFamilyMember", familyMember.Name);
         }
 
     }

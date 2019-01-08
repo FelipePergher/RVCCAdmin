@@ -13,7 +13,7 @@ namespace LigaCancer.Data.Store
 {
     public class MedicineStore : IDataStore<Medicine>, IDataTable<Medicine>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public MedicineStore(ApplicationDbContext context)
         {
@@ -53,7 +53,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 Medicine medicine = _context.Medicines.Include(x => x.PatientInformationMedicines).FirstOrDefault(b => b.MedicineId == model.MedicineId);
-                if (medicine.PatientInformationMedicines.Count > 0)
+                if (medicine != null && medicine.PatientInformationMedicines.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
@@ -62,10 +62,14 @@ namespace LigaCancer.Data.Store
                     });
                     return Task.FromResult(result);
                 }
-                medicine.IsDeleted = true;
-                medicine.DeletedDate = DateTime.Now;
-                medicine.Name = DateTime.Now + "||" + medicine.Name;
-                _context.Update(medicine);
+
+                if (medicine != null)
+                {
+                    medicine.IsDeleted = true;
+                    medicine.DeletedDate = DateTime.Now;
+                    medicine.Name = DateTime.Now + "||" + medicine.Name;
+                    _context.Update(medicine);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -109,10 +113,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());
@@ -141,7 +142,7 @@ namespace LigaCancer.Data.Store
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Medicine> spec)
         {
-            var data = await _context.Set<Medicine>()
+            DataTableResponse data = await _context.Set<Medicine>()
                             .IncludeExpressions(spec.Includes)
                             .IncludeByNames(spec.IncludeStrings)
                             .GetOptionResponseAsync(options);
@@ -158,17 +159,16 @@ namespace LigaCancer.Data.Store
 
         public Task<Medicine> FindByNameAsync(string name, int MedicineId = -1)
         {
-            if (MedicineId == -1)
-            {
-                Medicine medicine = _context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-                if (medicine != null && medicine.IsDeleted)
-                {
-                    medicine.IsDeleted = false;
-                    medicine.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(medicine);
-            }
-            return Task.FromResult(_context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
+            if (MedicineId != -1)
+                return Task.FromResult(_context.Medicines.IgnoreQueryFilters()
+                    .FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
+
+            Medicine medicine = _context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
+            if (medicine == null || !medicine.IsDeleted) return Task.FromResult(medicine);
+
+            medicine.IsDeleted = false;
+            medicine.LastUpdatedDate = DateTime.Now;
+            return Task.FromResult(medicine);
         }
 
         #endregion

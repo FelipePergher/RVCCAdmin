@@ -13,7 +13,7 @@ namespace LigaCancer.Data.Store
 {
     public class CancerTypeStore : IDataStore<CancerType>, IDataTable<CancerType>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public CancerTypeStore(ApplicationDbContext context)
         {
@@ -53,7 +53,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 CancerType cancerType = _context.CancerTypes.Include(x => x.PatientInformationCancerTypes).FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
-                if (cancerType.PatientInformationCancerTypes.Count > 0)
+                if (cancerType != null && cancerType.PatientInformationCancerTypes.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
@@ -62,10 +62,14 @@ namespace LigaCancer.Data.Store
                     });
                     return Task.FromResult(result);
                 }
-                cancerType.IsDeleted = true;
-                cancerType.DeletedDate = DateTime.Now;
-                cancerType.Name = DateTime.Now + "||" + cancerType.Name;
-                _context.Update(cancerType);
+
+                if (cancerType != null)
+                {
+                    cancerType.IsDeleted = true;
+                    cancerType.DeletedDate = DateTime.Now;
+                    cancerType.Name = DateTime.Now + "||" + cancerType.Name;
+                    _context.Update(cancerType);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -109,10 +113,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());
@@ -141,7 +142,7 @@ namespace LigaCancer.Data.Store
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
         {
-            var data = await _context.Set<CancerType>()
+            DataTableResponse data = await _context.Set<CancerType>()
                             .IncludeExpressions(spec.Includes)
                             .IncludeByNames(spec.IncludeStrings)
                             .GetOptionResponseAsync(options);
@@ -158,18 +159,18 @@ namespace LigaCancer.Data.Store
 
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
-            if (CancerTypeId == -1)
-            {
-                CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-                if (cancerType != null && cancerType.IsDeleted)
-                {
-                    cancerType.IsDeleted = false;
-                    cancerType.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(cancerType);
-            }
+            if (CancerTypeId != -1)
+                return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters()
+                    .FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
 
-            return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
+            CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
+            if (cancerType == null || !cancerType.IsDeleted) return Task.FromResult(cancerType);
+
+            cancerType.IsDeleted = false;
+            cancerType.LastUpdatedDate = DateTime.Now;
+
+            return Task.FromResult(cancerType);
+
         }
 
         #endregion

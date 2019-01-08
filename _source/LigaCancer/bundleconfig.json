@@ -2,9 +2,9 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css",
-      "wwwroot/css/style.css",
-      "wwwroot/css/custom.css"
+      "lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css",
+      "css/style.css",
+      "css/custom.css"
     ],
     "minify": {
       "enabled": true,
@@ -15,10 +15,10 @@
   {
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/lib/core-ui/coreui.min.js",
-      "wwwroot/lib/bootstrap/js/bootstrap.min.js",
-      "wwwroot/js/main.js"
+      "lib/jquery/jquery.min.js",
+      "lib/core-ui/coreui.min.js",
+      "lib/bootstrap/js/bootstrap.min.js",
+      "js/main.js"
     ],
     "minify": {
       "enabled": true,
@@ -29,10 +29,10 @@
   {
     "outputFileName": "wwwroot/dist/js/form.min.js",
     "inputFiles": [
-      "wwwroot/lib/jquery-validate/jquery.validate.min.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "wwwroot/lib/jquery-ajax-unobtrusive/src/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/sweetalert/sweetalert.min.js"
+      "lib/jquery-validate/jquery.validate.min.js",
+      "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
+      "lib/sweetalert/sweetalert.min.js"
     ],
     "minify": {
       "enabled": true,
@@ -43,9 +43,9 @@
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
     "inputFiles": [
-      "wwwroot/lib/select2/css/select2.min.css",
-      "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
-      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      "lib/select2/css/select2.min.css",
+      "lib/select2/theme/select2-bootstrap.min.css",
+      "lib/datatables/css/dataTables.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -56,10 +56,10 @@
   {
     "outputFileName": "wwwroot/dist/js/patient.min.js",
     "inputFiles": [
-      "wwwroot/lib/select2/js/select2.min.js",
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/patient.js"
+      "lib/select2/js/select2.min.js",
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "js/patient.js"
     ],
     "minify": {
       "enabled": true,
@@ -70,7 +70,7 @@
   {
     "outputFileName": "wwwroot/dist/css/datatables.min.css",
     "inputFiles": [
-      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      "lib/datatables/css/dataTables.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -81,9 +81,9 @@
   {
     "outputFileName": "wwwroot/dist/js/treatment-place.min.js",
     "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/treatmentPlace.js"
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "js/treatmentPlace.js"
     ],
     "minify": {
       "enabled": true,
@@ -94,9 +94,9 @@
   {
     "outputFileName": "wwwroot/dist/js/cancer-type.min.js",
     "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/cancerType.js"
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "js/cancerType.js"
     ],
     "minify": {
       "enabled": true,
@@ -109,7 +109,7 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/doctor.js"
+      "js/doctor.js"
     ],
     "minify": {
       "enabled": true,
@@ -120,9 +120,9 @@
   {
     "outputFileName": "wwwroot/dist/js/medicine.min.js",
     "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/medicine.js"
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "js/medicine.js"
     ],
     "minify": {
       "enabled": true,
@@ -133,9 +133,9 @@
   {
     "outputFileName": "wwwroot/dist/js/user.min.js",
     "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/js/user.js"
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "js/user.js"
     ],
     "minify": {
       "enabled": true,
@@ -146,9 +146,9 @@
   {
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
-      "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/lib/core-ui/custom-tooltips.min.js",
-      "wwwroot/js/home.js"
+      "lib/chart-js/Chart.min.js",
+      "lib/core-ui/custom-tooltips.min.js",
+      "js/home.js"
     ],
     "minify": {
       "enabled": true,
@@ -159,10 +159,10 @@
   {
     "outputFileName": "wwwroot/dist/js/patient-details.min.js",
     "inputFiles": [
-      "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
-      "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/lib/select2/js/select2.min.js",
-      "wwwroot/js/patient-details.js"
+      "lib/datatables/js/jquery.dataTables.min.js",
+      "lib/datatables/js/dataTables.bootstrap4.min.js",
+      "lib/select2/js/select2.min.js",
+      "js/patient-details.js"
     ],
     "minify": {
       "enabled": true,

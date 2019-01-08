@@ -42,25 +42,24 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPhone(PhoneViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            if (!ModelState.IsValid) return PartialView("_AddPhone", model);
 
-                TaskResult result = await ((PatientStore)_patientService).AddPhone(
-                    new Phone
-                    {
-                        Number = model.Number,
-                        PhoneType = model.PhoneType,
-                        ObservationNote = model.ObservationNote,
-                        UserCreated = user
-                    }, model.PatientId);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                if (result.Succeeded)
+            TaskResult result = await ((PatientStore)_patientService).AddPhone(
+                new Phone
                 {
-                    return StatusCode(200, "phone");
-                }
-                ModelState.AddErrors(result);
+                    Number = model.Number,
+                    PhoneType = model.PhoneType,
+                    ObservationNote = model.ObservationNote,
+                    UserCreated = user
+                }, model.PatientId);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "phone");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddPhone", model);
         }
@@ -70,18 +69,17 @@ namespace LigaCancer.Controllers
         {
             PhoneViewModel phoneViewModel = new PhoneViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditPhone", phoneViewModel);
+
+            Phone phone = await _phoneService.FindByIdAsync(id);
+            if (phone != null)
             {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
+                phoneViewModel = new PhoneViewModel
                 {
-                    phoneViewModel = new PhoneViewModel
-                    {
-                        Number = phone.Number,
-                        PhoneType = phone.PhoneType,
-                        ObservationNote = phone.ObservationNote
-                    };
-                }
+                    Number = phone.Number,
+                    PhoneType = phone.PhoneType,
+                    ObservationNote = phone.ObservationNote
+                };
             }
 
             return PartialView("_EditPhone", phoneViewModel);
@@ -91,24 +89,23 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPhone(string id, PhoneViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditPhone", model);
+
+            Phone phone = await _phoneService.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+            phone.Number = model.Number;
+            phone.PhoneType = model.PhoneType;
+            phone.ObservationNote = model.ObservationNote;
+            phone.LastUpdatedDate = DateTime.Now;
+            phone.LastUserUpdate = user;
+
+            TaskResult result = await _phoneService.UpdateAsync(phone);
+            if (result.Succeeded)
             {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                phone.Number = model.Number;
-                phone.PhoneType = model.PhoneType;
-                phone.ObservationNote = model.ObservationNote;
-                phone.LastUpdatedDate = DateTime.Now;
-                phone.LastUserUpdate = user;
-
-                TaskResult result = await _phoneService.UpdateAsync(phone);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "phone");
-                }
-                ModelState.AddErrors(result);
+                return StatusCode(200, "phone");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditPhone", model);
         }
@@ -119,13 +116,12 @@ namespace LigaCancer.Controllers
         {
             string number = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeletePhone", number);
+
+            Phone phone = await _phoneService.FindByIdAsync(id);
+            if (phone != null)
             {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
-                {
-                    number = phone.Number;
-                }
+                number = phone.Number;
             }
 
             return PartialView("_DeletePhone", number);
@@ -135,22 +131,19 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePhone(string id, IFormCollection form)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
-                {
-                    TaskResult result = await _phoneService.DeleteAsync(phone);
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "phone");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeletePhone", phone.Number);
-                }
+            Phone phone = await _phoneService.FindByIdAsync(id);
+            if (phone == null) return RedirectToAction("Index");
+
+            TaskResult result = await _phoneService.DeleteAsync(phone);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "phone");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeletePhone", phone.Number);
         }
 
     }

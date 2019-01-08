@@ -7,6 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="lib\**" />
+    <Compile Remove="wwwroot\dist\**" />
+    <Content Remove="lib\**" />
+    <Content Remove="wwwroot\dist\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <EmbeddedResource Remove="wwwroot\dist\**" />
+    <None Remove="lib\**" />
+    <None Remove="wwwroot\dist\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="css\custom.css" />
+    <Content Include="css\style.css" />
+    <Content Include="js\cancerType.js" />
+    <Content Include="js\doctor.js" />
+    <Content Include="js\home.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\medicine.js" />
+    <Content Include="js\patient-details.js" />
+    <Content Include="js\patient.js" />
+    <Content Include="js\treatmentPlace.js" />
+    <Content Include="js\user.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
@@ -23,10 +48,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
   </ItemGroup>
 
   <ItemGroup>

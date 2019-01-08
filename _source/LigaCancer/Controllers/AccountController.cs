@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace LigaCancer.Controllers
 {
     using Data.Models;
-    using LigaCancer.Models.AccountViewModels;
+    using Models.AccountViewModels;
     using Microsoft.AspNetCore.Authentication;
 
 
@@ -47,38 +48,34 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
-                if (applicationUser != null && applicationUser.IsDeleted)
-                {
-                    ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
-                    return View(model);
-                }
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-                
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation(1, "User logged in.");
+            if (!ModelState.IsValid) return View(model);
 
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
-                    return View(model);
-                }
+            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
+            if (applicationUser != null && applicationUser.IsDeleted)
+            {
+                ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
+                return View(model);
+            }
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+                
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(1, "User logged in.");
+
+                return RedirectToLocal(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning(2, "User account locked out.");
+                return View("Lockout");
             }
 
-            // If we got this far, something failed, redisplay form
+            ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
             return View(model);
+
+            // If we got this far, something failed, redisplay form
         }
 
       
@@ -99,16 +96,14 @@ namespace LigaCancer.Controllers
         #region Helpers
 
        private IActionResult RedirectToLocal(string returnUrl)
-        {
+       {
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-        }
+
+           return RedirectToAction(nameof(HomeController.Index), "Home");
+       }
 
         #endregion
     }

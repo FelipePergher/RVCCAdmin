@@ -39,22 +39,21 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTreatmentPlace(TreatmentPlaceViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                TreatmentPlace treatmentPlace = new TreatmentPlace
-                {
-                    City = model.City,
-                    UserCreated = user
-                };
+            if (!ModelState.IsValid) return PartialView("_AddTreatmentPlace", model);
 
-                TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            TreatmentPlace treatmentPlace = new TreatmentPlace
+            {
+                City = model.City,
+                UserCreated = user
+            };
+
+            TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddTreatmentPlace", model);
         }
@@ -64,17 +63,16 @@ namespace LigaCancer.Controllers
         {
             TreatmentPlaceViewModel treatmentPlaceViewModel = new TreatmentPlaceViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditTreatmentPlace", treatmentPlaceViewModel);
+
+            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
+            if (treatmentPlace != null)
             {
-                TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-                if (treatmentPlace != null)
+                treatmentPlaceViewModel = new TreatmentPlaceViewModel
                 {
-                    treatmentPlaceViewModel = new TreatmentPlaceViewModel
-                    {
-                        TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
-                        City = treatmentPlace.City
-                    };
-                }
+                    TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
+                    City = treatmentPlace.City
+                };
             }
 
             return PartialView("_EditTreatmentPlace", treatmentPlaceViewModel);
@@ -84,22 +82,21 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditTreatmentPlace", model);
+
+            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+            treatmentPlace.City = model.City;
+            treatmentPlace.LastUpdatedDate = DateTime.Now;
+            treatmentPlace.LastUserUpdate = user;
+
+            TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
+            if (result.Succeeded)
             {
-                TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                treatmentPlace.City = model.City;
-                treatmentPlace.LastUpdatedDate = DateTime.Now;
-                treatmentPlace.LastUserUpdate = user;
-
-                TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditTreatmentPlace", model);
         }
@@ -109,13 +106,12 @@ namespace LigaCancer.Controllers
         {
             string city = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteTreatmentPlace", city);
+
+            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
+            if (treatmentPlace != null)
             {
-                TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-                if (treatmentPlace != null)
-                {
-                    city = treatmentPlace.City;
-                }
+                city = treatmentPlace.City;
             }
 
             return PartialView("_DeleteTreatmentPlace", city);
@@ -125,38 +121,28 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteTreatmentPlace(string id, IFormCollection form)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-                if (treatmentPlace != null)
-                {
-                    TaskResult result = await _treatmentPlaceService.DeleteAsync(treatmentPlace);
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteTreatmentPlace", treatmentPlace.City);
-                }
+            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
+            if (treatmentPlace == null) return RedirectToAction("Index");
+
+            TaskResult result = await _treatmentPlaceService.DeleteAsync(treatmentPlace);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeleteTreatmentPlace", treatmentPlace.City);
         }
 
         #region Custom Methods
 
-        public JsonResult IsCityExist(string City, int TreatmentPlaceId)
+        public JsonResult IsCityExist(string city, int treatmentPlaceId)
         {
-            TreatmentPlace treatmentPlace = ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(City, TreatmentPlaceId).Result;
+            TreatmentPlace treatmentPlace = ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId).Result;
 
-            if (treatmentPlace != null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
+            return Json(treatmentPlace == null);
         }
 
         #endregion

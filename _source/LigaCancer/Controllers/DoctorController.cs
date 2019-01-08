@@ -39,44 +39,41 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDoctor(DoctorViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                Doctor doctor = new Doctor
-                {
-                    CRM = model.CRM,
-                    Name = model.Name,
-                    UserCreated = user
-                };
+            if (!ModelState.IsValid) return PartialView("_AddDoctor", model);
 
-                TaskResult result = await _doctorService.CreateAsync(doctor);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            Doctor doctor = new Doctor
+            {
+                CRM = model.CRM,
+                Name = model.Name,
+                UserCreated = user
+            };
+
+            TaskResult result = await _doctorService.CreateAsync(doctor);
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddDoctor", model);
         }
-
 
         public async Task<IActionResult> EditDoctor(string id)
         {
             DoctorViewModel doctorViewModel = new DoctorViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditDoctor", doctorViewModel);
+
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+            if(doctor != null)
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if(doctor != null)
+                doctorViewModel = new DoctorViewModel
                 {
-                    doctorViewModel = new DoctorViewModel
-                    {
-                        DoctorId = doctor.DoctorId,
-                        CRM = doctor.CRM,
-                        Name = doctor.Name
-                    };
-                }
+                    DoctorId = doctor.DoctorId,
+                    CRM = doctor.CRM,
+                    Name = doctor.Name
+                };
             }
 
             return PartialView("_EditDoctor", doctorViewModel);
@@ -86,23 +83,22 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDoctor(string id, DoctorViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditDoctor", model);
+
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+            doctor.Name = model.Name;
+            doctor.CRM = model.CRM;
+            doctor.LastUpdatedDate = DateTime.Now;
+            doctor.LastUserUpdate = user;
+
+            TaskResult result = await _doctorService.UpdateAsync(doctor);
+            if (result.Succeeded)
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                doctor.Name = model.Name;
-                doctor.CRM = model.CRM;
-                doctor.LastUpdatedDate = DateTime.Now;
-                doctor.LastUserUpdate = user;
-
-                TaskResult result = await _doctorService.UpdateAsync(doctor);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditDoctor", model);
         }
@@ -112,13 +108,12 @@ namespace LigaCancer.Controllers
         {
             string name = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteDoctor", name);
+
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+            if (doctor != null)
             {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
-                {
-                    name = doctor.Name;
-                }
+                name = doctor.Name;
             }
 
             return PartialView("_DeleteDoctor", name);
@@ -128,38 +123,28 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id, IFormCollection form)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
-                {
-                    TaskResult result = await _doctorService.DeleteAsync(doctor);
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteDoctor", doctor.Name);
-                }
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+            if (doctor == null) return RedirectToAction("Index");
+
+            TaskResult result = await _doctorService.DeleteAsync(doctor);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeleteDoctor", doctor.Name);
         }
 
         #region Custom Methods
 
-        public JsonResult IsCRMExist(string Crm, int DoctorId)
+        public JsonResult IsCrmExist(string crm, int doctorId)
         {
-            Doctor doctor = ((DoctorStore)_doctorService).FindByCRMAsync(Crm, DoctorId).Result;
+            Doctor doctor = ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId).Result;
 
-            if (doctor != null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
+            return Json(doctor == null);
         }
 
         #endregion

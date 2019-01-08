@@ -41,29 +41,28 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAddress(AddressViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            if (!ModelState.IsValid) return PartialView("_AddAddress", model);
 
-                TaskResult result = await ((PatientStore)_patientService).AddAddress(
-                    new Address
-                    {
-                        City = model.City,
-                        Complement = model.Complement,
-                        HouseNumber = model.HouseNumber,
-                        Neighborhood = model.Neighborhood,
-                        ObservationAddress = model.ObservationAddress,
-                        Street = model.Street,
-                        ResidenceType = model.ResidenceType,
-                        MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0
-                    }, model.PatientId);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                if (result.Succeeded)
+            TaskResult result = await ((PatientStore)_patientService).AddAddress(
+                new Address
                 {
-                    return StatusCode(200, "address");
-                }
-                ModelState.AddErrors(result);
+                    City = model.City,
+                    Complement = model.Complement,
+                    HouseNumber = model.HouseNumber,
+                    Neighborhood = model.Neighborhood,
+                    ObservationAddress = model.ObservationAddress,
+                    Street = model.Street,
+                    ResidenceType = model.ResidenceType,
+                    MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0
+                }, model.PatientId);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "address");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddAddress", model);
         }
@@ -73,23 +72,22 @@ namespace LigaCancer.Controllers
         {
             AddressViewModel addressViewModel = new AddressViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditAddress", addressViewModel);
+
+            Address address = await _addressService.FindByIdAsync(id);
+            if (address != null)
             {
-                Address address = await _addressService.FindByIdAsync(id);
-                if (address != null)
+                addressViewModel = new AddressViewModel
                 {
-                    addressViewModel = new AddressViewModel
-                    {
-                        City = address.City,
-                        Complement = address.Complement,
-                        HouseNumber = address.HouseNumber,
-                        Neighborhood = address.Neighborhood,
-                        ObservationAddress = address.ObservationAddress,
-                        Street = address.Street,
-                        ResidenceType = address.ResidenceType,
-                        MonthlyAmmountResidence = address.MonthlyAmmountResidence
-                    };
-                }
+                    City = address.City,
+                    Complement = address.Complement,
+                    HouseNumber = address.HouseNumber,
+                    Neighborhood = address.Neighborhood,
+                    ObservationAddress = address.ObservationAddress,
+                    Street = address.Street,
+                    ResidenceType = address.ResidenceType,
+                    MonthlyAmmountResidence = address.MonthlyAmmountResidence
+                };
             }
 
             return PartialView("_EditAddress", addressViewModel);
@@ -99,29 +97,28 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAddress(string id, AddressViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditAddress", model);
+
+            Address address = await _addressService.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+            address.Complement = model.Complement;
+            address.City = model.City;
+            address.HouseNumber = model.HouseNumber;
+            address.Neighborhood = model.Neighborhood;
+            address.ObservationAddress = model.ObservationAddress;
+            address.ResidenceType = model.ResidenceType;
+            address.MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0;
+            address.Street = model.Street;
+            address.LastUpdatedDate = DateTime.Now;
+            address.LastUserUpdate = user;
+
+            TaskResult result = await _addressService.UpdateAsync(address);
+            if (result.Succeeded)
             {
-                Address address = await _addressService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                address.Complement = model.Complement;
-                address.City = model.City;
-                address.HouseNumber = model.HouseNumber;
-                address.Neighborhood = model.Neighborhood;
-                address.ObservationAddress = model.ObservationAddress;
-                address.ResidenceType = model.ResidenceType;
-                address.MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0;
-                address.Street = model.Street;
-                address.LastUpdatedDate = DateTime.Now;
-                address.LastUserUpdate = user;
-
-                TaskResult result = await _addressService.UpdateAsync(address);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "address");
-                }
-                ModelState.AddErrors(result);
+                return StatusCode(200, "address");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditAddress", model);
         }
@@ -130,13 +127,12 @@ namespace LigaCancer.Controllers
         {
             string addressText = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteAddress", addressText);
+
+            Address address = await _addressService.FindByIdAsync(id);
+            if (address != null)
             {
-                Address address = await _addressService.FindByIdAsync(id);
-                if (address != null)
-                {
-                    addressText = $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}";
-                }
+                addressText = $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}";
             }
 
             return PartialView("_DeleteAddress", addressText);
@@ -149,17 +145,16 @@ namespace LigaCancer.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 Address address = await _addressService.FindByIdAsync(id);
-                if (address != null)
-                {
-                    TaskResult result = await _addressService.DeleteAsync(address);
+                if (address == null) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "address");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteAddress", $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}");
+                TaskResult result = await _addressService.DeleteAsync(address);
+
+                if (result.Succeeded)
+                {
+                    return StatusCode(200, "address");
                 }
+                ModelState.AddErrors(result);
+                return PartialView("_DeleteAddress", $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}");
             }
             return RedirectToAction("Index");
         }

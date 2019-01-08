@@ -32,8 +32,8 @@ function AjaxError(error) {
 
 function AjaxSuccess(data) {
     if (data === "200") {
-        $("#modal-action").modal('hide');
-        $('#modal-action').removeClass("fade");
+        $("#modal-action").modal("hide");
+        $("#modal-action").removeClass("fade");
         if (dataTable !== null) {
             dataTable.ajax.reload();
         }
@@ -51,7 +51,7 @@ function AjaxSuccess(data) {
 $("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
-        $.validator.unobtrusive.parse('form');
+        $.validator.unobtrusive.parse("form");
 
         if ($(".customSelect2").length > 0) {
             $(".customSelect2").select2({

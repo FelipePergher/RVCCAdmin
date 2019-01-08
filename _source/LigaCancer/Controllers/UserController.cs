@@ -11,10 +11,7 @@ namespace LigaCancer.Controllers
 {
     using Code;
     using Data.Models;
-    using Data.Store;
-    using LigaCancer.Models.UserViewModels;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Options;
+    using Models.UserViewModels;
 
     [Authorize(Roles = "Admin")]
     public class UserController : Controller
@@ -82,7 +79,7 @@ namespace LigaCancer.Controllers
                     IdentityRole applicationRole = await _roleManager.FindByIdAsync(model.RoleId);
                     if (applicationRole != null)
                     {
-                        IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                        await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     }
                     return StatusCode(200, "200");
 
@@ -104,78 +101,75 @@ namespace LigaCancer.Controllers
         {
             EditUserViewModel model = new EditUserViewModel();
 
-            if (!String.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditUser", model);
+
+            IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
+            IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
+
+            if (userRoleOption != null)
             {
-                IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
-                IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
-
-                if (userRoleOption != null)
+                model.ApplicationRoles.Add(new SelectListItem
                 {
-                    model.ApplicationRoles.Add(new SelectListItem
-                    {
-                        Text = Globals.GetDisplayName(Globals.Roles.User),
-                        Value = userRoleOption.Id
-                    });
-                }
-                if (adminRoleOption != null)
-                {
-                    model.ApplicationRoles.Add(new SelectListItem
-                    {
-                        Text = Globals.GetDisplayName(Globals.Roles.Admin),
-                        Value = adminRoleOption.Id
-                    });
-                }
-
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
-                if (userRole != null)
-                {
-                    model.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
-                }
-
-                if (user != null)
-                {
-                    model.UserId = user.Id;
-                    model.FirstName = user.FirstName;
-                    model.LastName = user.LastName;
-                    model.Email = user.Email;
-                }
+                    Text = Globals.GetDisplayName(Globals.Roles.User),
+                    Value = userRoleOption.Id
+                });
             }
+            if (adminRoleOption != null)
+            {
+                model.ApplicationRoles.Add(new SelectListItem
+                {
+                    Text = Globals.GetDisplayName(Globals.Roles.Admin),
+                    Value = adminRoleOption.Id
+                });
+            }
+
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
+            if (userRole != null)
+            {
+                model.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
+            }
+
+            if (user == null) return PartialView("_EditUser", model);
+
+            model.UserId = user.Id;
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
             return PartialView("_EditUser", model);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, EditUserViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditUser", model);
+
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+
+            if (user == null) return PartialView("_EditUser", model);
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                if (user != null)
+                string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                if(userRole != null)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.Email = model.Email;
-
-                    IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                        if(userRole != null)
-                        {
-                            IdentityResult roleResult = await _userManager.RemoveFromRoleAsync(user, userRole);
-                        }
-
-                        IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == model.Role);
-                        if(role != null)
-                        {
-                            IdentityResult newRoleResult = await _userManager.AddToRoleAsync(user, role.Name);
-                        }
-
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
+                    await _userManager.RemoveFromRoleAsync(user, userRole);
                 }
+
+                IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == model.Role);
+                if(role != null)
+                {
+                    await _userManager.AddToRoleAsync(user, role.Name);
+                }
+
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditUser", model);
         }
@@ -184,13 +178,12 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             string name = string.Empty;
-            if (!String.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteUser", name);
+
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+            if (applicationUser != null)
             {
-                ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-                if (applicationUser != null)
-                {
-                    name = $"{applicationUser.FirstName} {applicationUser.LastName}";
-                }
+                name = $"{applicationUser.FirstName} {applicationUser.LastName}";
             }
             return PartialView("_DeleteUser", name);
         }
@@ -198,23 +191,20 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id, IFormCollection form)
         {
-            if (!String.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+            if (applicationUser == null) return RedirectToAction("Index");
+
+            applicationUser.DeletedDate = DateTime.Now;
+            applicationUser.IsDeleted = true;
+            IdentityResult result = await _userManager.UpdateAsync(applicationUser);
+            if (result.Succeeded)
             {
-                ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-                if (applicationUser != null)
-                {
-                    applicationUser.DeletedDate = DateTime.Now;
-                    applicationUser.IsDeleted = true;
-                    IdentityResult result = await _userManager.UpdateAsync(applicationUser);
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteUser", $"{applicationUser.FirstName} {applicationUser.LastName}");
-                }
+                return StatusCode(200, "200");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeleteUser", $"{applicationUser.FirstName} {applicationUser.LastName}");
         }
 
         #region Custom Methods
@@ -223,18 +213,7 @@ namespace LigaCancer.Controllers
         {
             ApplicationUser user = _userManager.FindByEmailAsync(Email).Result;
 
-            if (user != null)
-            {
-                if(user.Id == UserId)
-                {
-                    return Json(true);
-                }
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
+            return user != null ? Json(user.Id == UserId) : Json(true);
         }
 
         #endregion

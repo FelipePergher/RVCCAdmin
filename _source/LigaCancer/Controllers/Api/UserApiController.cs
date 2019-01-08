@@ -23,7 +23,7 @@ namespace LigaCancer.Controllers.Api
         {
             try
             {
-                var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
+                List<ApplicationUser> users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
 
                 List<UserListViewModel> data = users.Select(x => new UserListViewModel
                 {

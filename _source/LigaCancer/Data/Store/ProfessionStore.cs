@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Store
 {
     public class ProfessionStore : IDataStore<Profession>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public ProfessionStore(ApplicationDbContext context)
         {
@@ -51,10 +51,13 @@ namespace LigaCancer.Data.Store
             try
             {
                 Profession profession = _context.Professions.FirstOrDefault(b => b.ProfessionId == model.ProfessionId);
-                profession.IsDeleted = true;
-                profession.DeletedDate = DateTime.Now;
-                profession.Name = DateTime.Now + "||" + profession.Name;
-                _context.Update(profession);
+                if (profession != null)
+                {
+                    profession.IsDeleted = true;
+                    profession.DeletedDate = DateTime.Now;
+                    profession.Name = DateTime.Now + "||" + profession.Name;
+                    _context.Update(profession);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -98,10 +101,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());

@@ -13,7 +13,7 @@ namespace LigaCancer.Data.Store
 {
     public class PatientStore : IDataStore<Patient>, IDataTable<Patient>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public PatientStore(ApplicationDbContext context)
         {
@@ -53,9 +53,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
-                patient.IsDeleted = true;
-                patient.DeletedDate = DateTime.Now;
-                _context.Update(patient);
+                if (patient != null)
+                {
+                    patient.IsDeleted = true;
+                    patient.DeletedDate = DateTime.Now;
+                    _context.Update(patient);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -99,10 +102,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());
@@ -131,7 +131,7 @@ namespace LigaCancer.Data.Store
         //DataTable Methods
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Patient> specification)
         {
-            var data = await _context.Set<Patient>()
+            DataTableResponse data = await _context.Set<Patient>()
                             .IncludeExpressions(specification.Includes)
                             .IncludeWheres(specification.Wheres)
                             .IncludeByNames(specification.IncludeStrings)
@@ -142,7 +142,7 @@ namespace LigaCancer.Data.Store
 
         public async Task<DataTableResponse> GetOptionResponseWithSpecIgnoreQueryFilter(DataTableOptions options, ISpecification<Patient> specification)
         {
-            var data = await _context.Set<Patient>()
+            DataTableResponse data = await _context.Set<Patient>()
                             .IncludeExpressions(specification.Includes)
                             .IncludeWheres(specification.Wheres)
                             .IncludeByNames(specification.IncludeStrings)
@@ -159,15 +159,15 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<Patient> FindByCpfAsync(string Cpf, int PatientId)
+        public Task<Patient> FindByCpfAsync(string cpf, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == Cpf && x.PatientId != PatientId);
+            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == cpf && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 
-        public Task<Patient> FindByRgAsync(string Rg, int PatientId)
+        public Task<Patient> FindByRgAsync(string rg, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == Rg && x.PatientId != PatientId);
+            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == rg && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 

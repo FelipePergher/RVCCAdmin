@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Store
 {
     public class FileAttachmentStore : IDataStore<FileAttachment>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public FileAttachmentStore(ApplicationDbContext context)
         {
@@ -51,9 +51,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 FileAttachment fileAttachment = _context.FileAttachments.FirstOrDefault(b => b.FileAttachmentId == model.FileAttachmentId);
-                fileAttachment.IsDeleted = true;
-                fileAttachment.DeletedDate = DateTime.Now;
-                _context.Update(fileAttachment);
+                if (fileAttachment != null)
+                {
+                    fileAttachment.IsDeleted = true;
+                    fileAttachment.DeletedDate = DateTime.Now;
+                    _context.Update(fileAttachment);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -97,10 +100,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());

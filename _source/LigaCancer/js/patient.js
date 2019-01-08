@@ -1,7 +1,7 @@
 ﻿$(function () {
     dataTable = BuildDataTable();
 
-    $('#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death').change(function () {
+    $("#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death").change(function () {
         dataTable.draw();
     });
 
@@ -37,8 +37,8 @@ function BuildDataTable() {
             type: "POST",
             data: function (d) {
                 return $.extend({}, d, {
-                    civilState: $('#CivilState').val(),
-                    Sex: $('#Sex').val(),
+                    civilState: $("#CivilState").val(),
+                    Sex: $("#Sex").val(),
                     cancerTypes: $("#CancerTypes").val(),
                     medicines: $("#Medicines").val(),
                     doctors: $("#Doctors").val(),

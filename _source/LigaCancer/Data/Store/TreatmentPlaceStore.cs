@@ -13,7 +13,7 @@ namespace LigaCancer.Data.Store
 {
     public class TreatmentPlaceStore : IDataStore<TreatmentPlace>, IDataTable<TreatmentPlace>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public TreatmentPlaceStore(ApplicationDbContext context)
         {
@@ -53,7 +53,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 TreatmentPlace treatmentPlace = _context.TreatmentPlaces.Include(x => x.PatientInformationTreatmentPlaces).FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
-                if (treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
+                if (treatmentPlace != null && treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
                 {
                     result.Errors.Add(new TaskError
                     {
@@ -62,10 +62,14 @@ namespace LigaCancer.Data.Store
                     });
                     return Task.FromResult(result);
                 }
-                treatmentPlace.IsDeleted = true;
-                treatmentPlace.DeletedDate = DateTime.Now;
-                treatmentPlace.City = DateTime.Now + "||" + treatmentPlace.City;
-                _context.Update(treatmentPlace);
+
+                if (treatmentPlace != null)
+                {
+                    treatmentPlace.IsDeleted = true;
+                    treatmentPlace.DeletedDate = DateTime.Now;
+                    treatmentPlace.City = DateTime.Now + "||" + treatmentPlace.City;
+                    _context.Update(treatmentPlace);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -109,10 +113,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());
@@ -141,7 +142,7 @@ namespace LigaCancer.Data.Store
         //IDataTable
         public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<TreatmentPlace> spec)
         {
-            var data = await _context.Set<TreatmentPlace>()
+            DataTableResponse data = await _context.Set<TreatmentPlace>()
                             .IncludeExpressions(spec.Includes)
                             .IncludeByNames(spec.IncludeStrings)
                             .GetOptionResponseAsync(options);
@@ -156,20 +157,17 @@ namespace LigaCancer.Data.Store
 
         #region Custom Methods
 
-        public Task<TreatmentPlace> FindByCityAsync(string city, int TreatmentPlaceId = -1)
+        public Task<TreatmentPlace> FindByCityAsync(string city, int treatmentPlaceId = -1)
         {
-            if(TreatmentPlaceId == -1)
-            {
-                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city);
-                if (treatmentPlace != null && treatmentPlace.IsDeleted)
-                {
-                    treatmentPlace.IsDeleted = false;
-                    treatmentPlace.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(treatmentPlace);
-            }
+            if (treatmentPlaceId != -1) return Task.FromResult(_context.TreatmentPlaces.IgnoreQueryFilters()
+                    .FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != treatmentPlaceId));
 
-            return Task.FromResult(_context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != TreatmentPlaceId));
+            TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city);
+            if (treatmentPlace == null || !treatmentPlace.IsDeleted) return Task.FromResult(treatmentPlace);
+
+            treatmentPlace.IsDeleted = false;
+            treatmentPlace.LastUpdatedDate = DateTime.Now;
+            return Task.FromResult(treatmentPlace);
         }
 
         #endregion

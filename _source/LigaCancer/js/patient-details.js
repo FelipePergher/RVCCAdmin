@@ -4,9 +4,9 @@ var dataTableFamilyMember;
 var dataTableAttachmentFile;
 
 $(function () {
-    $("#modal-action").on('loaded.bs.modal', function (e) {
-    }).on('hidden.bs.modal', function (e) {
-        $(this).removeData('bs.modal');
+    $("#modal-action").on("loaded.bs.modal", function (e) {
+    }).on("hidden.bs.modal", function (e) {
+        $(this).removeData("bs.modal");
     });
 
     dataTablePhone = PhoneDataTable();
@@ -18,14 +18,14 @@ $(function () {
 $("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
     $(this).find(".modal-content").load(link.attr("href"), function () {
-        $.validator.unobtrusive.parse('form');
+        $.validator.unobtrusive.parse("form");
 
         $("#ResidenceType").select2({
             theme: "bootstrap",
             placeholder: "Selecione o tipo de residência",
             allowClear: true,
             language: languageSelect2
-        }).on('select2:close', function (e) {
+        }).on("select2:close", function (e) {
             let selected = $("#ResidenceType").val();
             if (selected !== "") {
                 $("#monthlyResidence").show();
@@ -71,8 +71,8 @@ $("#modal-action").on("show.bs.modal", function (e) {
 
 function AjaxSuccessPatient(data, result) {
     if (result === "success") {
-        $("#modal-action").modal('hide');
-        $('#modal-action').removeClass("fade");
+        $("#modal-action").modal("hide");
+        $("#modal-action").removeClass("fade");
 
         ReloadTables(data);
 
@@ -215,7 +215,7 @@ function FileAttachmentDataTable() {
         {
             title: "Categoria arquivo",
             render: function (data, type, row, meta) {
-                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '"> ' + row.fileName + '</a>';
+                let anchor = '<a class="fa fa-file" href="/' + row.filePath + '" download="' + row.fileName + '"> ' + row.fileName + "</a>";
                 return anchor;
             }
         },

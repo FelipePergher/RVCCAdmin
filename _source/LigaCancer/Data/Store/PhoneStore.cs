@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Store
 {
     public class PhoneStore : IDataStore<Phone>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public PhoneStore(ApplicationDbContext context)
         {
@@ -51,9 +51,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 Phone phone = _context.Phones.FirstOrDefault(b => b.PhoneId == model.PhoneId);
-                phone.IsDeleted = true;
-                phone.DeletedDate = DateTime.Now;
-                _context.Update(phone);
+                if (phone != null)
+                {
+                    phone.IsDeleted = true;
+                    phone.DeletedDate = DateTime.Now;
+                    _context.Update(phone);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -97,10 +100,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());

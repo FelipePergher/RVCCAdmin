@@ -130,9 +130,9 @@ namespace LigaCancer
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
-            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            using (IServiceScope serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                using (ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
                     context.Database.Migrate();
                 }
@@ -143,13 +143,13 @@ namespace LigaCancer
         {
             using (IServiceScope serviceScope = scopeFactory.CreateScope())
             {
-                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                ApplicationDbContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
 
                 if (!dbContext.UserRoles.Any())
                 {
                     RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    foreach (var role in Roles)
+                    foreach (string role in Roles)
                     {
                         if (!await roleManager.RoleExistsAsync(role))
                         {
@@ -168,8 +168,8 @@ namespace LigaCancer
         {
             using (IServiceScope serviceScope = scopeFactory.CreateScope())
             {
-                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 if (!userManager.GetUsersInRoleAsync(Globals.Roles.Admin.ToString()).Result.Any())
                 {

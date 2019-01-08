@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Store
 {
     public class AddressStore : IDataStore<Address>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public AddressStore(ApplicationDbContext context)
         {
@@ -51,9 +51,12 @@ namespace LigaCancer.Data.Store
             try
             {
                 Address address = _context.Addresses.FirstOrDefault(b => b.AddressId == model.AddressId);
-                address.IsDeleted = true;
-                address.DeletedDate = DateTime.Now;
-                _context.Update(address);
+                if (address != null)
+                {
+                    address.IsDeleted = true;
+                    address.DeletedDate = DateTime.Now;
+                    _context.Update(address);
+                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -97,10 +100,7 @@ namespace LigaCancer.Data.Store
 
             if (include != null)
             {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
             return Task.FromResult(query.ToList());

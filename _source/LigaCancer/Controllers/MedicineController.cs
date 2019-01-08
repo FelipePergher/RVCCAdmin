@@ -39,22 +39,21 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMedicine(MedicineViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                Medicine medicine = new Medicine
-                {
-                    Name = model.Name,
-                    UserCreated = user
-                };
+            if (!ModelState.IsValid) return PartialView("_AddMedicine", model);
 
-                TaskResult result = await _medicineService.CreateAsync(medicine);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            Medicine medicine = new Medicine
+            {
+                Name = model.Name,
+                UserCreated = user
+            };
+
+            TaskResult result = await _medicineService.CreateAsync(medicine);
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_AddMedicine", model);
         }
@@ -64,17 +63,16 @@ namespace LigaCancer.Controllers
         {
             MedicineViewModel medicineViewModel = new MedicineViewModel();
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditMedicine", medicineViewModel);
+
+            Medicine medicine = await _medicineService.FindByIdAsync(id);
+            if(medicine != null)
             {
-                Medicine medicine = await _medicineService.FindByIdAsync(id);
-                if(medicine != null)
+                medicineViewModel = new MedicineViewModel
                 {
-                    medicineViewModel = new MedicineViewModel
-                    {
-                        MedicineId = medicine.MedicineId,
-                        Name = medicine.Name
-                    };
-                }
+                    MedicineId = medicine.MedicineId,
+                    Name = medicine.Name
+                };
             }
 
             return PartialView("_EditMedicine", medicineViewModel);
@@ -84,22 +82,21 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditMedicine(string id, MedicineViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return PartialView("_EditMedicine", model);
+
+            Medicine medicine = await _medicineService.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+            medicine.Name = model.Name;
+            medicine.LastUpdatedDate = DateTime.Now;
+            medicine.LastUserUpdate = user;
+
+            TaskResult result = await _medicineService.UpdateAsync(medicine);
+            if (result.Succeeded)
             {
-                Medicine medicine = await _medicineService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-                medicine.Name = model.Name;
-                medicine.LastUpdatedDate = DateTime.Now;
-                medicine.LastUserUpdate = user;
-
-                TaskResult result = await _medicineService.UpdateAsync(medicine);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                return StatusCode(200, "200");
             }
+            ModelState.AddErrors(result);
 
             return PartialView("_EditMedicine", model);
         }
@@ -109,13 +106,12 @@ namespace LigaCancer.Controllers
         {
             string name = string.Empty;
 
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteMedicine", name);
+
+            Medicine medicine = await _medicineService.FindByIdAsync(id);
+            if (medicine != null)
             {
-                Medicine medicine = await _medicineService.FindByIdAsync(id);
-                if (medicine != null)
-                {
-                    name = medicine.Name;
-                }
+                name = medicine.Name;
             }
 
             return PartialView("_DeleteMedicine", name);
@@ -125,38 +121,28 @@ namespace LigaCancer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMedicine(string id, IFormCollection form)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Medicine medicine = await _medicineService.FindByIdAsync(id);
-                if (medicine != null)
-                {
-                    TaskResult result = await _medicineService.DeleteAsync(medicine);
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteMedicine", medicine.Name);
-                }
+            Medicine medicine = await _medicineService.FindByIdAsync(id);
+            if (medicine == null) return RedirectToAction("Index");
+
+            TaskResult result = await _medicineService.DeleteAsync(medicine);
+
+            if (result.Succeeded)
+            {
+                return StatusCode(200, "200");
             }
-            return RedirectToAction("Index");
+            ModelState.AddErrors(result);
+            return PartialView("_DeleteMedicine", medicine.Name);
         }
 
         #region Custom Methods
 
-        public JsonResult IsNameExist(string Name, int MedicineId)
+        public JsonResult IsNameExist(string name, int medicineId)
         {
-            Medicine medicine = ((MedicineStore)_medicineService).FindByNameAsync(Name, MedicineId).Result;
+            Medicine medicine = ((MedicineStore)_medicineService).FindByNameAsync(name, medicineId).Result;
 
-            if (medicine != null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
+            return Json(medicine == null);
         }
 
         #endregion
