@@ -27,8 +27,16 @@
     <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\js\coreui.min.js" />
+    <None Include="wwwroot\js\custom-tooltips.min.js" />
     <None Include="wwwroot\css\custom.css" />
     <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
     <None Include="wwwroot\js\cancerType.js" />
     <None Include="wwwroot\js\doctor.js" />
     <None Include="wwwroot\js\home.js" />

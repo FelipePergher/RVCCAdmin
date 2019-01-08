@@ -16,7 +16,7 @@
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/lib/core-ui/coreui.min.js",
+      "wwwroot/js/coreui.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/js/main.js"
     ],
@@ -147,7 +147,7 @@
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
       "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/lib/core-ui/custom-tooltips.min.js",
+      "wwwroot/js/custom-tooltips.min.js",
       "wwwroot/js/home.js"
     ],
     "minify": {
