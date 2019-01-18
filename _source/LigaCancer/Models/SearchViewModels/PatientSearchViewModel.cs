@@ -47,7 +47,7 @@ namespace LigaCancer.Models.SearchViewModels
         [Display(Name = "Grupo de convivência")]
         public string FamiliarityGroup { get; set; }
 
-        [Display(Name = "Cancêres")]
+        [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }
 
         [Display(Name = "Remédios")]

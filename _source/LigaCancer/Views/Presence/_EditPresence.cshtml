@@ -1,0 +1,41 @@
+﻿@model LigaCancer.Models.SearchViewModels.PresenceViewModel
+<form asp-action="EditPresence"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="AjaxErrorPresence"
+      data-ajax-success="AjaxSuccessPresence"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Presença" }' />
+
+    <div class="modal-body form-horizontal">
+        <h4>Presença</h4>
+        <hr />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Patient" class="control-label"></label>
+            <select asp-for="Patient" asp-items="Model.Patients" class="select2 form-control" data-theme="bootstrap" name="state"></select>
+            <span asp-validation-for="Patient" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" type="text" class="form-control date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Time" class="control-label"></label>
+            <input asp-for="Time" type="text" class="form-control" />
+            <span asp-validation-for="Time" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <partial name="_ModalFooter" model="new ModalFooter { }" />
+
+</form>
+
+
+

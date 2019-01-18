@@ -80,6 +80,7 @@ namespace LigaCancer
             services.AddTransient<IDataStore<Address>, AddressStore>();
             services.AddTransient<IDataStore<FamilyMember>, FamilyMemberStore>();
             services.AddTransient<IDataStore<FileAttachment>, FileAttachmentStore>();
+            services.AddTransient<IDataStore<Presence>, PresenceStore>();
 
             //DataTable Services
             services.AddTransient<IDataTable<Patient>, PatientStore>();
