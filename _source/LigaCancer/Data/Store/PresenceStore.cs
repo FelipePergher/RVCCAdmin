@@ -26,9 +26,21 @@ namespace LigaCancer.Data.Store
         public Task<TaskResult> CreateAsync(Presence model)
         {
             TaskResult result = new TaskResult();
-            _context.Presences.Add(model);
-            _context.SaveChanges();
-            result.Succeeded = true;
+            try
+            {
+                _context.Presences.Add(model);
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                });
+            }
+
             return Task.FromResult(result);
 
         }
@@ -36,9 +48,21 @@ namespace LigaCancer.Data.Store
         public Task<TaskResult> DeleteAsync(Presence model)
         {
             TaskResult result = new TaskResult();
-            _context.Presences.Remove(model);
-            _context.SaveChanges();
-            result.Succeeded = true;
+            try
+            {
+                _context.Presences.Remove(model);
+                _context.SaveChanges();
+                result.Succeeded = true;
+            }
+            catch (Exception e)
+            {
+                result.Errors.Add(new TaskError
+                {
+                    Code = e.HResult.ToString(),
+                    Description = e.Message
+                }); ;
+            }
+           
             return Task.FromResult(result);
         }
 
@@ -49,12 +73,30 @@ namespace LigaCancer.Data.Store
 
         public Task<Presence> FindByIdAsync(string id, ISpecification<Presence> specification = null, bool ignoreQueryFilter = false)
         {
-            return Task.FromResult(_context.Presences.Include(x => x.Patient).FirstOrDefault());
+            IQueryable<Presence> queryable = _context.Presences;
+            if (ignoreQueryFilter)
+            {
+                queryable = queryable.IgnoreQueryFilters();
+            }
+
+            if (specification != null)
+            {
+                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+            }
+
+            return Task.FromResult(queryable.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
 
         public Task<List<Presence>> GetAllAsync(string[] include = null)
         {
-            return Task.FromResult(_context.Presences.Include(x => x.Patient).ToList());
+            IQueryable<Presence> query = _context.Presences;
+
+            if (include != null)
+            {
+                query = include.Aggregate(query, (current, inc) => current.Include(inc));
+            }
+
+            return Task.FromResult(query.ToList());
         }
 
         public Task<TaskResult> UpdateAsync(Presence model)

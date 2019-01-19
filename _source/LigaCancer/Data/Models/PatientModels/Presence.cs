@@ -15,10 +15,5 @@ namespace LigaCancer.Data.Models.PatientModels
         public Patient Patient { get; set; }
 
         public DateTime PresenceDateTime { get; set; }
-
-
     }
-
-
-
 }

@@ -56,15 +56,6 @@ namespace LigaCancer.Controllers
             PresenceViewModel presence = new PresenceViewModel();
             List<Patient> patients = _patientService.GetAllAsync().Result;
 
-
-            //presence.Patients = patients.Select(x => new SelectListItem
-            //{
-            //    Text = x.FirstName + " " + x.Surname,
-            //    Value = x.PatientId.ToString()
-            //}).ToList();
-
-            
-
             foreach (Patient patient in patients)
             {
                 SelectListItem selectListItem = new SelectListItem
@@ -73,7 +64,7 @@ namespace LigaCancer.Controllers
                     Value = patient.PatientId.ToString()
                 };
                 presence.Patients.Add(selectListItem);
-            }  
+            }
 
             return PartialView("_AddPresence", presence);
         }
@@ -99,16 +90,19 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
             return Ok("200");
-            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> EditPresence(string id)
         {
             PresenceViewModel presenceViewModel = new PresenceViewModel();
-            List<Patient> patients = _patientService.GetAllAsync().Result;
+            List<Patient> patients = await _patientService.GetAllAsync();
 
             if (string.IsNullOrEmpty(id)) return PartialView("_EditPresence", presenceViewModel);
-            Presence presence = await _presenceService.FindByIdAsync(id);
+
+            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
+            Presence presence = await _presenceService.FindByIdAsync(id, specification);
+
             if (presence != null)
             {
                 presenceViewModel = new PresenceViewModel
@@ -118,7 +112,7 @@ namespace LigaCancer.Controllers
                     Date = presence.PresenceDateTime,
                     Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
                 };
-                
+
             }
 
             foreach (Patient patient in patients)
@@ -140,7 +134,8 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return PartialView("_EditPresence", model);
 
-            Presence presence = await _presenceService.FindByIdAsync(id);
+            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
+            Presence presence = await _presenceService.FindByIdAsync(id, specification);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
             presence.Patient = await _patientService.FindByIdAsync(model.Patient);
@@ -163,7 +158,8 @@ namespace LigaCancer.Controllers
 
             if (string.IsNullOrEmpty(id)) return PartialView("_DeletePresence", deletePresenceViewModel);
 
-            Presence presence = await _presenceService.FindByIdAsync(id);
+            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
+            Presence presence = await _presenceService.FindByIdAsync(id, specification);
             if (presence != null)
             {
                 deletePresenceViewModel.Name = presence.Patient.FirstName;
@@ -178,7 +174,8 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-            Presence presence = await _presenceService.FindByIdAsync(id);
+            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
+            Presence presence = await _presenceService.FindByIdAsync(id, specification);
             if (presence == null) return RedirectToAction("Index");
 
             TaskResult result = await _presenceService.DeleteAsync(presence);

@@ -14,6 +14,11 @@ $("#modal-action").on("show.bs.modal", function (e) {
             $(".select2").select2({
                 language: languageSelect2
             });
+            $('.date').datepicker({
+                uiLibrary: 'bootstrap',
+                format: 'dd/mm/yyyy',
+                iconsLibrary: 'fontawesome'
+            });
         });
     });
 });
