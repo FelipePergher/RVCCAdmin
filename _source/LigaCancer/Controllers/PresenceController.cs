@@ -31,7 +31,7 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> Index()
         {
             PresenceViewModel presence = new PresenceViewModel();
-            List<Patient> patients = _patientService.GetAllAsync().Result;
+            List<Patient> patients = await _patientService.GetAllAsync();
 
             foreach (Patient patient in patients)
             {
