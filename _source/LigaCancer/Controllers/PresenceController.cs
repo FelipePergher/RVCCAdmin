@@ -28,7 +28,7 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             PresenceViewModel presence = new PresenceViewModel();
             List<Patient> patients = _patientService.GetAllAsync().Result;
@@ -45,16 +45,16 @@ namespace LigaCancer.Controllers
 
             return View(new PresenceSearchViewModel
             {
-                Presences = _presenceService.GetAllAsync().Result,
+                Presences = await _presenceService.GetAllAsync(),
                 Patients = presence.Patients
             });
         }
 
         [HttpGet]
-        public IActionResult AddPresence()
+        public async Task<IActionResult> AddPresence()
         {
             PresenceViewModel presence = new PresenceViewModel();
-            List<Patient> patients = _patientService.GetAllAsync().Result;
+            List<Patient> patients = await _patientService.GetAllAsync();
 
             foreach (Patient patient in patients)
             {

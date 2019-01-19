@@ -1,6 +1,5 @@
 ﻿$(function () {
     $('.date').datepicker({
-        uiLibrary: 'bootstrap',
         format: 'dd/mm/yyyy',
         iconsLibrary: 'fontawesome',
     });
@@ -18,12 +17,10 @@ $("#modal-action").on("show.bs.modal", function (e) {
                 language: languageSelect2
             });
             $('.date').datepicker({
-                uiLibrary: 'bootstrap',
                 format: 'dd/mm/yyyy',
                 iconsLibrary: 'fontawesome'
             });
             $('#Time').timepicker({
-                uiLibrary: 'bootstrap',
                 iconsLibrary: 'fontawesome'
             });
 
