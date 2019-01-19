@@ -84,6 +84,21 @@
       "files": [
         "dist/jquery.unobtrusive-ajax.min.js"
       ]
+    },
+    {
+      "library": "gijgo@1.9.11",
+      "destination": "wwwroot/lib/gijgo",
+      "files": [
+        "modular/css/datepicker.min.css",
+        "modular/js/datepicker.min.js",
+        "combined/css/gijgo.min.css",
+        "combined/js/gijgo.min.js",
+        "combined/fonts/gijgo-material.woff",
+        "combined/fonts/gijgo-material.ttf",
+        "modular/css/timepicker.min.css",
+        "modular/js/timepicker.js"
+      ]
     }
+
   ]
 }

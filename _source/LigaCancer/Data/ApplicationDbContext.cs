@@ -134,5 +134,7 @@ namespace LigaCancer.Data
         public DbSet<Profession> Professions { get; set; }
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
+
+        public DbSet<Presence> Presences { get; set; }
     }
 }
