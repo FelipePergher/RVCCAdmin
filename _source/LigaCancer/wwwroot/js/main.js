@@ -59,11 +59,6 @@ $("#modal-action").on("show.bs.modal", function (e) {
                 language: languageSelect2
             });
         }
-       
-        $('#Time').timepicker({
-            uiLibrary: 'bootstrap',
-            iconsLibrary: 'fontawesome'
-        });
     });
 });
 

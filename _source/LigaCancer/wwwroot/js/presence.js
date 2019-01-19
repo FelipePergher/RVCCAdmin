@@ -4,6 +4,9 @@
         format: 'dd/mm/yyyy',
         iconsLibrary: 'fontawesome',
     });
+    $(".select2").select2({
+        language: languageSelect2
+    });
 });
 
 $("#modal-action").on("show.bs.modal", function (e) {
@@ -19,13 +22,12 @@ $("#modal-action").on("show.bs.modal", function (e) {
                 format: 'dd/mm/yyyy',
                 iconsLibrary: 'fontawesome'
             });
-        });
-    });
-});
+            $('#Time').timepicker({
+                uiLibrary: 'bootstrap',
+                iconsLibrary: 'fontawesome'
+            });
 
-$(function () {
-    $(".select2").select2({
-        language: languageSelect2
+        });
     });
 });
 
