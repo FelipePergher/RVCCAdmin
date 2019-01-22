@@ -3,7 +3,6 @@ var language = {
     emptyTable: "Nenhum dado encontrado!",
     info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
     infoEmpty: "",
-    search: "Procurar",
     zeroRecords: "Não foi encontrado resultados",
     lengthMenu: "Mostrar _MENU_ registros por página",
     processing: '<span class="fa fa-spinner fa-pulse" style="font-size: 35px;" ></span>',

@@ -29,6 +29,7 @@ function BuildDataTable() {
     return $("#patientTable").DataTable({
         pageLength: 10,
         processing: true,
+        searching:false,
         serverSide: true,
         scrollX: true,
         language: language,
