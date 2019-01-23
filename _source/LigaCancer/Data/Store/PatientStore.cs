@@ -52,14 +52,7 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
-                if (patient != null)
-                {
-                    patient.IsDeleted = true;
-                    patient.DeletedDate = DateTime.Now;
-                    _context.Update(patient);
-                }
-
+                _context.Patients.Remove(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -80,13 +73,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null, bool ignoreQueryFilter = false)
+        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null)
         {
             IQueryable<Patient> queryable = _context.Patients;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {
@@ -140,60 +129,43 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
-        public async Task<DataTableResponse> GetOptionResponseWithSpecIgnoreQueryFilter(DataTableOptions options, ISpecification<Patient> specification)
-        {
-            DataTableResponse data = await _context.Set<Patient>()
-                            .IncludeExpressions(specification.Includes)
-                            .IncludeWheres(specification.Wheres)
-                            .IncludeByNames(specification.IncludeStrings)
-                            .IgnoreQueryFilters()
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Patient>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<Patient> FindByCpfAsync(string cpf, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == cpf && x.PatientId != patientId);
+            Patient patient = _context.Patients.FirstOrDefault(x => x.CPF == cpf && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 
         public Task<Patient> FindByRgAsync(string rg, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == rg && x.PatientId != patientId);
+            Patient patient = _context.Patients.FirstOrDefault(x => x.RG == rg && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 
-        public TaskResult ActivePatient(Patient patient)
-        {
-            TaskResult result = new TaskResult();
-            try
-            {
-                patient.IsDeleted = false;
-                patient.DeletedDate = DateTime.MinValue;
-                _context.Update(patient);
+        //public TaskResult ActivePatient(Patient patient)
+        //{
+        //    TaskResult result = new TaskResult();
+        //    try
+        //    {
+        //        patient.IsDeleted = false;
+        //        patient.DeletedDate = DateTime.MinValue;
+        //        _context.Update(patient);
 
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-            }
+        //        _context.SaveChanges();
+        //        result.Succeeded = true;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        result.Errors.Add(new TaskError
+        //        {
+        //            Code = e.HResult.ToString(),
+        //            Description = e.Message
+        //        });
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public async Task<TaskResult> AddPhone(Phone phone, string patientId)
         {

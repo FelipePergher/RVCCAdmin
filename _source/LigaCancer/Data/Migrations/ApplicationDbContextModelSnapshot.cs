@@ -17,58 +17,6 @@ namespace LigaCancer.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationCancerType", b =>
-                {
-                    b.Property<int>("PatientInformationId");
-
-                    b.Property<int>("CancerTypeId");
-
-                    b.HasKey("PatientInformationId", "CancerTypeId");
-
-                    b.HasIndex("CancerTypeId");
-
-                    b.ToTable("PatientInformationCancerType");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationDoctor", b =>
-                {
-                    b.Property<int>("PatientInformationId");
-
-                    b.Property<int>("DoctorId");
-
-                    b.HasKey("PatientInformationId", "DoctorId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("PatientInformationDoctor");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationMedicine", b =>
-                {
-                    b.Property<int>("PatientInformationId");
-
-                    b.Property<int>("MedicineId");
-
-                    b.HasKey("PatientInformationId", "MedicineId");
-
-                    b.HasIndex("MedicineId");
-
-                    b.ToTable("PatientInformationMedicine");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationTreatmentPlace", b =>
-                {
-                    b.Property<int>("PatientInformationId");
-
-                    b.Property<int>("TreatmentPlaceId");
-
-                    b.HasKey("PatientInformationId", "TreatmentPlaceId");
-
-                    b.HasIndex("TreatmentPlaceId");
-
-                    b.ToTable("PatientInformationTreatmentPlace");
-                });
-
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
                     b.Property<int>("ActivePatientId")
@@ -78,27 +26,23 @@ namespace LigaCancer.Migrations
 
                     b.Property<DateTime>("DeathDate");
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<bool>("Discharge");
 
                     b.Property<DateTime>("DischargeDate");
 
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<DateTime>("RegisterDate");
+
+                    b.Property<DateTime>("UpdatedDate");
 
                     b.Property<string>("UserCreatedId");
 
+                    b.Property<string>("UserUpdatedId");
+
                     b.HasKey("ActivePatientId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("ActivePatients");
                 });
@@ -112,15 +56,7 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Complement");
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<string>("HouseNumber");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
 
                     b.Property<double>("MonthlyAmmountResidence");
 
@@ -136,15 +72,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Street");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("AddressId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("AddressId");
 
                     b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Addresses");
                 });
@@ -154,28 +94,24 @@ namespace LigaCancer.Migrations
                     b.Property<int>("CancerTypeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("CancerTypeId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("CancerTypeId");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("CancerTypes");
                 });
@@ -187,28 +123,24 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("CRM");
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("DoctorId");
 
                     b.HasIndex("CRM")
                         .IsUnique();
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Doctors");
                 });
@@ -218,15 +150,7 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FamilyId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<double>("FamilyIncome");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
 
                     b.Property<double>("MonthlyIncome");
 
@@ -234,13 +158,17 @@ namespace LigaCancer.Migrations
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("FamilyId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Families");
                 });
@@ -252,17 +180,9 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("Age");
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<int?>("FamilyId");
 
-                    b.Property<bool>("IsDeleted");
-
                     b.Property<string>("Kinship");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
 
                     b.Property<double>("MonthlyIncome");
 
@@ -272,15 +192,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("Sex");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("FamilyMemberId");
 
                     b.HasIndex("FamilyId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("FamilyMembers");
                 });
@@ -292,31 +216,27 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("ArchiveCategorie");
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<string>("FileName");
 
                     b.Property<string>("FilePath");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
 
                     b.Property<int?>("PatientId");
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("FileAttachmentId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("FileAttachmentId");
 
                     b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("FileAttachments");
                 });
@@ -326,28 +246,24 @@ namespace LigaCancer.Migrations
                     b.Property<int>("MedicineId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("MedicineId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("MedicineId");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Medicines");
                 });
@@ -361,25 +277,21 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Country");
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<string>("State");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("NaturalityId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Naturalities");
                 });
@@ -395,25 +307,17 @@ namespace LigaCancer.Migrations
 
                     b.Property<DateTime>("DateOfBirth");
 
-                    b.Property<DateTime>("DeletedDate");
-
                     b.Property<bool>("FamiliarityGroup");
 
                     b.Property<int?>("FamilyId");
 
                     b.Property<string>("FirstName");
 
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<int?>("NaturalityId");
 
                     b.Property<int?>("PatientInformationId");
 
-                    b.Property<int?>("ProfessionId");
+                    b.Property<string>("Profession");
 
                     b.Property<string>("RG");
 
@@ -423,7 +327,11 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Surname");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("PatientId");
 
@@ -432,18 +340,16 @@ namespace LigaCancer.Migrations
 
                     b.HasIndex("FamilyId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("NaturalityId");
 
                     b.HasIndex("PatientInformationId");
-
-                    b.HasIndex("ProfessionId");
 
                     b.HasIndex("RG")
                         .IsUnique();
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Patients");
                 });
@@ -455,27 +361,23 @@ namespace LigaCancer.Migrations
 
                     b.Property<int?>("ActivePatientId");
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<DateTime>("TreatmentbeginDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("PatientInformationId");
 
                     b.HasIndex("ActivePatientId");
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("PatientInformation");
                 });
@@ -484,14 +386,6 @@ namespace LigaCancer.Migrations
                 {
                     b.Property<int>("PhoneId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
 
                     b.Property<string>("Number");
 
@@ -503,15 +397,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("PhoneId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("PhoneId");
 
                     b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
+
+                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Phones");
                 });
@@ -521,62 +419,27 @@ namespace LigaCancer.Migrations
                     b.Property<int>("PresenceId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<int?>("PatientId");
 
                     b.Property<DateTime>("PresenceDateTime");
 
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
 
-                    b.HasKey("PresenceId");
+                    b.Property<string>("UserUpdatedId");
 
-                    b.HasIndex("LastUserUpdateId");
+                    b.HasKey("PresenceId");
 
                     b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
 
+                    b.HasIndex("UserUpdatedId");
+
                     b.ToTable("Presences");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Profession", b =>
-                {
-                    b.Property<int>("ProfessionId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<DateTime>("RegisterDate");
-
-                    b.Property<string>("UserCreatedId");
-
-                    b.HasKey("ProfessionId");
-
-                    b.HasIndex("LastUserUpdateId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.ToTable("Professions");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
@@ -586,28 +449,76 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<DateTime>("DeletedDate");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTime>("LastUpdatedDate");
-
-                    b.Property<string>("LastUserUpdateId");
-
                     b.Property<DateTime>("RegisterDate");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.Property<string>("UserCreatedId");
+
+                    b.Property<string>("UserUpdatedId");
 
                     b.HasKey("TreatmentPlaceId");
 
                     b.HasIndex("City")
                         .IsUnique();
 
-                    b.HasIndex("LastUserUpdateId");
-
                     b.HasIndex("UserCreatedId");
 
+                    b.HasIndex("UserUpdatedId");
+
                     b.ToTable("TreatmentPlaces");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationCancerType", b =>
+                {
+                    b.Property<int>("PatientInformationId");
+
+                    b.Property<int>("CancerTypeId");
+
+                    b.HasKey("PatientInformationId", "CancerTypeId");
+
+                    b.HasIndex("CancerTypeId");
+
+                    b.ToTable("PatientInformationCancerType");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationDoctor", b =>
+                {
+                    b.Property<int>("PatientInformationId");
+
+                    b.Property<int>("DoctorId");
+
+                    b.HasKey("PatientInformationId", "DoctorId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("PatientInformationDoctor");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationMedicine", b =>
+                {
+                    b.Property<int>("PatientInformationId");
+
+                    b.Property<int>("MedicineId");
+
+                    b.HasKey("PatientInformationId", "MedicineId");
+
+                    b.HasIndex("MedicineId");
+
+                    b.ToTable("PatientInformationMedicine");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
+                {
+                    b.Property<int>("PatientInformationId");
+
+                    b.Property<int>("TreatmentPlaceId");
+
+                    b.HasKey("PatientInformationId", "TreatmentPlaceId");
+
+                    b.HasIndex("TreatmentPlaceId");
+
+                    b.ToTable("PatientInformationTreatmentPlace");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -793,7 +704,197 @@ namespace LigaCancer.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationCancerType", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Address", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
+                        .WithMany("Addresses")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Doctor", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Family", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Family")
+                        .WithMany("FamilyMembers")
+                        .HasForeignKey("FamilyId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
+                        .WithMany("FileAttachments")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Medicine", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Naturality", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Patient", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Family", "Family")
+                        .WithMany()
+                        .HasForeignKey("FamilyId");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Naturality", "Naturality")
+                        .WithMany()
+                        .HasForeignKey("NaturalityId");
+
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientInformation")
+                        .WithMany()
+                        .HasForeignKey("PatientInformationId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.PatientInformation", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.ActivePatient", "ActivePatient")
+                        .WithMany()
+                        .HasForeignKey("ActivePatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Phone", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
+                        .WithMany("Phones")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Presence", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
+                {
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
+                        .WithMany()
+                        .HasForeignKey("UserCreatedId");
+
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
+                        .WithMany()
+                        .HasForeignKey("UserUpdatedId");
+                });
+
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationCancerType", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.CancerType", "CancerType")
                         .WithMany("PatientInformationCancerTypes")
@@ -806,7 +907,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationDoctor", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationDoctor", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Doctor", "Doctor")
                         .WithMany("PatientInformationDoctors")
@@ -819,7 +920,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationMedicine", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationMedicine", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Medicine", "Medicine")
                         .WithMany("PatientInformationMedicines")
@@ -832,7 +933,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationTreatmentPlace", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationTreatmentPlaces")
@@ -843,211 +944,6 @@ namespace LigaCancer.Migrations
                         .WithMany("PatientInformationTreatmentPlaces")
                         .HasForeignKey("TreatmentPlaceId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Address", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
-                        .WithMany("Addresses")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Doctor", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Family", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Family")
-                        .WithMany("FamilyMembers")
-                        .HasForeignKey("FamilyId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
-                        .WithMany("FileAttachments")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Medicine", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Naturality", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Patient", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Family", "Family")
-                        .WithMany()
-                        .HasForeignKey("FamilyId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Naturality", "Naturality")
-                        .WithMany()
-                        .HasForeignKey("NaturalityId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientInformation")
-                        .WithMany()
-                        .HasForeignKey("PatientInformationId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Profession", "Profession")
-                        .WithMany("Patients")
-                        .HasForeignKey("ProfessionId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.PatientInformation", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.ActivePatient", "ActivePatient")
-                        .WithMany()
-                        .HasForeignKey("ActivePatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Phone", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient")
-                        .WithMany("Phones")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Presence", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Profession", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "LastUserUpdate")
-                        .WithMany()
-                        .HasForeignKey("LastUserUpdateId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

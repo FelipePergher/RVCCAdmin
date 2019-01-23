@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchViewModels;
+using LigaCancer.Models.SearchViewModel;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Interface;
 using Microsoft.AspNetCore.Identity;
 using LigaCancer.Data.Models;
 using LigaCancer.Code;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Http;
+using LigaCancer.Models.FormViewModel;
 
 namespace LigaCancer.Controllers
 {
@@ -140,7 +139,7 @@ namespace LigaCancer.Controllers
 
             presence.Patient = await _patientService.FindByIdAsync(model.Patient);
             presence.PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0);
-            presence.LastUserUpdate = user;
+            presence.UserUpdated = user;
 
             TaskResult result = await _presenceService.UpdateAsync(presence);
             if (result.Succeeded)

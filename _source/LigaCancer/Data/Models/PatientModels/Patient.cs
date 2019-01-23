@@ -1,10 +1,9 @@
 ﻿using LigaCancer.Code;
-using LigaCancer.Data.Models.ManyToManyModels;
+using LigaCancer.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.PatientModels
@@ -42,7 +41,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public Naturality Naturality { get; set; }
 
-        public Profession Profession { get; set; }
+        public string Profession { get; set; }
 
         public Family Family { get; set; }
 

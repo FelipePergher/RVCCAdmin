@@ -50,14 +50,7 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                Address address = _context.Addresses.FirstOrDefault(b => b.AddressId == model.AddressId);
-                if (address != null)
-                {
-                    address.IsDeleted = true;
-                    address.DeletedDate = DateTime.Now;
-                    _context.Update(address);
-                }
-
+                _context.Addresses.Remove(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -78,13 +71,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Address> FindByIdAsync(string id, ISpecification<Address> specification = null, bool ignoreQueryFilter = false)
+        public Task<Address> FindByIdAsync(string id, ISpecification<Address> specification = null)
         {
             IQueryable<Address> queryable = _context.Addresses;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {

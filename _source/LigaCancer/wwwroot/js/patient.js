@@ -34,7 +34,7 @@ function BuildDataTable() {
         scrollX: true,
         language: language,
         ajax: {
-            url: "/api/GetPatientDataTableResponseAsync",
+            url: "/api/patient/GetPatientDataTableResponseAsync",
             type: "POST",
             data: function (d) {
                 return $.extend({}, d, {
@@ -73,13 +73,7 @@ function BuildDataTable() {
                     return render;
                 }
             },
-            {
-                title: "Profissão",
-                render: function (data, type, row, meta) {
-                    let render = row.profession !== null ? row.profession.name : "";
-                    return render;
-                }
-            },
+            { title: "Profissão", data: "profession" },
             {
                 title: "Renda Familiar",
                 render: function (data, type, row, meta) {
@@ -153,11 +147,11 @@ function BuildDataTable() {
                         ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
                     );
 
-                    link = $("#linkDelete");
-                    render = render.concat(
-                        '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
-                    );
+                    //link = $("#linkDelete");
+                    //render = render.concat(
+                    //    '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                    //    ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
+                    //);
                     return render;
                 }
             }

@@ -50,14 +50,8 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                FileAttachment fileAttachment = _context.FileAttachments.FirstOrDefault(b => b.FileAttachmentId == model.FileAttachmentId);
-                if (fileAttachment != null)
-                {
-                    fileAttachment.IsDeleted = true;
-                    fileAttachment.DeletedDate = DateTime.Now;
-                    _context.Update(fileAttachment);
-                }
-
+                //Todo remove file of disk too
+                _context.FileAttachments.Remove(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -78,13 +72,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null, bool ignoreQueryFilter = false)
+        public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null)
         {
             IQueryable<FileAttachment> queryable = _context.FileAttachments;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {

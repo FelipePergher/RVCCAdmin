@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
+using LigaCancer.Models.FormViewModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -97,8 +97,8 @@ namespace LigaCancer.Controllers
             phone.Number = model.Number;
             phone.PhoneType = model.PhoneType;
             phone.ObservationNote = model.ObservationNote;
-            phone.LastUpdatedDate = DateTime.Now;
-            phone.LastUserUpdate = user;
+            phone.UpdatedDate = DateTime.Now;
+            phone.UserUpdated = user;
 
             TaskResult result = await _phoneService.UpdateAsync(phone);
             if (result.Succeeded)

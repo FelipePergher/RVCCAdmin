@@ -1,6 +1,5 @@
-﻿using LigaCancer.Code;
-using System.ComponentModel.DataAnnotations;
-using static LigaCancer.Code.Globals;
+﻿using System.ComponentModel.DataAnnotations;
+using LigaCancer.Code;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -11,7 +10,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Number { get; set; }
 
-        public PhoneType PhoneType { get; set; }
+        public Globals.PhoneType PhoneType { get; set; }
 
         public string ObservationNote { get; set; }
     }

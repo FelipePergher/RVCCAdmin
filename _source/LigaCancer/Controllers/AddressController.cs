@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
+using LigaCancer.Models.FormViewModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -110,8 +110,8 @@ namespace LigaCancer.Controllers
             address.ResidenceType = model.ResidenceType;
             address.MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0;
             address.Street = model.Street;
-            address.LastUpdatedDate = DateTime.Now;
-            address.LastUserUpdate = user;
+            address.UpdatedDate = DateTime.Now;
+            address.UserUpdated = user;
 
             TaskResult result = await _addressService.UpdateAsync(address);
             if (result.Succeeded)

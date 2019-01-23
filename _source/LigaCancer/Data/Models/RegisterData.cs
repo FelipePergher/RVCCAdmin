@@ -12,18 +12,15 @@ namespace LigaCancer.Data.Models
         {
             RegisterDate = DateTime.Now;
         }
+
         public DateTime RegisterDate { get; set; }
 
         public ApplicationUser UserCreated { get; set; }
 
 
-        public DateTime LastUpdatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
-        public ApplicationUser LastUserUpdate { get; set; }
+        public ApplicationUser UserUpdated { get; set; }
 
-
-        public bool IsDeleted { get; set; }
-
-        public DateTime DeletedDate { get; set; }
     }
 }

@@ -50,14 +50,7 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                Phone phone = _context.Phones.FirstOrDefault(b => b.PhoneId == model.PhoneId);
-                if (phone != null)
-                {
-                    phone.IsDeleted = true;
-                    phone.DeletedDate = DateTime.Now;
-                    _context.Update(phone);
-                }
-
+                _context.Phones.Remove(model);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -78,13 +71,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Phone> FindByIdAsync(string id, ISpecification<Phone> specification = null, bool ignoreQueryFilter = false)
+        public Task<Phone> FindByIdAsync(string id, ISpecification<Phone> specification = null)
         {
             IQueryable<Phone> queryable = _context.Phones;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {

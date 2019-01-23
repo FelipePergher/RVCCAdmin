@@ -71,13 +71,9 @@ namespace LigaCancer.Data.Store
            _context?.Dispose();
         }
 
-        public Task<Presence> FindByIdAsync(string id, ISpecification<Presence> specification = null, bool ignoreQueryFilter = false)
+        public Task<Presence> FindByIdAsync(string id, ISpecification<Presence> specification = null)
         {
             IQueryable<Presence> queryable = _context.Presences;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {

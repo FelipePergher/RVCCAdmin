@@ -4,6 +4,7 @@ using LigaCancer.Models;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Interface;
+using LigaCancer.Models.ViewModel;
 
 namespace LigaCancer.Controllers
 {

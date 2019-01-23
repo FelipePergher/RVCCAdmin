@@ -65,10 +65,7 @@ namespace LigaCancer.Data.Store
 
                 if (medicine != null)
                 {
-                    medicine.IsDeleted = true;
-                    medicine.DeletedDate = DateTime.Now;
-                    medicine.Name = DateTime.Now + "||" + medicine.Name;
-                    _context.Update(medicine);
+                    _context.Medicines.Remove(medicine);
                 }
 
                 _context.SaveChanges();
@@ -91,13 +88,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Medicine> FindByIdAsync(string id, ISpecification<Medicine> specification = null, bool ignoreQueryFilter = false)
+        public Task<Medicine> FindByIdAsync(string id, ISpecification<Medicine> specification = null)
         {
             IQueryable<Medicine> queryable = _context.Medicines;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {
@@ -150,25 +143,11 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Medicine>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<Medicine> FindByNameAsync(string name, int MedicineId = -1)
         {
-            if (MedicineId != -1)
-                return Task.FromResult(_context.Medicines.IgnoreQueryFilters()
-                    .FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
-
-            Medicine medicine = _context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-            if (medicine == null || !medicine.IsDeleted) return Task.FromResult(medicine);
-
-            medicine.IsDeleted = false;
-            medicine.LastUpdatedDate = DateTime.Now;
-            return Task.FromResult(medicine);
+            return Task.FromResult(_context.Medicines.FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
         }
 
         #endregion
