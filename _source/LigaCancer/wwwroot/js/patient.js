@@ -34,7 +34,7 @@ function BuildDataTable() {
         scrollX: true,
         language: language,
         ajax: {
-            url: "/api/GetPatientDataTableResponseAsync",
+            url: "/api/patient/GetPatientDataTableResponseAsync",
             type: "POST",
             data: function (d) {
                 return $.extend({}, d, {
@@ -73,13 +73,7 @@ function BuildDataTable() {
                     return render;
                 }
             },
-            {
-                title: "Profissão",
-                render: function (data, type, row, meta) {
-                    let render = row.profession !== null ? row.profession.name : "";
-                    return render;
-                }
-            },
+            { title: "Profissão", data: "profession" },
             {
                 title: "Renda Familiar",
                 render: function (data, type, row, meta) {

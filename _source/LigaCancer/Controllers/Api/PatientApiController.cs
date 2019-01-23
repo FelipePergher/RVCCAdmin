@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Models.SearchViewModels;
 using System.Linq;
 using LigaCancer.Data.Store;
+using System;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), Route("api/[action]")]
+    [Authorize(Roles = "Admin")]
     public class PatientApiController : Controller
     {
         private readonly IDataTable<Patient> _patientDataTable;
@@ -21,13 +22,13 @@ namespace LigaCancer.Controllers.Api
             _patientDataTable = patientDataTable;
         }
 
-        [HttpPost]
+        [HttpPost("~/api/Patient/GetPatientDataTableResponseAsync")]
         public async Task<IActionResult> GetPatientDataTableResponseAsync(DataTableOptions options, PatientSearchViewModel patientSearchViewModel)
         {
             try
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                       x => x.PatientInformation, x => x.Profession, x => x.Family,
+                       x => x.PatientInformation, x => x.Family,
                        x => x.PatientInformation.PatientInformationCancerTypes,
                        x => x.PatientInformation.PatientInformationDoctors,
                        x => x.PatientInformation.PatientInformationMedicines,

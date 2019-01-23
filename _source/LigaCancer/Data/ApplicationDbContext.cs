@@ -90,18 +90,17 @@ namespace LigaCancer.Data
             builder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<PatientInformation>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<Phone>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Profession>().HasQueryFilter(p => !p.IsDeleted);
             builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
 
             #endregion
 
             #region Unique
+
             builder.Entity<CancerType>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Doctor>().HasIndex(p => p.CRM).IsUnique();
             builder.Entity<Medicine>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
-            builder.Entity<Profession>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
 
             #endregion
@@ -130,8 +129,6 @@ namespace LigaCancer.Data
         public DbSet<PatientInformation> PatientInformation { get; set; }
 
         public DbSet<Phone> Phones { get; set; }
-
-        public DbSet<Profession> Professions { get; set; }
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 

@@ -27,7 +27,6 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
         private readonly IDataStore<CancerType> _cancerTypeService;
         private readonly IDataStore<Medicine> _medicineService;
-        private readonly IDataStore<Profession> _professionService;
 
         public PatientController(
             IDataStore<Patient> patientService,
@@ -35,7 +34,6 @@ namespace LigaCancer.Controllers
             IDataStore<TreatmentPlace> treatmentPlaceService,
             IDataStore<CancerType> cancerTypeService,
             IDataStore<Medicine> medicineService,
-            IDataStore<Profession> professionService,
             UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
@@ -43,7 +41,6 @@ namespace LigaCancer.Controllers
             _doctorService = doctorService;
             _cancerTypeService = cancerTypeService;
             _treatmentPlaceService = treatmentPlaceService;
-            _professionService = professionService;
             _medicineService = medicineService;
         }
 
@@ -101,12 +98,6 @@ namespace LigaCancer.Controllers
                 DateOfBirth = DateTime.Now
             };
 
-            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.ProfessionId.ToString()
-            }).ToList());
-
             return PartialView("_AddPatient", patientViewModel);
         }
 
@@ -127,6 +118,7 @@ namespace LigaCancer.Controllers
                     Sex = model.Sex,
                     CivilState = model.CivilState,
                     DateOfBirth = model.DateOfBirth,
+                    Profession = model.Profession,
                     Naturality = new Naturality
                     {
                         City = model.Naturality.City,
@@ -143,30 +135,10 @@ namespace LigaCancer.Controllers
                     }
                 };
 
-                Profession profession = int.TryParse(model.Profession, out int num) ? 
-                    await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null && model.Profession != null)
-                {
-                    profession = new Profession
-                    {
-                        Name = model.Profession,
-                        UserCreated = user
-                    };
-                    TaskResult taskResult = await _professionService.CreateAsync(profession);
-                    if (taskResult.Succeeded)
-                    {
-                        patient.Profession = profession;
-                    }
-                }
-                else if(profession != null)
-                {
-                    patient.Profession = profession;
-                }
-
                 //Added Cancer Types to Patient Information
                 foreach (string item in model.PatientInformation.CancerTypes)
                 {
-                    CancerType cancerType = int.TryParse(item, out num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
+                    CancerType cancerType = int.TryParse(item, out int num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
                     if (cancerType == null)
                     {
                         cancerType = new CancerType
@@ -196,7 +168,7 @@ namespace LigaCancer.Controllers
                 //Added Doctor to Patient Information
                 foreach (string item in model.PatientInformation.Doctors)
                 {
-                    Doctor doctor = int.TryParse(item, out num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
+                    Doctor doctor = int.TryParse(item, out int num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
                     if (doctor == null)
                     {
                         doctor = new Doctor
@@ -225,7 +197,7 @@ namespace LigaCancer.Controllers
                 //Added Treatment Place to Patient Information
                 foreach (string item in model.PatientInformation.TreatmentPlaces)
                 {
-                    TreatmentPlace treatmentPlace = int.TryParse(item, out num) ? 
+                    TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ? 
                         await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
                     if (treatmentPlace == null)
                     {
@@ -256,7 +228,7 @@ namespace LigaCancer.Controllers
                 //Added Medicine to Patient Information
                 foreach (string item in model.PatientInformation.Medicines)
                 {
-                    Medicine medicine = int.TryParse(item, out num) ?
+                    Medicine medicine = int.TryParse(item, out int num) ?
                         await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
 
                     if (medicine == null)
@@ -293,12 +265,6 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            model.SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.ProfessionId.ToString()
-            }).ToList();
-
             model.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
             {
                 Text = x.Name,
@@ -326,9 +292,21 @@ namespace LigaCancer.Controllers
             return PartialView("_AddPatient", model);
         }
 
-
         public async Task<IActionResult> EditPatient(string id)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            
+            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
+                x => x.Naturality, x => x.PatientInformation, x => x.Family,
+                x => x.PatientInformation.PatientInformationCancerTypes,
+                x => x.PatientInformation.PatientInformationDoctors,
+                x => x.PatientInformation.PatientInformationMedicines,
+                x => x.PatientInformation.PatientInformationTreatmentPlaces
+            );
+            Patient patient = await _patientService.FindByIdAsync(id, specification);
+            
+            if (patient == null) return BadRequest();
+
             PatientViewModel patientViewModel = new PatientViewModel
             {
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
@@ -351,50 +329,31 @@ namespace LigaCancer.Controllers
                     Text = x.City,
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList(),
+                CivilState = patient.CivilState,
+                CPF = patient.CPF,
+                DateOfBirth = patient.DateOfBirth,
+                FamiliarityGroup = patient.FamiliarityGroup,
+                FirstName = patient.FirstName,
+                Naturality = new NaturalityViewModel
+                {
+                    City = patient.Naturality.City,
+                    Country = patient.Naturality.Country,
+                    State = patient.Naturality.State
+                },
+                PatientId = patient.PatientId,
+                PatientInformation = new PatientInformationViewModel
+                {
+                    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
+                    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
+                    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
+                    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
+                },
+                Profession = patient.Profession,
+                RG = patient.RG,
+                Sex = patient.Sex,
+                Surname = patient.Surname,
+                MonthlyIncome = patient.Family.MonthlyIncome
             };
-
-            patientViewModel.SelectProfessions.AddRange(_professionService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.ProfessionId.ToString()
-            }).ToList());
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditPatient", patientViewModel);
-
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                x => x.Naturality, x => x.Profession, x => x.PatientInformation, x => x.Family,
-                x => x.PatientInformation.PatientInformationCancerTypes,
-                x => x.PatientInformation.PatientInformationDoctors,
-                x => x.PatientInformation.PatientInformationMedicines,
-                x => x.PatientInformation.PatientInformationTreatmentPlaces
-            );
-            Patient patient = await _patientService.FindByIdAsync(id, specification);
-            if (patient == null) return PartialView("_EditPatient", patientViewModel);
-
-            patientViewModel.CivilState = patient.CivilState;
-            patientViewModel.CPF = patient.CPF;
-            patientViewModel.DateOfBirth = patient.DateOfBirth;
-            patientViewModel.FamiliarityGroup = patient.FamiliarityGroup;
-            patientViewModel.FirstName = patient.FirstName;
-            patientViewModel.Naturality = new NaturalityViewModel
-            {
-                City = patient.Naturality.City,
-                Country = patient.Naturality.Country,
-                State = patient.Naturality.State
-            };
-            patientViewModel.PatientId = patient.PatientId;
-            patientViewModel.PatientInformation = new PatientInformationViewModel
-            {
-                CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
-                Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
-                Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
-                TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
-            };
-            patientViewModel.Profession = patient.Profession?.ProfessionId.ToString();
-            patientViewModel.RG = patient.RG;
-            patientViewModel.Sex = patient.Sex;
-            patientViewModel.Surname = patient.Surname;
-            patientViewModel.MonthlyIncome = patient.Family.MonthlyIncome;
 
             return PartialView("_EditPatient", patientViewModel);
         }
@@ -405,7 +364,7 @@ namespace LigaCancer.Controllers
             if (ModelState.IsValid)
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                    x => x.Naturality, x => x.Profession, x => x.PatientInformation, x => x.Family, x => x.Family.FamilyMembers,
+                    x => x.Naturality, x => x.PatientInformation, x => x.Family, x => x.Family.FamilyMembers,
                     x => x.PatientInformation.PatientInformationCancerTypes, 
                     x => x.PatientInformation.PatientInformationDoctors,
                     x => x.PatientInformation.PatientInformationMedicines,
@@ -419,25 +378,6 @@ namespace LigaCancer.Controllers
                 Patient patient = await _patientService.FindByIdAsync(id, specification);
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                Profession profession = int.TryParse(model.Profession, out int num) ?
-                    await _professionService.FindByIdAsync(model.Profession) : await ((ProfessionStore)_professionService).FindByNameAsync(model.Profession);
-                if (profession == null && model.Profession != null)
-                {
-                    profession = new Profession
-                    {
-                        Name = model.Profession,
-                        UserCreated = user
-                    };
-                    TaskResult taskResult = await _professionService.CreateAsync(profession);
-                    if (taskResult.Succeeded)
-                    {
-                        patient.Profession = profession;
-                    }
-                }
-                else if(profession != null)
-                {
-                    patient.Profession = profession;
-                }
 
                 //Added Cancer Types to Patient Information
                 if(model.PatientInformation.CancerTypes.Count == 0)
@@ -460,7 +400,7 @@ namespace LigaCancer.Controllers
                     //Add news cancer types
                     foreach (string item in model.PatientInformation.CancerTypes)
                     {
-                        CancerType cancerType = int.TryParse(item, out num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
+                        CancerType cancerType = int.TryParse(item, out int num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
                         if (cancerType == null)
                         {
                             cancerType = new CancerType
@@ -512,7 +452,7 @@ namespace LigaCancer.Controllers
                     //Add news doctors
                     foreach (string item in model.PatientInformation.Doctors)
                     {
-                        Doctor doctor = int.TryParse(item, out num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
+                        Doctor doctor = int.TryParse(item, out int num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
                         if (doctor == null)
                         {
                             doctor = new Doctor
@@ -564,7 +504,7 @@ namespace LigaCancer.Controllers
                     //Add new Treatment Place
                     foreach (string item in model.PatientInformation.TreatmentPlaces)
                     {
-                        TreatmentPlace treatmentPlace = int.TryParse(item, out num) ?
+                        TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ?
                             await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
                         if (treatmentPlace == null)
                         {
@@ -617,7 +557,7 @@ namespace LigaCancer.Controllers
                     //Added Medicine to Patient Information
                     foreach (var item in model.PatientInformation.Medicines)
                     {
-                        Medicine medicine = int.TryParse(item, out num) ?
+                        Medicine medicine = int.TryParse(item, out int num) ?
                             await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
 
                         if (medicine == null)
@@ -663,6 +603,7 @@ namespace LigaCancer.Controllers
                 patient.Naturality.City = model.Naturality.City;
                 patient.Naturality.State = model.Naturality.State;
                 patient.Naturality.Country = model.Naturality.Country;
+                patient.Profession = model.Profession;
 
                 patient.Family.FamilyIncome -= patient.Family.MonthlyIncome;
                 patient.Family.FamilyIncome += model.MonthlyIncome;
@@ -677,12 +618,6 @@ namespace LigaCancer.Controllers
                 }
                 ModelState.AddErrors(result);
             }
-
-            model.SelectProfessions = _professionService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.ProfessionId.ToString()
-            }).ToList();
 
             model.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
             {
@@ -756,11 +691,11 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return BadRequest();
             }
 
             BaseSpecification<Patient> specification = new BaseSpecification<Patient>(
-                   x => x.Naturality, x => x.Profession, x => x.Family, x => x.FileAttachments, x => x.PatientInformation,
+                   x => x.Naturality, x => x.Family, x => x.FileAttachments, x => x.PatientInformation,
                    x => x.PatientInformation.PatientInformationCancerTypes,
                    x => x.PatientInformation.PatientInformationDoctors,
                    x => x.PatientInformation.PatientInformationMedicines,
@@ -786,7 +721,7 @@ namespace LigaCancer.Controllers
                 CPF = patient.CPF,
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
-                Profession = patient.Profession?.Name,
+                Profession = patient.Profession,
                 RG = patient.RG,
                 Sex = patient.Sex,
                 Family = patient.Family,
@@ -819,7 +754,7 @@ namespace LigaCancer.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ActivePatient(string id, IFormCollection form)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
             Patient patient = await _patientService.FindByIdAsync(id, specification, true);

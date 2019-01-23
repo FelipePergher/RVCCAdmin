@@ -42,7 +42,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public Naturality Naturality { get; set; }
 
-        public Profession Profession { get; set; }
+        public string Profession { get; set; }
 
         public Family Family { get; set; }
 
