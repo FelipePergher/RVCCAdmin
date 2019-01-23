@@ -147,11 +147,11 @@ function BuildDataTable() {
                         ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
                     );
 
-                    link = $("#linkDelete");
-                    render = render.concat(
-                        '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
-                    );
+                    //link = $("#linkDelete");
+                    //render = render.concat(
+                    //    '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                    //    ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
+                    //);
                     return render;
                 }
             }
