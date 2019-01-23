@@ -83,7 +83,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.PhoneId == int.Parse(id)));
         }
 
-        public Task<List<Phone>> GetAllAsync(string[] include = null)
+        public Task<List<Phone>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
         {
             IQueryable<Phone> query = _context.Phones;
 

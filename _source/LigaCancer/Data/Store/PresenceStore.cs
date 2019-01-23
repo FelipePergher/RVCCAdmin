@@ -83,7 +83,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
 
-        public Task<List<Presence>> GetAllAsync(string[] include = null)
+        public Task<List<Presence>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
         {
             IQueryable<Presence> query = _context.Presences;
 

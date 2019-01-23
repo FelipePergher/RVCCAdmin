@@ -1,11 +1,11 @@
-﻿@model LigaCancer.Models.FormViewModel.DoctorViewModel
+﻿@model LigaCancer.Models.FormViewModel.DoctorFormViewModel
 
 <form asp-action="AddDoctor"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-failure="Error"
+      data-ajax-success="Success"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Médico" }' />

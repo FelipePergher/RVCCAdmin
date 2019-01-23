@@ -1,49 +1,37 @@
-﻿$(function () {
-    dataTable = BuildDataTable();
+﻿let doctorTable = $("#doctorTable").DataTable({
+    processing: true,
+    serverSide: true,
+    language: language,
+    filter: false,
+    ajax: {
+        url: "/api/doctor/search",
+        type: "POST",
+        datatype: "json",
+        error: function() {
+            swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+        }
+    },
+    order: [[0, "asc"]],
+    columns: [
+        { data: "actions", title: "Ações" },
+        { data: "name", title: "Nome" },
+        { data: "crm", title: "CRM" }
+    ]
 });
 
-function BuildDataTable() {
-    return $("#doctorTable").DataTable({
-        pageLength: 10,
-        processing: true,
-        serverSide: true,
-        language: language,
-        ajax: {
-            url: "/api/GetDoctorDataTableResponseAsync",
-            type: "POST",
-            error: errorDataTable
-        },
-        order: [[0, "asc"]],
-        columns: [
-            { data: "name", title: "Nome" },
-            { data: "crm", title: "CRM" },
-            {
-                title: "Ações",
-                width: "180px",
-                render: function (data, type, row, meta) {
-                    let link = $("#linkEdit");
-                    let render = '<a href="/Doctor/EditDoctor/' + row.doctorId + '" data-toggle="modal" data-target="#modal-action"'+
-                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
+function Error(error) {
+    swal("Oops...", "Alguma coisa deu errado!\n", "error");
+}
 
-                    if (row.patientInformationDoctors.length === 0) {
-                        link = $("#linkDelete");
+function Success(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
 
-                        render = render.concat(
-                            '<a href="/Doctor/DeleteDoctor/' + row.doctorId + '" data-toggle="modal" data-target="#modal-action"' +
-                            ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
-                        );
-                    } else {
-                        render = render.concat(
-                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Excluir </a>'
-                        );
-                    }
-                    return render;
-                }
-            }
-        ],
-        columnDefs: [
-            { "orderable": false, "targets": [-1] },
-            { "searchable": false, "targets": [-1] }
-        ]
-    });
+        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+            doctorTable.ajax.reload();
+        });
+    }
+    else {
+        $("#modal-content").html(data);
+    }
 }

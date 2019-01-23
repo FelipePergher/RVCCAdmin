@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormViewModel
 {
-    public class DoctorViewModel
+    public class DoctorFormViewModel
     {
         public int DoctorId { get; set; }
 

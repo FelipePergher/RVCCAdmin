@@ -25,19 +25,20 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddDoctor()
         {
-            return PartialView("_AddDoctor", new DoctorViewModel());
+            return PartialView("_AddDoctor", new DoctorFormViewModel());
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDoctor(DoctorViewModel model)
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDoctor(DoctorFormViewModel model)
         {
             if (!ModelState.IsValid) return PartialView("_AddDoctor", model);
 
@@ -50,10 +51,8 @@ namespace LigaCancer.Controllers
             };
 
             TaskResult result = await _doctorService.CreateAsync(doctor);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
+            if (result.Succeeded) return Ok();
+
             ModelState.AddErrors(result);
 
             return PartialView("_AddDoctor", model);
@@ -61,27 +60,21 @@ namespace LigaCancer.Controllers
 
         public async Task<IActionResult> EditDoctor(string id)
         {
-            DoctorViewModel doctorViewModel = new DoctorViewModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditDoctor", doctorViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
-            if(doctor != null)
-            {
-                doctorViewModel = new DoctorViewModel
-                {
-                    DoctorId = doctor.DoctorId,
-                    CRM = doctor.CRM,
-                    Name = doctor.Name
-                };
-            }
+            if (doctor == null) return NotFound();
 
-            return PartialView("_EditDoctor", doctorViewModel);
+            return PartialView("_EditDoctor", new DoctorFormViewModel
+            {
+                DoctorId = doctor.DoctorId,
+                CRM = doctor.CRM,
+                Name = doctor.Name
+            });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDoctor(string id, DoctorViewModel model)
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDoctor(string id, DoctorFormViewModel model)
         {
             if (!ModelState.IsValid) return PartialView("_EditDoctor", model);
 
@@ -94,46 +87,36 @@ namespace LigaCancer.Controllers
             doctor.UserUpdated = user;
 
             TaskResult result = await _doctorService.UpdateAsync(doctor);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
+            if (result.Succeeded) return Ok();
 
+            ModelState.AddErrors(result);
             return PartialView("_EditDoctor", model);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> DeleteDoctor(string id)
         {
-            string name = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteDoctor", name);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
-            if (doctor != null)
-            {
-                name = doctor.Name;
-            }
 
-            return PartialView("_DeleteDoctor", name);
+            if (doctor == null) return NotFound();
+            
+            return PartialView("_DeleteDoctor", doctor.Name);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id, IFormCollection form)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
-            if (doctor == null) return RedirectToAction("Index");
+            if (doctor == null) return NotFound();
 
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
+            if (result.Succeeded) return Ok();
+
             ModelState.AddErrors(result);
             return PartialView("_DeleteDoctor", doctor.Name);
         }

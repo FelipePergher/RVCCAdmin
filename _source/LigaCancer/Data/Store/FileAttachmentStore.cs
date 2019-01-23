@@ -84,7 +84,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
         }
 
-        public Task<List<FileAttachment>> GetAllAsync(string[] include = null)
+        public Task<List<FileAttachment>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 

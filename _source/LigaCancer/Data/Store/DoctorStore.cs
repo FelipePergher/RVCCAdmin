@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class DoctorStore : IDataStore<Doctor>, IDataTable<Doctor>
+    public class DoctorStore : IDataStore<Doctor>
     {
         private readonly ApplicationDbContext _context;
 
@@ -100,7 +100,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
         }
 
-        public Task<List<Doctor>> GetAllAsync(string[] include = null)
+        public Task<List<Doctor>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
         {
             IQueryable<Doctor> query = _context.Doctors;
 
@@ -109,7 +109,7 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            return Task.FromResult(query.ToList());
+            return Task.FromResult(query.Skip(skip).Take(take).ToList());
         }
 
         public Task<TaskResult> UpdateAsync(Doctor model)
@@ -130,17 +130,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Doctor> spec)
-        {
-            DataTableResponse data = await _context.Set<Doctor>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
         }
 
         #region Custom Methods
