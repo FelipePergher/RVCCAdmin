@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
+using LigaCancer.Models.FormViewModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -105,8 +105,8 @@ namespace LigaCancer.Controllers
                 familyMember.MonthlyIncome = (double)model.MonthlyIncome;
                 familyMember.Name = model.Name;
                 familyMember.Sex = model.Sex;
-                familyMember.LastUpdatedDate = DateTime.Now;
-                familyMember.LastUserUpdate = user;
+                familyMember.UpdatedDate = DateTime.Now;
+                familyMember.UserUpdated = user;
 
                 result = await _familyMemberService.UpdateAsync(familyMember);
                 if (result.Succeeded)

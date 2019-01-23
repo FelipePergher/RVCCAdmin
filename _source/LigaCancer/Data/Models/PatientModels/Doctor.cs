@@ -1,4 +1,4 @@
-﻿using LigaCancer.Data.Models.ManyToManyModels;
+﻿using LigaCancer.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

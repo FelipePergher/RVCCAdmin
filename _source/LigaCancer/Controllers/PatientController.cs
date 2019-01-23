@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
+using LigaCancer.Models.FormViewModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using LigaCancer.Data.Models.ManyToManyModels;
+using LigaCancer.Data.Models.RelationModels;
 using LigaCancer.Code.Interface;
-using LigaCancer.Models.SearchViewModels;
+using LigaCancer.Models.SearchViewModel;
 using Microsoft.AspNetCore.Http;
 
 namespace LigaCancer.Controllers
@@ -589,8 +589,8 @@ namespace LigaCancer.Controllers
                     }
                 }
 
-                patient.LastUpdatedDate = DateTime.Now;
-                patient.LastUserUpdate = user;
+                patient.UpdatedDate = DateTime.Now;
+                patient.UserUpdated = user;
 
                 patient.FirstName = model.FirstName;
                 patient.Surname = model.Surname;
@@ -744,31 +744,31 @@ namespace LigaCancer.Controllers
             return View(patientViewModel);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ActivePatient(string id)
-        {
-            Patient patient = await _patientService.FindByIdAsync(id, ignoreQueryFilter: true);
-            return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> ActivePatient(string id)
+        //{
+        //    Patient patient = await _patientService.FindByIdAsync(id);
+        //    return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+        //}
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ActivePatient(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+        //[HttpPost, ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ActivePatient(string id, IFormCollection form)
+        //{
+        //    if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(id, specification, true);
-            if (patient == null) return RedirectToAction("Index");
+        //    BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+        //    Patient patient = await _patientService.FindByIdAsync(id, specification);
+        //    if (patient == null) return RedirectToAction("Index");
 
-            patient.PatientInformation.ActivePatient.Discharge = false;
-            TaskResult result = ((PatientStore)_patientService).ActivePatient(patient);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
-        }
+        //    patient.PatientInformation.ActivePatient.Discharge = false;
+        //    TaskResult result = ((PatientStore)_patientService).ActivePatient(patient);
+        //    if (result.Succeeded)
+        //    {
+        //        return StatusCode(200, "200");
+        //    }
+        //    ModelState.AddErrors(result);
+        //    return PartialView("_ActivePatient", $"{patient.FirstName} {patient.Surname}");
+        //}
 
         #region Custom Methods
 

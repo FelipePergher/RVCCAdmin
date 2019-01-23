@@ -19,7 +19,7 @@ namespace LigaCancer.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationCancerType", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationCancerType", b =>
                 {
                     b.Property<int>("PatientInformationId");
 
@@ -32,7 +32,7 @@ namespace LigaCancer.Migrations
                     b.ToTable("PatientInformationCancerType");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationDoctor", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationDoctor", b =>
                 {
                     b.Property<int>("PatientInformationId");
 
@@ -45,7 +45,7 @@ namespace LigaCancer.Migrations
                     b.ToTable("PatientInformationDoctor");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationMedicine", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationMedicine", b =>
                 {
                     b.Property<int>("PatientInformationId");
 
@@ -58,7 +58,7 @@ namespace LigaCancer.Migrations
                     b.ToTable("PatientInformationMedicine");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationTreatmentPlace", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
                 {
                     b.Property<int>("PatientInformationId");
 
@@ -795,7 +795,7 @@ namespace LigaCancer.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationCancerType", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationCancerType", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.CancerType", "CancerType")
                         .WithMany("PatientInformationCancerTypes")
@@ -808,7 +808,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationDoctor", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationDoctor", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Doctor", "Doctor")
                         .WithMany("PatientInformationDoctors")
@@ -821,7 +821,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationMedicine", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationMedicine", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Medicine", "Medicine")
                         .WithMany("PatientInformationMedicines")
@@ -834,7 +834,7 @@ namespace LigaCancer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ManyToManyModels.PatientInformationTreatmentPlace", b =>
+            modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationTreatmentPlaces")

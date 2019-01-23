@@ -65,10 +65,7 @@ namespace LigaCancer.Data.Store
 
                 if (cancerType != null)
                 {
-                    cancerType.IsDeleted = true;
-                    cancerType.DeletedDate = DateTime.Now;
-                    cancerType.Name = DateTime.Now + "||" + cancerType.Name;
-                    _context.Update(cancerType);
+                    _context.CancerTypes.Remove(cancerType);
                 }
 
                 _context.SaveChanges();
@@ -91,13 +88,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null, bool ignoreQueryFilter = false)
+        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null)
         {
             IQueryable<CancerType> queryable = _context.CancerTypes;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {
@@ -150,27 +143,11 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<CancerType>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
-            if (CancerTypeId != -1)
-                return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters()
-                    .FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
-
-            CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-            if (cancerType == null || !cancerType.IsDeleted) return Task.FromResult(cancerType);
-
-            cancerType.IsDeleted = false;
-            cancerType.LastUpdatedDate = DateTime.Now;
-
-            return Task.FromResult(cancerType);
-
+            return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
         }
 
         #endregion

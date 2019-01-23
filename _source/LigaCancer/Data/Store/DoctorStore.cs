@@ -65,10 +65,7 @@ namespace LigaCancer.Data.Store
 
                 if (doctor != null)
                 {
-                    doctor.IsDeleted = true;
-                    doctor.DeletedDate = DateTime.Now;
-                    doctor.CRM = DateTime.Now + "||" + doctor.CRM;
-                    _context.Update(doctor);
+                    _context.Doctors.Remove(doctor);
                 }
 
                 _context.SaveChanges();
@@ -91,13 +88,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Doctor> FindByIdAsync(string id, ISpecification<Doctor> specification = null, bool ignoreQueryFilter = false)
+        public Task<Doctor> FindByIdAsync(string id, ISpecification<Doctor> specification = null)
         {
             IQueryable<Doctor> queryable = _context.Doctors;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {
@@ -150,26 +143,17 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Doctor>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<Doctor> FindByCrmAsync(string crm, int doctorId)
         {
-            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != doctorId);
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.CRM == crm && x.DoctorId != doctorId);
             return Task.FromResult(doctor);
         }
 
         public Task<Doctor> FindByNameAsync(string name)
         {
             Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == name);
-            if (doctor == null || !doctor.IsDeleted) return Task.FromResult(doctor);
-
-            doctor.IsDeleted = false;
-            doctor.LastUpdatedDate = DateTime.Now;
             return Task.FromResult(doctor);
         }
 

@@ -8,7 +8,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace LigaCancer.Controllers
 {
     using Data.Models;
-    using Models.AccountViewModels;
+    using Models.AccountViewModel;
     using Microsoft.AspNetCore.Authentication;
 
 

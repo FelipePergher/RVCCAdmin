@@ -5,7 +5,7 @@ using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchViewModels;
+using LigaCancer.Models.SearchViewModel;
 using System.Linq;
 using LigaCancer.Data.Store;
 using System;
@@ -93,13 +93,13 @@ namespace LigaCancer.Controllers.Api
                 if (patientSearchViewModel.Death)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Death);
-                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpecIgnoreQueryFilter(options, specification));
+                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpec(options, specification));
                 }
 
                 if (patientSearchViewModel.Discharge)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Discharge);
-                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpecIgnoreQueryFilter(options, specification));
+                    return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpec(options, specification));
                 }
 
                 return Ok(await _patientDataTable.GetOptionResponseWithSpec(options, specification));

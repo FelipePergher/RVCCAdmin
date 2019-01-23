@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
+using LigaCancer.Models.FormViewModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -90,8 +90,8 @@ namespace LigaCancer.Controllers
 
             doctor.Name = model.Name;
             doctor.CRM = model.CRM;
-            doctor.LastUpdatedDate = DateTime.Now;
-            doctor.LastUserUpdate = user;
+            doctor.UpdatedDate = DateTime.Now;
+            doctor.UserUpdated = user;
 
             TaskResult result = await _doctorService.UpdateAsync(doctor);
             if (result.Succeeded)

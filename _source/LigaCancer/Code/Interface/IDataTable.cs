@@ -7,8 +7,6 @@ namespace LigaCancer.Code.Interface
 {
     public interface IDataTable<T> : IDisposable where T : class
     {
-        Task<DataTableResponse> GetOptionResponse(DataTableOptions options);
-
-        Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<T> specification);
+        Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<T> specification = null);
     }
 }

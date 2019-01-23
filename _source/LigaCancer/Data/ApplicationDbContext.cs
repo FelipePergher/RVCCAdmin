@@ -1,4 +1,4 @@
-﻿using LigaCancer.Data.Models.ManyToManyModels;
+﻿using LigaCancer.Data.Models.RelationModels;
 using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -72,25 +72,6 @@ namespace LigaCancer.Data
                 .HasOne(bc => bc.Medicine)
                 .WithMany(c => c.PatientInformationMedicines)
                 .HasForeignKey(bc => bc.MedicineId);
-
-            #endregion
-
-            #region Entity Filters
-
-            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<ActivePatient>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Address>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<CancerType>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Family>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<FamilyMember>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<FileAttachment>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Medicine>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Naturality>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<PatientInformation>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Phone>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
 
             #endregion
 

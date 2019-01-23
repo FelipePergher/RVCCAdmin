@@ -1,4 +1,4 @@
-﻿using LigaCancer.Data.Models.ManyToManyModels;
+﻿using LigaCancer.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,13 +22,15 @@ namespace LigaCancer.Data.Models.PatientModels
         public DateTime TreatmentbeginDate { get; set; }
 
         public ActivePatient ActivePatient { get; set; }
-
         
         #region Relations
 
         public List<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
+        
         public List<PatientInformationDoctor> PatientInformationDoctors { get; set; }
+        
         public List<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
+        
         public List<PatientInformationMedicine> PatientInformationMedicines { get; set; }
         
         #endregion

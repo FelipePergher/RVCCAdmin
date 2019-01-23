@@ -60,9 +60,7 @@ namespace LigaCancer.Data.Store
 
                 if (familyMember != null)
                 {
-                    familyMember.IsDeleted = true;
-                    familyMember.DeletedDate = DateTime.Now;
-                    _context.Update(familyMember);
+                    _context.FamilyMembers.Remove(familyMember);
                 }
 
                 _context.SaveChanges();
@@ -85,14 +83,10 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null, bool ignoreQueryFilter = false)
+        public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null)
         {
             IQueryable<FamilyMember> queryable = _context.FamilyMembers;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
+            
             if (specification != null)
             {
                 queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);

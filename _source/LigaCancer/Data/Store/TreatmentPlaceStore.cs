@@ -1,4 +1,5 @@
-﻿using LigaCancer.Code;
+﻿
+using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Requests;
@@ -53,6 +54,7 @@ namespace LigaCancer.Data.Store
             try
             {
                 TreatmentPlace treatmentPlace = _context.TreatmentPlaces.Include(x => x.PatientInformationTreatmentPlaces).FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
+
                 if (treatmentPlace != null && treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
                 {
                     result.Errors.Add(new TaskError
@@ -65,10 +67,7 @@ namespace LigaCancer.Data.Store
 
                 if (treatmentPlace != null)
                 {
-                    treatmentPlace.IsDeleted = true;
-                    treatmentPlace.DeletedDate = DateTime.Now;
-                    treatmentPlace.City = DateTime.Now + "||" + treatmentPlace.City;
-                    _context.Update(treatmentPlace);
+                    _context.TreatmentPlaces.Remove(treatmentPlace);
                 }
 
                 _context.SaveChanges();
@@ -91,13 +90,9 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<TreatmentPlace> FindByIdAsync(string id, ISpecification<TreatmentPlace> specification = null, bool ignoreQueryFilter = false)
+        public Task<TreatmentPlace> FindByIdAsync(string id, ISpecification<TreatmentPlace> specification = null)
         {
             IQueryable<TreatmentPlace> queryable = _context.TreatmentPlaces;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
 
             if (specification != null)
             {
@@ -150,24 +145,11 @@ namespace LigaCancer.Data.Store
             return data;
         }
 
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<TreatmentPlace>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
-        public Task<TreatmentPlace> FindByCityAsync(string city, int treatmentPlaceId = -1)
+        public Task<TreatmentPlace> FindByCityAsync(string city, int treatmentPlaceId = 1)
         {
-            if (treatmentPlaceId != -1) return Task.FromResult(_context.TreatmentPlaces.IgnoreQueryFilters()
-                    .FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != treatmentPlaceId));
-
-            TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city);
-            if (treatmentPlace == null || !treatmentPlace.IsDeleted) return Task.FromResult(treatmentPlace);
-
-            treatmentPlace.IsDeleted = false;
-            treatmentPlace.LastUpdatedDate = DateTime.Now;
-            return Task.FromResult(treatmentPlace);
+            return Task.FromResult(_context.TreatmentPlaces.FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != treatmentPlaceId));
         }
 
         #endregion

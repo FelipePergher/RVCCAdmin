@@ -1,6 +1,5 @@
 ﻿using LigaCancer.Code;
 using System.ComponentModel.DataAnnotations;
-using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -15,7 +14,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public int Age { get; set; }
 
-        public Sex Sex { get; set; }
+        public Globals.Sex Sex { get; set; }
 
         public double MonthlyIncome { get; set; }
     }
