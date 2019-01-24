@@ -12,7 +12,6 @@ $("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);
     $(this).find(".modal-content").load(link.attr("href"), function (e) {
         $.validator.unobtrusive.parse("form");
-        $(function () {
             $(".select2").select2({
                 language: languageSelect2
             });
@@ -22,18 +21,16 @@ $("#modal-action").on("show.bs.modal", function (e) {
             });
             $('#Time').timepicker({
                 iconsLibrary: 'fontawesome'
-            });
-
         });
     });
 });
 
-function AjaxErrorPresence(error) {
+function Error(error) {
     swal("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
-function AjaxSuccessPresence(data) {
-    if (data === "200") {
+function Success(data) {
+    if (data === "" && textStatus === "success") {
         $("#modal-action").modal("hide");
         $("#modal-action").removeClass("fade");
         if (dataTable !== null) {

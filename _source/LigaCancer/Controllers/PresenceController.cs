@@ -85,7 +85,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _presenceService.CreateAsync(presence);
             if (result.Succeeded)
             {
-                return StatusCode(200, "200");
+                return Ok();
             }
             ModelState.AddErrors(result);
             return Ok("200");
@@ -97,22 +97,20 @@ namespace LigaCancer.Controllers
             PresenceViewModel presenceViewModel = new PresenceViewModel();
             List<Patient> patients = await _patientService.GetAllAsync();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditPresence", presenceViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
 
-            if (presence != null)
-            {
-                presenceViewModel = new PresenceViewModel
-                {
-                    PresenceId = presence.PresenceId,
-                    Patient = presence.Patient.PatientId.ToString(),
-                    Date = presence.PresenceDateTime,
-                    Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
-                };
+            if (presence == null) return NotFound();
 
-            }
+            presenceViewModel = new PresenceViewModel
+            {
+                PresenceId = presence.PresenceId,
+                Patient = presence.Patient.PatientId.ToString(),
+                Date = presence.PresenceDateTime,
+                Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
+            };
 
             foreach (Patient patient in patients)
             {
@@ -144,7 +142,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _presenceService.UpdateAsync(presence);
             if (result.Succeeded)
             {
-                return StatusCode(200, "200");
+                return Ok();
             }
             ModelState.AddErrors(result);
 
@@ -155,15 +153,14 @@ namespace LigaCancer.Controllers
         {
             DeletePresenceViewModel deletePresenceViewModel = new DeletePresenceViewModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeletePresence", deletePresenceViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            if (presence != null)
-            {
-                deletePresenceViewModel.Name = presence.Patient.FirstName;
-                deletePresenceViewModel.Date = presence.PresenceDateTime;
-            }
+            if (presence == null) return NotFound();
+
+            deletePresenceViewModel.Name = presence.Patient.FirstName;
+            deletePresenceViewModel.Date = presence.PresenceDateTime;
 
             return PartialView("_DeletePresence", deletePresenceViewModel);
         }
@@ -171,17 +168,17 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePresence(string id, IFormCollection form)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            if (presence == null) return RedirectToAction("Index");
+            if (presence == null) return NotFound();
 
             TaskResult result = await _presenceService.DeleteAsync(presence);
 
             if (result.Succeeded)
             {
-                return StatusCode(200, "200");
+                return Ok();
             }
             ModelState.AddErrors(result);
             return PartialView("_DeletePresence", presence);
