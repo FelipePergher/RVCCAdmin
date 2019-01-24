@@ -71,50 +71,7 @@
 
                                 </div>
                                 <hr />
-                                <table class="table table-bordered table-striped table-condensed text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome do Paciente</th>
-                                            <th>Data da Presença</th>
-                                            <th>Hora da Presença</th>
-                                            <th>Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.Presences)
-                                        {
-                                            <tr>
-                                                <td>@item.Patient.FirstName</td>
-                                                <td>@item.PresenceDateTime.Date.ToShortDateString()</td>
-                                                <td>@item.PresenceDateTime.ToShortTimeString()</td>
-                                                <td>
-                                                    <div class="form-row form-group justify-content-md-center">
-                                                        <div class="form-inline">
-                                                            <div class="form-group">
-                                                                <div class="ml-2 btn-group">
-                                                                    <a asp-action="EditPresence/@item.PresenceId" data-toggle="modal" data-target="#modal-action" class="btn btn-secondary">
-                                                                        <i class="fas fa-edit"></i>
-                                                                        Editar
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-inline">
-                                                            <div class="form-group">
-                                                                <div class="ml-2 btn-group">
-                                                                    <a asp-action="DeletePresence/@item.PresenceId" data-toggle="modal" data-target="#modal-action" class="btn btn-danger">
-                                                                        <i class="fas fa-trash-alt"></i>
-                                                                        Excluir
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                <table class="table table-bordered table-striped table-condensed text-center" id="presenceTable"></table>
                             </div>
                         </div>
                     </div>
@@ -134,9 +91,12 @@
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <environment names="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
         <script src="~/lib/select2/js/select2.min.js"></script>
         <script src="~/js/presence.js"></script>
         <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
+
     </environment>
     <environment exclude="Development">
     </environment>

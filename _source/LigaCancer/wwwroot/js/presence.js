@@ -49,3 +49,26 @@ function AjaxSuccessPresence(data) {
         $("#modal-content").html(data);
     }
 }
+
+let presenceTable = $("#presenceTable").DataTable({
+    processing: true,
+    serverSide: true,
+    language: language,
+    filter: false,
+    ajax: {
+        url: "/api/presence/search",
+        type: "POST",
+        datatype: "json",
+        error: function () {
+            swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+        }
+    },
+    order: [[0, "asc"]],
+    columns: [
+        { data: "actions", title: "Ações" },
+        { data: "patient", title: "Nome do Paciente" },
+        { data: "date", title: "Data da presença" },
+        { data: "hour", title: "Hora da presença" },
+        
+    ]
+});
