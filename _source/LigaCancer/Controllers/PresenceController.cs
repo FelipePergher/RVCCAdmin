@@ -54,7 +54,7 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPresence(PresenceViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
