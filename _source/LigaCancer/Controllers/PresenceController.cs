@@ -120,10 +120,12 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceViewModel model)
         {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(model.Patient)) return BadRequest();
             if (ModelState.IsValid)
             {
                 BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
                 Presence presence = await _presenceService.FindByIdAsync(id, specification);
+                if (presence == null) return NotFound();
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
                 presence.Patient = await _patientService.FindByIdAsync(model.Patient);

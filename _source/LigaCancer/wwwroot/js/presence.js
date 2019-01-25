@@ -21,19 +21,8 @@
 });
 
 $(function () {
-    $("#DateTo").datepicker({
-        format: 'dd/mm/yyyy',
-        iconsLibrary: 'fontawesome',
-        uiLibrary: 'bootstrap4',
-        showRightIcon: false
-    });
-    $("#DateFrom").datepicker({
-        format: 'dd/mm/yyyy',
-        iconsLibrary: 'fontawesome',
-        uiLibrary: 'bootstrap4',
-        showRightIcon: false
-    });
-    $(".teste").datepicker();
+    calendar("DateTo");
+    calendar("DateFrom");
     $(".select2").select2({
         language: languageSelect2
     });
