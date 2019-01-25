@@ -92,7 +92,7 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            return Task.FromResult(query.ToList());
+            return Task.FromResult(query.Skip(skip).Take(take).ToList());
         }
 
         public Task<TaskResult> UpdateAsync(Presence model)

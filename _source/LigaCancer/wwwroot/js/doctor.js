@@ -19,6 +19,13 @@
     ]
 });
 
+$("#modal-action").on("show.bs.modal", function (e) {
+    var link = $(e.relatedTarget);
+    $(this).find(".modal-content").load(link.attr("href"), function (e) {
+        $.validator.unobtrusive.parse("form");
+    });
+});
+
 function Error(error) {
     swal("Oops...", "Alguma coisa deu errado!\n", "error");
 }
@@ -28,7 +35,7 @@ function Success(data, textStatus) {
         $("#modal-action").modal("hide");
 
         swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-            doctorTable.ajax.reload();
+            doctorTable.ajax.reload(null, false);
         });
     }
     else {

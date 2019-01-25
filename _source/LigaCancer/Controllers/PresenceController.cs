@@ -11,6 +11,7 @@ using LigaCancer.Code;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using LigaCancer.Models.FormViewModel;
+using System.Linq;
 
 namespace LigaCancer.Controllers
 {
@@ -27,103 +28,91 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            PresenceViewModel presence = new PresenceViewModel();
-            List<Patient> patients = await _patientService.GetAllAsync();
-
-            foreach (Patient patient in patients)
-            {
-                SelectListItem selectListItem = new SelectListItem
-                {
-                    Text = patient.FirstName + " " + patient.Surname,
-                    Value = patient.PatientId.ToString()
-                };
-                presence.Patients.Add(selectListItem);
-            }
-
-            return View(new PresenceSearchViewModel
-            {
-                Presences = await _presenceService.GetAllAsync(),
-                Patients = presence.Patients
-            });
+            return View(new PresenceSearchViewModel());
         }
 
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
-            PresenceViewModel presence = new PresenceViewModel();
             List<Patient> patients = await _patientService.GetAllAsync();
 
-            foreach (Patient patient in patients)
+            PresenceViewModel presenceViewModel = new PresenceViewModel
             {
-                SelectListItem selectListItem = new SelectListItem
+                Patients = patients.Select(x => new SelectListItem
                 {
-                    Text = patient.FirstName + " " + patient.Surname,
-                    Value = patient.PatientId.ToString()
-                };
-                presence.Patients.Add(selectListItem);
-            }
+                    Text = x.FirstName + " " + x.Surname,
+                    Value = x.PatientId.ToString()
 
-            return PartialView("_AddPresence", presence);
+                }).ToList()
+            };
+
+            return PartialView("_AddPresence", presenceViewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPresence(PresenceViewModel model)
         {
-
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-
-            Presence presence = new Presence
+            if (ModelState.IsValid)
             {
-                PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0),
-                UserCreated = user,
-                Patient = await _patientService.FindByIdAsync(model.Patient)
-            };
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            TaskResult result = await _presenceService.CreateAsync(presence);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
+                Presence presence = new Presence
+                {
+                    PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0),
+                    UserCreated = user,
+                    Patient = await _patientService.FindByIdAsync(model.Patient)
+                };
+
+                TaskResult result = await _presenceService.CreateAsync(presence);
+
+                if (result.Succeeded) return Ok();
+
+                ModelState.AddErrors(result);
             }
-            ModelState.AddErrors(result);
-            return Ok("200");
+
+            List<Patient> patients = await _patientService.GetAllAsync();
+
+            model.Patients = patients.Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.Surname,
+                Value = x.PatientId.ToString()
+
+            }).ToList();
+
+            return PartialView("_AddPresence", model);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditPresence(string id)
         {
-            PresenceViewModel presenceViewModel = new PresenceViewModel();
-            List<Patient> patients = await _patientService.GetAllAsync();
+            
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditPresence", presenceViewModel);
+            
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
 
-            if (presence != null)
-            {
-                presenceViewModel = new PresenceViewModel
-                {
-                    PresenceId = presence.PresenceId,
-                    Patient = presence.Patient.PatientId.ToString(),
-                    Date = presence.PresenceDateTime,
-                    Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
-                };
+            if (presence == null) return NotFound();
 
-            }
+            List<Patient> patients = await _patientService.GetAllAsync();
 
-            foreach (Patient patient in patients)
+            PresenceViewModel presenceViewModel = new PresenceViewModel
             {
-                SelectListItem selectListItem = new SelectListItem
+                PresenceId = presence.PresenceId,
+                Patient = presence.Patient.PatientId.ToString(),
+                Date = presence.PresenceDateTime,
+                Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
+
+                Patients = patients.Select(x => new SelectListItem
                 {
-                    Text = patient.FirstName + " " + patient.Surname,
-                    Value = patient.PatientId.ToString(),
-                    Selected = patient.PatientId == presence.Patient.PatientId ? true : false,
-                };
-                presenceViewModel.Patients.Add(selectListItem);
-            }
+                    Text = x.FirstName + " " + x.Surname,
+                    Value = x.PatientId.ToString()
+
+                }).ToList()
+            };
 
             return PartialView("_EditPresence", presenceViewModel);
         }
@@ -131,39 +120,49 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceViewModel model)
         {
-            if (!ModelState.IsValid) return PartialView("_EditPresence", model);
-
-            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
-            Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-            presence.Patient = await _patientService.FindByIdAsync(model.Patient);
-            presence.PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0);
-            presence.UserUpdated = user;
-
-            TaskResult result = await _presenceService.UpdateAsync(presence);
-            if (result.Succeeded)
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(model.Patient)) return BadRequest();
+            if (ModelState.IsValid)
             {
-                return StatusCode(200, "200");
+                BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
+                Presence presence = await _presenceService.FindByIdAsync(id, specification);
+                if (presence == null) return NotFound();
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+
+                presence.Patient = await _patientService.FindByIdAsync(model.Patient);
+                presence.PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0);
+                presence.UserUpdated = user;
+
+                TaskResult result = await _presenceService.UpdateAsync(presence);
+                if (result.Succeeded) return Ok();
+
+                ModelState.AddErrors(result);
+
             }
-            ModelState.AddErrors(result);
+
+            List<Patient> patients = await _patientService.GetAllAsync();
+
+            model.Patients = patients.Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.Surname,
+                Value = x.PatientId.ToString()
+
+            }).ToList();
 
             return PartialView("_EditPresence", model);
         }
 
         public async Task<IActionResult> DeletePresence(string id)
         {
-            DeletePresenceViewModel deletePresenceViewModel = new DeletePresenceViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeletePresence", deletePresenceViewModel);
+            DeletePresenceViewModel deletePresenceViewModel = new DeletePresenceViewModel();
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            if (presence != null)
-            {
-                deletePresenceViewModel.Name = presence.Patient.FirstName;
-                deletePresenceViewModel.Date = presence.PresenceDateTime;
-            }
+            if (presence == null) return NotFound();
+
+            deletePresenceViewModel.Name = presence.Patient.FirstName;
+            deletePresenceViewModel.Date = presence.PresenceDateTime;
 
             return PartialView("_DeletePresence", deletePresenceViewModel);
         }
@@ -171,17 +170,17 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> DeletePresence(string id, IFormCollection form)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
             Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            if (presence == null) return RedirectToAction("Index");
+            if (presence == null) return NotFound();
 
             TaskResult result = await _presenceService.DeleteAsync(presence);
 
             if (result.Succeeded)
             {
-                return StatusCode(200, "200");
+                return Ok();
             }
             ModelState.AddErrors(result);
             return PartialView("_DeletePresence", presence);
