@@ -1,9 +1,5 @@
-﻿using LigaCancer.Data.Models.PatientModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-
 
 namespace LigaCancer.Models.SearchViewModel
 {
@@ -11,19 +7,21 @@ namespace LigaCancer.Models.SearchViewModel
     {
         public PresenceSearchViewModel()
         {
-            Date = DateTime.Now;        
+            DateFrom = DateTime.Now.AddDays(-7);
+            DateTo = DateTime.Now;
         }
 
         [Display(Name = "Nome")]
         public string Patient { get; set; }
 
-        [Display(Name = "Data"), 
+        [Display(Name = "Data Inicial"), 
             DataType(DataType.Date), 
             DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+        public DateTime DateFrom { get; set; }
 
-        public List<Presence> Presences { get; set; }
-
-        public List<SelectListItem> Patients { get; set; }
+        [Display(Name = "Data Final"),
+            DataType(DataType.Date),
+            DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DateTo { get; set; }
     }
 }

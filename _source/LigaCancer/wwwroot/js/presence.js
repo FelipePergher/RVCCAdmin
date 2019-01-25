@@ -1,53 +1,4 @@
-﻿$(function () {
-    $('.date').datepicker({
-        format: 'dd/mm/yyyy',
-        iconsLibrary: 'fontawesome',
-    });
-    $(".select2").select2({
-        language: languageSelect2
-    });
-});
-
-$("#modal-action").on("show.bs.modal", function (e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function (e) {
-        $.validator.unobtrusive.parse("form");
-            $(".select2").select2({
-                language: languageSelect2
-            });
-            $('.date').datepicker({
-                format: 'dd/mm/yyyy',
-                iconsLibrary: 'fontawesome'
-            });
-            $('#Time').timepicker({
-                iconsLibrary: 'fontawesome'
-        });
-    });
-});
-
-function Error(error) {
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
-}
-
-function Success(data) {
-    if (data === "" && textStatus === "success") {
-        $("#modal-action").modal("hide");
-        $("#modal-action").removeClass("fade");
-        if (dataTable !== null) {
-            dataTable.ajax.reload();
-        }
-        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-            if (dataTable === null) {
-                location.reload();
-            }
-        });
-    }
-    else {
-        $("#modal-content").html(data);
-    }
-}
-
-let presenceTable = $("#presenceTable").DataTable({
+﻿let presenceTable = $("#presenceTable").DataTable({
     processing: true,
     serverSide: true,
     language: language,
@@ -65,7 +16,56 @@ let presenceTable = $("#presenceTable").DataTable({
         { data: "actions", title: "Ações" },
         { data: "patient", title: "Nome do Paciente" },
         { data: "date", title: "Data da presença" },
-        { data: "hour", title: "Hora da presença" },
-        
+        { data: "hour", title: "Hora da presença" }
     ]
 });
+
+$(function () {
+    $("#DateTo").datepicker({
+        format: 'dd/mm/yyyy',
+        iconsLibrary: 'fontawesome',
+        uiLibrary: 'bootstrap4',
+        showRightIcon: false
+    });
+    $("#DateFrom").datepicker({
+        format: 'dd/mm/yyyy',
+        iconsLibrary: 'fontawesome',
+        uiLibrary: 'bootstrap4',
+        showRightIcon: false
+    });
+    $(".teste").datepicker();
+    $(".select2").select2({
+        language: languageSelect2
+    });
+});
+
+
+$("#modal-action").on("show.bs.modal", function (e) {
+    var link = $(e.relatedTarget);
+    $(this).find(".modal-content").load(link.attr("href"), function (e) {
+        $.validator.unobtrusive.parse("form");
+        $(".select2").select2({
+            language: languageSelect2
+        });
+        time("Time");
+        calendar("Date");
+    });
+});
+
+function Error(error) {
+    swal("Oops...", "Alguma coisa deu errado!\n", "error");
+}
+
+function Success(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+
+        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+            presenceTable.ajax.reload(null, false);
+        });
+    }
+    else {
+        $("#modal-content").html(data);
+    }
+}
+

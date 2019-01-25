@@ -4,8 +4,8 @@
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxErrorPresence"
-      data-ajax-success="AjaxSuccessPresence"
+      data-ajax-failure="Error"
+      data-ajax-success="Success"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Presença" }' />
@@ -26,12 +26,12 @@
         </div>
         <div class="form-group">
             <label asp-for="Date" class="control-label"></label>
-            <input asp-for="Date" type="text" class="form-control date"/>
+            <input asp-for="Date" type="text" class="form-control"/>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Time" class="control-label"></label>
-            <input asp-for="Time" type="text" class="form-control" />
+            <input asp-for="Time" type="text" class="form-control"/>
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
 
