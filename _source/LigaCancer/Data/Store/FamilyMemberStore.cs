@@ -54,7 +54,7 @@ namespace LigaCancer.Data.Store
                 Family family = _context.Families.Include(x => x.FamilyMembers).FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == model.FamilyMemberId) != null);
                 if (family != null)
                 {
-                    family.FamilyIncome -= familyMember.MonthlyIncome;
+                    family.FamilyIncome -= (double)familyMember.MonthlyIncome;
                     family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count());
                 }
 
@@ -115,7 +115,7 @@ namespace LigaCancer.Data.Store
                 Family family = _context.Families.Include(x => x.FamilyMembers).FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == model.FamilyMemberId) != null);
                 if(family != null)
                 {
-                    family.FamilyIncome += model.MonthlyIncome;
+                    family.FamilyIncome += (double)model.MonthlyIncome;
                     family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count() + 1);
                 }
                 _context.SaveChanges();
@@ -143,7 +143,7 @@ namespace LigaCancer.Data.Store
                 Family family = _context.Families.FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == familyMember.FamilyMemberId) != null);
                 if (family != null)
                 {
-                    family.FamilyIncome -= familyMember.MonthlyIncome;
+                    family.FamilyIncome -= (double)familyMember.MonthlyIncome;
                 }
                 _context.SaveChanges();
                 result.Succeeded = true;

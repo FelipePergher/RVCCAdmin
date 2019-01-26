@@ -17,7 +17,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public double PerCapitaIncome { get; set; }
 
-        public double MonthlyIncome { get; set; }
+        public double? MonthlyIncome { get; set; }
 
         public ICollection<FamilyMember> FamilyMembers { get; set; }
     }
