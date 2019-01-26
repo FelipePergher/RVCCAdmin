@@ -31,6 +31,8 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string CPF { get; set; }
 
+        public int? Age { get; set; }
+
         public bool FamiliarityGroup { get; set; }
 
         public Sex Sex { get; set; }

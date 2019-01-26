@@ -3,14 +3,16 @@ using System;
 using LigaCancer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190125202750_AddAge")]
+    partial class AddAge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +154,7 @@ namespace LigaCancer.Migrations
 
                     b.Property<double>("FamilyIncome");
 
-                    b.Property<double?>("MonthlyIncome");
+                    b.Property<double>("MonthlyIncome");
 
                     b.Property<double>("PerCapitaIncome");
 
@@ -184,7 +186,7 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Kinship");
 
-                    b.Property<double?>("MonthlyIncome");
+                    b.Property<double>("MonthlyIncome");
 
                     b.Property<string>("Name");
 

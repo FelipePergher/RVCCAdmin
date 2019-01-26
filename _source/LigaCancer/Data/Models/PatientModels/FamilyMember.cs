@@ -12,10 +12,10 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Kinship { get; set; }
 
-        public int Age { get; set; }
+        public int? Age { get; set; }
 
         public Globals.Sex Sex { get; set; }
 
-        public double MonthlyIncome { get; set; }
+        public double? MonthlyIncome { get; set; }
     }
 }

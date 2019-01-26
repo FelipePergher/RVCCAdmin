@@ -130,8 +130,8 @@ namespace LigaCancer.Controllers
                     Family = new Family
                     {
                         MonthlyIncome = model.MonthlyIncome,
-                        FamilyIncome = model.MonthlyIncome,
-                        PerCapitaIncome = model.MonthlyIncome
+                        FamilyIncome = (double)model.MonthlyIncome,
+                        PerCapitaIncome = (double)model.MonthlyIncome
                     }
                 };
 
@@ -605,8 +605,8 @@ namespace LigaCancer.Controllers
                 patient.Naturality.Country = model.Naturality.Country;
                 patient.Profession = model.Profession;
 
-                patient.Family.FamilyIncome -= patient.Family.MonthlyIncome;
-                patient.Family.FamilyIncome += model.MonthlyIncome;
+                patient.Family.FamilyIncome -= (double)patient.Family.MonthlyIncome;
+                patient.Family.FamilyIncome += (double)model.MonthlyIncome;
                 patient.Family.MonthlyIncome = model.MonthlyIncome;
 
                 patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
