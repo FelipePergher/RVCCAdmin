@@ -95,7 +95,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
         }
 
-        public Task<List<FamilyMember>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
+        public Task<List<FamilyMember>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<FamilyMember> query = _context.FamilyMembers;
 

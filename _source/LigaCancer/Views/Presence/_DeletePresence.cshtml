@@ -12,7 +12,7 @@
 
     <div class="modal-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        Deseja apagar a presença do paciente <strong>@Model.Name</strong> na data <strong>@Model.Date.ToShortDateString()</strong>?
+        Deseja apagar a presença do paciente <strong>@Model.Name</strong> na data <strong>@Model.Date</strong>?
     </div>
 
     <partial name="_ModalFooter" model='new ModalFooter { SubmitButtonText = "Apagar"}' />

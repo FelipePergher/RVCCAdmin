@@ -100,7 +100,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
         }
 
-        public Task<List<Medicine>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
+        public Task<List<Medicine>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Medicine> query = _context.Medicines;
 
