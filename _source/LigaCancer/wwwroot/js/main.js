@@ -22,7 +22,7 @@ let languageSelect2 = {
     noResults: function () {
         return "Não foi encontrado resultados";
     }
-}
+};
 
 function calendar(id) {
     $("#" + id).datepicker({

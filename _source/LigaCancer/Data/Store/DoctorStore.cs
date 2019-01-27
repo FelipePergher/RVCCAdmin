@@ -1,8 +1,6 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -100,7 +98,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
         }
 
-        public Task<List<Doctor>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
+        public Task<List<Doctor>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Doctor> query = _context.Doctors;
 
@@ -109,7 +107,9 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            return Task.FromResult(query.Skip(skip).Take(take).ToList());
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationDoctor(query, sortColumn, sortDirection);
+
+            return Task.FromResult(query.ToList());
         }
 
         public Task<TaskResult> UpdateAsync(Doctor model)
@@ -144,6 +144,23 @@ namespace LigaCancer.Data.Store
         {
             Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == name);
             return Task.FromResult(doctor);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<Doctor> GetOrdenationDoctor(IQueryable<Doctor> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                case "crm":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.CRM) : query.OrderByDescending(x => x.CRM);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+            }
         }
 
         #endregion

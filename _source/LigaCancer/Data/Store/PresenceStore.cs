@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using LigaCancer.Models.SearchViewModel;
 
 namespace LigaCancer.Data.Store
 {
@@ -83,7 +84,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
 
-        public Task<List<Presence>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
+        public Task<List<Presence>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Presence> query = _context.Presences;
 
@@ -92,7 +93,10 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            return Task.FromResult(query.Skip(skip).Take(take).ToList());
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPresences(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredPresences(query, (PresenceSearchViewModel) filter);
+
+            return Task.FromResult(query.ToList());
         }
 
         public Task<TaskResult> UpdateAsync(Presence model)
@@ -114,5 +118,35 @@ namespace LigaCancer.Data.Store
 
             return Task.FromResult(result);
         }
+
+        #region Private Methods
+
+        private IQueryable<Presence> GetOrdenationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "patient":
+                    return sortDirection == "asc" ? query.OrderBy(x => $"{x.Patient.FirstName} {x.Patient.Surname}") : query.OrderByDescending(x => $"{x.Patient.FirstName} {x.Patient.Surname}");
+                case "date":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.PresenceDateTime.Date) : query.OrderByDescending(x => x.PresenceDateTime.Date);
+                case "hour":
+                    return sortDirection == "asc" ? query.OrderBy(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}") : query.OrderByDescending(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}");
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => $"{x.Patient.FirstName} {x.Patient.Surname}") : query.OrderByDescending(x => $"{x.Patient.FirstName} {x.Patient.Surname}");
+            }
+        }
+
+        private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchViewModel presenceSearch)
+        {
+            if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Patient.FirstName.Contains(presenceSearch.Name));
+            if (!string.IsNullOrEmpty(presenceSearch.Surname)) query = query.Where(x => x.Patient.Surname.Contains(presenceSearch.Surname));
+            
+            if (presenceSearch.DateFrom != null) query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
+            if (presenceSearch.DateTo != null) query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);
+
+            return query;
+        }
+
+        #endregion
     }
 }

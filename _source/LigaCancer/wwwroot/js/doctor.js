@@ -11,11 +11,11 @@
             swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
-    order: [[0, "asc"]],
+    order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações" },
-        { data: "name", title: "Nome" },
-        { data: "crm", title: "CRM" }
+        { data: "actions", title: "Ações", name: "actions", orderable: false },
+        { data: "name", title: "Nome", name: "name", },
+        { data: "crm", title: "CRM", name: "crm" }
     ]
 });
 

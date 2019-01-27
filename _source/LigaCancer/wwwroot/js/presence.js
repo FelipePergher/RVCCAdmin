@@ -6,25 +6,37 @@
     ajax: {
         url: "/api/presence/search",
         type: "POST",
+        data: function (d) {
+            d.name = $("#Name").val();
+            d.surname = $("#Surname").val();
+            d.dateFrom = $("#DateFrom").val();
+            d.dateTo = $("#DateTo").val();
+        },
         datatype: "json",
         error: function () {
             swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
-    order: [[0, "asc"]],
+    order: [1, "desc"],
     columns: [
-        { data: "actions", title: "Ações" },
-        { data: "patient", title: "Nome do Paciente" },
-        { data: "date", title: "Data da presença" },
-        { data: "hour", title: "Hora da presença" }
+        { data: "actions", title: "Ações", name: "actions", orderable: false },
+        { data: "date", title: "Data da presença", name: "date" },
+        { data: "patient", title: "Nome do Paciente", name: "patient" },
+        { data: "hour", title: "Hora da presença", name: "hour" }
     ]
 });
 
 $(function () {
     calendar("DateTo");
     calendar("DateFrom");
+
     $(".select2").select2({
         language: languageSelect2
+    });
+
+    $("#searchForm").submit(function (e) {
+        e.preventDefault();
+        presenceTable.search("").draw("");
     });
 });
 

@@ -1,5 +1,4 @@
-﻿
-using LigaCancer.Code;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Requests;
@@ -102,7 +101,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(queryable.FirstOrDefault(x => x.TreatmentPlaceId == int.Parse(id)));
         }
 
-        public Task<List<TreatmentPlace>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0)
+        public Task<List<TreatmentPlace>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 

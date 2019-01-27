@@ -21,31 +21,28 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/presence/search")]
-        public async Task<IActionResult> PresenceSearch([FromForm] SearchViewModel model)
+        public async Task<IActionResult> PresenceSearch([FromForm] SearchViewModel searchModel, [FromForm] PresenceSearchViewModel presenceSearchModel )
         {
             try
             {
-                string sortColumn = model.Columns[model.Order[0].Column].Name;
+                string sortColumn = searchModel.Columns[searchModel.Order[0].Column].Name;
+                string sortDirection = searchModel.Order[0].Dir;
+                int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
+                int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                // Sort Column Direction ( asc ,desc)  
-                string sortColumnDirection = model.Order[0].Dir;
-                //Paging Size (10,20,50,100)  
-                int take = model.Length != null ? int.Parse(model.Length) : 0;
-                int skip = model.Start != null ? int.Parse(model.Start) : 0;
-
-                IEnumerable<Presence> presences = await _presenceService.GetAllAsync(new string[] { "Patient" }, take, skip);
+                IEnumerable<Presence> presences = await _presenceService.GetAllAsync(new string[] { "Patient" }, sortColumn, sortDirection, presenceSearchModel);
                 IEnumerable<PresenceViewModel> data = presences.Select(x => new PresenceViewModel
                 {
-                    Patient = x.Patient.FirstName,
-                    Date = x.PresenceDateTime.ToString("dd/mm/yyyy"),
+                    Patient = x.Patient.FirstName + " " + x.Patient.Surname,
+                    Date = x.PresenceDateTime.ToString("dd/MM/yyyy"),
                     Hour = x.PresenceDateTime.ToString("HH:mm"),
                     Actions = GetActionsHtml(x)
-                });
+                }).Skip(skip).Take(take);
 
                 int recordsTotal = _presenceService.Count();
-                int recordsFiltered = _presenceService.Count();
+                int recordsFiltered = presences.Count();
 
-                return Ok(new { model.Draw, data, recordsTotal, recordsFiltered });
+                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
             catch
             {

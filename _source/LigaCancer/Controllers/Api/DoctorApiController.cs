@@ -21,19 +21,16 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/doctor/search")]
-        public async Task<IActionResult> DoctorSearch([FromForm] SearchViewModel model)
+        public async Task<IActionResult> DoctorSearch([FromForm] SearchViewModel searchModel)
         {
             try
             {
-                string sortColumn = model.Columns[model.Order[0].Column].Name;
+                string sortColumn = searchModel.Columns[searchModel.Order[0].Column].Name;
+                string sortDirection = searchModel.Order[0].Dir;
+                int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
+                int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                // Sort Column Direction ( asc ,desc)  
-                string sortColumnDirection = model.Order[0].Dir;
-                //Paging Size (10,20,50,100)  
-                int take = model.Length != null ? int.Parse(model.Length) : 0;
-                int skip = model.Start != null ? int.Parse(model.Start) : 0;
-
-                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, take, skip);
+                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection);
                 IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel {
                     Name = x.Name,
                     CRM = x.CRM,
@@ -43,7 +40,7 @@ namespace LigaCancer.Controllers.Api
                 int recordsTotal = _doctorService.Count();
                 int recordsFiltered = _doctorService.Count();
 
-                return Ok(new { model.Draw, data, recordsTotal, recordsFiltered });
+                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
             catch
             {

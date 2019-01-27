@@ -1,4 +1,5 @@
 ﻿using LigaCancer.Code;
+using LigaCancer.Models.SearchViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace LigaCancer.Code.Interface
 {
     public interface IDataStore<T> : IDisposable where T : class
     {
-        Task<List<T>> GetAllAsync(string[] include = null, int take = int.MaxValue, int skip = 0);
+        Task<List<T>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null);
 
         Task<T> FindByIdAsync(string id, ISpecification<T> specification = null);
 
