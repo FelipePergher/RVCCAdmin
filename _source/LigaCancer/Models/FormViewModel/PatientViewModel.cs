@@ -30,7 +30,7 @@ namespace LigaCancer.Models.FormViewModel
         [Required(ErrorMessage = "Este campo é obrigatório!"), Remote("IsCpfExist", "Patient", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
         public string CPF { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Idade")]
         public int? Age { get; set; }
 
         [Display(Name = "Grupo de Convivência")]

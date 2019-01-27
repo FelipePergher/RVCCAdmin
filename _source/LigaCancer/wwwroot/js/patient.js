@@ -159,6 +159,22 @@ function BuildDataTable() {
         columnDefs: [
             { "orderable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
             { "searchable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
-        ]
+        ],
+        dom: "l<'ml-3 float-left'B>frtip",
+        buttons:
+            [
+                {
+                    extend: 'pdf',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+            ],
     });
 }
