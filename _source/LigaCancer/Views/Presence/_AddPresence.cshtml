@@ -1,19 +1,16 @@
 ﻿@model LigaCancer.Models.FormViewModel.PresenceViewModel
 
-<form asp-action="AddPresence"
+<form id="addPresenceForm" asp-action="AddPresence"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-failure="Error"
-      data-ajax-success="Success"
+      data-ajax-success="AddSuccess"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Presença" }' />
 
     <div class="modal-body form-horizontal">
-        <h4>Presença</h4>
-        <hr />
-
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">

@@ -8,7 +8,7 @@
         type: "POST",
         datatype: "json",
         error: function() {
-            swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+            swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
     order: [1, "asc"],
@@ -27,14 +27,14 @@ $("#modal-action").on("show.bs.modal", function (e) {
 });
 
 function Error(error) {
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
 function Success(data, textStatus) {
     if (data === "" && textStatus === "success") {
         $("#modal-action").modal("hide");
 
-        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
             doctorTable.ajax.reload(null, false);
         });
     }

@@ -24,10 +24,10 @@
       ]
     },
     {
-      "library": "sweetalert@2.1.2",
-      "destination": "wwwroot/lib/sweetalert",
+      "library": "limonte-sweetalert2@7.33.1",
+      "destination": "wwwroot/lib/sweetalert2",
       "files": [
-        "sweetalert.min.js"
+        "sweetalert2.all.min.js"
       ]
     },
     {

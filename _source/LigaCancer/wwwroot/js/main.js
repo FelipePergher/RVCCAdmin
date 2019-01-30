@@ -1,4 +1,10 @@
-﻿let language = {
+﻿const swalWithBootstrapButtons = Swal.mixin({
+    confirmButtonClass: 'btn btn-success ml-2',
+    cancelButtonClass: 'btn btn-danger',
+    buttonsStyling: false
+});
+
+let language = {
     emptyTable: "Nenhum dado encontrado!",
     info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
     infoEmpty: "",
@@ -41,10 +47,14 @@ function time(id) {
     });
 }
 
-
+function openModal(url, callback) {
+    $(".modal-content").load(url, function () {
+        if (callback !== null) callback();
+    });
+}
 
 //function AjaxError(error) {
-//    swal("Oops...", "Alguma coisa deu errado!\n", "error");
+//    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 //}
 
 //function AjaxSuccess(data) {
@@ -54,7 +64,7 @@ function time(id) {
 //        if (dataTable !== null) {
 //            dataTable.ajax.reload();
 //        }
-//        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+//        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
 //            if (dataTable === null) {
 //                location.reload();
 //            }
@@ -80,7 +90,7 @@ function time(id) {
 //});
 
 //function errorDataTable() {
-//    swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+//    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
 //}
 
 //function DateFormat(dateOfBirth) {

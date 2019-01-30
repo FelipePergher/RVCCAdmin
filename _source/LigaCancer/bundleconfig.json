@@ -18,6 +18,7 @@
       "wwwroot/lib/jquery/jquery.min.js",
       "wwwroot/js/coreui.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
+      "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
       "wwwroot/js/main.js"
     ],
     "minify": {
@@ -31,8 +32,7 @@
     "inputFiles": [
       "wwwroot/lib/jquery-validate/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/lib/sweetalert/sweetalert.min.js"
+      "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"
     ],
     "minify": {
       "enabled": true,
