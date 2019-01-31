@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace LigaCancer.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

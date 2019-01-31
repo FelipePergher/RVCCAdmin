@@ -70,8 +70,6 @@
       "library": "datatables@1.10.19",
       "destination": "wwwroot/lib/datatables",
       "files": [
-        "css/jquery.dataTables.min.css",
-        "css/dataTables.bootstrap.min.css",
         "css/dataTables.bootstrap4.min.css",
         "js/jquery.dataTables.min.js",
         "js/dataTables.bootstrap4.min.js"
@@ -89,16 +87,9 @@
       "library": "gijgo@1.9.11",
       "destination": "wwwroot/lib/gijgo",
       "files": [
-        "modular/css/datepicker.min.css",
-        "modular/js/datepicker.min.js",
-        "combined/css/gijgo.min.css",
         "combined/js/gijgo.min.js",
-        "combined/fonts/gijgo-material.woff",
-        "combined/fonts/gijgo-material.ttf",
-        "modular/css/timepicker.min.css",
-        "modular/js/timepicker.js"
+        "combined/css/gijgo.min.css"
       ]
     }
-
   ]
 }

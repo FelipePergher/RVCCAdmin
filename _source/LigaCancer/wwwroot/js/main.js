@@ -40,10 +40,18 @@ function calendar(id) {
 }
 
 function time(id) {
-    $("#" + id).timepicker({
+    let timepicker = $("#" + id).timepicker({
         iconsLibrary: "fontawesome",
         uiLibrary: "bootstrap4",
-        showRightIcon: false
+        modal: false,
+        header: false,
+        footer: false,
+        mode: '24hr'
+    });
+    $(".input-group-append").remove();
+
+    $("#" + id).click(function () {
+        $(".timepicker").is(":visible") ? timepicker.close() : timepicker.open();
     });
 }
 
