@@ -1,5 +1,4 @@
 ﻿let presenceTable = $("#presenceTable").DataTable({
-    processing: true,
     serverSide: true,
     language: language,
     filter: false,
@@ -24,6 +23,9 @@
         { data: "patient", title: "Nome do Paciente", name: "patient" },
         { data: "hour", title: "Hora da presença", name: "hour" }
     ],
+    preDrawCallback: function (settings) {
+        showSpinner();
+    },
     drawCallback: function (settings) {
         $("#editPresenceButton").click(function () {
             openModal($(this).attr("href"), initEditForm);
@@ -32,6 +34,8 @@
         $("#deletePresenceButton").click(function (e) {
             initDelete($(this).data("url"));
         });
+
+        hideSpinner();
     }
 });
 

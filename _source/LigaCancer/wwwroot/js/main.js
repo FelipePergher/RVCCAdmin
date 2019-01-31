@@ -10,7 +10,6 @@ let language = {
     infoEmpty: "",
     zeroRecords: "Não foi encontrado resultados",
     lengthMenu: "Mostrar _MENU_ registros por página",
-    processing: "<span class='fa fa-spinner fa-pulse' style='font-size: 35px;' ></span>",
     loadingRecords: "<span class='fa fa-spinner fa-pulse' style='font-size: 35px; margin-left:-60px; ' ></span>",
     paginate: {
         first: "Primeiro",
@@ -59,6 +58,14 @@ function openModal(url, callback) {
     $(".modal-content").load(url, function () {
         if (callback !== null) callback();
     });
+}
+
+function showSpinner() {
+    $("#spinner-container").show();
+}
+
+function hideSpinner() {
+    $("#spinner-container").hide();
 }
 
 //function AjaxError(error) {

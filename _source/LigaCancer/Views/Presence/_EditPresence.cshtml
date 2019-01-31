@@ -14,17 +14,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
-            <label asp-for="PatientId" class="control-label"></label>
+            <label asp-for="PatientId" class="control-label label-required"></label>
             <select asp-for="PatientId" asp-items="Model.Patients" class="select2 form-control" data-theme="bootstrap" data-placeholder="Paciente" data-allow-clear="true"></select>
             <span asp-validation-for="PatientId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Date" class="control-label"></label>
+            <label asp-for="Date" class="control-label label-required"></label>
             <input asp-for="Date" type="text" class="form-control"/>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Time" class="control-label"></label>
+            <label asp-for="Time" class="control-label label-required"></label>
             <input asp-for="Time" type="text" class="form-control"/>
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
@@ -34,6 +34,3 @@
     <partial name="_ModalFooter" model="new ModalFooter { }" />
 
 </form>
-
-
-
