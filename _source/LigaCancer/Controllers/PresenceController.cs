@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace LigaCancer.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -139,39 +140,20 @@ namespace LigaCancer.Controllers
             return PartialView("_EditPresence", model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> DeletePresence(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
-            Presence presence = await _presenceService.FindByIdAsync(id, specification);
-            
-            if (presence == null) return NotFound();
-
-            DeletePresenceViewModel deletePresenceViewModel = new DeletePresenceViewModel
-            {
-                Name = presence.Patient.FirstName + " " + presence.Patient.Surname,
-                Date = presence.PresenceDateTime.ToString("dd/MM/yyyy")
-            };
-
-            return PartialView("_DeletePresence", deletePresenceViewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeletePresence(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
-
             Presence presence = await _presenceService.FindByIdAsync(id);
-            
+
             if (presence == null) return NotFound();
 
             TaskResult result = await _presenceService.DeleteAsync(presence);
 
             if (result.Succeeded) return Ok();
 
-            ModelState.AddErrors(result);
-            return PartialView("_DeletePresence", presence);
+            return BadRequest(result);
         }
 
     }
