@@ -1,4 +1,27 @@
 ﻿let presenceTable = $("#presenceTable").DataTable({
+    dom: "l<'mr-3'B>frtip",
+    buttons: [
+        {
+            extend: 'pdf',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)',
+            },
+            customize: function (doc) {
+                doc.defaultStyle.alignment = 'center';
+                doc.styles.tableHeader.alignment = 'center';
+            }
+        },
+        {
+            extend: 'excel',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            }
+        }
+    ],
     serverSide: true,
     language: language,
     filter: false,

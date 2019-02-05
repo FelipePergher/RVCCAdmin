@@ -129,9 +129,9 @@ namespace LigaCancer.Controllers
                     UserCreated = user,
                     Family = new Family
                     {
-                        MonthlyIncome = model.MonthlyIncome,
-                        FamilyIncome = (double)model.MonthlyIncome,
-                        PerCapitaIncome = (double)model.MonthlyIncome
+                        MonthlyIncome = model.MonthlyIncome != null ? model.MonthlyIncome : 0,
+                        FamilyIncome = model.MonthlyIncome != null ? (double)model.MonthlyIncome : 0,
+                        PerCapitaIncome = model.MonthlyIncome != null ? (double)model.MonthlyIncome : 0
                     }
                 };
 
