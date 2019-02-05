@@ -4,3 +4,8 @@
     font-size: 50px;
     color: #20a8d8;
 }
+
+.dt-buttons button {
+    margin-right: 5px;
+    border-radius: 0.25em !important;
+}

@@ -51,8 +51,35 @@ function BuildDataTable() {
             },
             error: errorDataTable
         },
-        order: [[0, "asc"]],
+        order: [[1, "asc"]],
         columns: [
+            {
+                title: "Ações",
+                width: "300px",
+                render: function (data, type, row, meta) {
+                    if ($("#Discharge").is(":checked")) {
+                        //Todo if discharge appear to reativate
+                        return '<a href="/Patient/ActivePatient/' + row.patientId + '" class="btn btn-primary w-100" data-toggle="modal" data-target="#modal-action">Reativar</a> ';
+                    }
+                    if ($("#Death").is(":checked")) {
+                        return "";
+                    }
+                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-40"><i class="fas fa-info"></i> Detalhes </a>';
+
+                    link = $("#linkEdit");
+                    render = render.concat(
+                        '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                        ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
+                    );
+
+                    //link = $("#linkDelete");
+                    //render = render.concat(
+                    //    '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
+                    //    ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
+                    //);
+                    return render;
+                }
+            },
             { data: "firstName", title: "Nome" },
             { data: "surname", title: "Sobrenome" },
             { data: "rg", title: "RG" },
@@ -99,7 +126,7 @@ function BuildDataTable() {
                 }
             },
             {
-                title: "Cancêres",
+                title: "Cânceres",
                 render: function (data, type, row, meta) {
                     let render = null;
                     jQuery.each(row.patientInformation.patientInformationCancerTypes, function (index, value) {
@@ -127,50 +154,32 @@ function BuildDataTable() {
                     });
                     return render;
                 }
-            },
-            {
-                title: "Ações",
-                width: "300px",
-                render: function (data, type, row, meta) {
-                    if ($("#Discharge").is(":checked")) {
-                        //Todo if discharge appear to reativate
-                        return '<a href="/Patient/ActivePatient/' + row.patientId + '" class="btn btn-primary w-100" data-toggle="modal" data-target="#modal-action">Reativar</a> ';
-                    }
-                    if ($("#Death").is(":checked")) {
-                        return "";
-                    }
-                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-40"><i class="fas fa-info"></i> Detalhes </a>';
-
-                    link = $("#linkEdit");
-                    render = render.concat(
-                        '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
-                    );
-
-                    //link = $("#linkDelete");
-                    //render = render.concat(
-                    //    '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                    //    ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
-                    //);
-                    return render;
-                }
             }
+            
         ],
         columnDefs: [
             { "orderable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
             { "searchable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
         ],
-        dom: "l<'ml-3 float-left'B>frtip",
+        dom: "l<'mr-3'B>frtip",
         buttons:
             [
                 {
                     extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    className: 'btn btn-info',
                     exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                        columns: 'th:not(:first-child)',
+                    },
+                    customize: function (doc) {
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                    }  
                 },
                 {
                     extend: 'excel',
+                    className: 'btn btn-info',
                     exportOptions: {
                         columns: 'th:not(:first-child)'
                     }

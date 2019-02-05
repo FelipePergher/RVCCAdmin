@@ -7,7 +7,7 @@
         url: "/api/doctor/search",
         type: "POST",
         datatype: "json",
-        error: function() {
+        error: function () {
             swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
@@ -16,7 +16,31 @@
         { data: "actions", title: "Ações", name: "actions", orderable: false },
         { data: "name", title: "Nome", name: "name", },
         { data: "crm", title: "CRM", name: "crm" }
-    ]
+    ],
+    dom: "l<'mr-3'B>frtip",
+    buttons:
+        [
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                className: 'btn btn-info',
+                exportOptions: {
+                    columns: 'th:not(:first-child)',
+                },
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                }
+            },
+            {
+                extend: 'excel',
+                className: 'btn btn-info',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+        ]
 });
 
 $("#modal-action").on("show.bs.modal", function (e) {
