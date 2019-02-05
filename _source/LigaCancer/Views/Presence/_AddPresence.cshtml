@@ -1,35 +1,32 @@
 ﻿@model LigaCancer.Models.FormViewModel.PresenceViewModel
 
-<form asp-action="AddPresence"
+<form id="addPresenceForm" asp-action="AddPresence"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-failure="Error"
-      data-ajax-success="Success"
+      data-ajax-success="AddSuccess"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Presença" }' />
 
     <div class="modal-body form-horizontal">
-        <h4>Presença</h4>
-        <hr />
-
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
-            <label asp-for="PatientId" class="control-label"></label>
+            <label asp-for="PatientId" class="control-label label-required"></label>
             <select asp-for="PatientId" asp-items="@Model.Patients" class="select2 form-control" data-theme="bootstrap" data-placeholder="Paciente" data-allow-clear="true">
                 <option value=""></option>
             </select>
             <span asp-validation-for="PatientId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Date" class="control-label"></label>
+            <label asp-for="Date" class="control-label label-required"></label>
             <input asp-for="Date" type="text" class="form-control"/>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Time" class="control-label"></label>
+            <label asp-for="Time" class="control-label label-required"></label>
             <input asp-for="Time" type="text" class="form-control"/>
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
@@ -39,6 +36,3 @@
     <partial name="_ModalFooter" model="new ModalFooter { }" />
 
 </form>
-
-
-

@@ -27,6 +27,29 @@ function BuildSelect2(elementId, placeholder, allowClear = false) {
 
 function BuildDataTable() {
     return $("#patientTable").DataTable({
+        dom: "l<'mr-3'B>frtip",
+        buttons: [
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                className: 'btn btn-info',
+                exportOptions: {
+                    columns: 'th:not(:first-child)',
+                },
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                }
+            },
+            {
+                extend: 'excel',
+                className: 'btn btn-info',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            }
+        ],
         pageLength: 10,
         processing: true,
         searching:false,
@@ -160,30 +183,6 @@ function BuildDataTable() {
         columnDefs: [
             { "orderable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
             { "searchable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
-        ],
-        dom: "l<'mr-3'B>frtip",
-        buttons:
-            [
-                {
-                    extend: 'pdf',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL',
-                    className: 'btn btn-info',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)',
-                    },
-                    customize: function (doc) {
-                        doc.defaultStyle.alignment = 'center';
-                        doc.styles.tableHeader.alignment = 'center';
-                    }  
-                },
-                {
-                    extend: 'excel',
-                    className: 'btn btn-info',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-            ],
+        ]
     });
 }

@@ -1,10 +1,15 @@
-﻿let language = {
+﻿const swalWithBootstrapButtons = Swal.mixin({
+    confirmButtonClass: 'btn btn-success ml-2',
+    cancelButtonClass: 'btn btn-danger',
+    buttonsStyling: false
+});
+
+let language = {
     emptyTable: "Nenhum dado encontrado!",
     info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
     infoEmpty: "",
     zeroRecords: "Não foi encontrado resultados",
     lengthMenu: "Mostrar _MENU_ registros por página",
-    processing: "<span class='fa fa-spinner fa-pulse' style='font-size: 35px;' ></span>",
     loadingRecords: "<span class='fa fa-spinner fa-pulse' style='font-size: 35px; margin-left:-60px; ' ></span>",
     paginate: {
         first: "Primeiro",
@@ -34,56 +39,76 @@ function calendar(id) {
 }
 
 function time(id) {
-    $("#" + id).timepicker({
+    let timepicker = $("#" + id).timepicker({
         iconsLibrary: "fontawesome",
         uiLibrary: "bootstrap4",
-        showRightIcon: false
+        modal: false,
+        header: false,
+        footer: false,
+        mode: '24hr'
+    });
+    $(".input-group-append").remove();
+
+    $("#" + id).click(function () {
+        $(".timepicker").is(":visible") ? timepicker.close() : timepicker.open();
     });
 }
 
-
-
-function AjaxError(error) {
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
-}
-
-function AjaxSuccess(data) {
-    if (data === "200") {
-        $("#modal-action").modal("hide");
-        $("#modal-action").removeClass("fade");
-        if (dataTable !== null) {
-            dataTable.ajax.reload();
-        }
-        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-            if (dataTable === null) {
-                location.reload();
-            }
-        });
-    }
-    else {
-        $("#modal-content").html(data);
-    }
-}
-
-$("#modal-action").on("show.bs.modal", function (e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function (e) {
-        $.validator.unobtrusive.parse("form");
-
-        if ($(".customSelect2").length > 0) {
-            $(".customSelect2").select2({
-                theme: "bootstrap",
-                language: languageSelect2
-            });
-        }
+function openModal(url, callback) {
+    $(".modal-content").load(url, function () {
+        if (callback !== null) callback();
     });
-});
-
-function errorDataTable() {
-    swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
 }
 
-function DateFormat(dateOfBirth) {
-    let date = new Date(dateOfBirth);
-    return date.toLocaleDateString("pt-BR");
+function showSpinner() {
+    $("#spinner-container").show();
 }
+
+function hideSpinner() {
+    $("#spinner-container").hide();
+}
+
+//function AjaxError(error) {
+//    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+//}
+
+//function AjaxSuccess(data) {
+//    if (data === "200") {
+//        $("#modal-action").modal("hide");
+//        $("#modal-action").removeClass("fade");
+//        if (dataTable !== null) {
+//            dataTable.ajax.reload();
+//        }
+//        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
+//            if (dataTable === null) {
+//                location.reload();
+//            }
+//        });
+//    }
+//    else {
+//        $("#modal-content").html(data);
+//    }
+//}
+
+//$("#modal-action").on("show.bs.modal", function (e) {
+//    var link = $(e.relatedTarget);
+//    $(this).find(".modal-content").load(link.attr("href"), function (e) {
+//        $.validator.unobtrusive.parse("form");
+
+//        if ($(".customSelect2").length > 0) {
+//            $(".customSelect2").select2({
+//                theme: "bootstrap",
+//                language: languageSelect2
+//            });
+//        }
+//    });
+//});
+
+//function errorDataTable() {
+//    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+//}
+
+//function DateFormat(dateOfBirth) {
+//    let date = new Date(dateOfBirth);
+//    return date.toLocaleDateString("pt-BR");
+//}

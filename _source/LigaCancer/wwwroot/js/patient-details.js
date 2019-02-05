@@ -57,7 +57,7 @@ $("#modal-action").on("show.bs.modal", function (e) {
                     success: AjaxSuccessPatient,
                     error: function (error) {
                         $("#submitSpinner").hide();
-                        swal("Oops...", "Algo deu errado!\nO servidor respondeu com:\n\n'" + error.statusText + "'", "Erro");
+                        swalWithBootstrapButtons.fire("Oops...", "Algo deu errado!\nO servidor respondeu com:\n\n'" + error.statusText + "'", "Erro");
                     },
                     done: function () {
                     }
@@ -76,7 +76,7 @@ function AjaxSuccessPatient(data, result) {
 
         ReloadTables(data);
 
-        swal("Sucesso...", "Registro salvo com sucesso", "success");
+        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success");
     }
     else {
         $("#modal-content").html(data);
@@ -99,7 +99,7 @@ function ReloadTables(tableName) {
                 $("#perCapitaIncome").text("$" + parseFloat(data.perCapitaIncome).toFixed(2));
             },
             error: function (data) {
-                swal("Oops...", "Alguma coisa aconteceu errado!\n Se o problema persistir contate o administrador!", "error");
+                swalWithBootstrapButtons.fire("Oops...", "Alguma coisa aconteceu errado!\n Se o problema persistir contate o administrador!", "error");
             }
         });
     }
@@ -108,7 +108,7 @@ function ReloadTables(tableName) {
     if (dataTableReload !== undefined && dataTableReload !== null) {
         dataTableReload.ajax.reload();
     } else {
-        swal("Oops...", "Alguma coisa aconteceu errado!\n Se o problema persistir contate o administrador!", "error");
+        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa aconteceu errado!\n Se o problema persistir contate o administrador!", "error");
     }
 }
 
@@ -248,7 +248,7 @@ function CreateDataTable(tableId, url, columns, columnDefs) {
             url: url,
             type: "GET",
             error: function () {
-                swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
             }
         },
         order: [[0, "asc"]],
