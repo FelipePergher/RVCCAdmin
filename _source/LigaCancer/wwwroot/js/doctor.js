@@ -1,4 +1,29 @@
 ﻿let doctorTable = $("#doctorTable").DataTable({
+    //Todo Change this
+    //dom: "l<'export-buttons'B>frtip",
+    dom: "lBfrtip",
+    buttons: [
+        {
+            extend: 'pdf',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)',
+            },
+            customize: function (doc) {
+                doc.defaultStyle.alignment = 'center';
+                doc.styles.tableHeader.alignment = 'center';
+            }
+        },
+        {
+            extend: 'excel',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            }
+        }
+    ],
     processing: true,
     serverSide: true,
     language: language,
@@ -16,31 +41,7 @@
         { data: "actions", title: "Ações", name: "actions", orderable: false },
         { data: "name", title: "Nome", name: "name", },
         { data: "crm", title: "CRM", name: "crm" }
-    ],
-    dom: "l<'mr-3'B>frtip",
-    buttons:
-        [
-            {
-                extend: 'pdf',
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                className: 'btn btn-info',
-                exportOptions: {
-                    columns: 'th:not(:first-child)',
-                },
-                customize: function (doc) {
-                    doc.defaultStyle.alignment = 'center';
-                    doc.styles.tableHeader.alignment = 'center';
-                }
-            },
-            {
-                extend: 'excel',
-                className: 'btn btn-info',
-                exportOptions: {
-                    columns: 'th:not(:first-child)'
-                }
-            },
-        ]
+    ]
 });
 
 $("#modal-action").on("show.bs.modal", function (e) {

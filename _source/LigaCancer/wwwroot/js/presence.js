@@ -1,10 +1,8 @@
 ﻿let presenceTable = $("#presenceTable").DataTable({
-    dom: "l<'mr-3'B>frtip",
+    dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
             extend: 'pdf',
-            orientation: 'landscape',
-            pageSize: 'LEGAL',
             className: 'btn btn-info',
             exportOptions: {
                 columns: 'th:not(:first-child)',

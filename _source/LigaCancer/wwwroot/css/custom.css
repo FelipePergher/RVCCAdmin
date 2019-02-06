@@ -34,3 +34,9 @@
     content: "*";
     color: red;
 }
+
+.export-buttons {
+    position: absolute;
+    left: 280px;
+    top: 20%;
+}

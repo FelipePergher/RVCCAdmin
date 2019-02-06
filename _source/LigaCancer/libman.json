@@ -90,6 +90,39 @@
         "combined/js/gijgo.min.js",
         "combined/css/gijgo.min.css"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-buttons@1.5.4",
+      "destination": "wwwroot/lib/datatables-buttons",
+      "files": [
+        "js/dataTables.buttons.min.js",
+        "js/buttons.html5.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-buttons-bs4@1.5.4",
+      "destination": "wwwroot/lib/datatables-buttons-bs4/",
+      "files": [
+        "css/buttons.bootstrap4.min.css",
+        "js/buttons.bootstrap4.min.js"
+      ]
+    },
+    {
+      "library": "jszip@3.1.5",
+      "destination": "wwwroot/lib/jszip",
+      "files": [
+        "jszip.min.js"
+      ]
+    },
+    {
+      "library": "pdfmake@0.1.50",
+      "destination": "wwwroot/lib/pdfmake",
+      "files": [
+        "pdfmake.min.js",
+        "vfs_fonts.js"
+      ]
     }
   ]
 }

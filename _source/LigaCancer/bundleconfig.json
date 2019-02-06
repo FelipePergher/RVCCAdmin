@@ -171,12 +171,13 @@
     }
   },
   {
-    "outputFileName": "wwwroot/dist/js/presence.min.css",
+    "outputFileName": "wwwroot/dist/css/presence.min.css",
     "inputFiles": [
       "wwwroot/lib/select2/css/select2.min.css",
       "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
       "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css",
-      "wwwroot/lib/gijgo/combined/css/gijgo.min.css"
+      "wwwroot/lib/gijgo/combined/css/gijgo.min.css",
+      "wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
