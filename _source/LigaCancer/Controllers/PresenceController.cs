@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Identity;
 using LigaCancer.Data.Models;
 using LigaCancer.Code;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using LigaCancer.Models.FormViewModel;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LigaCancer.Controllers
 {
-    [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

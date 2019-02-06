@@ -54,9 +54,9 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Presence presence)
         {
-            string actionsHtml = $"<a id='editPresenceButton' href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary'><i class='fas fa-edit'></i> Editar </a>";
+            string actionsHtml = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            actionsHtml += $"<a id='deletePresenceButton' href='javascript:void(0);' data-url='/Presence/DeletePresence/{presence.PresenceId}' class='btn btn-danger ml-1'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            actionsHtml += $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence/{presence.PresenceId}' class='btn btn-danger ml-1 deletePresenceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             return actionsHtml;
         }

@@ -1,11 +1,11 @@
-﻿@model LigaCancer.Models.FormViewModel.TreatmentPlaceViewModel
+﻿@model LigaCancer.Models.FormViewModel.TreatmentPlaceFormModel
 
-<form asp-action="AddTreatmentPlace"
+<form id="addTreatmentPlaceForm"  asp-action="AddTreatmentPlace"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-failure="Error"
+      data-ajax-success="AddSuccess"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Cidade" }' />

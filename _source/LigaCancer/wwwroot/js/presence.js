@@ -5,7 +5,7 @@
             extend: 'pdf',
             className: 'btn btn-info',
             exportOptions: {
-                columns: 'th:not(:first-child)',
+                columns: 'th:not(:first-child)'
             },
             customize: function (doc) {
                 doc.defaultStyle.alignment = 'center';
@@ -48,11 +48,11 @@
         showSpinner();
     },
     drawCallback: function (settings) {
-        $("#editPresenceButton").click(function () {
+        $(".editPresenceButton").click(function () {
             openModal($(this).attr("href"), initEditForm);
         });
 
-        $("#deletePresenceButton").click(function (e) {
+        $(".deletePresenceButton").click(function (e) {
             initDelete($(this).data("url"));
         });
 

@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class TreatmentPlaceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -25,115 +25,95 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddTreatmentPlace()
         {
-            return PartialView("_AddTreatmentPlace", new TreatmentPlaceViewModel());
+            return PartialView("_AddTreatmentPlace", new TreatmentPlaceFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTreatmentPlace(TreatmentPlaceViewModel model)
+        public async Task<IActionResult> AddTreatmentPlace(TreatmentPlaceFormModel model)
         {
-            if (!ModelState.IsValid) return PartialView("_AddTreatmentPlace", model);
-
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-            TreatmentPlace treatmentPlace = new TreatmentPlace
+            if (ModelState.IsValid)
             {
-                City = model.City,
-                UserCreated = user
-            };
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                TreatmentPlace treatmentPlace = new TreatmentPlace
+                {
+                    City = model.City,
+                    UserCreated = user
+                };
 
-            TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
+                TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
+                if (result.Succeeded) return Ok();
+             
+                ModelState.AddErrors(result);
             }
-            ModelState.AddErrors(result);
 
             return PartialView("_AddTreatmentPlace", model);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditTreatmentPlace(string id)
         {
-            TreatmentPlaceViewModel treatmentPlaceViewModel = new TreatmentPlaceViewModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditTreatmentPlace", treatmentPlaceViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-            if (treatmentPlace != null)
+            
+            if (treatmentPlace == null) return NotFound();
+
+            TreatmentPlaceFormModel treatmentPlaceViewModel = new TreatmentPlaceFormModel
             {
-                treatmentPlaceViewModel = new TreatmentPlaceViewModel
-                {
-                    TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
-                    City = treatmentPlace.City
-                };
-            }
+                TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
+                City = treatmentPlace.City
+            };
 
             return PartialView("_EditTreatmentPlace", treatmentPlaceViewModel);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceViewModel model)
+        public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceFormModel model)
         {
-            if (!ModelState.IsValid) return PartialView("_EditTreatmentPlace", model);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-            treatmentPlace.City = model.City;
-            treatmentPlace.UpdatedDate = DateTime.Now;
-            treatmentPlace.UserUpdated = user;
-
-            TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return StatusCode(200, "200");
+                TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
+                
+                if (treatmentPlace == null) return NotFound();
+
+                treatmentPlace.City = model.City;
+                treatmentPlace.UpdatedDate = DateTime.Now;
+                treatmentPlace.UserUpdated = await _userManager.GetUserAsync(this.User);
+
+                TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
+                if (result.Succeeded) return Ok();
+
+                ModelState.AddErrors(result);
             }
-            ModelState.AddErrors(result);
 
             return PartialView("_EditTreatmentPlace", model);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> DeleteTreatmentPlace(string id)
         {
-            string city = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteTreatmentPlace", city);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-            if (treatmentPlace != null)
-            {
-                city = treatmentPlace.City;
-            }
 
-            return PartialView("_DeleteTreatmentPlace", city);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteTreatmentPlace(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
-
-            TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-            if (treatmentPlace == null) return RedirectToAction("Index");
+            if (treatmentPlace == null) return NotFound();
 
             TaskResult result = await _treatmentPlaceService.DeleteAsync(treatmentPlace);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteTreatmentPlace", treatmentPlace.City);
+            if (result.Succeeded) return Ok();
+
+            return BadRequest(result);
         }
 
         #region Custom Methods
