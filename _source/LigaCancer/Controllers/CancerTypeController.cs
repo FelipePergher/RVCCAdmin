@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -32,18 +32,18 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddCancerType()
         {
-            return PartialView("_AddCancerType", new CancerTypeViewModel());
+            return PartialView("_AddCancerType", new CancerTypeFormModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCancerType(CancerTypeViewModel model)
+        public async Task<IActionResult> AddCancerType(CancerTypeFormModel cancerTypeForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddCancerType", model);
+            if (!ModelState.IsValid) return PartialView("_AddCancerType", cancerTypeForm);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
             CancerType cancerType = new CancerType
             {
-                Name = model.Name,
+                Name = cancerTypeForm.Name,
                 UserCreated = user
             };
 
@@ -54,39 +54,39 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_AddCancerType", model);
+            return PartialView("_AddCancerType", cancerTypeForm);
         }
 
 
         public async Task<IActionResult> EditCancerType(string id)
         {
-            CancerTypeViewModel cancerTypeViewModel = new CancerTypeViewModel();
+            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditCancerType", cancerTypeViewModel);
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditCancerType", cancerTypeForm);
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
             if(cancerType != null)
             {
-                cancerTypeViewModel = new CancerTypeViewModel
+                cancerTypeForm = new CancerTypeFormModel
                 {
                     CancerTypeId = cancerType.CancerTypeId,
                     Name = cancerType.Name
                 };
             }
 
-            return PartialView("_EditCancerType", cancerTypeViewModel);
+            return PartialView("_EditCancerType", cancerTypeForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCancerType(string id, CancerTypeViewModel model)
+        public async Task<IActionResult> EditCancerType(string id, CancerTypeFormModel cancerTypeForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditCancerType", model);
+            if (!ModelState.IsValid) return PartialView("_EditCancerType", cancerTypeForm);
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            cancerType.Name = model.Name;
+            cancerType.Name = cancerTypeForm.Name;
             cancerType.UpdatedDate = DateTime.Now;
             cancerType.UserUpdated = user;
 
@@ -97,9 +97,8 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_EditCancerType", model);
+            return PartialView("_EditCancerType", cancerTypeForm);
         }
-
 
         public async Task<IActionResult> DeleteCancerType(string id)
         {

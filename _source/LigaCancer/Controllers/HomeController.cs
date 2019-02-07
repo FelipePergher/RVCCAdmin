@@ -34,7 +34,7 @@ namespace LigaCancer.Controllers
 
         public IActionResult Index()
         {
-            HomeViewModel homeViewModel = new HomeViewModel
+            HomeViewModel homeView = new HomeViewModel
             {
               CancerTypeCount = _cancerTypeService.Count(),
               DoctorCount = _doctorService.Count(),
@@ -43,7 +43,7 @@ namespace LigaCancer.Controllers
               TreatmentPlaceCount = _treatmentPlaceService.Count()
             };
 
-            return View(homeViewModel);
+            return View(homeView);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

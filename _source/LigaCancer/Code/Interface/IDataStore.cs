@@ -1,5 +1,5 @@
 ﻿using LigaCancer.Code;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

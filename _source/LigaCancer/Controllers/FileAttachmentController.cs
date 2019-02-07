@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -38,29 +38,29 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddFileAttachment(string id)
         {
-            FileAttachmentViewModel fileAttachmentViewModel = new FileAttachmentViewModel
+            FileAttachmentFormModel fileAttachmentForm = new FileAttachmentFormModel
             {
                 PatientId = id
             };
-            return PartialView("_AddFileAttachment", fileAttachmentViewModel);
+            return PartialView("_AddFileAttachment", fileAttachmentForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddFileAttachment(FileAttachmentViewModel model)
+        public async Task<IActionResult> AddFileAttachment(FileAttachmentFormModel fileAttachmentForm)
         {
             if (!ModelState.IsValid) return StatusCode(500, "Invalid");
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
-            Patient patient = await _patientService.FindByIdAsync(model.PatientId);
+            Patient patient = await _patientService.FindByIdAsync(fileAttachmentForm.PatientId);
             FileAttachment fileAttachment = new FileAttachment
             {
-                ArchiveCategorie = model.FileCategory,
-                FileName = $"{model.FileName}{Path.GetExtension(model.File.FileName)}",
+                ArchiveCategorie = fileAttachmentForm.FileCategory,
+                FileName = $"{fileAttachmentForm.FileName}{Path.GetExtension(fileAttachmentForm.File.FileName)}",
                 UserCreated = user
             };
 
-            if (model.File != null && model.File.Length > 0)
+            if (fileAttachmentForm.File != null && fileAttachmentForm.File.Length > 0)
             {
                 if (patient != null)
                 {
@@ -70,10 +70,10 @@ namespace LigaCancer.Controllers
                     {
                         if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
 
-                        string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(model.File.FileName)}";
+                        string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(fileAttachmentForm.File.FileName)}";
                         using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                         {
-                            await model.File.CopyToAsync(fileStream);
+                            await fileAttachmentForm.File.CopyToAsync(fileStream);
                         }
                         string imageUrl = Path.Combine(path + "\\" + fileName);
                         fileAttachment.FilePath = imageUrl;
@@ -87,7 +87,7 @@ namespace LigaCancer.Controllers
                 }
             }
 
-            TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, model.PatientId);
+            TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, fileAttachmentForm.PatientId);
             if (result.Succeeded)
             {
                 return StatusCode(200, "attachmentFile");

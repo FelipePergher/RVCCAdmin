@@ -1,45 +1,144 @@
-﻿$(function () {
-    dataTable = BuildDataTable();
+﻿let treatmentPlaceTable = $("#treatmentPlaceTable").DataTable({
+    dom: "l<'export-buttons'B>frtip",
+    buttons: [
+        {
+            extend: 'pdf',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            },
+            customize: function (doc) {
+                doc.defaultStyle.alignment = 'center';
+                doc.styles.tableHeader.alignment = 'center';
+            }
+        },
+        {
+            extend: 'excel',
+            className: 'btn btn-info',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            }
+        }
+    ],
+    serverSide: true,
+    language: language,
+    filter: false,
+    ajax: {
+        url: "/api/TreatmentPlace/search",
+        type: "POST",
+        data: function (d) {
+            d.name = $("#Name").val();
+            d.surname = $("#Surname").val();
+            d.dateFrom = $("#DateFrom").val();
+            d.dateTo = $("#DateTo").val();
+        },
+        datatype: "json",
+        error: function () {
+            swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+        }
+    },
+    order: [1, "asc"],
+    columns: [
+        { data: "actions", title: "Ações", name: "actions", orderable: false },
+        { data: "city", title: "Cidade", name: "city" }
+    ],
+    preDrawCallback: function (settings) {
+        showSpinner();
+    },
+    drawCallback: function (settings) {
+        $(".editTreatmentPlaceButton").click(function () {
+            openModal($(this).attr("href"), initEditForm);
+        });
+
+        $(".deleteTreatmentPlaceButton").click(function (e) {
+            initDelete($(this).data("url"));
+        });
+
+        hideSpinner();
+    }
 });
 
-function BuildDataTable() {
-    return $("#treatmentPlaceTable").DataTable({
-        pageLength: 10,
-        processing: true,
-        serverSide: true,
-        language: language,
-        ajax: {
-            url: "api/GetTreatmentPlaceDataTableResponseAsync",
-            type: "POST",
-            error: errorDataTable
-        },
-        order: [[0, "asc"]],
-        columns: [
-            { data: "city", title: "Cidade"},
-            {
-                title: "Ações",
-                width: "180px",
-                render: function (data, type, row, meta) {
-                    let render = '<a href="/TreatmentPlace/EditTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
+$(function () {
+    initPage();
+});
 
-                    if (row.patientInformationTreatmentPlaces.length === 0) {
-                        render = render.concat(
-                            '<a href="/TreatmentPlace/DeleteTreatmentPlace/' + row.treatmentPlaceId + '" data-toggle="modal" data-target="#modal-action"' +
-                                ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
-                        );
-                    } else {
-                        render = render.concat(
-                            '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Excluir </a>'
-                        );
-                    }
-                    return render;
-                }
-            }
-        ],
-        columnDefs: [
-            { "orderable": false, "targets": [-1] },
-            { "searchable": false, "targets": [-1] }
-        ]
+function initPage() {
+    $('#treatmentPlaceTable').attr('style', 'border-collapse: collapse !important');
+
+    $("#addTreatmentPlaceButton").click(function () {
+        openModal($(this).attr("href"), initAddForm);
     });
+
+    $("#searchForm").submit(function (e) {
+        e.preventDefault();
+        treatmentPlaceTable.search("").draw("");
+    });
+
+    $("#modal-action").on("hidden.bs.modal", function (e) {
+        $("#modal-content").html("");
+    });
+}
+
+function initAddForm() {
+    $.validator.unobtrusive.parse("#addTreatmentPlaceForm");
+}
+
+function AddSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        treatmentPlaceTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento registrado com sucesso.", "success");
+    }
+    else {
+        $("#modal-content").html(data);
+        initAddForm();
+    }
+}
+
+function initEditForm() {
+    $.validator.unobtrusive.parse("#editTreatmentPlaceForm");
+}
+
+function EditSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        treatmentPlaceTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modal-content").html(data);
+        initEditForm();
+    }
+}
+
+function initDelete(url) {
+    swalWithBootstrapButtons.queue([{
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            return fetch(url)
+                .then(response => {
+                    if (response.status === 200) {
+                        treatmentPlaceTable.ajax.reload(null, false);
+                        return swalWithBootstrapButtons.fire("Removido!", "O local de tratamento foi removido com sucesso.", "success");
+                    }
+                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Alguma coisa deu errado: ${error}`
+                    );
+                });
+        }
+    }]);
+}
+
+function Error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }

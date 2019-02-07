@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class NaturalityViewModel
+    public class NaturalityFormModel
     {
         [Display(Name = "Cidade")]
         public string City { get; set; }

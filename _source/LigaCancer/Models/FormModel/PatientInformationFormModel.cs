@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class PatientInformationViewModel
+    public class PatientInformationFormModel
     {
-        public PatientInformationViewModel()
+        public PatientInformationFormModel()
         {
             CancerTypes = new List<string>();
             Medicines = new List<string>();

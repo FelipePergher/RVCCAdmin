@@ -1,35 +1,64 @@
 ﻿using System.Threading.Tasks;
-using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LigaCancer.Models.SearchModel;
+using System.Collections.Generic;
+using System.Linq;
+using LigaCancer.Models.ViewModel;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), Route("api/[action]")]
+    [Authorize(Roles = "Admin"), ApiController]
     public class TreatmentPlaceApiController : Controller
     {
-        private readonly IDataTable<TreatmentPlace> _treatmentDataTable;
+        private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
 
-        public TreatmentPlaceApiController(IDataTable<TreatmentPlace> treatmentDataTable)
+        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService)
         {
-            _treatmentDataTable = treatmentDataTable;
+            _treatmentPlaceService = treatmentPlaceService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetTreatmentPlaceDataTableResponseAsync(DataTableOptions options)
+        [HttpPost("~/api/TreatmentPlace/search")]
+        public async Task<IActionResult> TreatmentPlaceSearch([FromForm] SearchModel searchModel)
         {
             try
             {
-                BaseSpecification<TreatmentPlace> specification = new BaseSpecification<TreatmentPlace>(x => x.PatientInformationTreatmentPlaces);
-                return Ok(await _treatmentDataTable.GetOptionResponseWithSpec(options, specification));
+                string sortColumn = searchModel.Columns[searchModel.Order[0].Column].Name;
+                string sortDirection = searchModel.Order[0].Dir;
+                int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
+                int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
+
+                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(sortColumn: sortColumn, sortDirection: sortDirection);
+                IEnumerable<TreatmentPlaceViewModel> data = presences.Select(x => new TreatmentPlaceViewModel
+                {
+                    City = x.City,
+                    Actions = GetActionsHtml(x)
+                }).Skip(skip).Take(take);
+
+                int recordsTotal = _treatmentPlaceService.Count();
+                int recordsFiltered = presences.Count();
+
+                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
             catch
             {
                 return BadRequest();
             }
         }
+
+        #region Private Methods
+
+        private string GetActionsHtml(TreatmentPlace treatmentPlace)
+        {
+            string actionsHtml = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
+
+            actionsHtml += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='btn btn-danger ml-1 deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+
+            return actionsHtml;
+        }
+
+        #endregion
     }
 }

@@ -4,7 +4,7 @@ using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using System.Linq;
 
@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/doctor/search")]
-        public async Task<IActionResult> DoctorSearch([FromForm] SearchViewModel searchModel, [FromForm] DoctorSearchViewModel doctorSearchModel)
+        public async Task<IActionResult> DoctorSearch([FromForm] SearchModel searchModel, [FromForm] DoctorSearchModel doctorSearch)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection, doctorSearchModel);
+                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection, doctorSearch);
                 IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel {
                     Name = x.Name,
                     CRM = x.CRM,

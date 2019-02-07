@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.SearchViewModel
+namespace LigaCancer.Models.SearchModel
 {
-    public class PresenceSearchViewModel
+    public class PresenceSearchModel
     {
-        public PresenceSearchViewModel()
+        public PresenceSearchModel()
         {
             DateFrom = DateTime.Now.AddDays(-7);
             DateTo = DateTime.Now;

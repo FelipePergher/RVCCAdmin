@@ -5,7 +5,7 @@ using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using System.Linq;
 using LigaCancer.Data.Store;
 using System;
@@ -23,7 +23,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/Patient/GetPatientDataTableResponseAsync")]
-        public async Task<IActionResult> GetPatientDataTableResponseAsync(DataTableOptions options, PatientSearchViewModel patientSearchViewModel)
+        public async Task<IActionResult> GetPatientDataTableResponseAsync(DataTableOptions options, PatientSearchModel patientSearchModel)
         {
             try
             {
@@ -41,45 +41,45 @@ namespace LigaCancer.Controllers.Api
                 specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
 
                 //Filters
-                if (!string.IsNullOrEmpty(patientSearchViewModel.CivilState))
+                if (!string.IsNullOrEmpty(patientSearchModel.CivilState))
                 {
-                    Globals.CivilState civilStateValue = (Globals.CivilState)int.Parse(patientSearchViewModel.CivilState);
+                    Globals.CivilState civilStateValue = (Globals.CivilState)int.Parse(patientSearchModel.CivilState);
                     specification.Wheres.Add(x => x.CivilState == civilStateValue);
                 }
 
-                if (!string.IsNullOrEmpty(patientSearchViewModel.Sex))
+                if (!string.IsNullOrEmpty(patientSearchModel.Sex))
                 {
-                    Globals.Sex sexValue = (Globals.Sex)int.Parse(patientSearchViewModel.Sex);
+                    Globals.Sex sexValue = (Globals.Sex)int.Parse(patientSearchModel.Sex);
                     specification.Wheres.Add(x => x.Sex == sexValue);
                 }
 
-                foreach (string item in patientSearchViewModel.CancerTypes)
+                foreach (string item in patientSearchModel.CancerTypes)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationCancerTypes
                         .FirstOrDefault(y => y.CancerTypeId == int.Parse(item)) != null);
                 }
 
-                foreach (string item in patientSearchViewModel.TreatmentPlaces)
+                foreach (string item in patientSearchModel.TreatmentPlaces)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationTreatmentPlaces
                         .FirstOrDefault(y => y.TreatmentPlaceId == int.Parse(item)) != null);
                 }
 
-                foreach (string item in patientSearchViewModel.Doctors)
+                foreach (string item in patientSearchModel.Doctors)
                 {
                         specification.Wheres.Add(x => x.PatientInformation.PatientInformationDoctors
                             .FirstOrDefault(y => y.DoctorId == int.Parse(item)) != null);
                 }
 
-                foreach (string item in patientSearchViewModel.Medicines)
+                foreach (string item in patientSearchModel.Medicines)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.PatientInformationMedicines
                         .FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
                 }
 
-                if (!string.IsNullOrEmpty(patientSearchViewModel.FamiliarityGroup))
+                if (!string.IsNullOrEmpty(patientSearchModel.FamiliarityGroup))
                 {
-                    bool result = bool.Parse(patientSearchViewModel.FamiliarityGroup);
+                    bool result = bool.Parse(patientSearchModel.FamiliarityGroup);
                     if (result)
                     {
                         specification.Wheres.Add(x => x.FamiliarityGroup);
@@ -90,13 +90,13 @@ namespace LigaCancer.Controllers.Api
                     }
                 }
 
-                if (patientSearchViewModel.Death)
+                if (patientSearchModel.Death)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Death);
                     return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpec(options, specification));
                 }
 
-                if (patientSearchViewModel.Discharge)
+                if (patientSearchModel.Discharge)
                 {
                     specification.Wheres.Add(x => x.PatientInformation.ActivePatient.Discharge);
                     return Ok(await  ((PatientStore)_patientDataTable).GetOptionResponseWithSpec(options, specification));

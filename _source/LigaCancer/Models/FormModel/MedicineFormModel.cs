@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class MedicineViewModel
+    public class MedicineFormModel
     {
         public int MedicineId { get; set; }
 

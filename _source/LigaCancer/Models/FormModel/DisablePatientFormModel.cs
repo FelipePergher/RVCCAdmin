@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class DisablePatientViewModel
+    public class DisablePatientFormModel
     {
         [Display(Name = "Motivo")]
         public Globals.DisablePatientType DisablePatientType { get; set; }

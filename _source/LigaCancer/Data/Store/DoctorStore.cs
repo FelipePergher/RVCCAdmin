@@ -1,7 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -110,7 +110,7 @@ namespace LigaCancer.Data.Store
             }
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationDoctor(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredDoctors(query, (DoctorSearchViewModel)filter);
+            if (filter != null) query = GetFilteredDoctors(query, (DoctorSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -166,7 +166,7 @@ namespace LigaCancer.Data.Store
             }
         }
 
-        private IQueryable<Doctor> GetFilteredDoctors(IQueryable<Doctor> query, DoctorSearchViewModel doctorSearch)
+        private IQueryable<Doctor> GetFilteredDoctors(IQueryable<Doctor> query, DoctorSearchModel doctorSearch)
         {
             if (!string.IsNullOrEmpty(doctorSearch.Name)) query = query.Where(x => x.Name.Contains(doctorSearch.Name));
             if (!string.IsNullOrEmpty(doctorSearch.CRM)) query = query.Where(x => x.CRM.Contains(doctorSearch.CRM));
