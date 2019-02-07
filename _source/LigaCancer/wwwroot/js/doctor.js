@@ -1,7 +1,5 @@
 ﻿let doctorTable = $("#doctorTable").DataTable({
-    //Todo Change this
-    //dom: "l<'export-buttons'B>frtip",
-    dom: "lBfrtip",
+    dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
             extend: 'pdf',
@@ -31,6 +29,10 @@
     ajax: {
         url: "/api/doctor/search",
         type: "POST",
+        data: function (d) {
+            d.name = $("#Name").val();
+            d.CRM = $("#CRM").val();
+        },
         datatype: "json",
         error: function() {
             swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
@@ -41,8 +43,35 @@
         { data: "actions", title: "Ações", name: "actions", orderable: false },
         { data: "name", title: "Nome", name: "name", },
         { data: "crm", title: "CRM", name: "crm" }
-    ]
+    ],
+    preDrawCallback: function (settings) {
+        showSpinner();
+    },
+    drawCallback: function (settings) {
+        $("#editPresenceButton").click(function () {
+            openModal($(this).attr("href"), initEditForm);
+        });
+
+        $("#deletePresenceButton").click(function (e) {
+            initDelete($(this).data("url"));
+        });
+
+        hideSpinner();
+    }
 });
+
+$(function () {
+    initPage();
+});
+
+function initPage() {
+    $('#doctorTable').attr('style', 'border-collapse: collapse !important');
+
+    $("#searchForm").submit(function (e) {
+        e.preventDefault();
+        doctorTable.search("").draw("");
+    });
+}
 
 $("#modal-action").on("show.bs.modal", function (e) {
     var link = $(e.relatedTarget);

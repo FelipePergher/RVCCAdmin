@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/doctor/search")]
-        public async Task<IActionResult> DoctorSearch([FromForm] SearchViewModel searchModel)
+        public async Task<IActionResult> DoctorSearch([FromForm] SearchViewModel searchModel, [FromForm] DoctorSearchViewModel doctorSearchModel)
         {
             try
             {
@@ -30,12 +30,12 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection);
+                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection, doctorSearchModel);
                 IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel {
                     Name = x.Name,
                     CRM = x.CRM,
                     Actions = GetActionsHtml(x)
-                });
+                }).Skip(skip).Take(take);
 
                 int recordsTotal = _doctorService.Count();
                 int recordsFiltered = _doctorService.Count();

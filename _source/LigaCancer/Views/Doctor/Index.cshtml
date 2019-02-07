@@ -1,14 +1,15 @@
-﻿@using LigaCancer.Code
+﻿@model LigaCancer.Models.SearchViewModel.DoctorSearchViewModel
+@using LigaCancer.Code
 @{
     ViewData["Title"] = "Médicos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section styles{
-<environment names="Development">
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.bootstrap4.min.css" />
-</environment>
+    <environment names="Development">
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.bootstrap4.min.css" />
+    </environment>
     <environment exclude="Development">
         <link href="~/dist/css/datatables.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
@@ -30,33 +31,62 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-user-md"></i> Médicos
+                                <i class="fas fa-filter"></i> Filtros
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="card-block">
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <div class="btn-group">
-                                            <a asp-action="AddDoctor" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                                <i class="fa fa-plus"></i> Adicionar Médico
-                                            </a>
+                            <div class="card-block collapse show" id="filterCollapse">
+                                <form id="searchForm">
+                                    <div>
+                                        <div class="col-lg-12 form-row">
+                                            <div class="col-lg-3 form-group">
+                                                <label asp-for="Name"></label>
+                                                <input asp-for="Name" class="form-control" />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-lg-3 form-group">
+                                                <label asp-for="CRM"></label>
+                                                <input asp-for="CRM" class="form-control" />
+                                                <span asp-validation-for="CRM" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-lg-3 form-group">
+                                                <button type="submit" class="btn btn-primary filter">
+                                                    <i class="fas fa-filter"></i> Filtrar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-user-md"></i> Médicos
+                            </div>
+                            <div class="card-block">
+                                <div class="form-inline float-right">
+                                    <a asp-action="AddDoctor" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i> Adicionar Médico
+                                    </a>
                                 </div>
-
-                                <hr />
-
                                 <table class="table table-bordered table-striped table-condensed text-center" id="doctorTable"></table>
-
+                                <div id="spinner-container" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin" id="spinner"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!--/col-->
-
                 </div>
-                <!--/row-->
+                <!--/col-->
 
             </div>
+            <!--/row-->
+
         </div>
+    </div>
     </div>
     <!-- /.conainer-fluid -->
 </main>
