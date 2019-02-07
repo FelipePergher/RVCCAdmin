@@ -23,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.Phones.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Phone model)
+        public Task<TaskResult> CreateAsync(Phone phone)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Phones.Add(model);
+                _context.Phones.Add(phone);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -45,12 +45,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Phone model)
+        public Task<TaskResult> DeleteAsync(Phone phone)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Phones.Remove(model);
+                _context.Phones.Remove(phone);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

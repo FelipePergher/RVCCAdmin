@@ -24,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.Presences.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Presence model)
+        public Task<TaskResult> CreateAsync(Presence presence)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Presences.Add(model);
+                _context.Presences.Add(presence);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -46,12 +46,12 @@ namespace LigaCancer.Data.Store
 
         }
 
-        public Task<TaskResult> DeleteAsync(Presence model)
+        public Task<TaskResult> DeleteAsync(Presence presence)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Presences.Remove(model);
+                _context.Presences.Remove(presence);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

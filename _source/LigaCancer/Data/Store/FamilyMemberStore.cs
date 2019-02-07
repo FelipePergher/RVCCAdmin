@@ -23,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.FamilyMembers.Count();
         }
 
-        public Task<TaskResult> CreateAsync(FamilyMember model)
+        public Task<TaskResult> CreateAsync(FamilyMember familyMember)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.FamilyMembers.Add(model);
+                _context.FamilyMembers.Add(familyMember);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -45,24 +45,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(FamilyMember model)
+        public Task<TaskResult> DeleteAsync(FamilyMember familyMember)
         {
             TaskResult result = new TaskResult();
             try
             {
-                FamilyMember familyMember = _context.FamilyMembers.FirstOrDefault(b => b.FamilyMemberId == model.FamilyMemberId);
-                Family family = _context.Families.Include(x => x.FamilyMembers).FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == model.FamilyMemberId) != null);
-                if (family != null)
-                {
-                    family.FamilyIncome -= (double)familyMember.MonthlyIncome;
-                    family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count());
-                }
-
-                if (familyMember != null)
-                {
-                    _context.FamilyMembers.Remove(familyMember);
-                }
-
+                _context.FamilyMembers.Remove(familyMember);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

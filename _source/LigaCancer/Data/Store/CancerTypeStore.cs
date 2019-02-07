@@ -1,8 +1,6 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class CancerTypeStore : IDataStore<CancerType>, IDataTable<CancerType>
+    public class CancerTypeStore : IDataStore<CancerType>
     {
         private readonly ApplicationDbContext _context;
 
@@ -25,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.CancerTypes.Count();
         }
 
-        public Task<TaskResult> CreateAsync(CancerType model)
+        public Task<TaskResult> CreateAsync(CancerType cancerType)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.CancerTypes.Add(model);
+                _context.CancerTypes.Add(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,27 +45,13 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(CancerType model)
+        public Task<TaskResult> DeleteAsync(CancerType cancerType)
         {
             TaskResult result = new TaskResult();
             try
             {
-                CancerType cancerType = _context.CancerTypes.Include(x => x.PatientInformationCancerTypes).FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
-                if (cancerType != null && cancerType.PatientInformationCancerTypes.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este tipo de cancêr"
-                    });
-                    return Task.FromResult(result);
-                }
-
-                if (cancerType != null)
-                {
-                    _context.CancerTypes.Remove(cancerType);
-                }
-
+                
+                _context.CancerTypes.Remove(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -132,17 +116,6 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
         
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
-        {
-            DataTableResponse data = await _context.Set<CancerType>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
         #region Custom Methods
 
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)

@@ -1,8 +1,6 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class MedicineStore : IDataStore<Medicine>, IDataTable<Medicine>
+    public class MedicineStore : IDataStore<Medicine>
     {
         private readonly ApplicationDbContext _context;
 
@@ -25,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.Medicines.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Medicine model)
+        public Task<TaskResult> CreateAsync(Medicine medicine)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Medicines.Add(model);
+                _context.Medicines.Add(medicine);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,27 +45,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Medicine model)
+        public Task<TaskResult> DeleteAsync(Medicine medicine)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Medicine medicine = _context.Medicines.Include(x => x.PatientInformationMedicines).FirstOrDefault(b => b.MedicineId == model.MedicineId);
-                if (medicine != null && medicine.PatientInformationMedicines.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este remédio"
-                    });
-                    return Task.FromResult(result);
-                }
-
-                if (medicine != null)
-                {
-                    _context.Medicines.Remove(medicine);
-                }
-
+                _context.Medicines.Remove(medicine);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -130,17 +113,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Medicine> spec)
-        {
-            DataTableResponse data = await _context.Set<Medicine>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
         }
 
         #region Custom Methods
