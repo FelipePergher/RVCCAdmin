@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class PresenceViewModel
+    public class PresenceFormModel
     {
-        public PresenceViewModel()
+        public PresenceFormModel()
         {
             Date = DateTime.Now;
             Time = new TimeSpan(DateTime.Now.Hour,DateTime.Now.Minute, 0);

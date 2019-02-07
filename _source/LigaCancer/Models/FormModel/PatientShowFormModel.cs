@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class PatientShowViewModel
+    public class PatientShowFormModel
     {
         public int PatientId { get; set; }
 
@@ -33,9 +33,9 @@ namespace LigaCancer.Models.FormViewModel
         [Display(Name = "Profissão")]
         public string Profession { get; set; }
 
-        public NaturalityViewModel Naturality { get; set; }
+        public NaturalityFormModel Naturality { get; set; }
 
-        public PatientInformationViewModel PatientInformation { get; set; }
+        public PatientInformationFormModel PatientInformation { get; set; }
 
         public Family Family { get; set; }
 

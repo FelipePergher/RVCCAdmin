@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 
 namespace LigaCancer.Data.Store
 {
@@ -94,7 +94,7 @@ namespace LigaCancer.Data.Store
             }
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPresences(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredPresences(query, (PresenceSearchViewModel) filter);
+            if (filter != null) query = GetFilteredPresences(query, (PresenceSearchModel) filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -136,7 +136,7 @@ namespace LigaCancer.Data.Store
             }
         }
 
-        private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchViewModel presenceSearch)
+        private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
             if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Patient.FirstName.Contains(presenceSearch.Name));
             if (!string.IsNullOrEmpty(presenceSearch.Surname)) query = query.Where(x => x.Patient.Surname.Contains(presenceSearch.Surname));

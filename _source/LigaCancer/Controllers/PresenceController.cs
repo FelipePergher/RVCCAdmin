@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Code.Interface;
 using Microsoft.AspNetCore.Identity;
 using LigaCancer.Data.Models;
 using LigaCancer.Code;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
@@ -31,14 +31,14 @@ namespace LigaCancer.Controllers
 
         public IActionResult Index()
         {
-            return View(new PresenceSearchViewModel());
+            return View(new PresenceSearchModel());
         }
 
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
             List<Patient> patients = await _patientService.GetAllAsync();
-            PresenceViewModel presenceViewModel = new PresenceViewModel
+            PresenceFormModel presenceForm = new PresenceFormModel
             {
                 Patients = patients.Select(x => new SelectListItem
                 {
@@ -47,11 +47,11 @@ namespace LigaCancer.Controllers
                 }).ToList()
             };
 
-            return PartialView("_AddPresence", presenceViewModel);
+            return PartialView("_AddPresence", presenceForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPresence(PresenceViewModel model)
+        public async Task<IActionResult> AddPresence(PresenceFormModel presenceForm)
         {
             if (ModelState.IsValid)
             {
@@ -59,8 +59,8 @@ namespace LigaCancer.Controllers
 
                 Presence presence = new Presence
                 {
-                    PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0),
-                    Patient = await _patientService.FindByIdAsync(model.PatientId),
+                    PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
+                    Patient = await _patientService.FindByIdAsync(presenceForm.PatientId),
                     UserCreated = user
                 };
 
@@ -72,13 +72,13 @@ namespace LigaCancer.Controllers
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
-            model.Patients = patients.Select(x => new SelectListItem
+            presenceForm.Patients = patients.Select(x => new SelectListItem
             {
                 Text = x.FirstName + " " + x.Surname,
                 Value = x.PatientId.ToString()
             }).ToList();
 
-            return PartialView("_AddPresence", model);
+            return PartialView("_AddPresence", presenceForm);
         }
 
         [HttpGet]
@@ -92,7 +92,7 @@ namespace LigaCancer.Controllers
             if (presence == null) return NotFound();
 
             List<Patient> patients = await _patientService.GetAllAsync();
-            PresenceViewModel presenceViewModel = new PresenceViewModel
+            PresenceFormModel presenceform = new PresenceFormModel
             {
                 PresenceId = presence.PresenceId,
                 PatientId = presence.Patient.PatientId.ToString(),
@@ -105,13 +105,13 @@ namespace LigaCancer.Controllers
                 }).ToList()
             };
 
-            return PartialView("_EditPresence", presenceViewModel);
+            return PartialView("_EditPresence", presenceform);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPresence(string id, PresenceViewModel model)
+        public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(model.PatientId)) return BadRequest();
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(presenceForm.PatientId)) return BadRequest();
             
             if (ModelState.IsValid)
             {
@@ -120,8 +120,8 @@ namespace LigaCancer.Controllers
                 
                 if (presence == null) return NotFound();
 
-                presence.Patient = await _patientService.FindByIdAsync(model.PatientId);
-                presence.PresenceDateTime = new DateTime(model.Date.Year, model.Date.Month, model.Date.Day, model.Time.Hours, model.Time.Minutes, 0);
+                presence.Patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
+                presence.PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
                 presence.UserUpdated = await _userManager.GetUserAsync(this.User);
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
@@ -131,13 +131,13 @@ namespace LigaCancer.Controllers
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
-            model.Patients = patients.Select(x => new SelectListItem
+            presenceForm.Patients = patients.Select(x => new SelectListItem
             {
                 Text = x.FirstName + " " + x.Surname,
                 Value = x.PatientId.ToString()
             }).ToList();
 
-            return PartialView("_EditPresence", model);
+            return PartialView("_EditPresence", presenceForm);
         }
 
         [HttpGet]

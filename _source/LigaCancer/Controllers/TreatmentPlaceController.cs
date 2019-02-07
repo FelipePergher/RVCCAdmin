@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Data.Models;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Code.Interface;
 
@@ -38,14 +37,14 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTreatmentPlace(TreatmentPlaceFormModel model)
+        public async Task<IActionResult> AddTreatmentPlace(TreatmentPlaceFormModel treatmentPlaceForm)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
                 TreatmentPlace treatmentPlace = new TreatmentPlace
                 {
-                    City = model.City,
+                    City = treatmentPlaceForm.City,
                     UserCreated = user
                 };
 
@@ -55,7 +54,7 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_AddTreatmentPlace", model);
+            return PartialView("_AddTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpGet]
@@ -67,17 +66,17 @@ namespace LigaCancer.Controllers
             
             if (treatmentPlace == null) return NotFound();
 
-            TreatmentPlaceFormModel treatmentPlaceViewModel = new TreatmentPlaceFormModel
+            TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel
             {
                 TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
                 City = treatmentPlace.City
             };
 
-            return PartialView("_EditTreatmentPlace", treatmentPlaceViewModel);
+            return PartialView("_EditTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceFormModel model)
+        public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceFormModel treatmentPlaceForm)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
@@ -87,7 +86,7 @@ namespace LigaCancer.Controllers
                 
                 if (treatmentPlace == null) return NotFound();
 
-                treatmentPlace.City = model.City;
+                treatmentPlace.City = treatmentPlaceForm.City;
                 treatmentPlace.UpdatedDate = DateTime.Now;
                 treatmentPlace.UserUpdated = await _userManager.GetUserAsync(this.User);
 
@@ -97,7 +96,7 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_EditTreatmentPlace", model);
+            return PartialView("_EditTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpGet]

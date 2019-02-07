@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.SearchViewModel
+namespace LigaCancer.Models.SearchModel
 {
-    public class PatientSearchViewModel
+    public class PatientSearchModel
     {
-        public PatientSearchViewModel()
+        public PatientSearchModel()
         {
             CancerTypes = new List<string>();
             Doctors = new List<string>();

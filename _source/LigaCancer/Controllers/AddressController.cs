@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -30,33 +30,33 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddAddress(string id)
         {
-            AddressViewModel addressViewModel = new AddressViewModel
+            AddressFormModel addressForm = new AddressFormModel
             {
                 PatientId = id
             };
-            return PartialView("_AddAddress", addressViewModel);
+            return PartialView("_AddAddress", addressForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddAddress(AddressViewModel model)
+        public async Task<IActionResult> AddAddress(AddressFormModel addressForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddAddress", model);
+            if (!ModelState.IsValid) return PartialView("_AddAddress", addressForm);
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
             TaskResult result = await ((PatientStore)_patientService).AddAddress(
                 new Address
                 {
-                    City = model.City,
-                    Complement = model.Complement,
-                    HouseNumber = model.HouseNumber,
-                    Neighborhood = model.Neighborhood,
-                    ObservationAddress = model.ObservationAddress,
-                    Street = model.Street,
-                    ResidenceType = model.ResidenceType,
-                    MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0
-                }, model.PatientId);
+                    City = addressForm.City,
+                    Complement = addressForm.Complement,
+                    HouseNumber = addressForm.HouseNumber,
+                    Neighborhood = addressForm.Neighborhood,
+                    ObservationAddress = addressForm.ObservationAddress,
+                    Street = addressForm.Street,
+                    ResidenceType = addressForm.ResidenceType,
+                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0
+                }, addressForm.PatientId);
 
             if (result.Succeeded)
             {
@@ -64,20 +64,20 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_AddAddress", model);
+            return PartialView("_AddAddress", addressForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditAddress(string id)
         {
-            AddressViewModel addressViewModel = new AddressViewModel();
+            AddressFormModel addressForm = new AddressFormModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditAddress", addressViewModel);
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditAddress", addressForm);
 
             Address address = await _addressService.FindByIdAsync(id);
             if (address != null)
             {
-                addressViewModel = new AddressViewModel
+                addressForm = new AddressFormModel
                 {
                     City = address.City,
                     Complement = address.Complement,
@@ -90,26 +90,26 @@ namespace LigaCancer.Controllers
                 };
             }
 
-            return PartialView("_EditAddress", addressViewModel);
+            return PartialView("_EditAddress", addressForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAddress(string id, AddressViewModel model)
+        public async Task<IActionResult> EditAddress(string id, AddressFormModel addressForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditAddress", model);
+            if (!ModelState.IsValid) return PartialView("_EditAddress", addressForm);
 
             Address address = await _addressService.FindByIdAsync(id);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            address.Complement = model.Complement;
-            address.City = model.City;
-            address.HouseNumber = model.HouseNumber;
-            address.Neighborhood = model.Neighborhood;
-            address.ObservationAddress = model.ObservationAddress;
-            address.ResidenceType = model.ResidenceType;
-            address.MonthlyAmmountResidence = model.ResidenceType != null ? model.MonthlyAmmountResidence : 0;
-            address.Street = model.Street;
+            address.Complement = addressForm.Complement;
+            address.City = addressForm.City;
+            address.HouseNumber = addressForm.HouseNumber;
+            address.Neighborhood = addressForm.Neighborhood;
+            address.ObservationAddress = addressForm.ObservationAddress;
+            address.ResidenceType = addressForm.ResidenceType;
+            address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0;
+            address.Street = addressForm.Street;
             address.UpdatedDate = DateTime.Now;
             address.UserUpdated = user;
 
@@ -120,7 +120,7 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_EditAddress", model);
+            return PartialView("_EditAddress", addressForm);
         }
 
         public async Task<IActionResult> DeleteAddress(string id)

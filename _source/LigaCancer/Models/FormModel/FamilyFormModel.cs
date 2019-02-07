@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class FamilyViewModel
+    public class FamilyFormModel
     {
-        public FamilyViewModel()
+        public FamilyFormModel()
         {
-            FamilyMembers = new List<FamilyMemberViewModel>();
+            FamilyMembers = new List<FamilyMemberFormModel>();
         }
 
         public double MonthlyIncome { get; set; }
@@ -17,6 +17,6 @@ namespace LigaCancer.Models.FormViewModel
 
         public string Residence { get; set; }
 
-        public List<FamilyMemberViewModel> FamilyMembers { get; set; }
+        public List<FamilyMemberFormModel> FamilyMembers { get; set; }
     }
 }

@@ -5,15 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.UserViewModels
 {
-    public class UserViewModel
+    public class EditUserFormModel
     {
-        public UserViewModel()
+        public EditUserFormModel()
         {
             ApplicationRoles = new List<SelectListItem>();
         }
 
         public string UserId { get; set; }
-       
+
         [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
 
@@ -25,21 +25,9 @@ namespace LigaCancer.Models.UserViewModels
             Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
         public string Email { get; set; }
 
-        [Display(Name = "Senha"), 
-            DataType(DataType.Password), 
-            Required(ErrorMessage = "Este campo é obrigatório!"), 
-            RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
-        public string Password { get; set; }
-
-        [Display(Name = "Confirmação de senha"), 
-            DataType(DataType.Password), 
-            Required(ErrorMessage = "Este campo é obrigatório!"),
-            Compare("Password", ErrorMessage = "Confirmação de senha não confere")]
-        public string ConfirmPassword { get; set; }
-
         public List<SelectListItem> ApplicationRoles { get; set; }
 
-        [Display(Name = "Roles"), Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string RoleId { get; set; }
+        [Display(Name = "Regra"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        public string Role { get; set; }
     }
 }

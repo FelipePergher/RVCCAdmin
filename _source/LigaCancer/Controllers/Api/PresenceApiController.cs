@@ -4,7 +4,7 @@ using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using System.Linq;
 
@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/presence/search")]
-        public async Task<IActionResult> PresenceSearch([FromForm] SearchViewModel searchModel, [FromForm] PresenceSearchViewModel presenceSearchModel )
+        public async Task<IActionResult> PresenceSearch([FromForm] SearchModel searchModel, [FromForm] PresenceSearchModel presenceSearchModel )
         {
             try
             {

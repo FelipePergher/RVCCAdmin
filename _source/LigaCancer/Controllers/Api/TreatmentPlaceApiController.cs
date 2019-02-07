@@ -3,7 +3,7 @@ using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchViewModel;
+using LigaCancer.Models.SearchModel;
 using System.Collections.Generic;
 using System.Linq;
 using LigaCancer.Models.ViewModel;
@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/TreatmentPlace/search")]
-        public async Task<IActionResult> TreatmentPlaceSearch([FromForm] SearchViewModel searchModel)
+        public async Task<IActionResult> TreatmentPlaceSearch([FromForm] SearchModel searchModel)
         {
             try
             {

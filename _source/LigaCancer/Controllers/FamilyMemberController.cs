@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -30,31 +30,31 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddFamilyMember(string id)
         {
-            FamilyMemberViewModel familyMemberViewModel = new FamilyMemberViewModel
+            FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel
             {
                 PatientId = id
             };
-            return PartialView("_AddFamilyMember", familyMemberViewModel);
+            return PartialView("_AddFamilyMember", familyMemberForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddFamilyMember(FamilyMemberViewModel model)
+        public async Task<IActionResult> AddFamilyMember(FamilyMemberFormModel familyMemberForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddFamilyMember", model);
+            if (!ModelState.IsValid) return PartialView("_AddFamilyMember", familyMemberForm);
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
             TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
                 new FamilyMember
                 {
-                    Age = model.Age,
-                    Kinship = model.Kinship,
-                    MonthlyIncome = (double)model.MonthlyIncome,
-                    Name = model.Name,
-                    Sex = model.Sex,
+                    Age = familyMemberForm.Age,
+                    Kinship = familyMemberForm.Kinship,
+                    MonthlyIncome = (double)familyMemberForm.MonthlyIncome,
+                    Name = familyMemberForm.Name,
+                    Sex = familyMemberForm.Sex,
                     UserCreated = user
-                }, model.PatientId);
+                }, familyMemberForm.PatientId);
 
             if (result.Succeeded)
             {
@@ -62,20 +62,20 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_AddFamilyMember", model);
+            return PartialView("_AddFamilyMember", familyMemberForm);
         }
 
 
         public async Task<IActionResult> EditFamilyMember(string id)
         {
-            FamilyMemberViewModel familyMemberViewModel = new FamilyMemberViewModel();
+            FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditFamilyMember", familyMemberViewModel);
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditFamilyMember", familyMemberForm);
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
             if (familyMember != null)
             {
-                familyMemberViewModel = new FamilyMemberViewModel
+                familyMemberForm = new FamilyMemberFormModel
                 {
                     Age = familyMember.Age,
                     Kinship = familyMember.Kinship,
@@ -85,14 +85,14 @@ namespace LigaCancer.Controllers
                 };
             }
 
-            return PartialView("_EditFamilyMember", familyMemberViewModel);
+            return PartialView("_EditFamilyMember", familyMemberForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberViewModel model)
+        public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditFamilyMember", model);
+            if (!ModelState.IsValid) return PartialView("_EditFamilyMember", familyMemberForm);
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
             TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
@@ -100,11 +100,11 @@ namespace LigaCancer.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                familyMember.Age = model.Age;
-                familyMember.Kinship = model.Kinship;
-                familyMember.MonthlyIncome = (double)model.MonthlyIncome;
-                familyMember.Name = model.Name;
-                familyMember.Sex = model.Sex;
+                familyMember.Age = familyMemberForm.Age;
+                familyMember.Kinship = familyMemberForm.Kinship;
+                familyMember.MonthlyIncome = (double)familyMemberForm.MonthlyIncome;
+                familyMember.Name = familyMemberForm.Name;
+                familyMember.Sex = familyMemberForm.Sex;
                 familyMember.UpdatedDate = DateTime.Now;
                 familyMember.UserUpdated = user;
 
@@ -116,7 +116,7 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_EditFamilyMember", model);
+            return PartialView("_EditFamilyMember", familyMemberForm);
         }
 
 

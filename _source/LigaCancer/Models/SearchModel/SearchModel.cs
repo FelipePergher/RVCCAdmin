@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace LigaCancer.Models.SearchViewModel
+namespace LigaCancer.Models.SearchModel
 {
-    public class SearchViewModel
+    public class SearchModel
     {
         public string Draw { get; set; }
         public string Start { get; set; }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -34,19 +34,19 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddDoctor()
         {
-            return PartialView("_AddDoctor", new DoctorFormViewModel());
+            return PartialView("_AddDoctor", new DoctorFormModel());
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDoctor(DoctorFormViewModel model)
+        public async Task<IActionResult> AddDoctor(DoctorFormModel doctorForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddDoctor", model);
+            if (!ModelState.IsValid) return PartialView("_AddDoctor", doctorForm);
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
             Doctor doctor = new Doctor
             {
-                CRM = model.CRM,
-                Name = model.Name,
+                CRM = doctorForm.CRM,
+                Name = doctorForm.Name,
                 UserCreated = user
             };
 
@@ -55,7 +55,7 @@ namespace LigaCancer.Controllers
 
             ModelState.AddErrors(result);
 
-            return PartialView("_AddDoctor", model);
+            return PartialView("_AddDoctor", doctorForm);
         }
 
         public async Task<IActionResult> EditDoctor(string id)
@@ -65,7 +65,7 @@ namespace LigaCancer.Controllers
             Doctor doctor = await _doctorService.FindByIdAsync(id);
             if (doctor == null) return NotFound();
 
-            return PartialView("_EditDoctor", new DoctorFormViewModel
+            return PartialView("_EditDoctor", new DoctorFormModel
             {
                 DoctorId = doctor.DoctorId,
                 CRM = doctor.CRM,
@@ -74,15 +74,15 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDoctor(string id, DoctorFormViewModel model)
+        public async Task<IActionResult> EditDoctor(string id, DoctorFormModel doctorForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditDoctor", model);
+            if (!ModelState.IsValid) return PartialView("_EditDoctor", doctorForm);
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            doctor.Name = model.Name;
-            doctor.CRM = model.CRM;
+            doctor.Name = doctorForm.Name;
+            doctor.CRM = doctorForm.CRM;
             doctor.UpdatedDate = DateTime.Now;
             doctor.UserUpdated = user;
 
@@ -90,7 +90,7 @@ namespace LigaCancer.Controllers
             if (result.Succeeded) return Ok();
 
             ModelState.AddErrors(result);
-            return PartialView("_EditDoctor", model);
+            return PartialView("_EditDoctor", doctorForm);
         }
 
         [HttpGet]

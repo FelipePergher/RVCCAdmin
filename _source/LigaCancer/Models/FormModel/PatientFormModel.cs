@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using LigaCancer.Code;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class PatientViewModel
+    public class PatientFormModel
     {
-        public PatientViewModel()
+        public PatientFormModel()
         {
             DateOfBirth = DateTime.Now;
-            Naturality = new NaturalityViewModel();
-            PatientInformation = new PatientInformationViewModel();
+            Naturality = new NaturalityFormModel();
+            PatientInformation = new PatientInformationFormModel();
         }
 
         public int PatientId { get; set; }
@@ -52,9 +52,9 @@ namespace LigaCancer.Models.FormViewModel
         [Display(Name = "Renda Mensal")]
         public double? MonthlyIncome { get; set; }
 
-        public NaturalityViewModel Naturality { get; set; }
+        public NaturalityFormModel Naturality { get; set; }
 
-        public PatientInformationViewModel PatientInformation { get; set; }
+        public PatientInformationFormModel PatientInformation { get; set; }
 
         #region Selects
 

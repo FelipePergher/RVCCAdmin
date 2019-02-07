@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -32,19 +32,19 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddMedicine()
         {
-            return PartialView("_AddMedicine", new MedicineViewModel());
+            return PartialView("_AddMedicine", new MedicineFormModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddMedicine(MedicineViewModel model)
+        public async Task<IActionResult> AddMedicine(MedicineFormModel medicineForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddMedicine", model);
+            if (!ModelState.IsValid) return PartialView("_AddMedicine", medicineForm);
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
             Medicine medicine = new Medicine
             {
-                Name = model.Name,
+                Name = medicineForm.Name,
                 UserCreated = user
             };
 
@@ -55,39 +55,39 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_AddMedicine", model);
+            return PartialView("_AddMedicine", medicineForm);
         }
 
 
         public async Task<IActionResult> EditMedicine(string id)
         {
-            MedicineViewModel medicineViewModel = new MedicineViewModel();
+            MedicineFormModel medicineForm = new MedicineFormModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditMedicine", medicineViewModel);
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditMedicine", medicineForm);
 
             Medicine medicine = await _medicineService.FindByIdAsync(id);
             if(medicine != null)
             {
-                medicineViewModel = new MedicineViewModel
+                medicineForm = new MedicineFormModel
                 {
                     MedicineId = medicine.MedicineId,
                     Name = medicine.Name
                 };
             }
 
-            return PartialView("_EditMedicine", medicineViewModel);
+            return PartialView("_EditMedicine", medicineForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditMedicine(string id, MedicineViewModel model)
+        public async Task<IActionResult> EditMedicine(string id, MedicineFormModel medicineForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditMedicine", model);
+            if (!ModelState.IsValid) return PartialView("_EditMedicine", medicineForm);
 
             Medicine medicine = await _medicineService.FindByIdAsync(id);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            medicine.Name = model.Name;
+            medicine.Name = medicineForm.Name;
             medicine.UpdatedDate = DateTime.Now;
             medicine.UserUpdated = user;
 
@@ -98,7 +98,7 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_EditMedicine", model);
+            return PartialView("_EditMedicine", medicineForm);
         }
 
 

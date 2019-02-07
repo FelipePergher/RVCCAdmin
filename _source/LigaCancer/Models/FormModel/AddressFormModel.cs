@@ -1,9 +1,9 @@
 ﻿using LigaCancer.Code;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class AddressViewModel
+    public class AddressFormModel
     {
         public string PatientId { get; set; }
 

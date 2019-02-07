@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormViewModel
+namespace LigaCancer.Models.FormModel
 {
-    public class FileAttachmentViewModel
+    public class FileAttachmentFormModel
     {
         public string PatientId { get; set; }
 

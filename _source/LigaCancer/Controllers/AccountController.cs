@@ -1,17 +1,14 @@
 ﻿using System.Threading.Tasks;
+using LigaCancer.Data.Models;
+using LigaCancer.Models.AccountViewModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace LigaCancer.Controllers
 {
-    using Data.Models;
-    using Models.AccountViewModel;
-    using Microsoft.AspNetCore.Authentication;
-
-
     [Authorize]
     public class AccountController : Controller
     {
@@ -45,20 +42,20 @@ namespace LigaCancer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel loginView, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) return View(loginView);
 
-            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
+            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(loginView.Email);
             if (applicationUser != null && applicationUser.IsDeleted)
             {
                 ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
-                return View(model);
+                return View(loginView);
             }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(loginView.Email, loginView.Password, loginView.RememberMe, true);
                 
             if (result.Succeeded)
             {
@@ -73,7 +70,7 @@ namespace LigaCancer.Controllers
             }
 
             ModelState.AddModelError(string.Empty, "Email ou senha inválido.");
-            return View(model);
+            return View(loginView);
 
             // If we got this far, something failed, redisplay form
         }

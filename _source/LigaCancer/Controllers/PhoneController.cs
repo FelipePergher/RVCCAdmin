@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.FormViewModel;
+using LigaCancer.Models.FormModel;
 using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
@@ -31,29 +31,29 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddPhone(string id)
         {
-            PhoneViewModel phoneViewModel = new PhoneViewModel
+            PhoneFormModel phoneForm = new PhoneFormModel
             {
                 PatientId = id
             };
-            return PartialView("_AddPhone", phoneViewModel);
+            return PartialView("_AddPhone", phoneForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhone(PhoneViewModel model)
+        public async Task<IActionResult> AddPhone(PhoneFormModel phoneForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddPhone", model);
+            if (!ModelState.IsValid) return PartialView("_AddPhone", phoneForm);
 
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
             TaskResult result = await ((PatientStore)_patientService).AddPhone(
                 new Phone
                 {
-                    Number = model.Number,
-                    PhoneType = model.PhoneType,
-                    ObservationNote = model.ObservationNote,
+                    Number = phoneForm.Number,
+                    PhoneType = phoneForm.PhoneType,
+                    ObservationNote = phoneForm.ObservationNote,
                     UserCreated = user
-                }, model.PatientId);
+                }, phoneForm.PatientId);
 
             if (result.Succeeded)
             {
@@ -61,20 +61,20 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_AddPhone", model);
+            return PartialView("_AddPhone", phoneForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditPhone(string id)
         {
-            PhoneViewModel phoneViewModel = new PhoneViewModel();
+            PhoneFormModel phoneForm = new PhoneFormModel();
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditPhone", phoneViewModel);
+            if (string.IsNullOrEmpty(id)) return PartialView("_EditPhone", phoneForm);
 
             Phone phone = await _phoneService.FindByIdAsync(id);
             if (phone != null)
             {
-                phoneViewModel = new PhoneViewModel
+                phoneForm = new PhoneFormModel
                 {
                     Number = phone.Number,
                     PhoneType = phone.PhoneType,
@@ -82,21 +82,21 @@ namespace LigaCancer.Controllers
                 };
             }
 
-            return PartialView("_EditPhone", phoneViewModel);
+            return PartialView("_EditPhone", phoneForm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPhone(string id, PhoneViewModel model)
+        public async Task<IActionResult> EditPhone(string id, PhoneFormModel phoneForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditPhone", model);
+            if (!ModelState.IsValid) return PartialView("_EditPhone", phoneForm);
 
             Phone phone = await _phoneService.FindByIdAsync(id);
             ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            phone.Number = model.Number;
-            phone.PhoneType = model.PhoneType;
-            phone.ObservationNote = model.ObservationNote;
+            phone.Number = phoneForm.Number;
+            phone.PhoneType = phoneForm.PhoneType;
+            phone.ObservationNote = phoneForm.ObservationNote;
             phone.UpdatedDate = DateTime.Now;
             phone.UserUpdated = user;
 
@@ -107,7 +107,7 @@ namespace LigaCancer.Controllers
             }
             ModelState.AddErrors(result);
 
-            return PartialView("_EditPhone", model);
+            return PartialView("_EditPhone", phoneForm);
         }
 
 
