@@ -122,7 +122,7 @@ function EditSuccess(data, textStatus) {
     if (data === "" && textStatus === "success") {
         $("#modal-action").modal("hide");
         presenceTable.ajax.reload(null, false);
-        swalWithBootstrapButtons.fire("Sucesso...", "Presença atualiada com sucesso.", "success");
+        swalWithBootstrapButtons.fire("Sucesso", "Presença atualizada com sucesso.", "success");
     }
     else {
         $("#modal-content").html(data);
@@ -132,7 +132,7 @@ function EditSuccess(data, textStatus) {
 
 function initDelete(url) {
     swalWithBootstrapButtons.queue([{
-        title: 'Você têm certeza?',
+        title: 'Você tem certeza?',
         text: "Você não poderá reverter isso!",
         type: 'warning',
         showCancelButton: true,
@@ -145,7 +145,7 @@ function initDelete(url) {
                 .then(response => {
                     if (response.status === 200) {
                         presenceTable.ajax.reload(null, false);
-                        return swalWithBootstrapButtons.fire("Removido!", "A presença foi removida com sucesso.", "success");
+                        return swalWithBootstrapButtons.fire("Removido", "A presença foi removida com sucesso.", "success");
                     }
                     return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 })

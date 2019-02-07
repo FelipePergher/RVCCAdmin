@@ -53,20 +53,6 @@ namespace LigaCancer.Data.Store
             try
             {
                 Doctor doctor = _context.Doctors.Include(x => x.PatientInformationDoctors).FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                if (doctor != null && doctor.PatientInformationDoctors.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
-                    });
-                    return Task.FromResult(result);
-                }
-
-                if (doctor != null)
-                {
-                    _context.Doctors.Remove(doctor);
-                }
 
                 _context.SaveChanges();
                 result.Succeeded = true;

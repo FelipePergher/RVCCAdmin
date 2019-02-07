@@ -101,24 +101,12 @@ namespace LigaCancer.Controllers
             Doctor doctor = await _doctorService.FindByIdAsync(id);
 
             if (doctor == null) return NotFound();
-            
-            return PartialView("_DeleteDoctor", doctor.Name);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDoctor(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
-
-            Doctor doctor = await _doctorService.FindByIdAsync(id);
-            if (doctor == null) return NotFound();
 
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
             if (result.Succeeded) return Ok();
 
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteDoctor", doctor.Name);
+            return BadRequest(result);
         }
 
         #region Custom Methods

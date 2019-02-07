@@ -38,12 +38,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationDoctor>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationDoctors)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationDoctor>()
                 .HasOne(bc => bc.Doctor)
                 .WithMany(c => c.PatientInformationDoctors)
-                .HasForeignKey(bc => bc.DoctorId);
+                .HasForeignKey(bc => bc.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Treatment Place
             builder.Entity<PatientInformationTreatmentPlace>()

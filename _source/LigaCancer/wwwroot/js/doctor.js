@@ -48,11 +48,11 @@
         showSpinner();
     },
     drawCallback: function (settings) {
-        $("#editPresenceButton").click(function () {
+        $(".editDoctorButton").click(function () {
             openModal($(this).attr("href"), initEditForm);
         });
 
-        $("#deletePresenceButton").click(function (e) {
+        $(".deleteDoctorButton").click(function (e) {
             initDelete($(this).data("url"));
         });
 
@@ -71,6 +71,14 @@ function initPage() {
         e.preventDefault();
         doctorTable.search("").draw("");
     });
+
+    $("#addDoctorButton").click(function () {
+        openModal($(this).attr("href"), initAddForm);
+    });
+
+    $("#modal-action").on("hidden.bs.modal", function (e) {
+        $("#modal-content").html("");
+    });
 }
 
 $("#modal-action").on("show.bs.modal", function (e) {
@@ -84,15 +92,66 @@ function Error(error) {
     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
-function Success(data, textStatus) {
+function initAddForm() {
+    $.validator.unobtrusive.parse("#addDoctorForm");
+}
+
+function AddSuccess(data, textStatus) {
     if (data === "" && textStatus === "success") {
         $("#modal-action").modal("hide");
-
-        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-            doctorTable.ajax.reload(null, false);
-        });
+        doctorTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Médico registrado com sucesso.", "success");
     }
     else {
         $("#modal-content").html(data);
+        initAddForm();
     }
+}
+
+function initEditForm() {
+    $.validator.unobtrusive.parse("#editDoctorForm");
+}
+
+function EditSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        doctorTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Médico atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modal-content").html(data);
+        initEditForm();
+    }
+}
+
+function initDelete(url) {
+    swalWithBootstrapButtons.queue([{
+        title: 'Você tem certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            return fetch(url)
+                .then(response => {
+                    if (response.status === 200) {
+                        doctorTable.ajax.reload(null, false);
+                        return swalWithBootstrapButtons.fire("Removido", "O médico foi removido com sucesso.", "success");
+                    }
+                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Alguma coisa deu errado: ${error}`
+                    );
+                });
+        }
+    }]);
+}
+
+function Error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }
