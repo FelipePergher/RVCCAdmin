@@ -1,8 +1,6 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>, IDataTable<TreatmentPlace>
+    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>
     {
         private readonly ApplicationDbContext _context;
 
@@ -25,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.TreatmentPlaces.Count();
         }
 
-        public Task<TaskResult> CreateAsync(TreatmentPlace model)
+        public Task<TaskResult> CreateAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.TreatmentPlaces.Add(model);
+                _context.TreatmentPlaces.Add(treatmentPlace);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,28 +45,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(TreatmentPlace model)
+        public Task<TaskResult> DeleteAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
             {
-                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.Include(x => x.PatientInformationTreatmentPlaces).FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
-
-                if (treatmentPlace != null && treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar esta cidade"
-                    });
-                    return Task.FromResult(result);
-                }
-
-                if (treatmentPlace != null)
-                {
-                    _context.TreatmentPlaces.Remove(treatmentPlace);
-                }
-
+                _context.TreatmentPlaces.Remove(treatmentPlace);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -113,7 +95,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(TreatmentPlace model)
+        public Task<TaskResult> UpdateAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
@@ -131,17 +113,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<TreatmentPlace> spec)
-        {
-            DataTableResponse data = await _context.Set<TreatmentPlace>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
         }
 
         #region Custom Methods

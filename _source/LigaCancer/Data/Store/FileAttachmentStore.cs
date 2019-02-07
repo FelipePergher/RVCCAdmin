@@ -23,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.FileAttachments.Count();
         }
 
-        public Task<TaskResult> CreateAsync(FileAttachment model)
+        public Task<TaskResult> CreateAsync(FileAttachment fileAttachment)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.FileAttachments.Add(model);
+                _context.FileAttachments.Add(fileAttachment);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -45,13 +45,13 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(FileAttachment model)
+        public Task<TaskResult> DeleteAsync(FileAttachment fileAttachment)
         {
             TaskResult result = new TaskResult();
             try
             {
                 //Todo remove file of disk too
-                _context.FileAttachments.Remove(model);
+                _context.FileAttachments.Remove(fileAttachment);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

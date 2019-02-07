@@ -1,8 +1,6 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class PatientStore : IDataStore<Patient>, IDataTable<Patient>
+    public class PatientStore : IDataStore<Patient>
     {
         private readonly ApplicationDbContext _context;
 
@@ -25,12 +23,12 @@ namespace LigaCancer.Data.Store
             return _context.Patients.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Patient model)
+        public Task<TaskResult> CreateAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Patients.Add(model);
+                _context.Patients.Add(patient);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,12 +45,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Patient model)
+        public Task<TaskResult> DeleteAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Patients.Remove(model);
+                _context.Patients.Remove(patient);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -97,7 +95,7 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Patient model)
+        public Task<TaskResult> UpdateAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
@@ -115,18 +113,6 @@ namespace LigaCancer.Data.Store
             }
 
             return Task.FromResult(result);
-        }
-
-        //DataTable Methods
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Patient> specification)
-        {
-            DataTableResponse data = await _context.Set<Patient>()
-                            .IncludeExpressions(specification.Includes)
-                            .IncludeWheres(specification.Wheres)
-                            .IncludeByNames(specification.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
         }
 
         #region Custom Methods
@@ -167,6 +153,7 @@ namespace LigaCancer.Data.Store
         //    return result;
         //}
 
+        //Todo Change methods to other stores
         public async Task<TaskResult> AddPhone(Phone phone, string patientId)
         {
             TaskResult result = new TaskResult();

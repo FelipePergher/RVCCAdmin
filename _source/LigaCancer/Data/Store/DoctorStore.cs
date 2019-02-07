@@ -25,12 +25,12 @@ namespace LigaCancer.Data.Store
             return _context.Doctors.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Doctor model)
+        public Task<TaskResult> CreateAsync(Doctor doctor)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Doctors.Add(model);
+                _context.Doctors.Add(doctor);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,27 +47,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Doctor model)
+        public Task<TaskResult> DeleteAsync(Doctor doctor)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Doctor doctor = _context.Doctors.Include(x => x.PatientInformationDoctors).FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                if (doctor != null && doctor.PatientInformationDoctors.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
-                    });
-                    return Task.FromResult(result);
-                }
-
-                if (doctor != null)
-                {
-                    _context.Doctors.Remove(doctor);
-                }
-
+                _context.Doctors.Remove(doctor);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
