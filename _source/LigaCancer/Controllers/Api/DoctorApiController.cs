@@ -54,7 +54,9 @@ namespace LigaCancer.Controllers.Api
         {
             string actionsHtml = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary'><i class='fas fa-edit'></i> Editar </a>";
 
-            actionsHtml += $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor/{doctor.DoctorId}' class='btn btn-danger ml-1 deleteDoctorButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            bool relation = doctor.PatientInformationDoctors.Count > 0;
+
+            actionsHtml += $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor/{doctor.DoctorId} data-relation={relation}' class='btn btn-danger ml-1 deleteDoctorButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
            
             return actionsHtml;
         }
