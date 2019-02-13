@@ -7,7 +7,6 @@ using LigaCancer.Code;
 using LigaCancer.Data.Store;
 using LigaCancer.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Code.Interface;
 

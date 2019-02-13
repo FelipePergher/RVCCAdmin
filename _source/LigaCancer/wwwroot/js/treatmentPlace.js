@@ -27,10 +27,7 @@
         url: "/api/TreatmentPlace/search",
         type: "POST",
         data: function (d) {
-            d.name = $("#Name").val();
-            d.surname = $("#Surname").val();
-            d.dateFrom = $("#DateFrom").val();
-            d.dateTo = $("#DateTo").val();
+            d.city = $("#City").val();
         },
         datatype: "json",
         error: function () {
@@ -39,7 +36,7 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", orderable: false },
+        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
         { data: "city", title: "Cidade", name: "city" }
     ],
     preDrawCallback: function (settings) {

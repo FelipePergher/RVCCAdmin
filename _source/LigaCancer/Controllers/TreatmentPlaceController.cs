@@ -9,6 +9,7 @@ using LigaCancer.Data.Store;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Code.Interface;
+using LigaCancer.Models.SearchModel;
 
 namespace LigaCancer.Controllers
 {
@@ -27,13 +28,13 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(new TreatmentPlaceSearchModel());
         }
 
         [HttpGet]
         public IActionResult AddTreatmentPlace()
         {
-            return PartialView("_AddTreatmentPlace", new TreatmentPlaceFormModel());
+            return PartialView("Partials/_AddTreatmentPlace", new TreatmentPlaceFormModel());
         }
 
         [HttpPost]
@@ -54,7 +55,7 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_AddTreatmentPlace", treatmentPlaceForm);
+            return PartialView("Partials/_AddTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpGet]
@@ -72,7 +73,7 @@ namespace LigaCancer.Controllers
                 City = treatmentPlace.City
             };
 
-            return PartialView("_EditTreatmentPlace", treatmentPlaceForm);
+            return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpPost]
@@ -96,7 +97,7 @@ namespace LigaCancer.Controllers
                 ModelState.AddErrors(result);
             }
 
-            return PartialView("_EditTreatmentPlace", treatmentPlaceForm);
+            return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
         }
 
         [HttpGet]
@@ -115,16 +116,11 @@ namespace LigaCancer.Controllers
             return BadRequest(result);
         }
 
-        #region Custom Methods
-
-        public JsonResult IsCityExist(string city, int treatmentPlaceId)
+        [HttpGet]
+        public async Task<IActionResult> IsCityExist(string city, int treatmentPlaceId)
         {
-            TreatmentPlace treatmentPlace = ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId).Result;
-
+            TreatmentPlace treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
             return Json(treatmentPlace == null);
         }
-
-        #endregion
-
     }
 }

@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/TreatmentPlace/search")]
-        public async Task<IActionResult> TreatmentPlaceSearch([FromForm] SearchModel searchModel)
+        public async Task<IActionResult> TreatmentPlaceSearch([FromForm] SearchModel searchModel, [FromForm] TreatmentPlaceSearchModel City)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(sortColumn: sortColumn, sortDirection: sortDirection);
+                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(sortColumn: sortColumn, sortDirection: sortDirection, filter: City);
                 IEnumerable<TreatmentPlaceViewModel> data = presences.Select(x => new TreatmentPlaceViewModel
                 {
                     City = x.City,
@@ -52,9 +52,18 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
-            string actionsHtml = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
+            string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='dropdown-item editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            actionsHtml += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='btn btn-danger ml-1 deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='dropdown-item deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+
+            string actionsHtml =
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {editTreatmentPlace}" +
+                $"      {deleteTreatmentPlace}" +
+                $"  </div>" +
+                $"</div>";
 
             return actionsHtml;
         }
