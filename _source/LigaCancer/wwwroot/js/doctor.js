@@ -5,7 +5,6 @@
             extend: 'pdf',
             orientation: 'landscape',
             pageSize: 'LEGAL',
-            className: 'btn btn-info',
             exportOptions: {
                 columns: 'th:not(:first-child)',
             },
@@ -16,7 +15,6 @@
         },
         {
             extend: 'excel',
-            className: 'btn btn-info',
             exportOptions: {
                 columns: 'th:not(:first-child)'
             }
@@ -40,7 +38,7 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", orderable: false },
+        { data: "actions", title: "Ações", name: "actions", width:"20px", orderable: false },
         { data: "name", title: "Nome", name: "name", },
         { data: "crm", title: "CRM", name: "crm" }
     ],
@@ -53,7 +51,7 @@
         });
 
         $(".deleteDoctorButton").click(function (e) {
-            initDelete($(this).data("url"));
+            initDelete($(this).data("url"), $(this).data("relation") === "True");
         });
 
         hideSpinner();
@@ -79,17 +77,6 @@ function initPage() {
     $("#modal-action").on("hidden.bs.modal", function (e) {
         $("#modal-content").html("");
     });
-}
-
-$("#modal-action").on("show.bs.modal", function (e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function (e) {
-        $.validator.unobtrusive.parse("form");
-    });
-});
-
-function Error(error) {
-    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }
 
 function initAddForm() {
@@ -124,10 +111,13 @@ function EditSuccess(data, textStatus) {
     }
 }
 
-function initDelete(url) {
+function initDelete(url, relation) {
+    let message = "Você não poderá reverter isso!";
+    if (relation) message = "Este médico está atribuido a pacientes, deseja prosseguir mesmo assim?";
+
     swalWithBootstrapButtons.queue([{
         title: 'Você tem certeza?',
-        text: "Você não poderá reverter isso!",
+        text: message,
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim',

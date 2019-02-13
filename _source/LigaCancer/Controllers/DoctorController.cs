@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class DoctorController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -34,30 +34,32 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddDoctor()
         {
-            return PartialView("_AddDoctor", new DoctorFormModel());
+            return PartialView("Partials/_AddDoctor", new DoctorFormModel());
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> AddDoctor(DoctorFormModel doctorForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddDoctor", doctorForm);
-
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-            Doctor doctor = new Doctor
+            if (ModelState.IsValid)
             {
-                CRM = doctorForm.CRM,
-                Name = doctorForm.Name,
-                UserCreated = user
-            };
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                Doctor doctor = new Doctor
+                {
+                    CRM = doctorForm.CRM,
+                    Name = doctorForm.Name,
+                    UserCreated = user
+                };
 
-            TaskResult result = await _doctorService.CreateAsync(doctor);
-            if (result.Succeeded) return Ok();
+                TaskResult result = await _doctorService.CreateAsync(doctor);
+                if (result.Succeeded) return Ok();
 
-            ModelState.AddErrors(result);
-
-            return PartialView("_AddDoctor", doctorForm);
+                ModelState.AddErrors(result);
+            }
+                
+            return PartialView("Partials/_AddDoctor", doctorForm);
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditDoctor(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -65,7 +67,7 @@ namespace LigaCancer.Controllers
             Doctor doctor = await _doctorService.FindByIdAsync(id);
             if (doctor == null) return NotFound();
 
-            return PartialView("_EditDoctor", new DoctorFormModel
+            return PartialView("Partials/_EditDoctor", new DoctorFormModel
             {
                 DoctorId = doctor.DoctorId,
                 CRM = doctor.CRM,
@@ -73,24 +75,26 @@ namespace LigaCancer.Controllers
             });
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> EditDoctor(string id, DoctorFormModel doctorForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditDoctor", doctorForm);
+            if (ModelState.IsValid)
+            {
+                Doctor doctor = await _doctorService.FindByIdAsync(id);
+                ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-            Doctor doctor = await _doctorService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                doctor.Name = doctorForm.Name;
+                doctor.CRM = doctorForm.CRM;
+                doctor.UpdatedDate = DateTime.Now;
+                doctor.UserUpdated = user;
 
-            doctor.Name = doctorForm.Name;
-            doctor.CRM = doctorForm.CRM;
-            doctor.UpdatedDate = DateTime.Now;
-            doctor.UserUpdated = user;
+                TaskResult result = await _doctorService.UpdateAsync(doctor);
+                if (result.Succeeded) return Ok();
 
-            TaskResult result = await _doctorService.UpdateAsync(doctor);
-            if (result.Succeeded) return Ok();
-
-            ModelState.AddErrors(result);
-            return PartialView("_EditDoctor", doctorForm);
+                ModelState.AddErrors(result);
+            }
+            
+            return PartialView("Partials/_EditDoctor", doctorForm);
         }
 
         [HttpGet]
@@ -106,19 +110,15 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
-            return BadRequest(result);
+            return BadRequest();
         }
 
-        #region Custom Methods
-
-        public JsonResult IsCrmExist(string crm, int doctorId)
+        [HttpGet]
+        public async Task<IActionResult> IsCrmExist(string crm, int doctorId)
         {
-            Doctor doctor = ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId).Result;
-
+            Doctor doctor = await ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId);
             return Json(doctor == null);
         }
-
-        #endregion
 
     }
 }

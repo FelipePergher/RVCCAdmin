@@ -126,10 +126,7 @@
     <Content Update="Views\CancerType\_EditCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Doctor\_DeleteDoctor.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Doctor\_EditDoctor.cshtml">
+    <Content Update="Views\Doctor\Partials\_EditDoctor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\User\Index.cshtml">

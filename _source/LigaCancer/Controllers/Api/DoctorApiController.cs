@@ -52,12 +52,18 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Doctor doctor)
         {
-            string actionsHtml = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary'><i class='fas fa-edit'></i> Editar </a>";
+            string editDoctor = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' class='dropdown-item editDoctorButton'><i class='fas fa-edit'></i> Editar </a>";
+            string deleteDoctor = $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor/{doctor.DoctorId}' data-relation='{doctor.PatientInformationDoctors.Count > 0}' class='deleteDoctorButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
-            bool relation = doctor.PatientInformationDoctors.Count > 0;
+            string actionsHtml = 
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {editDoctor}" +
+                $"      {deleteDoctor}" +
+                $"  </div>" +
+                $"</div>";
 
-            actionsHtml += $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor/{doctor.DoctorId} data-relation={relation}' class='btn btn-danger ml-1 deleteDoctorButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
-           
             return actionsHtml;
         }
 

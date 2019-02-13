@@ -123,6 +123,13 @@
         "pdfmake.min.js",
         "vfs_fonts.js"
       ]
+    },
+    {
+      "library": "popper.js@1.14.7",
+      "destination": "wwwroot/lib/popper",
+      "files": [
+        "umd/popper.min.js"
+      ]
     }
   ]
 }

@@ -24,12 +24,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationCancerType>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationCancerTypes)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationCancerType>()
                 .HasOne(bc => bc.CancerType)
                 .WithMany(c => c.PatientInformationCancerTypes)
-                .HasForeignKey(bc => bc.CancerTypeId);
+                .HasForeignKey(bc => bc.CancerTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Doctor
             builder.Entity<PatientInformationDoctor>()
@@ -54,12 +56,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationTreatmentPlace>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationTreatmentPlaces)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationTreatmentPlace>()
                 .HasOne(bc => bc.TreatmentPlace)
                 .WithMany(c => c.PatientInformationTreatmentPlaces)
-                .HasForeignKey(bc => bc.TreatmentPlaceId);
+                .HasForeignKey(bc => bc.TreatmentPlaceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Medicine
             builder.Entity<PatientInformationMedicine>()
@@ -68,12 +72,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationMedicine>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationMedicines)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationMedicine>()
                 .HasOne(bc => bc.Medicine)
                 .WithMany(c => c.PatientInformationMedicines)
-                .HasForeignKey(bc => bc.MedicineId);
+                .HasForeignKey(bc => bc.MedicineId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 

@@ -17,6 +17,7 @@
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
       "wwwroot/js/coreui.min.js",
+      "wwwroot/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
       "wwwroot/js/main.js"

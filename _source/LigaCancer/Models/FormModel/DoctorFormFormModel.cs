@@ -10,7 +10,7 @@ namespace LigaCancer.Models.FormModel
         [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Name { get; set; }
 
-        [Remote("IsCRMExist", "Doctor", AdditionalFields = "DoctorId", ErrorMessage = "CRM já registrado!")]
+        [Remote("IsCrmExist", "Doctor", AdditionalFields = "DoctorId", ErrorMessage = "CRM já registrado!", HttpMethod = "GET")]
         public string CRM { get; set; }
     }
 }
