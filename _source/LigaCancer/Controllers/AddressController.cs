@@ -43,7 +43,7 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return PartialView("_AddAddress", addressForm);
 
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             TaskResult result = await ((PatientStore)_patientService).AddAddress(
                 new Address
@@ -100,7 +100,7 @@ namespace LigaCancer.Controllers
             if (!ModelState.IsValid) return PartialView("_EditAddress", addressForm);
 
             Address address = await _addressService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             address.Complement = addressForm.Complement;
             address.City = addressForm.City;

@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/CancerType/search")]
-        public async Task<IActionResult> CancerTypeSearch([FromForm] SearchModel searchModel)
+        public async Task<IActionResult> CancerTypeSearch([FromForm] SearchModel searchModel, [FromForm] CancerTypeSearchModel cancerType)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<CancerType> cancerTypes = await _cancerService.GetAllAsync(new string[] { "PatientInformationCancerTypes" }, sortColumn, sortDirection);
+                IEnumerable<CancerType> cancerTypes = await _cancerService.GetAllAsync(new string[] { "PatientInformationCancerTypes" }, sortColumn, sortDirection, cancerType);
                 IEnumerable<CancerTypeViewModel> data = cancerTypes.Select(x => new CancerTypeViewModel
                 {
                     Name = x.Name,
@@ -52,24 +52,20 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(CancerType cancerType)
         {
-            string actionsHtml = "";
-            //string actionsHtml = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
+            string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
+                $"class='dropdown-item editCancerTypeButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            //actionsHtml += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='btn btn-danger ml-1 deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' class='dropdown-item " +
+                $"deleteCancerTypeButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
-            //if (row.patientInformationCancerTypes.length === 0)
-            //{
-            //    render = render.concat(
-            //        '<a href="/CancerType/DeleteCancerType/' + row.cancerTypeId + '" data-toggle="modal" data-target="#modal-action"' +
-            //        ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
-            //    );
-            //}
-            //else
-            //{
-            //    render = render.concat(
-            //        '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i> Excluir </a>'
-            //    );
-            //}
+            string actionsHtml =
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {editCancerType}" +
+                $"      {deleteCancerType}" +
+                $"  </div>" +
+                $"</div>";
 
             return actionsHtml;
         }

@@ -41,7 +41,7 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return PartialView("_AddMedicine", medicineForm);
 
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             Medicine medicine = new Medicine
             {
                 Name = medicineForm.Name,
@@ -85,7 +85,7 @@ namespace LigaCancer.Controllers
             if (!ModelState.IsValid) return PartialView("_EditMedicine", medicineForm);
 
             Medicine medicine = await _medicineService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             medicine.Name = medicineForm.Name;
             medicine.UpdatedDate = DateTime.Now;

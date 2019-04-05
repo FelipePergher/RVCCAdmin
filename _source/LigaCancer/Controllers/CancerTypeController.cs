@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using LigaCancer.Code.Interface;
+using LigaCancer.Models.SearchModel;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class CancerTypeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -27,111 +28,91 @@ namespace LigaCancer.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new CancerTypeSearchModel());
         }
 
+        [HttpGet]
         public IActionResult AddCancerType()
         {
-            return PartialView("_AddCancerType", new CancerTypeFormModel());
+            return PartialView("Partials/_AddCancerType", new CancerTypeFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCancerType(CancerTypeFormModel cancerTypeForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddCancerType", cancerTypeForm);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-            CancerType cancerType = new CancerType
+            if (ModelState.IsValid)
             {
-                Name = cancerTypeForm.Name,
-                UserCreated = user
-            };
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+                CancerType cancerType = new CancerType
+                {
+                    Name = cancerTypeForm.Name,
+                    UserCreated = user
+                };
 
-            TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
+                TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
+                if (result.Succeeded) return Ok();
+                ModelState.AddErrors(result);
             }
-            ModelState.AddErrors(result);
 
-            return PartialView("_AddCancerType", cancerTypeForm);
+            return PartialView("Partials/_AddCancerType", cancerTypeForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditCancerType(string id)
         {
-            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditCancerType", cancerTypeForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-            if(cancerType != null)
-            {
-                cancerTypeForm = new CancerTypeFormModel
-                {
-                    CancerTypeId = cancerType.CancerTypeId,
-                    Name = cancerType.Name
-                };
-            }
 
-            return PartialView("_EditCancerType", cancerTypeForm);
+            if (cancerType == null) return NotFound();
+
+            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel
+            {
+                CancerTypeId = cancerType.CancerTypeId,
+                Name = cancerType.Name
+            };
+
+            return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCancerType(string id, CancerTypeFormModel cancerTypeForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditCancerType", cancerTypeForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
-
-            cancerType.Name = cancerTypeForm.Name;
-            cancerType.UpdatedDate = DateTime.Now;
-            cancerType.UserUpdated = user;
-
-            TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
+                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
 
-            return PartialView("_EditCancerType", cancerTypeForm);
-        }
+                if (cancerType == null) return NotFound();
 
-        public async Task<IActionResult> DeleteCancerType(string id)
-        {
-            string name = string.Empty;
+                cancerType.Name = cancerTypeForm.Name;
+                cancerType.UpdatedDate = DateTime.Now;
+                cancerType.UserUpdated = await _userManager.GetUserAsync(User);
 
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteCancerType", name);
+                TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
+                if (result.Succeeded) return Ok();
 
-            CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-            if (cancerType != null)
-            {
-                name = cancerType.Name;
+                ModelState.AddErrors(result);
             }
 
-            return PartialView("_DeleteCancerType", name);
+            return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCancerType(string id, IFormCollection form)
+    
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteCancerType([FromForm] string id)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-            if (cancerType == null) return RedirectToAction("Index");
+
+            if (cancerType == null) return NotFound();
 
             TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteCancerType", cancerType.Name);
+            if (result.Succeeded) return Ok();
+
+            return BadRequest(result);
         }
 
         #region Custom Methods

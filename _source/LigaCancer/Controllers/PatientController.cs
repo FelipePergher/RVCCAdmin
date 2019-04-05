@@ -105,7 +105,7 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
 
                 Patient patient = new Patient
                 {
@@ -375,7 +375,7 @@ namespace LigaCancer.Controllers
                 specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
 
                 Patient patient = await _patientService.FindByIdAsync(id, specification);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
 
 
                 //Added Cancer Types to Patient Information

@@ -44,7 +44,7 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return PartialView("_AddPhone", phoneForm);
 
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             TaskResult result = await ((PatientStore)_patientService).AddPhone(
                 new Phone
@@ -92,7 +92,7 @@ namespace LigaCancer.Controllers
             if (!ModelState.IsValid) return PartialView("_EditPhone", phoneForm);
 
             Phone phone = await _phoneService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             phone.Number = phoneForm.Number;
             phone.PhoneType = phoneForm.PhoneType;

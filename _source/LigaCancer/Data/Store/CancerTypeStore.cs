@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -93,7 +94,11 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationCancerType(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredCancerTypes(query, (CancerTypeSearchModel)filter);
+
             return Task.FromResult(query.ToList());
+
         }
 
         public Task<TaskResult> UpdateAsync(CancerType model)
@@ -121,6 +126,27 @@ namespace LigaCancer.Data.Store
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
             return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<CancerType> GetOrdenationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+            }
+        }
+
+        private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel CancerTypeSearch)
+        {
+            if (!string.IsNullOrEmpty(CancerTypeSearch.Name)) query = query.Where(x => x.Name.Contains(CancerTypeSearch.Name));
+            return query;
         }
 
         #endregion

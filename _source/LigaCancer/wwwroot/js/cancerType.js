@@ -27,7 +27,7 @@
         url: "/api/CancerType/search",
         type: "POST",
         data: function (d) {
-            //d.name = $("#Name").val();
+            d.name = $("#Name").val();
         },
         datatype: "json",
         error: function () {
@@ -36,20 +36,20 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", orderable: false },
-        { data: "name", title: "Nome", name: "Name" }
+        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+        { data: "name", title: "Nome", name: "name" }
     ],
     preDrawCallback: function (settings) {
         showSpinner();
     },
     drawCallback: function (settings) {
-        //$(".editTreatmentPlaceButton").click(function () {
-        //    openModal($(this).attr("href"), initEditForm);
-        //});
+        $(".editCancerTypeButton").click(function () {
+            openModal($(this).attr("href"), initEditForm);
+        });
 
-        //$(".deleteTreatmentPlaceButton").click(function (e) {
-        //    initDelete($(this).data("url"));
-        //});
+        $(".deleteCancerTypeButton").click(function (e) {
+            initDelete($(this).data("url"), $(this).data("id"));
+        });
 
         hideSpinner();
     }
@@ -62,9 +62,9 @@ $(function () {
 function initPage() {
     $('#cancerTypeTable').attr('style', 'border-collapse: collapse !important');
 
-    //$("#addTreatmentPlaceButton").click(function () {
-    //    openModal($(this).attr("href"), initAddForm);
-    //});
+    $("#addCancerTypeButton").click(function () {
+        openModal($(this).attr("href"), initAddForm);
+    });
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
@@ -76,62 +76,60 @@ function initPage() {
     });
 }
 
-//function initAddForm() {
-//    $.validator.unobtrusive.parse("#addTreatmentPlaceForm");
-//}
+function initAddForm() {
+    $.validator.unobtrusive.parse("#addCancerTypeForm");
+}
 
-//function AddSuccess(data, textStatus) {
-//    if (data === "" && textStatus === "success") {
-//        $("#modal-action").modal("hide");
-//        treatmentPlaceTable.ajax.reload(null, false);
-//        swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento registrado com sucesso.", "success");
-//    }
-//    else {
-//        $("#modal-content").html(data);
-//        initAddForm();
-//    }
-//}
+function AddSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        cancerTypeTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer registrado com sucesso.", "success");
+    }
+    else {
+        $("#modal-content").html(data);
+        initAddForm();
+    }
+}
 
-//function initEditForm() {
-//    $.validator.unobtrusive.parse("#editTreatmentPlaceForm");
-//}
+function initEditForm() {
+    $.validator.unobtrusive.parse("#editCancerTypeForm");
+}
 
-//function EditSuccess(data, textStatus) {
-//    if (data === "" && textStatus === "success") {
-//        $("#modal-action").modal("hide");
-//        treatmentPlaceTable.ajax.reload(null, false);
-//        swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento atualizado com sucesso.", "success");
-//    }
-//    else {
-//        $("#modal-content").html(data);
-//        initEditForm();
-//    }
-//}
+function EditSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        cancerTypeTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer  atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modal-content").html(data);
+        initEditForm();
+    }
+}
 
-//function initDelete(url) {
-//    swalWithBootstrapButtons.queue([{
-//        title: 'Você têm certeza?',
-//        text: "Você não poderá reverter isso!",
-//        type: 'warning',
-//        showCancelButton: true,
-//        confirmButtonText: 'Sim',
-//        cancelButtonText: 'Não',
-//        showLoaderOnConfirm: true,
-//        reverseButtons: true,
-//        preConfirm: () => {
-//            return fetch(url)
-//                .then(response => {
-//                    if (response.status === 200) {
-//                        treatmentPlaceTable.ajax.reload(null, false);
-//                        return swalWithBootstrapButtons.fire("Removido!", "O local de tratamento foi removido com sucesso.", "success");
-//                    }
-//                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-//                })
-//                .catch(error => {
-//                    Swal.showValidationMessage(
-//                        `Alguma coisa deu errado: ${error}`
-//                    );
-//                });
-//        }
-//    }]);
-//}
+function initDelete(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    cancerTypeTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O local de tratamento foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+function Error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+}

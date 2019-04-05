@@ -94,7 +94,7 @@ namespace LigaCancer.Data.Store
             }
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationTreatmentPlace(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredDoctors(query, (TreatmentPlaceSearchModel)filter);
+            if (filter != null) query = GetFilteredTreatmentPlaces(query, (TreatmentPlaceSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -141,7 +141,7 @@ namespace LigaCancer.Data.Store
             }
         }
 
-        private IQueryable<TreatmentPlace> GetFilteredDoctors(IQueryable<TreatmentPlace> query, TreatmentPlaceSearchModel treatmentPlaceSearch)
+        private IQueryable<TreatmentPlace> GetFilteredTreatmentPlaces(IQueryable<TreatmentPlace> query, TreatmentPlaceSearchModel treatmentPlaceSearch)
         {
             if (!string.IsNullOrEmpty(treatmentPlaceSearch.City)) query = query.Where(x => x.City.Contains(treatmentPlaceSearch.City));
             return query;

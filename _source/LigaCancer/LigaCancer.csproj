@@ -117,13 +117,10 @@
     <Content Update="Views\CancerType\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\_AddCancerType.cshtml">
+    <Content Update="Views\CancerType\Partials\_AddCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\_DeleteCancerType.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\CancerType\_EditCancerType.cshtml">
+    <Content Update="Views\CancerType\Partials\_EditCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Doctor\Partials\_EditDoctor.cshtml">

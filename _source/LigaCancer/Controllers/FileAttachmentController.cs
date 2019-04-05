@@ -51,7 +51,7 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return StatusCode(500, "Invalid");
 
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             Patient patient = await _patientService.FindByIdAsync(fileAttachmentForm.PatientId);
             FileAttachment fileAttachment = new FileAttachment
             {

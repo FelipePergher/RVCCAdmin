@@ -41,7 +41,7 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Doctor doctor = new Doctor
                 {
                     CRM = doctorForm.CRM,
@@ -80,7 +80,7 @@ namespace LigaCancer.Controllers
             if (ModelState.IsValid)
             {
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
 
                 doctor.Name = doctorForm.Name;
                 doctor.CRM = doctorForm.CRM;

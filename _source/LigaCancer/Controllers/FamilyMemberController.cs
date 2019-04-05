@@ -43,7 +43,7 @@ namespace LigaCancer.Controllers
         {
             if (!ModelState.IsValid) return PartialView("_AddFamilyMember", familyMemberForm);
 
-            ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
                 new FamilyMember
@@ -98,7 +98,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
             if (result.Succeeded)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
 
                 familyMember.Age = familyMemberForm.Age;
                 familyMember.Kinship = familyMemberForm.Kinship;

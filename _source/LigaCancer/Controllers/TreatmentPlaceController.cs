@@ -42,7 +42,7 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 TreatmentPlace treatmentPlace = new TreatmentPlace
                 {
                     City = treatmentPlaceForm.City,
@@ -89,7 +89,7 @@ namespace LigaCancer.Controllers
 
                 treatmentPlace.City = treatmentPlaceForm.City;
                 treatmentPlace.UpdatedDate = DateTime.Now;
-                treatmentPlace.UserUpdated = await _userManager.GetUserAsync(this.User);
+                treatmentPlace.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
                 if (result.Succeeded) return Ok();
