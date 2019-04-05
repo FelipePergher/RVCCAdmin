@@ -54,7 +54,7 @@ namespace LigaCancer.Controllers.Api
         {
             string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='dropdown-item editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='dropdown-item deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' class='dropdown-item deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

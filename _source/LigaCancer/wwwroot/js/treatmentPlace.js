@@ -48,7 +48,7 @@
         });
 
         $(".deleteTreatmentPlaceButton").click(function (e) {
-            initDelete($(this).data("url"));
+            initDelete($(this).data("url"), $(this).data("id"));
         });
 
         hideSpinner();
@@ -108,8 +108,8 @@ function EditSuccess(data, textStatus) {
     }
 }
 
-function initDelete(url) {
-    swalWithBootstrapButtons.queue([{
+function initDelete(url, id) {
+    swalWithBootstrapButtons({
         title: 'Você têm certeza?',
         text: "Você não poderá reverter isso!",
         type: 'warning',
@@ -119,21 +119,15 @@ function initDelete(url) {
         showLoaderOnConfirm: true,
         reverseButtons: true,
         preConfirm: () => {
-            return fetch(url)
-                .then(response => {
-                    if (response.status === 200) {
-                        treatmentPlaceTable.ajax.reload(null, false);
-                        return swalWithBootstrapButtons.fire("Removido!", "O local de tratamento foi removido com sucesso.", "success");
-                    }
-                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-                })
-                .catch(error => {
-                    Swal.showValidationMessage(
-                        `Alguma coisa deu errado: ${error}`
-                    );
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    treatmentPlaceTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O local de tratamento foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });
         }
-    }]);
+    });
 }
 
 function Error(error) {

@@ -51,7 +51,7 @@
         });
 
         $(".deleteDoctorButton").click(function (e) {
-            initDelete($(this).data("url"), $(this).data("relation") === "True");
+            initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         });
 
         hideSpinner();
@@ -111,12 +111,12 @@ function EditSuccess(data, textStatus) {
     }
 }
 
-function initDelete(url, relation) {
+function initDelete(url, id, relation) {
     let message = "Você não poderá reverter isso!";
     if (relation) message = "Este médico está atribuido a pacientes, deseja prosseguir mesmo assim?";
 
-    swalWithBootstrapButtons.queue([{
-        title: 'Você tem certeza?',
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
         text: message,
         type: 'warning',
         showCancelButton: true,
@@ -125,21 +125,15 @@ function initDelete(url, relation) {
         showLoaderOnConfirm: true,
         reverseButtons: true,
         preConfirm: () => {
-            return fetch(url)
-                .then(response => {
-                    if (response.status === 200) {
-                        doctorTable.ajax.reload(null, false);
-                        return swalWithBootstrapButtons.fire("Removido", "O médico foi removido com sucesso.", "success");
-                    }
-                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-                })
-                .catch(error => {
-                    Swal.showValidationMessage(
-                        `Alguma coisa deu errado: ${error}`
-                    );
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    doctorTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O médico foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });
         }
-    }]);
+    });
 }
 
 function Error(error) {

@@ -96,7 +96,7 @@ namespace LigaCancer.Controllers
             return PartialView("Partials/_EditDoctor", doctorForm);
         }
 
-        [HttpGet]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
