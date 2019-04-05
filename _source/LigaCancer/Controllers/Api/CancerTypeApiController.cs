@@ -55,8 +55,9 @@ namespace LigaCancer.Controllers.Api
             string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 $"class='dropdown-item editCancerTypeButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' class='dropdown-item " +
-                $"deleteCancerTypeButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
+                $"data-relation='{cancerType.PatientInformationCancerTypes.Count > 0}' class='dropdown-item deleteCancerTypeButton'>" +
+                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

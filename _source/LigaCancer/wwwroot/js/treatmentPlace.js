@@ -48,7 +48,7 @@
         });
 
         $(".deleteTreatmentPlaceButton").click(function (e) {
-            initDelete($(this).data("url"), $(this).data("id"));
+            initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         });
 
         hideSpinner();
@@ -108,10 +108,13 @@ function EditSuccess(data, textStatus) {
     }
 }
 
-function initDelete(url, id) {
+function initDelete(url, id, relation) {
+    let message = "Você não poderá reverter isso!";
+    if (relation) message = "Este local de tratamento está atribuido a pacientes, deseja prosseguir mesmo assim?";
+
     swalWithBootstrapButtons({
         title: 'Você têm certeza?',
-        text: "Você não poderá reverter isso!",
+        text: message,
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim',
