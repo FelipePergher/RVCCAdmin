@@ -7,13 +7,8 @@ namespace LigaCancer.Models.UserViewModels
 {
     public class UserFormModel
     {
-        public UserFormModel()
-        {
-            ApplicationRoles = new List<SelectListItem>();
-        }
-
         public string UserId { get; set; }
-       
+
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
@@ -39,7 +34,19 @@ namespace LigaCancer.Models.UserViewModels
         [Compare("Password", ErrorMessage = "Confirmação de senha não confere")]
         public string ConfirmPassword { get; set; }
 
-        public List<SelectListItem> ApplicationRoles { get; set; }
+        public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Administrador",
+                        Value = "Admin"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Usuário",
+                        Value = "User"
+                    }
+                };
 
         [Display(Name = "Roles")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]

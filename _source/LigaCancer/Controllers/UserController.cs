@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,30 +32,7 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            UserFormModel userForm = new UserFormModel();
-
-            IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
-            IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
-           
-            if(userRoleOption != null)
-            {
-                userForm.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.User),
-                    Value = userRoleOption.Id
-                });
-                userForm.RoleId = userRoleOption.Id;
-            }
-            if (adminRoleOption != null)
-            {
-                userForm.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.Admin),
-                    Value = adminRoleOption.Id
-                });
-            }
-
-            return PartialView("_AddUser", userForm);
+            return PartialView("_AddUser", new UserFormModel());
         }
 
         [HttpPost]
@@ -72,25 +48,17 @@ namespace LigaCancer.Controllers
                     Email = userForm.Email,
                     CreatedBy = User.Identity.Name,
                 };
+
                 IdentityResult result = await _userManager.CreateAsync(user, userForm.Password);
+
                 if (result.Succeeded)
                 {
                     IdentityRole applicationRole = await _roleManager.FindByIdAsync(userForm.RoleId);
-                    if (applicationRole != null)
-                    {
-                        await _userManager.AddToRoleAsync(user, applicationRole.Name);
-                    }
-                    return StatusCode(200, "200");
-
+                    if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                    return Ok();
                 }
                 ModelState.AddErrors(result);
             }
-
-            userForm.ApplicationRoles = _roleManager.Roles.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.Id
-            }).ToList();
 
             return PartialView("_AddUser", userForm);
         }
@@ -98,43 +66,24 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
-            EditUserFormModel editUserForm = new EditUserFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditUser", editUserForm);
-
-            IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
-            IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
-
-            if (userRoleOption != null)
-            {
-                editUserForm.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.User),
-                    Value = userRoleOption.Id
-                });
-            }
-            if (adminRoleOption != null)
-            {
-                editUserForm.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.Admin),
-                    Value = adminRoleOption.Id
-                });
-            }
-
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
-            if (userRole != null)
+            
+            if (user == null) return NotFound();
+
+
+            EditUserFormModel editUserForm = new EditUserFormModel
             {
-                editUserForm.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
-            }
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            };
 
-            if (user == null) return PartialView("_EditUser", editUserForm);
+            string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
+            if (userRole != null) editUserForm.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
 
-            editUserForm.UserId = user.Id;
-            editUserForm.FirstName = user.FirstName;
-            editUserForm.LastName = user.LastName;
-            editUserForm.Email = user.Email;
             return PartialView("_EditUser", editUserForm);
         }
 

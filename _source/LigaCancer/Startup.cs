@@ -121,7 +121,7 @@ namespace LigaCancer
 
     public static class SeedData
     {
-        private static readonly string[] Roles = new string[] { Globals.Roles.Admin.ToString(), Globals.Roles.User.ToString() };
+        private static readonly string[] Roles = new string[] { "Admin", "User" };
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
@@ -166,7 +166,7 @@ namespace LigaCancer
                 UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                if (!userManager.GetUsersInRoleAsync(Globals.Roles.Admin.ToString()).Result.Any())
+                if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
                 {
                     ApplicationUser user = new ApplicationUser
                     {
@@ -182,7 +182,7 @@ namespace LigaCancer
 
                     if (result.Succeeded)
                     {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync(Globals.Roles.Admin.ToString());
+                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Admin");
                         if (applicationRole != null)
                         {
                             IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);

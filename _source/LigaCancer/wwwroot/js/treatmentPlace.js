@@ -44,7 +44,7 @@
     },
     drawCallback: function (settings) {
         $(".editTreatmentPlaceButton").click(function () {
-            openModal($(this).attr("href"), initEditForm);
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
         });
 
         $(".deleteTreatmentPlaceButton").click(function (e) {
@@ -63,16 +63,12 @@ function initPage() {
     $('#treatmentPlaceTable').attr('style', 'border-collapse: collapse !important');
 
     $("#addTreatmentPlaceButton").click(function () {
-        openModal($(this).attr("href"), initAddForm);
+        openModal($(this).attr("href"), $(this).data("title"), initAddForm);
     });
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
         treatmentPlaceTable.search("").draw("");
-    });
-
-    $("#modal-action").on("hidden.bs.modal", function (e) {
-        $("#modal-content").html("");
     });
 }
 

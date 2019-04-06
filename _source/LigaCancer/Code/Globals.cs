@@ -79,28 +79,5 @@ namespace LigaCancer.Code
             death
         }
 
-        public enum ModalSize
-        {
-            Small,
-            Large,
-            Medium
-        }
-
-        public enum Roles
-        {
-            [Display(Name = "Administrador")]
-            Admin,
-            [Display(Name = "Usuário")]
-            User
-        }
-
-        public static string GetDisplayName(Enum enumValue)
-        {
-            return enumValue.GetType()
-                            .GetMember(enumValue.ToString())
-                            .First()
-                            .GetCustomAttribute<DisplayAttribute>()
-                            .GetName();
-        }
     }
 }

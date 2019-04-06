@@ -44,7 +44,7 @@
     },
     drawCallback: function (settings) {
         $(".editCancerTypeButton").click(function () {
-            openModal($(this).attr("href"), initEditForm);
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
         });
 
         $(".deleteCancerTypeButton").click(function (e) {
@@ -63,16 +63,12 @@ function initPage() {
     $('#cancerTypeTable').attr('style', 'border-collapse: collapse !important');
 
     $("#addCancerTypeButton").click(function () {
-        openModal($(this).attr("href"), initAddForm);
+        openModal($(this).attr("href"), $(this).data("title"), initAddForm);
     });
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
         cancerTypeTable.search("").draw("");
-    });
-
-    $("#modal-action").on("hidden.bs.modal", function (e) {
-        $("#modal-content").html("");
     });
 }
 

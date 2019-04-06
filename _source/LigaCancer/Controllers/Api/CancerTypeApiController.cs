@@ -53,7 +53,7 @@ namespace LigaCancer.Controllers.Api
         private string GetActionsHtml(CancerType cancerType)
         {
             string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
-                $"class='dropdown-item editCancerTypeButton'><i class='fas fa-edit'></i> Editar </a>";
+                $"data-title='Editar Remédio' class='dropdown-item editCancerTypeButton'><i class='fas fa-edit'></i> Editar </a>";
 
             string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
                 $"data-relation='{cancerType.PatientInformationCancerTypes.Count > 0}' class='dropdown-item deleteCancerTypeButton'>" +

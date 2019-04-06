@@ -47,7 +47,7 @@
     },
     drawCallback: function (settings) {
         $(".editDoctorButton").click(function () {
-            openModal($(this).attr("href"), initEditForm);
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
         });
 
         $(".deleteDoctorButton").click(function (e) {
@@ -71,11 +71,7 @@ function initPage() {
     });
 
     $("#addDoctorButton").click(function () {
-        openModal($(this).attr("href"), initAddForm);
-    });
-
-    $("#modal-action").on("hidden.bs.modal", function (e) {
-        $("#modal-content").html("");
+        openModal($(this).attr("href"), $(this).data("title"), initAddForm);
     });
 }
 
