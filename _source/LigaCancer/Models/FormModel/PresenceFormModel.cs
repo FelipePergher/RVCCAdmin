@@ -15,15 +15,16 @@ namespace LigaCancer.Models.FormModel
 
         public int PresenceId { get; set; }
 
-        [Display(Name = "Paciente"), Required(ErrorMessage = "Este campo é obrigatório.")]
+        [Display(Name = "Paciente")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string PatientId { get; set; }
 
-        [Display(Name = "Data"),
-            DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        [Display(Name = "Hora"),
-            DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Hora")]
+        [DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]
         public TimeSpan Time { get; set; }
 
         public List<SelectListItem> Patients { get; set; }

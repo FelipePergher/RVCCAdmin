@@ -1,5 +1,3 @@
-using System;
-
 namespace LigaCancer.Models
 {
     public class ErrorViewModel

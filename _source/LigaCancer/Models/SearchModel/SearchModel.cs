@@ -28,7 +28,6 @@ namespace LigaCancer.Models.SearchModel
         public string Dir { get; set; }
     }
 
-
     public class InputSearch
     {
         public string Value { get; set; }

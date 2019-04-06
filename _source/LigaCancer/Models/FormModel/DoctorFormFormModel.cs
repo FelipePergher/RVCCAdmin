@@ -8,7 +8,8 @@ namespace LigaCancer.Models.FormModel
         [HiddenInput]
         public int DoctorId { get; set; }
 
-        [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Nome")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Name { get; set; }
 
         [Remote("IsCrmExist", "Doctor", AdditionalFields = "DoctorId", ErrorMessage = "CRM já registrado!", HttpMethod = "GET")]

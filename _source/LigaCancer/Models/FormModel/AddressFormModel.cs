@@ -7,7 +7,8 @@ namespace LigaCancer.Models.FormModel
     {
         public string PatientId { get; set; }
 
-        [Display(Name = "Rua"), Required(ErrorMessage = "Este campo é Obrigatório!")]
+        [Display(Name = "Rua")]
+        [Required(ErrorMessage = "Este campo é Obrigatório!")]
         public string Street { get; set; }
 
         [Display(Name = "Bairro")]

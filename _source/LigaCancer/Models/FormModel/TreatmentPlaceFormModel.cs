@@ -8,8 +8,9 @@ namespace LigaCancer.Models.FormModel
         [HiddenInput]
         public int TreatmentPlaceId { get; set; }
 
-        [Display(Name = "Cidade"), Required(ErrorMessage = "Este campo é obrigatório!"),
-            Remote("IsCityExist", "TreatmentPlace", AdditionalFields = "TreatmentPlaceId", ErrorMessage = "Cidade já registrada!", HttpMethod = "GET")]
+        [Display(Name = "Cidade")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Remote("IsCityExist", "TreatmentPlace", AdditionalFields = "TreatmentPlaceId", ErrorMessage = "Cidade já registrada!", HttpMethod = "GET")]
         public string City { get; set; }
     }
 }

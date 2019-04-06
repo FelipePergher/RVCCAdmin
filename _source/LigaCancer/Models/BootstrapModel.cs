@@ -12,7 +12,7 @@
         {
             get
             {
-                switch (this.Size)
+                switch (Size)
                 {
                     case Globals.ModalSize.Small:
                         return "modal-sm";

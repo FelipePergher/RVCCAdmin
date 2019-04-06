@@ -14,32 +14,35 @@ namespace LigaCancer.Models.UserViewModels
 
         public string UserId { get; set; }
        
-        [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Nome")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Sobrenome"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Sobrenome")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string LastName { get; set; }
 
-        [EmailAddress(ErrorMessage = "Insira um email válido!"), 
-            Required(ErrorMessage = "Este campo é obrigatório!"),
-            Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
+        [EmailAddress(ErrorMessage = "Insira um email válido!")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
         public string Email { get; set; }
 
-        [Display(Name = "Senha"), 
-            DataType(DataType.Password), 
-            Required(ErrorMessage = "Este campo é obrigatório!"), 
-            RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
+        [Display(Name = "Senha")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
         public string Password { get; set; }
 
-        [Display(Name = "Confirmação de senha"), 
-            DataType(DataType.Password), 
-            Required(ErrorMessage = "Este campo é obrigatório!"),
-            Compare("Password", ErrorMessage = "Confirmação de senha não confere")]
+        [Display(Name = "Confirmação de senha")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Compare("Password", ErrorMessage = "Confirmação de senha não confere")]
         public string ConfirmPassword { get; set; }
 
         public List<SelectListItem> ApplicationRoles { get; set; }
 
-        [Display(Name = "Roles"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Roles")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string RoleId { get; set; }
     }
 }

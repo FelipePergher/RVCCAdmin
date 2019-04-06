@@ -12,26 +12,9 @@ namespace LigaCancer.Models.SearchModel
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
             Medicines = new List<string>();
-            FamiliarityGroups = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "",
-                    Value = ""
-                }, 
-                new SelectListItem
-                {
-                    Text = "Participa",
-                    Value = "true"
-                },
-                new SelectListItem
-                {
-                    Text = "Não Participa",
-                    Value = "false"
-                }
-            };
         }
 
+        //Todo why use this -1?
         [Display(Name = "Estado civil")]
         public string CivilState { get; set; } = "-1";
 
@@ -69,7 +52,24 @@ namespace LigaCancer.Models.SearchModel
 
         public List<SelectListItem> SelectTreatmentPlaces { get; set; }
 
-        public List<SelectListItem> FamiliarityGroups { get; set; }
+        public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "",
+                    Value = ""
+                },
+                new SelectListItem
+                {
+                    Text = "Participa",
+                    Value = "true"
+                },
+                new SelectListItem
+                {
+                    Text = "Não Participa",
+                    Value = "false"
+                }
+            };
 
         #endregion
     }

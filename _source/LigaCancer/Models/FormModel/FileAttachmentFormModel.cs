@@ -10,10 +10,12 @@ namespace LigaCancer.Models.FormModel
 
         public string FileAttachmentId { get; set; }
 
-        [Display(Name = "Arquivo"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Arquivo")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public IFormFile File { get; set; }
 
-        [Display(Name = "Nome do arquivo"), Required(ErrorMessage = "Este campo é obrigatório!")]
+        [Display(Name = "Nome do arquivo")]
+        [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FileName { get; set; }
 
         [Display(Name = "Categoria do arquivo")]

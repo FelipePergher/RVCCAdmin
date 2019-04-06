@@ -9,7 +9,9 @@ namespace LigaCancer.Models.FormModel
         [Display(Name = "Motivo")]
         public Globals.DisablePatientType DisablePatientType { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório."), Display(Name = "Data"), DataType(DataType.Date)]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        [Display(Name = "Data")]
+        [DataType(DataType.Date)]
         public DateTime DateTime { get; set; }
     }
 }

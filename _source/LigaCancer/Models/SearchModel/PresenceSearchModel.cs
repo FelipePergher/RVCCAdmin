@@ -17,12 +17,12 @@ namespace LigaCancer.Models.SearchModel
         [Display(Name = "Sobrenome")]
         public string Surname { get; set; }
 
-        [Display(Name = "Data Inicial"), 
-            DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Inicial")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateFrom { get; set; }
 
-        [Display(Name = "Data Final"),
-            DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Final")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateTo { get; set; }
     }
 }
