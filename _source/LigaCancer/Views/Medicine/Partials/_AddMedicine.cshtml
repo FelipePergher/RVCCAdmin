@@ -1,11 +1,11 @@
 ﻿@model LigaCancer.Models.FormModel.MedicineFormModel
 
-<form asp-action="AddMedicine"
+<form id="addMedicineForm" asp-action="AddMedicine"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-failure="Error"
+      data-ajax-success="AddSuccess"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Remédio" }' />

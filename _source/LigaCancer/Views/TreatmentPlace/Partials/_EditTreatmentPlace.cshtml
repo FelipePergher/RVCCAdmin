@@ -21,7 +21,7 @@
             <input asp-for="City" class="form-control" />
             <span asp-validation-for="City" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="TreatmentPlaceId" value="@Model.TreatmentPlaceId" />
+        <input asp-for="TreatmentPlaceId" />
     </div>
 
     <partial name="_ModalFooter" model="new ModalFooter { }" />

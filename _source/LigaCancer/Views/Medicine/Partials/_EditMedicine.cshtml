@@ -1,11 +1,11 @@
 ﻿@model LigaCancer.Models.FormModel.MedicineFormModel
 
-<form asp-action="EditMedicine"
+<form id="editMedicineForm" asp-action="EditMedicine"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-failure="Error"
+      data-ajax-success="EditSuccess"
       data-ajax-loading="#submitSpinner">
 
     <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Remédio" }' />
@@ -21,7 +21,7 @@
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="MedicineId" value="@Model.MedicineId" />
+        <input asp-for="MedicineId" />
     </div>
 
     <partial name="_ModalFooter" model="new ModalFooter { }" />

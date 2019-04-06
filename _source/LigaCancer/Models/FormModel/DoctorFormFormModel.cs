@@ -5,6 +5,7 @@ namespace LigaCancer.Models.FormModel
 {
     public class DoctorFormModel
     {
+        [HiddenInput]
         public int DoctorId { get; set; }
 
         [Display(Name = "Nome"), Required(ErrorMessage = "Este campo é obrigatório!")]

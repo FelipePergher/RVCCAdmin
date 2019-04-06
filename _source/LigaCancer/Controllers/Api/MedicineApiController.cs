@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/Medicine/search")]
-        public async Task<IActionResult> MedicineSearch([FromForm] SearchModel searchModel)
+        public async Task<IActionResult> MedicineSearch([FromForm] SearchModel searchModel, [FromForm] MedicineSearchModel medicineSearch)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(new string[] { "PatientInformationMedicines" }, sortColumn, sortDirection);
+                IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(new string[] { "PatientInformationMedicines" }, sortColumn, sortDirection, medicineSearch);
                 IEnumerable<MedicineViewModel> data = medicines.Select(x => new MedicineViewModel
                 {
                     Name = x.Name,
@@ -52,25 +52,21 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Medicine medicine)
         {
-            string actionsHtml = "";
+            string editMedicine = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
+                $"data-target='#modal-action' class='dropdown-item editMedicineButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            //string actionsHtml = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
+            string deleteMedicine = $"<a href='javascript:void(0);' data-url='/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
+                $"data-relation='{medicine.PatientInformationMedicines.Count > 0}' class='dropdown-item deleteMedicineButton'>" +
+                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
-            //actionsHtml += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='btn btn-danger ml-1 deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
-
-             //let render = '<a href="/Medicine/EditMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-             //           ' class="btn btn-secondary"><i class="fas fa-edit"></i> Editar </a>';
-
-             //       if (row.patientInformationMedicines.length === 0) {
-             //           render = render.concat(
-             //               '<a href="/Medicine/DeleteMedicine/' + row.medicineId + '" data-toggle="modal" data-target="#modal-action"' +
-             //               ' class="btn btn-danger ml-1"><i class="fas fa-trash-alt"></i> Excluir </a>'
-             //           );
-             //       } else {
-             //           render = render.concat(
-             //               '<a class="btn btn-danger ml-1 disabled"><i class="fas fa-trash-alt"></i>  Excluir </a>'
-             //           );
-             //       }
+            string actionsHtml =
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {editMedicine}" +
+                $"      {deleteMedicine}" +
+                $"  </div>" +
+                $"</div>";
 
             return actionsHtml;
         }

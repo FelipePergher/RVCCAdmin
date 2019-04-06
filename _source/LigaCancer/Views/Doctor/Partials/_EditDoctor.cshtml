@@ -25,7 +25,7 @@
             <input asp-for="CRM" class="form-control" />
             <span asp-validation-for="CRM" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="DoctorId" value="@Model.DoctorId" />
+        <input asp-for="DoctorId" />
     </div>
 
     <partial name="_ModalFooter" model="new ModalFooter { }" />

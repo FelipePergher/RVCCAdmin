@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class MedicineController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -30,110 +30,81 @@ namespace LigaCancer.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddMedicine()
         {
-            return PartialView("_AddMedicine", new MedicineFormModel());
+            return PartialView("Partials/_AddMedicine", new MedicineFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMedicine(MedicineFormModel medicineForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddMedicine", medicineForm);
+            if (ModelState.IsValid) {
+                Medicine medicine = new Medicine
+                {
+                    Name = medicineForm.Name,
+                    UserCreated = await _userManager.GetUserAsync(User)
+                };
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-            Medicine medicine = new Medicine
-            {
-                Name = medicineForm.Name,
-                UserCreated = user
-            };
-
-            TaskResult result = await _medicineService.CreateAsync(medicine);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
+                TaskResult result = await _medicineService.CreateAsync(medicine);
+                if (result.Succeeded) return Ok();
+                ModelState.AddErrors(result);
             }
-            ModelState.AddErrors(result);
 
-            return PartialView("_AddMedicine", medicineForm);
+            return PartialView("Partials/_AddMedicine", medicineForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditMedicine(string id)
         {
-            MedicineFormModel medicineForm = new MedicineFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditMedicine", medicineForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Medicine medicine = await _medicineService.FindByIdAsync(id);
-            if(medicine != null)
-            {
-                medicineForm = new MedicineFormModel
-                {
-                    MedicineId = medicine.MedicineId,
-                    Name = medicine.Name
-                };
-            }
 
-            return PartialView("_EditMedicine", medicineForm);
+            if (medicine == null) return NotFound();
+
+            MedicineFormModel medicineForm = new MedicineFormModel
+            {
+                MedicineId = medicine.MedicineId,
+                Name = medicine.Name
+            };
+
+            return PartialView("Partials/_EditMedicine", medicineForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditMedicine(string id, MedicineFormModel medicineForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditMedicine", medicineForm);
-
-            Medicine medicine = await _medicineService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-
-            medicine.Name = medicineForm.Name;
-            medicine.UpdatedDate = DateTime.Now;
-            medicine.UserUpdated = user;
-
-            TaskResult result = await _medicineService.UpdateAsync(medicine);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
+                Medicine medicine = await _medicineService.FindByIdAsync(id);
 
-            return PartialView("_EditMedicine", medicineForm);
-        }
+                medicine.Name = medicineForm.Name;
+                medicine.UpdatedDate = DateTime.Now;
+                medicine.UserUpdated = await _userManager.GetUserAsync(User);
 
-
-        public async Task<IActionResult> DeleteMedicine(string id)
-        {
-            string name = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteMedicine", name);
-
-            Medicine medicine = await _medicineService.FindByIdAsync(id);
-            if (medicine != null)
-            {
-                name = medicine.Name;
+                TaskResult result = await _medicineService.UpdateAsync(medicine);
+                if (result.Succeeded) return Ok();
+                ModelState.AddErrors(result);
             }
 
-            return PartialView("_DeleteMedicine", name);
+            return PartialView("Partials/_EditMedicine", medicineForm);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteMedicine(string id, IFormCollection form)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Medicine medicine = await _medicineService.FindByIdAsync(id);
-            if (medicine == null) return RedirectToAction("Index");
+
+            if (medicine == null) return NotFound();
 
             TaskResult result = await _medicineService.DeleteAsync(medicine);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteMedicine", medicine.Name);
+            if (result.Succeeded) return Ok();
+
+            return BadRequest(result);
         }
 
         #region Custom Methods

@@ -21,7 +21,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/CancerType/search")]
-        public async Task<IActionResult> CancerTypeSearch([FromForm] SearchModel searchModel, [FromForm] CancerTypeSearchModel cancerType)
+        public async Task<IActionResult> CancerTypeSearch([FromForm] SearchModel searchModel, [FromForm] CancerTypeSearchModel cancerTypeSearch)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<CancerType> cancerTypes = await _cancerService.GetAllAsync(new string[] { "PatientInformationCancerTypes" }, sortColumn, sortDirection, cancerType);
+                IEnumerable<CancerType> cancerTypes = await _cancerService.GetAllAsync(new string[] { "PatientInformationCancerTypes" }, sortColumn, sortDirection, cancerTypeSearch);
                 IEnumerable<CancerTypeViewModel> data = cancerTypes.Select(x => new CancerTypeViewModel
                 {
                     Name = x.Name,

@@ -55,7 +55,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
   </ItemGroup>
 
@@ -105,13 +104,10 @@
     <Content Update="Views\Medicine\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\_AddMedicine.cshtml">
+    <Content Update="Views\Medicine\Partials\_AddMedicine.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\_DeleteMedicine.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Medicine\_EditMedicine.cshtml">
+    <Content Update="Views\Medicine\Partials\_EditMedicine.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\CancerType\Index.cshtml">

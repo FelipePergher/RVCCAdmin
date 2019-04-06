@@ -42,11 +42,10 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 CancerType cancerType = new CancerType
                 {
                     Name = cancerTypeForm.Name,
-                    UserCreated = user
+                    UserCreated = await _userManager.GetUserAsync(User)
                 };
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
