@@ -40,23 +40,25 @@
                             </div>
                             <div class="card-block collapse show" id="filterCollapse">
                                 <form id="searchForm">
-                                    <div>
-                                        <div class="col-lg-12 form-row">
-                                            <div class="col-lg-3 form-group">
-                                                <label asp-for="Name"></label>
+                                    <div class="form-row">
+                                        <div class="col-lg-4 form-group row">
+                                            <label class="col-form-label" asp-for="Name"></label>
+                                            <div class="col-lg-9">
                                                 <input asp-for="Name" class="form-control" />
                                                 <span asp-validation-for="Name" class="text-danger"></span>
                                             </div>
-                                            <div class="col-lg-3 form-group">
-                                                <label asp-for="CRM"></label>
+                                        </div>
+                                        <div class="col-lg-4 form-group row">
+                                            <label class="col-form-label" asp-for="CRM"></label>
+                                            <div class="col-lg-9">
                                                 <input asp-for="CRM" class="form-control" />
                                                 <span asp-validation-for="CRM" class="text-danger"></span>
                                             </div>
-                                            <div class="col-lg-3 form-group">
-                                                <button type="submit" class="btn btn-primary filter">
-                                                    <i class="fas fa-filter"></i> Filtrar
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 form-group row">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-filter"></i> Filtrar
+                                            </button>
                                         </div>
                                     </div>
                                 </form>

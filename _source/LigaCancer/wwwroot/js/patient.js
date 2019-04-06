@@ -1,17 +1,17 @@
 ﻿$(function () {
-    dataTable = BuildDataTable();
+    //dataTable = BuildDataTable();
 
-    $("#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death").change(function () {
-        dataTable.draw();
-    });
+    //$("#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death").change(function () {
+    //    dataTable.draw();
+    //});
 
-    BuildSelect2("CancerTypes", "Cânceres");
-    BuildSelect2("Medicines", "Remédios");
-    BuildSelect2("Doctors", "Médicos");
-    BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
-    BuildSelect2("CivilState", "Estado Civil", true);
-    BuildSelect2("Sex", "Gênero", true);
-    BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
+    //BuildSelect2("CancerTypes", "Cânceres");
+    //BuildSelect2("Medicines", "Remédios");
+    //BuildSelect2("Doctors", "Médicos");
+    //BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
+    //BuildSelect2("CivilState", "Estado Civil", true);
+    //BuildSelect2("Sex", "Gênero", true);
+    //BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
 });
 
 function BuildSelect2(elementId, placeholder, allowClear = false) {
