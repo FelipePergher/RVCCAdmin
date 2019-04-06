@@ -9,8 +9,6 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Adicionar Usuário" }' />
-
     <div class="modal-body form-horizontal" id="">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -51,6 +49,6 @@
         <input type="hidden" asp-for="UserId" />
     </div>
 
-    <partial name="_ModalFooter" model="new ModalFooter { }" />
+    <partial name="_ModalFooter"  />
 
 </form>

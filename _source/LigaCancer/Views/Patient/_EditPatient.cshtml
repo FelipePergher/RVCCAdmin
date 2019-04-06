@@ -9,8 +9,6 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Paciente" }' />
-
     <div class="modal-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -122,6 +120,6 @@
         </div>
     </div>
 
-    <partial name="_ModalFooter" model="new ModalFooter { }" />
+    <partial name="_ModalFooter"  />
 
 </form>

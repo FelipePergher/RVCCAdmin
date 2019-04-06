@@ -54,9 +54,18 @@ function time(id) {
     });
 }
 
-function openModal(url, callback) {
-    $(".modal-content").load(url, function () {
+function openModal(url, title, callback) {
+    $("#modal-title").text(title);
+
+    $("#modalBody").load(url, function () {
         if (callback !== null) callback();
+        hideSpinnerModal();
+    });
+
+    $("#modal-action").on("hidden.bs.modal", function (e) {
+        $("#modalBody").html("");
+        $("#modal-title").text("");
+        showSpinnerModal();
     });
 }
 
@@ -66,6 +75,14 @@ function showSpinner() {
 
 function hideSpinner() {
     $("#spinner-container").hide();
+}
+
+function showSpinnerModal() {
+    $("#modalSpinner").show();
+}
+
+function hideSpinnerModal() {
+    $("#modalSpinner").hide();
 }
 
 //function AjaxError(error) {

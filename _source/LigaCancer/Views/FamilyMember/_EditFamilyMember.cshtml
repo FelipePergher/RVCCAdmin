@@ -9,8 +9,6 @@
       data-ajax-success="AjaxSuccessPatient"
       data-ajax-loading="#submitSpinner">
 
-    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Editar Membro Familiar" }' />
-
     <div class="modal-body form-horizontal" id="">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -46,6 +44,6 @@
         <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
     </div>
 
-    <partial name="_ModalFooter" model="new ModalFooter { }" />
+    <partial name="_ModalFooter"  />
 
 </form>

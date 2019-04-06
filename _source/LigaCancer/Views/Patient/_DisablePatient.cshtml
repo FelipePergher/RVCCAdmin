@@ -9,8 +9,6 @@
       data-ajax-success="AjaxSuccess"
       data-ajax-loading="#submitSpinner">
 
-    <partial name="_ModalHeader" model='new ModalHeader { Heading = "Desativar Paciente" }' />
-
     <div class="modal-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -26,7 +24,7 @@
         </div>
     </div>
     
-    <partial name="_ModalFooter" model='new ModalFooter { SubmitButtonText = "Desativar" }' />
+    <partial name="_ModalFooter"/>
 
 </form>
 
