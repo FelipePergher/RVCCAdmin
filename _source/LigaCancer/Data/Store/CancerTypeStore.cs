@@ -75,14 +75,21 @@ namespace LigaCancer.Data.Store
 
         public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null)
         {
-            IQueryable<CancerType> queryable = _context.CancerTypes;
+            IQueryable<CancerType> query = _context.CancerTypes;
 
             if (specification != null)
             {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+                if (specification.Includes.Any())
+                {
+                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
+                }
+                if (specification.IncludeStrings.Any())
+                {
+                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+                }
             }
 
-            return Task.FromResult(queryable.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
         }
 
         public Task<List<CancerType>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)

@@ -74,14 +74,21 @@ namespace LigaCancer.Data.Store
 
         public Task<Presence> FindByIdAsync(string id, ISpecification<Presence> specification = null)
         {
-            IQueryable<Presence> queryable = _context.Presences;
+            IQueryable<Presence> query = _context.Presences;
 
             if (specification != null)
             {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+                if (specification.Includes.Any())
+                {
+                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
+                }
+                if (specification.IncludeStrings.Any())
+                {
+                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+                }
             }
 
-            return Task.FromResult(queryable.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
 
         public Task<List<Presence>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)

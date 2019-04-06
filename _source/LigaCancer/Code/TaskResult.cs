@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace LigaCancer.Code
 {
-    //
-    // Summary:
-    //     Represents the result of an identity operation.
     public class TaskResult
     {
         public TaskResult()

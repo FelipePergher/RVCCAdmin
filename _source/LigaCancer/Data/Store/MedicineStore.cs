@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
@@ -74,14 +75,21 @@ namespace LigaCancer.Data.Store
 
         public Task<Medicine> FindByIdAsync(string id, ISpecification<Medicine> specification = null)
         {
-            IQueryable<Medicine> queryable = _context.Medicines;
+            IQueryable<Medicine> query = _context.Medicines;
 
-            if (specification != null)
+            if(specification != null)
             {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+                if (specification.Includes.Any())
+                {
+                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
+                }
+                if (specification.IncludeStrings.Any())
+                {
+                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+                }
             }
 
-            return Task.FromResult(queryable.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
         }
 
         public Task<List<Medicine>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)

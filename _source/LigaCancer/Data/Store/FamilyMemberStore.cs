@@ -73,14 +73,21 @@ namespace LigaCancer.Data.Store
 
         public Task<FamilyMember> FindByIdAsync(string id, ISpecification<FamilyMember> specification = null)
         {
-            IQueryable<FamilyMember> queryable = _context.FamilyMembers;
-            
+            IQueryable<FamilyMember> query = _context.FamilyMembers;
+
             if (specification != null)
             {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+                if (specification.Includes.Any())
+                {
+                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
+                }
+                if (specification.IncludeStrings.Any())
+                {
+                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+                }
             }
 
-            return Task.FromResult(queryable.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
         }
 
         public Task<List<FamilyMember>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)

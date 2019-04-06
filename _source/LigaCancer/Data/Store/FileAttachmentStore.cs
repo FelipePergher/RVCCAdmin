@@ -74,14 +74,21 @@ namespace LigaCancer.Data.Store
 
         public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null)
         {
-            IQueryable<FileAttachment> queryable = _context.FileAttachments;
+            IQueryable<FileAttachment> query = _context.FileAttachments;
 
             if (specification != null)
             {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
+                if (specification.Includes.Any())
+                {
+                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
+                }
+                if (specification.IncludeStrings.Any())
+                {
+                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+                }
             }
 
-            return Task.FromResult(queryable.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
         }
 
         public Task<List<FileAttachment>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)

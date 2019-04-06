@@ -59,7 +59,10 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            Medicine medicine = await _medicineService.FindByIdAsync(id);
+            BaseSpecification<Medicine> baseSpecification = new BaseSpecification<Medicine>(x => x.PatientInformationMedicines);
+            baseSpecification.IncludeStrings.Add("PatientInformationMedicines.PatientInformation");
+
+            Medicine medicine = await _medicineService.FindByIdAsync(id, baseSpecification);
 
             if (medicine == null) return NotFound();
 
