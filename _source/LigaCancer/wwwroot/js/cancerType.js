@@ -83,7 +83,7 @@ function AddSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer registrado com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initAddForm();
     }
 }
@@ -99,7 +99,7 @@ function EditSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer  atualizado com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initEditForm();
     }
 }

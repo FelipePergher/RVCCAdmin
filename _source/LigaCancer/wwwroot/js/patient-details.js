@@ -79,7 +79,7 @@ function AjaxSuccessPatient(data, result) {
         swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
     }
 }
 
@@ -145,7 +145,7 @@ function AddressDataTable() {
         { data: "street", title: "Rua" },
         { data: "neighborhood", title: "Bairro" },
         { data: "city", title: "Cidade" },
-        { data: "houseNumber", title: "Nº", },
+        { data: "houseNumber", title: "Nº" },
         { data: "complement", title: "Complemento" },
         { data: "residenceType", title: "Residência" },
         { data: "monthlyAmmountResidence", title: "Valor Mensal"},

@@ -1,12 +1,12 @@
 ﻿@model LigaCancer.Models.FormModel.PatientFormModel
 @using LigaCancer.Code
 
-<form asp-action="AddPatient"
+<form id="addPatientForm" asp-action="AddPatient"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccess"
+      data-ajax-failure="Error"
+      data-ajax-success="AddSuccess"
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body">

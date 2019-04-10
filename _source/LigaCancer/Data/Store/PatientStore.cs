@@ -30,6 +30,8 @@ namespace LigaCancer.Data.Store
             {
                 _context.Patients.Add(patient);
                 _context.SaveChanges();
+
+                result.Id = patient.PatientId;
                 result.Succeeded = true;
             }
             catch (Exception e)

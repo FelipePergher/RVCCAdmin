@@ -14,6 +14,8 @@ namespace LigaCancer.Code
         public bool Succeeded { get; set; }
       
         public List<TaskError> Errors { get; }
-        
+
+        public int Id { get; set; }
+
     }
 }

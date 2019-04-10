@@ -75,7 +75,7 @@ function initPage() {
     });
 
     $("#addPresenceButton").click(function () {
-        openModal($(this).attr("href"), initAddForm);
+        openModal($(this).attr("href"), "", initAddForm);
     });
 
     $("#searchForm").submit(function (e) {
@@ -104,7 +104,7 @@ function AddSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso...", "Presença registrada com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initAddForm();
     }
 }
@@ -125,7 +125,7 @@ function EditSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso", "Presença atualizada com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initEditForm();
     }
 }

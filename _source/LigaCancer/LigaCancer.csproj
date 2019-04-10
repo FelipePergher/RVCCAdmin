@@ -67,7 +67,13 @@
     <Content Update="Views\Patient\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\_AddPatient.cshtml">
+    <Content Update="Views\Patient\Partials\_AddPatientNaturality.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Patient\Partials\_AddPatientProfile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Patient\Partials\_AddPatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Address\_AddAddress.cshtml">
@@ -82,10 +88,10 @@
     <Content Update="Views\Phone\_EditPhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\_DisablePatient.cshtml">
+    <Content Update="Views\Patient\Partials\_DisablePatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\_EditPatient.cshtml">
+    <Content Update="Views\Patient\Partials\_EditPatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Medicine\Index.cshtml">

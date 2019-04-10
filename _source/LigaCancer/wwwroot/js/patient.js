@@ -1,10 +1,203 @@
-﻿$(function () {
-    //dataTable = BuildDataTable();
+﻿let patientTable = $("#patientTable").DataTable({
+    dom: "l<'export-buttons'B>frtip",
+    buttons: [
+        {
+            extend: 'pdf',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            },
+            customize: function (doc) {
+                doc.defaultStyle.alignment = 'center';
+                doc.styles.tableHeader.alignment = 'center';
+            }
+        },
+        {
+            extend: 'excel',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            }
+        }
+    ],
+    processing: true,
+    serverSide: true,
+    language: language,
+    filter: false,
+    scrollX: true,
+    ajax: {
+        url: "/api/patient/search",
+        type: "POST",
+        data: function (d) {
+            //d.civilState $("#CivilState").val();
+            //d.Sex = $("#Sex").val();
+            //d.cancerTypes = $("#CancerTypes").val();
+            //d.medicines = $("#Medicines").val();
+            //d.doctors = $("#Doctors").val();
+            //d.treatmentPlaces = $("#TreatmentPlaces").val();
+            //d.familiarityGroup = $("#FamiliarityGroup").val();
+            //d.death = $("#Death").is(":checked");
+            //d.discharge = $("#Discharge").is(":checked");
+        },
+        datatype: "json",
+        error: function () {
+            swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+        }
+    },
+    order: [1, "asc"],
+    columns: [
+        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+        { data: "firstName", title: "Nome", name: "firstName" },
+        { data: "lastName", title: "Sobrenome", name: "lastName" },
+        { data: "rg", title: "RG", name: "rg" },
+        { data: "cpf", title: "CPF", name: "cpf" },
+        { data: "dateOfBirth", title: "DateOfBirth", name: "DateOfBirth" },
+        { data: "sex", title: "Sex", name: "Sex" },
+        { data: "civilState", title: "CivilState", name: "CivilState" },
+        { data: "familiarityGroup", title: "FamiliarityGroup", name: "FamiliarityGroup" },
+        { data: "profession", title: "Profession", name: "Profession" },
+        { data: "familyIncome", title: "FamilyIncome", name: "FamilyIncome" },
+        { data: "perCapitaIncome", title: "PerCapitaIncome", name: "PerCapitaIncome" },
+        { data: "medicines", title: "Medicines", name: "Medicines", orderable: false },
+        { data: "canceres", title: "Canceres", name: "Canceres", orderable: false },
+        { data: "doctors", title: "Doctors", name: "Doctors", orderable: false },
+        { data: "treatmentPlaces", title: "TreatmentPlaces", name: "TreatmentPlaces", orderable: false }
+    ],
+    preDrawCallback: function (settings) {
+        showSpinner();
+    },
+    drawCallback: function (settings) {
+        $(".editPatientButton").click(function () {
+            $(".modal-dialog").addClass("modal-lg");
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
+        });
 
-    //$("#CivilState, #Sex, #CancerType, #Medicines, #Doctors, #TreatmentPlaces, #Discharge, #Death").change(function () {
-    //    dataTable.draw();
-    //});
+        //$(".disablePatientButton").click(function (e) {
+        //    initDelete($(this).data("url"), $(this).data("id"));
+        //});
 
+         //$(".deletePatientButton").click(function (e) {
+        //    initDelete($(this).data("url"), $(this).data("id"));
+        //});
+
+        hideSpinner();
+    }
+});
+
+$(function () {
+    initPage();
+});
+
+function initPage() {
+    $('#patientTable').attr('style', 'border-collapse: collapse !important');
+
+    $("#searchForm").submit(function (e) {
+        e.preventDefault();
+        patientTable.search("").draw("");
+    });
+
+    $("#addPatientButton").click(function () {
+        $(".modal-dialog").addClass("modal-lg");
+        openModal($(this).attr("href"), $(this).data("title"), initAddProfileForm);
+    });
+}
+
+function initAddProfileForm() {
+    calendar("DateOfBirth");
+    $.validator.unobtrusive.parse("#addPatientProfileForm");
+}
+
+function AddProfileSuccess(data, textStatus) {
+    if (data.ok) {
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire({
+            title: 'Sucesso',
+            text: "Paciente registrado com sucesso.",
+            type: 'success'
+        }).then((result) => {
+            cleanModal();
+            openModal(data.url, data.title, initAddNaturalityForm);
+        });
+    }
+    else {
+        $("#modalBody").html(data);
+        initAddProfileForm();
+    }
+}
+
+function initAddNaturalityForm() {
+    $.validator.unobtrusive.parse("#addPatientNaturalityForm");
+}
+
+function AddNaturalitySuccess(data, textStatus) {
+    if (data.ok) {
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire({
+            title: 'Sucesso',
+            text: "naturalidade adicionada com sucesso.",
+            type: 'success'
+        }).then((result) => {
+            //openModal(data.url, data.title, initAddNaturalityForm);
+        });
+    }
+    else {
+        $("#modalBody").html(data);
+        initAddNaturalityForm();
+    }
+}
+
+function initEditForm() {
+    $.validator.unobtrusive.parse("#editPatientForm");
+
+    //Tabs control
+    //$('#patientTabs a[href="#profile"]').tab('show'); // Select tab by name
+    //$('#patientTabs li:first-child a').tab('show'); // Select first tab
+    //$('#patientTabs li:last-child a').tab('show'); // Select last tab
+    //$('#patientTabs li:nth-child(3) a').tab('show'); // Select third tab
+    $("#editPatientForm").submit(function () {
+        if ($("#editPatientForm").valid()) {
+            console.log("asdadsa");
+            let nextTab = $('.nav-tabs > .nav-item > .active').parent().next('li').find('a').data("tab");
+            $('#patientTabs a[href="#' + nextTab + '"]').tab('show');
+            $(".btnPrevious").show();
+
+            if (nextTab === "address") {
+                $("#footerSubmit").show();
+                $("#footerPreviousNext").hide();
+            }
+        }
+        return false;
+    });
+
+    $(".btnPrevious").click(function () {
+        $("#footerSubmit").hide();
+        $("#footerPreviousNext").show();
+
+        let previousTab = $('.nav-tabs > .nav-item > .active').parent().prev('li').find('a').data("tab");
+        $('#patientTabs a[href="#' + previousTab + '"]').tab('show');
+
+        if (previousTab === "profile") $(".btnPrevious").hide();
+        //Todo valid the for in each page before change
+    });
+}
+
+function EditSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Paciente atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modalBody").html(data);
+        initEditForm();
+    }
+}
+
+function Error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+}
+
+//$(function () {
     //BuildSelect2("CancerTypes", "Cânceres");
     //BuildSelect2("Medicines", "Remédios");
     //BuildSelect2("Doctors", "Médicos");
@@ -12,177 +205,15 @@
     //BuildSelect2("CivilState", "Estado Civil", true);
     //BuildSelect2("Sex", "Gênero", true);
     //BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
-});
+//});
 
-function BuildSelect2(elementId, placeholder, allowClear = false) {
-    $("#" + elementId).select2({
-        theme: "bootstrap",
-        placeholder: placeholder,
-        allowClear: allowClear,
-        language: languageSelect2
-    }).on("change", function (e) {
-        dataTable.draw();
-    });
-}
-
-function BuildDataTable() {
-    return $("#patientTable").DataTable({
-        dom: "l<'mr-3'B>frtip",
-        buttons: [
-            {
-                extend: 'pdf',
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                className: 'btn btn-info',
-                exportOptions: {
-                    columns: 'th:not(:first-child)',
-                },
-                customize: function (doc) {
-                    doc.defaultStyle.alignment = 'center';
-                    doc.styles.tableHeader.alignment = 'center';
-                }
-            },
-            {
-                extend: 'excel',
-                className: 'btn btn-info',
-                exportOptions: {
-                    columns: 'th:not(:first-child)'
-                }
-            }
-        ],
-        pageLength: 10,
-        processing: true,
-        searching:false,
-        serverSide: true,
-        scrollX: true,
-        language: language,
-        ajax: {
-            url: "/api/patient/GetPatientDataTableResponseAsync",
-            type: "POST",
-            data: function (d) {
-                return $.extend({}, d, {
-                    civilState: $("#CivilState").val(),
-                    Sex: $("#Sex").val(),
-                    cancerTypes: $("#CancerTypes").val(),
-                    medicines: $("#Medicines").val(),
-                    doctors: $("#Doctors").val(),
-                    treatmentPlaces: $("#TreatmentPlaces").val(),
-                    familiarityGroup: $("#FamiliarityGroup").val(),
-                    death: $("#Death").is(":checked"), 
-                    discharge: $("#Discharge").is(":checked")
-                });
-            },
-            error: errorDataTable
-        },
-        order: [[1, "asc"]],
-        columns: [
-            {
-                title: "Ações",
-                width: "300px",
-                render: function (data, type, row, meta) {
-                    if ($("#Discharge").is(":checked")) {
-                        //Todo if discharge appear to reativate
-                        return '<a href="/Patient/ActivePatient/' + row.patientId + '" class="btn btn-primary w-100" data-toggle="modal" data-target="#modal-action">Reativar</a> ';
-                    }
-                    if ($("#Death").is(":checked")) {
-                        return "";
-                    }
-                    let render = '<a href="/Patient/DetailsPatient/' + row.patientId + '" class="btn btn-info w-40"><i class="fas fa-info"></i> Detalhes </a>';
-
-                    link = $("#linkEdit");
-                    render = render.concat(
-                        '<a href="/Patient/EditPatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                        ' class="btn btn-secondary w-40 ml-1"><i class="fas fa-user-edit"></i> Editar </a>'
-                    );
-
-                    //link = $("#linkDelete");
-                    //render = render.concat(
-                    //    '<a href="/Patient/DisablePatient/' + row.patientId + '" data-toggle="modal" data-target="#modal-action"' +
-                    //    ' class="btn btn-danger w-40 ml-1"><i class="fas fa-user-times"></i>  Desabilitar </a>'
-                    //);
-                    return render;
-                }
-            },
-            { data: "firstName", title: "Nome" },
-            { data: "surname", title: "Sobrenome" },
-            { data: "rg", title: "RG" },
-            { data: "cpf", title: "CPF" },
-            {
-                title: "Nascimento",
-                render: function(data, type, row, meta) {
-                    let render = row.dateOfBirth !== null ? DateFormat(row.dateOfBirth) : "";
-                    return render;
-                }
-            },
-            { data: "sex", title: "Gênero" },
-            { data: "civilState", title: "Estado Civil" },
-            {
-                title: "Grupo de convivência",
-                render: function (data, type, row, meta) {
-                    let render = row.familiarityGroup ? "Participa" : "Não Participa";
-                    return render;
-                }
-            },
-            { title: "Profissão", data: "profession" },
-            {
-                title: "Renda Familiar",
-                render: function (data, type, row, meta) {
-                    let render = row.family.familyIncome !== 0 ? "$" + row.family.familyIncome.toFixed(2) : "";
-                    return render;
-                }
-            },
-            {
-                title: "Renda Percapita",
-                render: function (data, type, row, meta) {
-                    let render = row.family.perCapitaIncome !== 0 ? "$" +  row.family.perCapitaIncome.toFixed(2) : "";
-                    return render;
-                }
-            },
-            {
-                title: "Remédios",
-                render: function (data, type, row, meta) {
-                    let render = null;
-                    jQuery.each(row.patientInformation.patientInformationMedicines, function (index, value) {
-                        render = render !== null ? render.concat(", " + value.medicine.name) : value.medicine.name;
-                    });
-                    return render;
-                }
-            },
-            {
-                title: "Cânceres",
-                render: function (data, type, row, meta) {
-                    let render = null;
-                    jQuery.each(row.patientInformation.patientInformationCancerTypes, function (index, value) {
-                        render = render !== null ? render.concat(", " + value.cancerType.name) : value.cancerType.name;
-                    });
-                    return render;
-                }
-            },
-            {
-                title: "Locais de Tratamento",
-                render: function (data, type, row, meta) {
-                    let render = null;
-                    jQuery.each(row.patientInformation.patientInformationTreatmentPlaces, function (index, value) {
-                        render = render !== null ? render.concat(", " + value.treatmentPlace.city) : value.treatmentPlace.city;
-                    });
-                    return render;
-                }
-            },
-            {
-                title: "Médicos",
-                render: function (data, type, row, meta) {
-                    let render = null;
-                    jQuery.each(row.patientInformation.patientInformationDoctors, function (index, value) {
-                        render = render !== null ? render.concat(", " + value.doctor.name) : value.doctor.name;
-                    });
-                    return render;
-                }
-            }
-            
-        ],
-        columnDefs: [
-            { "orderable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
-            { "searchable": false, "targets": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
-        ]
-    });
-}
+//function BuildSelect2(elementId, placeholder, allowClear = false) {
+//    $("#" + elementId).select2({
+//        theme: "bootstrap",
+//        placeholder: placeholder,
+//        allowClear: allowClear,
+//        language: languageSelect2
+//    }).on("change", function (e) {
+//        dataTable.draw();
+//    });
+//}

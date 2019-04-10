@@ -54,7 +54,7 @@ function time(id) {
     });
 }
 
-function openModal(url, title, callback) {
+function openModal(url, title, callback = null) {
     $("#modal-title").text(title);
 
     $("#modalBody").load(url, function () {
@@ -63,10 +63,15 @@ function openModal(url, title, callback) {
     });
 
     $("#modal-action").on("hidden.bs.modal", function (e) {
-        $("#modalBody").html("");
-        $("#modal-title").text("");
-        showSpinnerModal();
+        cleanModal();
     });
+}
+
+function cleanModal() {
+    $("#modalBody").html("");
+    $("#modal-title").text("");
+    $(".modal-dialog").removeClass("modal-lg");
+    showSpinnerModal();
 }
 
 function showSpinner() {
@@ -103,7 +108,7 @@ function hideSpinnerModal() {
 //        });
 //    }
 //    else {
-//        $("#modal-content").html(data);
+//        $("#modalBody").html(data);
 //    }
 //}
 

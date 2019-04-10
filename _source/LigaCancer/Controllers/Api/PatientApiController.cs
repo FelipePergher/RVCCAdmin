@@ -20,8 +20,8 @@ namespace LigaCancer.Controllers.Api
             _patientService = patientService;
         }
 
-        [HttpPost("~/api/Patient/search")]
-        public async Task<IActionResult> GetPatientDataTableResponseAsync([FromForm] SearchModel searchModel, PatientSearchModel patientSearchModel)
+        [HttpPost("~/api/patient/search")]
+        public async Task<IActionResult> PatientSearch([FromForm] SearchModel searchModel, [FromForm] PatientSearchModel patientSearchModel)
         {
             try
             {
@@ -30,9 +30,31 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Patient> patients = await _patientService.GetAllAsync(new string[] { "PatientInformation" }, sortColumn, sortDirection);
+                IEnumerable<Patient> patients = await _patientService.GetAllAsync(
+                    new string[] { 
+                        "PatientInformation", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "Family", "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
+                        "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
+                        "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
+                    }, 
+                    sortColumn, sortDirection);
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
+                    FirstName = x.FirstName,
+                    LastName = x.Surname,
+                    Rg = x.RG,
+                    Cpf = x.CPF,
+                    DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
+                    Sex = x.Sex.ToString(),
+                    CivilState = x.CivilState.ToString(),
+                    FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
+                    Profession = x.Profession,
+                    FamilyIncome = $"${x.Family.FamilyIncome.ToString("N")}",
+                    PerCapitaIncome = $"${x.Family.PerCapitaIncome.ToString("N")}",
+                    Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
+                    Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
+                    Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
+                    TreatmentPlaces = string.Join(", ", x.PatientInformation.PatientInformationTreatmentPlaces.Select(y => y.TreatmentPlace.City).ToList()),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
@@ -127,11 +149,33 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Patient patient)
         {
-            string actionsHtml = "";
+            string options = string.Empty;
+            if (patient.Enabled)
+            {
+                string editPatient = $"<a href='/Patient/EditPatient/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar </a>";
+                string disablePatient = $"<a href='javascript:void(0);' data-url='/Patient/DisablePatient' data-id='{patient.PatientId}' " +
+                    $"data-title='Desativar Paciente' class='disablePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Desativar </a>";
 
-            //string actionsHtml = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' data-target='#modal-action' class='btn btn-secondary editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
+                options = editPatient + disablePatient;
+            }
+            else
+            {
+                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/enablePatient' data-id='{patient.PatientId}' " +
+                    $"data-title='Ativar Paciente' class='disablePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Reativar </a>";
+                string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
+                $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                
+                options = enablePatient + deletePatient;
+            }
 
-            //actionsHtml += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' class='btn btn-danger ml-1 deleteTreatmentPlaceButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+            string actionsHtml =
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {options}" +
+                $"  </div>" +
+                $"</div>";
 
             return actionsHtml;
         }

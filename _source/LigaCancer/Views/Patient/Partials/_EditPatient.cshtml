@@ -1,0 +1,174 @@
+﻿@model LigaCancer.Models.FormModel.PatientFormModel
+@using LigaCancer.Code
+
+<form id="editPatientForm" asp-action="EditPatient"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="Error"
+      data-ajax-success="EditSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <ul class="nav nav-tabs" id="patientTabs">
+            <li class="nav-item">
+                <a class="nav-link active show" id="profile-tab" data-toggle="tab" data-tab="profile" href="#profile" aria-controls="profile" aria-selected="false">Perfil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="naturality-tab" data-toggle="tab" data-tab="naturality" href="#naturality" aria-controls="naturality" aria-selected="false">Naturalidade</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="patientInformation-tab" data-toggle="tab" data-tab="patientInformation" href="#patientInformation" aria-controls="patientInformation" aria-selected="false">Informação do Paciente</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" data-tab="contact" href="#contact" aria-controls="contact" aria-selected="false">Contato</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="address-tab" data-toggle="tab" data-tab="address" href="#address" aria-controls="address" aria-selected="false">Address</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4">
+            <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <fieldset id="personalInformation" class="">
+                    <h4>Paciente</h4>
+                    <hr />
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Surname" class="control-label"></label>
+                            <input asp-for="Surname" class="form-control" />
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="RG" class="control-label"></label>
+                            <input asp-for="RG" class="form-control" />
+                            <span asp-validation-for="RG" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="CPF" class="control-label"></label>
+                            <input asp-for="CPF" class="form-control" />
+                            <span asp-validation-for="CPF" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Profession" class="control-label"></label>
+                            <input asp-for="Profession" class="form-control" />
+                            <span asp-validation-for="Profession" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="MonthlyIncome" class="control-label"></label>
+                            <input asp-for="MonthlyIncome" class="form-control" />
+                            <span asp-validation-for="MonthlyIncome" class="text-dange"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Sex" class="control-label"></label>
+                            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control"></select>
+                            <span asp-validation-for="Sex" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="CivilState" class="control-label"></label>
+                            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control"></select>
+                            <span asp-validation-for="CivilState" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Age" class="control-label"></label>
+                            <input asp-for="Age" type="text" class="form-control" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="FamiliarityGroup" /> @Html.DisplayNameFor(model => model.FamiliarityGroup)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="tab-pane fade" id="naturality" role="tabpanel" aria-labelledby="naturality-tab">
+                <h4 class="mt-4">Naturalidade</h4>
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Naturality.City" class="control-label"></label>
+                        <input asp-for="Naturality.City" class="form-control" />
+                        <span asp-validation-for="Naturality.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Naturality.State" class="control-label"></label>
+                        <input asp-for="Naturality.State" class="form-control" />
+                        <span asp-validation-for="Naturality.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Naturality.Country" class="control-label"></label>
+                        <input asp-for="Naturality.Country" class="form-control" />
+                        <span asp-validation-for="Naturality.Country" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="patientInformation" role="tabpanel" aria-labelledby="patientInformation-tab">
+                <h4 class="mt-4">Informação do Paciente</h4>
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="PatientInformation.CancerTypes" class="control-label"></label>
+                        <select asp-for="PatientInformation.CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control customSelect2" data-tags="true"></select>
+                        <span asp-validation-for="PatientInformation.CancerTypes" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="PatientInformation.Medicines" class="control-label"></label>
+                        <select asp-for="PatientInformation.Medicines" asp-items="Model.SelectMedicines" class="form-control customSelect2" data-tags="true"></select>
+                        <span asp-validation-for="PatientInformation.Medicines" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="PatientInformation.Doctors" class="control-label"></label>
+                        <select asp-for="PatientInformation.Doctors" asp-items="Model.SelectDoctors" class="form-control customSelect2" data-tags="true"></select>
+                        <span asp-validation-for="PatientInformation.Doctors" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="PatientInformation.TreatmentPlaces" class="control-label"></label>
+                        <select asp-for="PatientInformation.TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control customSelect2" data-tags="true"></select>
+                        <span asp-validation-for="PatientInformation.TreatmentPlaces" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                contact
+            </div>
+
+            <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                address
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer" id="footerSubmit" style="display: none;">
+        <a class="btn btn-secondary btnPrevious">Anterior</a>
+        <button id="btn-cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" id="btn-submit" type="submit">
+            Enviar
+            <span id="submitSpinner" class="fa fa-spinner fa-pulse" style="display: none;"></span>
+        </button>
+    </div>
+
+    <div id="footerPreviousNext" class="modal-footer">
+        <a class="btn btn-secondary btnPrevious" style="display: none;">Anterior</a>
+        <button id="btnNext" class="btn btn-primary" type="submit">Próximo</button>
+    </div>
+
+</form>

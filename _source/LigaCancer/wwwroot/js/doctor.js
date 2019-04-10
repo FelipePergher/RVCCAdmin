@@ -6,7 +6,7 @@
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {
-                columns: 'th:not(:first-child)',
+                columns: 'th:not(:first-child)'
             },
             customize: function (doc) {
                 doc.defaultStyle.alignment = 'center';
@@ -39,7 +39,7 @@
     order: [1, "asc"],
     columns: [
         { data: "actions", title: "Ações", name: "actions", width:"20px", orderable: false },
-        { data: "name", title: "Nome", name: "name", },
+        { data: "name", title: "Nome", name: "name" },
         { data: "crm", title: "CRM", name: "crm" }
     ],
     preDrawCallback: function (settings) {
@@ -86,7 +86,7 @@ function AddSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso", "Médico registrado com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initAddForm();
     }
 }
@@ -102,7 +102,7 @@ function EditSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso", "Médico atualizado com sucesso.", "success");
     }
     else {
-        $("#modal-content").html(data);
+        $("#modalBody").html(data);
         initEditForm();
     }
 }

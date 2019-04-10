@@ -17,7 +17,7 @@ using LigaCancer.Models.SearchModel;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class PatientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -43,6 +43,7 @@ namespace LigaCancer.Controllers
             _medicineService = medicineService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             PatientSearchModel patientSearch = new PatientSearchModel {
@@ -70,6 +71,50 @@ namespace LigaCancer.Controllers
             return View(patientSearch);
         }
 
+        [HttpGet]
+        public IActionResult AddPatientProfile()
+        {
+            return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPatientProfile(PatientProfileFormModel patientProfileForm)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+
+                Patient patient = new Patient
+                {
+                    FirstName = patientProfileForm.FirstName,
+                    Surname = patientProfileForm.Surname,
+                    RG = patientProfileForm.RG,
+                    CPF = patientProfileForm.CPF,
+                    FamiliarityGroup = patientProfileForm.FamiliarityGroup,
+                    Sex = patientProfileForm.Sex,
+                    CivilState = patientProfileForm.CivilState,
+                    DateOfBirth = patientProfileForm.DateOfBirth.Value,
+                    Profession = patientProfileForm.Profession,
+                    UserCreated = user
+                };
+
+                TaskResult taskResult = await _patientService.CreateAsync(patient);
+
+                if(taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
+                else return BadRequest(taskResult.Errors);
+            }
+
+            return PartialView("Partials/_AddPatientProfile", patientProfileForm);
+        }
+
+        [HttpGet]
+        public IActionResult AddPatientNaturality(int id)
+        {
+            return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
+        }
+
+        //Todo remove this
+        [HttpGet]
         public IActionResult AddPatient()
         {
             PatientFormModel patientForm = new PatientFormModel
@@ -97,10 +142,10 @@ namespace LigaCancer.Controllers
                 DateOfBirth = DateTime.Now
             };
 
-            return PartialView("_AddPatient", patientForm);
+            return PartialView("Partials/_AddPatient", patientForm);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> AddPatient(PatientFormModel patientForm)
         {
             if (ModelState.IsValid)
@@ -257,10 +302,7 @@ namespace LigaCancer.Controllers
                 }
 
                 TaskResult result = await _patientService.CreateAsync(patient);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
+                if (result.Succeeded) return Ok();
                 ModelState.AddErrors(result);
             }
 
@@ -287,10 +329,10 @@ namespace LigaCancer.Controllers
                 Text = x.City,
                 Value = x.TreatmentPlaceId.ToString()
             }).ToList();
-
-            return PartialView("_AddPatient", patientForm);
+            return PartialView("Partials/_AddPatient", patientForm);
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditPatient(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -333,12 +375,12 @@ namespace LigaCancer.Controllers
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
                 FirstName = patient.FirstName,
-                Naturality = new NaturalityFormModel
-                {
-                    City = patient.Naturality.City,
-                    Country = patient.Naturality.Country,
-                    State = patient.Naturality.State
-                },
+                //Naturality = new NaturalityFormModel
+                //{
+                //    City = patient.Naturality.City,
+                //    Country = patient.Naturality.Country,
+                //    State = patient.Naturality.State
+                //},
                 PatientId = patient.PatientId,
                 PatientInformation = new PatientInformationFormModel
                 {
@@ -354,10 +396,10 @@ namespace LigaCancer.Controllers
                 MonthlyIncome = patient.Family.MonthlyIncome
             };
 
-            return PartialView("_EditPatient", patientForm);
+            return PartialView("Partials/_EditPatient", patientForm);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> EditPatient(string id, PatientFormModel patientForm)
         {
             if (ModelState.IsValid)
@@ -390,16 +432,16 @@ namespace LigaCancer.Controllers
                     foreach (PatientInformationCancerType item in patient.PatientInformation.PatientInformationCancerTypes)
                     {
                         if (patientForm.PatientInformation.CancerTypes.FirstOrDefault(x => x == item.CancerType.Name) == null)
-                        {
                             removePatientInformationCancerTypes.Add(item);
-                        }
                     }
                     patient.PatientInformation.PatientInformationCancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Except(removePatientInformationCancerTypes).ToList();
 
                     //Add news cancer types
                     foreach (string item in patientForm.PatientInformation.CancerTypes)
                     {
-                        CancerType cancerType = int.TryParse(item, out int num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
+                        CancerType cancerType = int.TryParse(item, out int num) 
+                            ? await _cancerTypeService.FindByIdAsync(item) 
+                            : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
                         if (cancerType == null)
                         {
                             cancerType = new CancerType
@@ -407,26 +449,14 @@ namespace LigaCancer.Controllers
                                 Name = item,
                                 UserCreated = user
                             };
-                            TaskResult taskResult = await _cancerTypeService.CreateAsync(cancerType);
-                            if (taskResult.Succeeded)
-                            {
-                                patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
-                                {
-                                    CancerType = cancerType
-                                });
-                            }
                         }
-                        else
+                        if(patient.PatientInformation.PatientInformationCancerTypes.FirstOrDefault(x => x.CancerTypeId == cancerType.CancerTypeId) == null)
                         {
-                            if(patient.PatientInformation.PatientInformationCancerTypes.FirstOrDefault(x => x.CancerTypeId == cancerType.CancerTypeId) == null)
+                            patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
                             {
-                                patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
-                                {
-                                    CancerType = cancerType
-                                });
-                            }
+                                CancerType = cancerType
+                            });
                         }
-
                     }
                 }
 
@@ -459,34 +489,20 @@ namespace LigaCancer.Controllers
                                 Name = item,
                                 UserCreated = user
                             };
-                            TaskResult taskResult = await _doctorService.CreateAsync(doctor);
-                            if (taskResult.Succeeded)
-                            {
-                                patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
-                                {
-                                    Doctor = doctor
-                                });
-                            }
                         }
-                        else
+                        if(patient.PatientInformation.PatientInformationDoctors.FirstOrDefault(x => x.DoctorId == doctor.DoctorId) == null)
                         {
-                            if(patient.PatientInformation.PatientInformationDoctors.FirstOrDefault(x => x.DoctorId == doctor.DoctorId) == null)
+                            patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
                             {
-                                patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
-                                {
-                                    Doctor = doctor
-                                });
-                            }
+                                Doctor = doctor
+                            });
                         }
                     }
                    
                 }
 
                 //Added Treatment Place to Patient Information
-                if (patientForm.PatientInformation.TreatmentPlaces.Count == 0)
-                {
-                    patient.PatientInformation.PatientInformationTreatmentPlaces.Clear();
-                }
+                if (patientForm.PatientInformation.TreatmentPlaces.Count == 0) patient.PatientInformation.PatientInformationTreatmentPlaces.Clear();
                 else
                 {
                     //Remove not selected of database
@@ -494,9 +510,7 @@ namespace LigaCancer.Controllers
                     foreach (PatientInformationTreatmentPlace item in patient.PatientInformation.PatientInformationTreatmentPlaces)
                     {
                         if (patientForm.PatientInformation.TreatmentPlaces.FirstOrDefault(x => x == item.TreatmentPlace.City) == null)
-                        {
                             removePatientInformationTreatmentPlaces.Add(item);
-                        }
                     }
                     patient.PatientInformation.PatientInformationTreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Except(removePatientInformationTreatmentPlaces).ToList();
 
@@ -505,6 +519,7 @@ namespace LigaCancer.Controllers
                     {
                         TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ?
                             await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
+
                         if (treatmentPlace == null)
                         {
                             treatmentPlace = new TreatmentPlace
@@ -512,29 +527,19 @@ namespace LigaCancer.Controllers
                                 City = item,
                                 UserCreated = user
                             };
-                            TaskResult taskResult = await _treatmentPlaceService.CreateAsync(treatmentPlace);
-                            if (taskResult.Succeeded)
-                            {
-                                patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
-                                {
-                                    TreatmentPlace = treatmentPlace
-                                });
-                            }
                         }
-                        else
+
+                        if (patient.PatientInformation.PatientInformationTreatmentPlaces.FirstOrDefault(x => x.TreatmentPlaceId == treatmentPlace.TreatmentPlaceId) == null)
                         {
-                            if (patient.PatientInformation.PatientInformationTreatmentPlaces.FirstOrDefault(x => x.TreatmentPlaceId == treatmentPlace.TreatmentPlaceId) == null)
+                            patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
                             {
-                                patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
-                                {
-                                    TreatmentPlace = treatmentPlace
-                                });
-                            }
+                                TreatmentPlace = treatmentPlace
+                            });
                         }
                     }
                 }
 
-                //Added Treatment Place to Patient Information
+                //Added Medicine to Patient Information
                 if (patientForm.PatientInformation.Medicines.Count == 0)
                 {
                     patient.PatientInformation.PatientInformationMedicines.Clear();
@@ -566,24 +571,14 @@ namespace LigaCancer.Controllers
                                 Name = item,
                                 UserCreated = user
                             };
-                            TaskResult taskResult = await _medicineService.CreateAsync(medicine);
-                            if (taskResult.Succeeded)
-                            {
-                                patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
-                                {
-                                    Medicine = medicine
-                                });
-                            }
                         }
-                        else
+                        
+                        if (patient.PatientInformation.PatientInformationMedicines.FirstOrDefault(x => x.MedicineId == medicine.MedicineId) == null)
                         {
-                            if (patient.PatientInformation.PatientInformationMedicines.FirstOrDefault(x => x.MedicineId == medicine.MedicineId) == null)
+                            patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
                             {
-                                patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
-                                {
-                                    Medicine = medicine
-                                });
-                            }
+                                Medicine = medicine
+                            });
                         }
                     }
                 }
@@ -611,10 +606,7 @@ namespace LigaCancer.Controllers
                 patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
+                if (result.Succeeded) return Ok();
                 ModelState.AddErrors(result);
             }
 
@@ -642,9 +634,10 @@ namespace LigaCancer.Controllers
                 Value = x.TreatmentPlaceId.ToString()
             }).ToList();
 
-            return PartialView("_EditPatient", patientForm);
+            return PartialView("Partials/_EditPatient", patientForm);
         }
 
+        [HttpGet]
         public IActionResult DisablePatient(string id)
         {
             DisablePatientFormModel disablePatientForm = new DisablePatientFormModel {
@@ -653,7 +646,7 @@ namespace LigaCancer.Controllers
             return PartialView("_DisablePatient", disablePatientForm);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> DisablePatient(string id, DisablePatientFormModel disablePatientForm)
         {
             if (!string.IsNullOrEmpty(id))
@@ -724,12 +717,12 @@ namespace LigaCancer.Controllers
                 RG = patient.RG,
                 Sex = patient.Sex,
                 Family = patient.Family,
-                Naturality = new NaturalityFormModel
-                {
-                    City = patient.Naturality.City,
-                    Country = patient.Naturality.Country,
-                    State = patient.Naturality.State
-                },
+                //Naturality = new NaturalityFormModel
+                //{
+                //    City = patient.Naturality.City,
+                //    Country = patient.Naturality.Country,
+                //    State = patient.Naturality.State
+                //},
                 FileAttachments = patient.FileAttachments,
                 PatientInformation = new PatientInformationFormModel
                 {
