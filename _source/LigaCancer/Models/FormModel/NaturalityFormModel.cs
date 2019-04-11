@@ -5,10 +5,12 @@ namespace LigaCancer.Models.FormModel
 {
     public class NaturalityFormModel
     {
-        public NaturalityFormModel(int patientId) => PatientId = patientId;
+        public NaturalityFormModel(){}
+
+        public NaturalityFormModel(string patientId) => PatientId = patientId;
 
         [HiddenInput]
-        public int PatientId { get; set; }
+        public string PatientId { get; set; }
 
         [Display(Name = "Cidade")]
         public string City { get; set; }

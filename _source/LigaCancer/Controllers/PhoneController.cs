@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -39,7 +39,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPhone(PhoneFormModel phoneForm)
         {
             if (!ModelState.IsValid) return PartialView("_AddPhone", phoneForm);
@@ -55,10 +54,7 @@ namespace LigaCancer.Controllers
                     UserCreated = user
                 }, phoneForm.PatientId);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "phone");
-            }
+            if (result.Succeeded) return Ok();
             ModelState.AddErrors(result);
 
             return PartialView("_AddPhone", phoneForm);
@@ -86,7 +82,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPhone(string id, PhoneFormModel phoneForm)
         {
             if (!ModelState.IsValid) return PartialView("_EditPhone", phoneForm);
@@ -110,7 +105,6 @@ namespace LigaCancer.Controllers
             return PartialView("_EditPhone", phoneForm);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> DeletePhone(string id)
         {
@@ -128,7 +122,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePhone(string id, IFormCollection form)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");

@@ -12,7 +12,6 @@ namespace LigaCancer.Models.FormModel
         public PatientFormModel()
         {
             DateOfBirth = DateTime.Now;
-            PatientInformation = new PatientInformationFormModel();
         }
 
         [HiddenInput]

@@ -67,6 +67,9 @@
     <Content Update="Views\Patient\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Patient\Partials\_AddPatientInformation.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Patient\Partials\_AddPatientNaturality.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

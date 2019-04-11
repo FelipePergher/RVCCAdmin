@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
@@ -13,6 +15,17 @@ namespace LigaCancer.Models.FormModel
             TreatmentPlaces = new List<string>();
         }
 
+        public PatientInformationFormModel(string patientId)
+        {
+            PatientId = patientId;
+            CancerTypes = new List<string>();
+            Medicines = new List<string>();
+            Doctors = new List<string>();
+            TreatmentPlaces = new List<string>();
+        }
+
+        [HiddenInput]
+        public string PatientId { get; set; }
 
         [Display(Name = "Tipos de Câncer")]
         public List<string> CancerTypes { get; set; }
@@ -25,5 +38,17 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Remédios")]
         public List<string> Medicines { get; set; }
+
+        #region Selects
+
+        public List<SelectListItem> SelectDoctors { get; set; }
+
+        public List<SelectListItem> SelectTreatmentPlaces { get; set; }
+
+        public List<SelectListItem> SelectMedicines { get; set; }
+
+        public List<SelectListItem> SelectCancerTypes { get; set; }
+
+        #endregion
     }
 }

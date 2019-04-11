@@ -137,12 +137,36 @@ function AddNaturalitySuccess(data, textStatus) {
             text: "naturalidade adicionada com sucesso.",
             type: 'success'
         }).then((result) => {
-            //openModal(data.url, data.title, initAddNaturalityForm);
+            openModal(data.url, data.title, initAddNaturalityForm);
         });
     }
     else {
         $("#modalBody").html(data);
         initAddNaturalityForm();
+    }
+}
+
+function initAddPatientInformationForm() {
+    $.validator.unobtrusive.parse("#addPatientInformationForm");
+    $(".customSelect2").select2({
+        theme: "bootstrap",
+        language: languageSelect2
+    });
+}
+
+function AddPatientInformationSuccess(data, textStatus) {
+    if (data.ok) {
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire({
+            title: 'Sucesso',
+            text: "Informação do paciente adicionada com sucesso.",
+            type: 'success'
+        }).then((result) => {
+        });
+    }
+    else {
+        $("#modalBody").html(data);
+        initAddPatientInformationForm();
     }
 }
 

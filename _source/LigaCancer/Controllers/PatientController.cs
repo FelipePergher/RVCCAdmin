@@ -108,9 +108,178 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddPatientNaturality(int id)
+        public IActionResult AddPatientNaturality(string id)
         {
             return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
+        }
+
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> AddPatientNaturality(NaturalityFormModel naturalityForm)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+
+                Patient patient = await _patientService.FindByIdAsync(naturalityForm.PatientId);
+                patient.Naturality = new Naturality
+                {
+                    City = naturalityForm.City,
+                    State = naturalityForm.State,
+                    Country = naturalityForm.Country,
+                    UserCreated = user,
+                };
+                TaskResult taskResult = await _patientService.UpdateAsync(patient);
+
+                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", new { id = patient.PatientId }), title = "Adicionar Informação do Paciente" });
+                else return BadRequest(taskResult.Errors);
+            }
+
+            return PartialView("Partials/_AddPatientNaturality", naturalityForm);
+        }
+
+        [HttpGet]
+        public IActionResult AddPatientInformation(string id)
+        {
+            var patientInformationForm = new PatientInformationFormModel(id)
+            {
+                SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.DoctorId.ToString()
+                }).ToList(),
+                SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.CancerTypeId.ToString()
+                }).ToList(),
+                SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.MedicineId.ToString()
+                }).ToList(),
+                SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
+                {
+                    Text = x.City,
+                    Value = x.TreatmentPlaceId.ToString()
+                }).ToList()
+            };
+            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPatientInformation(PatientInformationFormModel patientInformationForm)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+
+                Patient patient = await _patientService.FindByIdAsync(patientInformationForm.PatientId);
+                patient.PatientInformation = new PatientInformation();
+
+                //Added Cancer Types to Patient Information
+                foreach (string item in patientInformationForm.CancerTypes)
+                {
+                    CancerType cancerType = int.TryParse(item, out int num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
+                    if (cancerType == null)
+                    {
+                        cancerType = new CancerType
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                    }
+                    
+                    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
+                    {
+                        CancerType = cancerType
+                    });
+                }
+
+                //Added Doctor to Patient Information
+                foreach (string item in patientInformationForm.Doctors)
+                {
+                    Doctor doctor = int.TryParse(item, out int num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
+                    if (doctor == null)
+                    {
+                        doctor = new Doctor
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                    }
+                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
+                    {
+                        Doctor = doctor
+                    });
+                }
+
+                //Added Treatment Place to Patient Information
+                foreach (string item in patientInformationForm.TreatmentPlaces)
+                {
+                    TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ?
+                        await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
+                    if (treatmentPlace == null)
+                    {
+                        treatmentPlace = new TreatmentPlace
+                        {
+                            City = item,
+                            UserCreated = user
+                        };
+                    }
+                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
+                    {
+                        TreatmentPlace = treatmentPlace
+                    });
+                }
+
+                //Added Medicine to Patient Information
+                foreach (string item in patientInformationForm.Medicines)
+                {
+                    Medicine medicine = int.TryParse(item, out int num) ?
+                        await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
+
+                    if (medicine == null)
+                    {
+                        medicine = new Medicine
+                        {
+                            Name = item,
+                            UserCreated = user
+                        };
+                    }
+                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
+                    {
+                        Medicine = medicine
+                    });
+                }
+
+                TaskResult taskResult = await _patientService.UpdateAsync(patient);
+
+                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patient.PatientId }), title = "Adicionar Informação do Paciente" });
+                else return BadRequest(taskResult.Errors);
+            }
+
+            patientInformationForm.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.DoctorId.ToString()
+            }).ToList();
+            patientInformationForm.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.CancerTypeId.ToString()
+            }).ToList();
+            patientInformationForm.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.MedicineId.ToString()
+            }).ToList();
+            patientInformationForm.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
+            {
+                Text = x.City,
+                Value = x.TreatmentPlaceId.ToString()
+            }).ToList();
+
+            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
         //Todo remove this
@@ -382,13 +551,13 @@ namespace LigaCancer.Controllers
                 //    State = patient.Naturality.State
                 //},
                 PatientId = patient.PatientId,
-                PatientInformation = new PatientInformationFormModel
-                {
-                    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
-                    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
-                    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
-                    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
-                },
+                //PatientInformation = new PatientInformationFormModel
+                //{
+                //    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
+                //    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
+                //    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
+                //    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
+                //},
                 Profession = patient.Profession,
                 RG = patient.RG,
                 Sex = patient.Sex,
@@ -724,13 +893,13 @@ namespace LigaCancer.Controllers
                 //    State = patient.Naturality.State
                 //},
                 FileAttachments = patient.FileAttachments,
-                PatientInformation = new PatientInformationFormModel
-                {
-                    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
-                    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
-                    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.Name).ToList(),
-                    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.City).ToList(),
-                }
+                //PatientInformation = new PatientInformationFormModel
+                //{
+                //    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
+                //    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
+                //    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.Name).ToList(),
+                //    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.City).ToList(),
+                //}
             };
 
             return View(patientShowForm);

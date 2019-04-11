@@ -1,5 +1,4 @@
 ﻿@model LigaCancer.Models.FormModel.NaturalityFormModel
-@using LigaCancer.Code
 
 <form id="addPatientNaturalityForm" asp-action="AddPatientNaturality"
       role="form"
@@ -10,7 +9,7 @@
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body">
-        <h4 class="mt-4">Naturalidade</h4>
+        <h4>Naturalidade</h4>
         <hr />
         <div class="form-row">
             <input asp-for="PatientId" />
