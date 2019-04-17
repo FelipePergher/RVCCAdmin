@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class AddressController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -38,7 +38,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAddress(AddressFormModel addressForm)
         {
             if (!ModelState.IsValid) return PartialView("_AddAddress", addressForm);
@@ -94,7 +93,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAddress(string id, AddressFormModel addressForm)
         {
             if (!ModelState.IsValid) return PartialView("_EditAddress", addressForm);
@@ -123,6 +121,7 @@ namespace LigaCancer.Controllers
             return PartialView("_EditAddress", addressForm);
         }
 
+        [HttpGet]
         public async Task<IActionResult> DeleteAddress(string id)
         {
             string addressText = string.Empty;
@@ -139,7 +138,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAddress(string id, IFormCollection form)
         {
             if (!string.IsNullOrEmpty(id))

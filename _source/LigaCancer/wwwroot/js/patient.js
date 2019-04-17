@@ -174,6 +174,7 @@ function addPatientInformationSuccess(data, textStatus) {
             text: "Informação do paciente adicionada com sucesso.",
             type: 'success'
         }).then((result) => {
+            //Todo call Contact form
         });
     }
     else {

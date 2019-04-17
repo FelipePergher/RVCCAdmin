@@ -13,7 +13,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class FamilyMemberController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -27,7 +27,7 @@ namespace LigaCancer.Controllers
             _patientService = patientService;
         }
 
-
+        [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
             FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel
@@ -38,7 +38,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddFamilyMember(FamilyMemberFormModel familyMemberForm)
         {
             if (!ModelState.IsValid) return PartialView("_AddFamilyMember", familyMemberForm);
@@ -65,7 +64,7 @@ namespace LigaCancer.Controllers
             return PartialView("_AddFamilyMember", familyMemberForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditFamilyMember(string id)
         {
             FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel();
@@ -89,7 +88,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
             if (!ModelState.IsValid) return PartialView("_EditFamilyMember", familyMemberForm);
@@ -119,7 +117,7 @@ namespace LigaCancer.Controllers
             return PartialView("_EditFamilyMember", familyMemberForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> DeleteFamilyMember(string id)
         {
             string name = string.Empty;
@@ -136,7 +134,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id, IFormCollection form)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");

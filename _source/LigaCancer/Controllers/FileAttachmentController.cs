@@ -16,7 +16,7 @@ using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class FileAttachmentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -46,7 +46,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddFileAttachment(FileAttachmentFormModel fileAttachmentForm)
         {
             if (!ModelState.IsValid) return StatusCode(500, "Invalid");
@@ -96,6 +95,7 @@ namespace LigaCancer.Controllers
             return StatusCode(500, result.Errors.First().Description);
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
             string name = string.Empty;
@@ -112,7 +112,6 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id, IFormCollection form)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");

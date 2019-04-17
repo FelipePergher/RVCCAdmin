@@ -92,7 +92,7 @@ namespace LigaCancer.Controllers
 
         #region Helpers
 
-       private IActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal(string returnUrl)
        {
             if (Url.IsLocalUrl(returnUrl))
             {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

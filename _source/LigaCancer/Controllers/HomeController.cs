@@ -6,7 +6,7 @@ using LigaCancer.Models.ViewModel;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
