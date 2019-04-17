@@ -71,7 +71,7 @@ namespace LigaCancer.Code
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum DisablePatientType
+        public enum ArchivePatientType
         {
             [Display(Name = "Alta"), EnumMember(Value = "Alta")]
             discharge,

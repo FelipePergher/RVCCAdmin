@@ -39,7 +39,7 @@ namespace LigaCancer.Models.SearchModel
         [Display(Name = "Médicos")]
         public List<string> Doctors { get; set; }
 
-        [Display(Name = "Local de Tratamentos")]
+        [Display(Name = "Locais de Tratamentos")]
         public List<string> TreatmentPlaces { get; set; }
 
         #region Selects

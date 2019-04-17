@@ -42,29 +42,29 @@
                             </div>
                             <div class="card-block collapse show" id="filterCollapse">
                                 <form id="searchForm">
-                                    <div class="form-row">
-                                        @*<div class="form-row form-group">
+                                    <div>
+                                        <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CancerTypes"></label>
-                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control">
+                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Medicines"></label>
-                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control">
+                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Doctors"></label>
-                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control">
+                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="TreatmentPlaces"></label>
-                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control">
+                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
@@ -97,27 +97,11 @@
                                                     <label asp-for="Death"></label>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                        </div>*@
-                                        @*<div class="col-lg-4 form-group row">
-                                            <label class="col-form-label" asp-for="Name"></label>
-                                            <div class="col-lg-9">
-                                                <input asp-for="Name" class="form-control" />
-                                                <span asp-validation-for="Name" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 form-group row">
-                                            <label class="col-form-label" asp-for="CRM"></label>
-                                            <div class="col-lg-9">
-                                                <input asp-for="CRM" class="form-control" />
-                                                <span asp-validation-for="CRM" class="text-danger"></span>
-                                            </div>
-                                        </div>*@
-                                        <div class="col-lg-4 form-group row">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-filter"></i> Filtrar
-                                            </button>
-                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i> Filtrar
+                                        </button>
                                     </div>
                                 </form>
                             </div>

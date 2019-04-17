@@ -3,14 +3,16 @@ using System;
 using LigaCancer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190412034758_Fixbd")]
+    partial class Fixbd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,9 +423,7 @@ namespace LigaCancer.Migrations
                     b.Property<int>("PresenceId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
-
-                    b.Property<int>("PatientId");
+                    b.Property<int?>("PatientId");
 
                     b.Property<DateTime>("PresenceDateTime");
 
@@ -436,6 +436,8 @@ namespace LigaCancer.Migrations
                     b.Property<string>("UserUpdatedId");
 
                     b.HasKey("PresenceId");
+
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("UserCreatedId");
 
@@ -872,6 +874,10 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Presence", b =>
                 {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()
                         .HasForeignKey("UserCreatedId");

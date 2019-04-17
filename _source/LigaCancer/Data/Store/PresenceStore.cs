@@ -133,20 +133,20 @@ namespace LigaCancer.Data.Store
             switch (sortColumn)
             {
                 case "patient":
-                    return sortDirection == "asc" ? query.OrderBy(x => $"{x.Patient.FirstName} {x.Patient.Surname}") : query.OrderByDescending(x => $"{x.Patient.FirstName} {x.Patient.Surname}");
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name); 
                 case "date":
                     return sortDirection == "asc" ? query.OrderBy(x => x.PresenceDateTime.Date) : query.OrderByDescending(x => x.PresenceDateTime.Date);
                 case "hour":
                     return sortDirection == "asc" ? query.OrderBy(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}") : query.OrderByDescending(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}");
                 default:
-                    return sortDirection == "asc" ? query.OrderBy(x => $"{x.Patient.FirstName} {x.Patient.Surname}") : query.OrderByDescending(x => $"{x.Patient.FirstName} {x.Patient.Surname}");
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
             }
         }
 
         private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
-            if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Patient.FirstName.Contains(presenceSearch.Name));
-            if (!string.IsNullOrEmpty(presenceSearch.Surname)) query = query.Where(x => x.Patient.Surname.Contains(presenceSearch.Surname));
+            if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Name.Contains(presenceSearch.Name));
+            if (!string.IsNullOrEmpty(presenceSearch.Surname)) query = query.Where(x => x.Name.Contains(presenceSearch.Surname));
             
             if (presenceSearch.DateFrom != null) query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
             if (presenceSearch.DateTo != null) query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);

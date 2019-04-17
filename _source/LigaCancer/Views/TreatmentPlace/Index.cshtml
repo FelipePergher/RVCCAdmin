@@ -39,15 +39,12 @@
                             </div>
                             <div class="card-block collapse show" id="filterCollapse">
                                 <form id="searchForm">
-                                    <div class="form-row">
-                                        <div class="col-lg-4 form-group row">
-                                            <label class="col-form-label" asp-for="City"></label>
-                                            <div class="col-lg-9">
-                                                <input asp-for="City" class="form-control" />
-                                                <span asp-validation-for="City" class="text-danger"></span>
-                                            </div>
+                                    <div class="form-row form-group">
+                                        <div class="col-lg-3">
+                                            <label asp-for="City"></label>
+                                            <input asp-for="City" class="form-control" />
                                         </div>
-                                        <div class="col-lg-4 form-group row">
+                                        <div class="col-lg-3 filter-button">
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fas fa-filter"></i> Filtrar
                                             </button>

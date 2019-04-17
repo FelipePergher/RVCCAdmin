@@ -138,30 +138,6 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(patient);
         }
 
-        //public TaskResult ActivePatient(Patient patient)
-        //{
-        //    TaskResult result = new TaskResult();
-        //    try
-        //    {
-        //        patient.IsDeleted = false;
-        //        patient.DeletedDate = DateTime.MinValue;
-        //        _context.Update(patient);
-
-        //        _context.SaveChanges();
-        //        result.Succeeded = true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        result.Errors.Add(new TaskError
-        //        {
-        //            Code = e.HResult.ToString(),
-        //            Description = e.Message
-        //        });
-        //    }
-
-        //    return result;
-        //}
-
         //Todo Change methods to other stores
         public async Task<TaskResult> AddPhone(Phone phone, string patientId)
         {

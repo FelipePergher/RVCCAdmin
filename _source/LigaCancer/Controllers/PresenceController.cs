@@ -57,10 +57,12 @@ namespace LigaCancer.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
+                Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
+
                 Presence presence = new Presence
                 {
                     PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
-                    Patient = await _patientService.FindByIdAsync(presenceForm.PatientId),
+                    Name = $"{patient.FirstName} {patient.Surname}",
                     UserCreated = user
                 };
 
@@ -86,8 +88,7 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
-            Presence presence = await _presenceService.FindByIdAsync(id, specification);
+            Presence presence = await _presenceService.FindByIdAsync(id);
 
             if (presence == null) return NotFound();
 
@@ -95,7 +96,7 @@ namespace LigaCancer.Controllers
             PresenceFormModel presenceform = new PresenceFormModel
             {
                 PresenceId = presence.PresenceId,
-                PatientId = presence.Patient.PatientId.ToString(),
+                PatientId = presence.PatientId.ToString(),
                 Date = presence.PresenceDateTime,
                 Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
                 Patients = patients.Select(x => new SelectListItem
@@ -115,12 +116,13 @@ namespace LigaCancer.Controllers
             
             if (ModelState.IsValid)
             {
-                BaseSpecification<Presence> specification = new BaseSpecification<Presence>(x => x.Patient);
-                Presence presence = await _presenceService.FindByIdAsync(id, specification);
+                Presence presence = await _presenceService.FindByIdAsync(id);
                 
                 if (presence == null) return NotFound();
 
-                presence.Patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
+                Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
+
+                presence.Name = $"{patient.FirstName} {patient.Surname}";
                 presence.PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
                 presence.UserUpdated = await _userManager.GetUserAsync(User);
 

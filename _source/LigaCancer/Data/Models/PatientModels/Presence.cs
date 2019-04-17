@@ -8,7 +8,9 @@ namespace LigaCancer.Data.Models.PatientModels
         [Key]
         public int PresenceId { get; set; }
 
-        public Patient Patient { get; set; }
+        public int PatientId { get; set; }
+
+        public string Name { get; set; }
 
         public DateTime PresenceDateTime { get; set; }
     }

@@ -32,8 +32,6 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public bool FamiliarityGroup { get; set; }
 
-        public bool Enabled { get; set; }
-
         public Sex Sex { get; set; }
 
         public CivilState CivilState { get; set; }

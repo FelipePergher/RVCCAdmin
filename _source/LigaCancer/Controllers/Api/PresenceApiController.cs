@@ -33,7 +33,7 @@ namespace LigaCancer.Controllers.Api
                 IEnumerable<Presence> presences = await _presenceService.GetAllAsync(new string[] { "Patient" }, sortColumn, sortDirection, presenceSearchModel);
                 IEnumerable<PresenceViewModel> data = presences.Select(x => new PresenceViewModel
                 {
-                    Patient = x.Patient.FirstName + " " + x.Patient.Surname,
+                    //Patient = x.Patient.FirstName + " " + x.Patient.Surname,
                     Date = x.PresenceDateTime.ToString("dd/MM/yyyy"),
                     Hour = x.PresenceDateTime.ToString("HH:mm"),
                     Actions = GetActionsHtml(x)

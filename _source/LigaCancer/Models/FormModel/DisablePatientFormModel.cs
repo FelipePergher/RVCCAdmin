@@ -1,17 +1,21 @@
 ﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
 {
-    public class DisablePatientFormModel
+    public class ArchivePatientFormModel
     {
+        [HiddenInput]
+        public string PatientId { get; set; }
+
         [Display(Name = "Motivo")]
-        public Globals.DisablePatientType DisablePatientType { get; set; }
+        public Globals.ArchivePatientType ArchivePatientType { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [Display(Name = "Data")]
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateTime { get; set; }
     }
 }

@@ -47,6 +47,7 @@
     order: [1, "asc"],
     columns: [
         { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+        { data: "status", title: "Status", name: "status" },
         { data: "firstName", title: "Nome", name: "firstName" },
         { data: "lastName", title: "Sobrenome", name: "lastName" },
         { data: "rg", title: "RG", name: "rg" },
@@ -72,13 +73,18 @@
             openModal($(this).attr("href"), $(this).data("title"), initEditForm);
         });
 
-        //$(".disablePatientButton").click(function (e) {
-        //    initDelete($(this).data("url"), $(this).data("id"));
-        //});
+        $(".archivePatientButton").click(function (e) {
+            openModal($(this).attr("href"), $(this).data("title"), initArchivePatient);
+        });
 
-         //$(".deletePatientButton").click(function (e) {
-        //    initDelete($(this).data("url"), $(this).data("id"));
-        //});
+        $(".deletePatientButton").click(function (e) {
+            initDelete($(this).data("url"), $(this).data("id"));
+        });
+
+        $(".activePatientButton").click(function (e) {
+            initActivePatient($(this).data("url"), $(this).data("id"));
+        });
+
 
         hideSpinner();
     }
@@ -91,6 +97,11 @@ $(function () {
 function initPage() {
     $('#patientTable').attr('style', 'border-collapse: collapse !important');
 
+    $(".filterSelect").select2({
+        theme: "bootstrap",
+        language: languageSelect2
+    });
+
     $("#searchForm").submit(function (e) {
         e.preventDefault();
         patientTable.search("").draw("");
@@ -102,12 +113,13 @@ function initPage() {
     });
 }
 
+//Add Functions
 function initAddProfileForm() {
     calendar("DateOfBirth");
     $.validator.unobtrusive.parse("#addPatientProfileForm");
 }
 
-function AddProfileSuccess(data, textStatus) {
+function addProfileSuccess(data, textStatus) {
     if (data.ok) {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
@@ -129,7 +141,7 @@ function initAddNaturalityForm() {
     $.validator.unobtrusive.parse("#addPatientNaturalityForm");
 }
 
-function AddNaturalitySuccess(data, textStatus) {
+function addNaturalitySuccess(data, textStatus) {
     if (data.ok) {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
@@ -137,7 +149,7 @@ function AddNaturalitySuccess(data, textStatus) {
             text: "naturalidade adicionada com sucesso.",
             type: 'success'
         }).then((result) => {
-            openModal(data.url, data.title, initAddNaturalityForm);
+            openModal(data.url, data.title, initAddPatientInformationForm);
         });
     }
     else {
@@ -148,13 +160,13 @@ function AddNaturalitySuccess(data, textStatus) {
 
 function initAddPatientInformationForm() {
     $.validator.unobtrusive.parse("#addPatientInformationForm");
-    $(".customSelect2").select2({
+    $(".patientInformationSelect").select2({
         theme: "bootstrap",
         language: languageSelect2
     });
 }
 
-function AddPatientInformationSuccess(data, textStatus) {
+function addPatientInformationSuccess(data, textStatus) {
     if (data.ok) {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
@@ -170,14 +182,10 @@ function AddPatientInformationSuccess(data, textStatus) {
     }
 }
 
+//Edit functions
 function initEditForm() {
     $.validator.unobtrusive.parse("#editPatientForm");
 
-    //Tabs control
-    //$('#patientTabs a[href="#profile"]').tab('show'); // Select tab by name
-    //$('#patientTabs li:first-child a').tab('show'); // Select first tab
-    //$('#patientTabs li:last-child a').tab('show'); // Select last tab
-    //$('#patientTabs li:nth-child(3) a').tab('show'); // Select third tab
     $("#editPatientForm").submit(function () {
         if ($("#editPatientForm").valid()) {
             console.log("asdadsa");
@@ -192,20 +200,9 @@ function initEditForm() {
         }
         return false;
     });
-
-    $(".btnPrevious").click(function () {
-        $("#footerSubmit").hide();
-        $("#footerPreviousNext").show();
-
-        let previousTab = $('.nav-tabs > .nav-item > .active').parent().prev('li').find('a').data("tab");
-        $('#patientTabs a[href="#' + previousTab + '"]').tab('show');
-
-        if (previousTab === "profile") $(".btnPrevious").hide();
-        //Todo valid the for in each page before change
-    });
 }
 
-function EditSuccess(data, textStatus) {
+function editSuccess(data, textStatus) {
     if (data === "" && textStatus === "success") {
         $("#modal-action").modal("hide");
         patientTable.ajax.reload(null, false);
@@ -217,27 +214,72 @@ function EditSuccess(data, textStatus) {
     }
 }
 
-function Error(error) {
-    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+function initArchivePatient() {
+    calendar("DateTime");
+    $.validator.unobtrusive.parse("#archivePatientForm");
 }
 
-//$(function () {
-    //BuildSelect2("CancerTypes", "Cânceres");
-    //BuildSelect2("Medicines", "Remédios");
-    //BuildSelect2("Doctors", "Médicos");
-    //BuildSelect2("TreatmentPlaces", "Locais de Tratamento");
-    //BuildSelect2("CivilState", "Estado Civil", true);
-    //BuildSelect2("Sex", "Gênero", true);
-    //BuildSelect2("FamiliarityGroup", "Grupo de convivência", true);
-//});
+function archivePatientSuccess(data, textStatus) {
+    if (data === "") {
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire({
+            title: 'Sucesso',
+            text: "O paciente foi arquivado com sucesso.",
+            type: 'success'
+        }).then((result) => {
+            $("#modal-action").modal("hide");
+        });
+    }
+    else {
+        $("#modalBody").html(data);
+        initArchivePatient();
+    }
+}
 
-//function BuildSelect2(elementId, placeholder, allowClear = false) {
-//    $("#" + elementId).select2({
-//        theme: "bootstrap",
-//        placeholder: placeholder,
-//        allowClear: allowClear,
-//        language: languageSelect2
-//    }).on("change", function (e) {
-//        dataTable.draw();
-//    });
-//}
+function initActivePatient(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você quer reativar este paciente?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    patientTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Ativo!", "O paciente foi reativado com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+function initDelete(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    patientTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O paciente foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+function error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+}

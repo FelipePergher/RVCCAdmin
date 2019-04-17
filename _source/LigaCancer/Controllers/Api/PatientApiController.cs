@@ -32,7 +32,7 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
-                        "PatientInformation", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "PatientInformation", "PatientInformation.ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "Family", "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
@@ -40,6 +40,7 @@ namespace LigaCancer.Controllers.Api
                     sortColumn, sortDirection);
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
+                    Status = x.PatientInformation.ActivePatient.Discharge ? "Alta" : x.PatientInformation.ActivePatient.Death ? "Óbito" : "Ativo",
                     FirstName = x.FirstName,
                     LastName = x.Surname,
                     Rg = x.RG,
@@ -150,23 +151,28 @@ namespace LigaCancer.Controllers.Api
         private string GetActionsHtml(Patient patient)
         {
             string options = string.Empty;
-            if (patient.Enabled)
+            if (!patient.PatientInformation.ActivePatient.Death && !patient.PatientInformation.ActivePatient.Discharge)
             {
                 string editPatient = $"<a href='/Patient/EditPatient/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar </a>";
-                string disablePatient = $"<a href='javascript:void(0);' data-url='/Patient/DisablePatient' data-id='{patient.PatientId}' " +
-                    $"data-title='Desativar Paciente' class='disablePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Desativar </a>";
+                string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Archivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + disablePatient;
+                options = editPatient + archivePatient;
             }
             else
             {
-                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/enablePatient' data-id='{patient.PatientId}' " +
-                    $"data-title='Ativar Paciente' class='disablePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Reativar </a>";
+                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
+                    $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";
                 string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
                 $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
-                
-                options = enablePatient + deletePatient;
+
+                if (!patient.PatientInformation.ActivePatient.Death)
+                {
+                    options = enablePatient;
+                }
+
+                options += deletePatient;
             }
 
             string actionsHtml =

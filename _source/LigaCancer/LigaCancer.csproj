@@ -91,7 +91,7 @@
     <Content Update="Views\Phone\_EditPhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_DisablePatient.cshtml">
+    <Content Update="Views\Patient\Partials\_ArchivePatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Patient\Partials\_EditPatient.cshtml">

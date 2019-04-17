@@ -33,5 +33,7 @@
         public string TreatmentPlaces { get; set; }
 
         public string Doctors { get; set; }
+
+        public string Status { get; set; }
     }
 }
