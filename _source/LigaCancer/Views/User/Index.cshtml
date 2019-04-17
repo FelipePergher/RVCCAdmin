@@ -1,4 +1,4 @@
-﻿@using LigaCancer.Code
+﻿@model LigaCancer.Models.SearchModel.UserSearchModel
 @{
     ViewData["Title"] = "Usuários";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,23 +29,44 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fa fa-address-card-o"></i> Usuários
+                                <i class="fas fa-filter"></i> Filtros
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="card-block">
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <div class="btn-group">
-                                            <a asp-action="AddUser" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                                <i class="fa fa-plus"></i> Adicionar Usuário
-                                            </a>
+                            <div class="card-block collapse show" id="filterCollapse">
+                                <form id="searchForm">
+                                    <div class="form-row form-group">
+                                        <div class="col-lg-3">
+                                            <label asp-for="Name"></label>
+                                            <input asp-for="Name" class="form-control" />
+                                        </div>
+                                        <div class="col-lg-3 filter-button">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-filter"></i> Filtrar
+                                            </button>
                                         </div>
                                     </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-users"></i> Usuários
+                            </div>
+                            <div class="card-block">
+                                <div class="form-inline float-right">
+                                    <a id="addUserButton" asp-action="AddUser" data-title="Adicionar Usuário" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i> Adicionar Usuário
+                                    </a>
                                 </div>
-
-                                <hr />
-
                                 <table class="table table-bordered table-striped table-condensed text-center" id="userTable"></table>
-
+                                <div id="spinner-container" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin" id="spinner"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -60,7 +81,7 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<partial name="_Modal"  />
+<partial name="_Modal" />
 
 @section scripts
     {

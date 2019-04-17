@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using LigaCancer.Data.Models;
+using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), Route("api/[action]")]
+    [Authorize(Roles = "Admin")]
     public class UserApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,28 +19,21 @@ namespace LigaCancer.Controllers.Api
             _userManager = userManager;
         }
 
-        [HttpGet]
-        public IActionResult GetUsersDataTableResponseAsync()
+        [HttpGet("~/api/user/search")]
+        public IActionResult UserSearch([FromForm] SearchModel searchModel)
         {
-            try
-            {
-                List<ApplicationUser> users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
+            List<ApplicationUser> users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
 
-                List<UserListViewModel> data = users.Select(x => new UserListViewModel
-                {
-                    UserId = x.Id,
-                    FirstName = x.FirstName ?? "",
-                    LastName = x.LastName ?? "",
-                    Email = x.Email ?? "",
-                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "User" ? "Usuário" : "Administrador"
-                }).ToList();
-
-                return Ok(new { data });
-            }
-            catch
+            IEnumerable<UserViewModel> data = users.Select(x => new UserViewModel
             {
-                return BadRequest();
-            }
+                UserId = x.Id,
+                Name = $"{x.FirstName} {x.LastName}",
+                Email = x.Email,
+                Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "User" ? "Usuário" : "Administrador"
+            });
+
+
+            return Ok(new { data });
         }
     }
 }

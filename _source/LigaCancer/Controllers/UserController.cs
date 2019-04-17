@@ -46,7 +46,7 @@ namespace LigaCancer.Controllers
                     LastName = userForm.LastName,
                     UserName = userForm.Email,
                     Email = userForm.Email,
-                    CreatedBy = User.Identity.Name,
+                    CreatedBy = User.Identity.Name
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(user, userForm.Password);
@@ -57,7 +57,6 @@ namespace LigaCancer.Controllers
                     if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     return Ok();
                 }
-                ModelState.AddErrors(result);
             }
 
             return PartialView("_AddUser", userForm);

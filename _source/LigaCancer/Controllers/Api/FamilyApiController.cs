@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), Route("api/[action]/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class FamilyApiController : Controller 
     {
         public readonly IDataStore<Patient> _patientService;

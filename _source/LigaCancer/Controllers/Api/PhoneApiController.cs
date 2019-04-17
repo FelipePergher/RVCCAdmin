@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), Route("api/[action]/{id?}")]
+    [Authorize(Roles = "Admin")]
     public class PhoneApiController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
