@@ -67,10 +67,10 @@
     <Content Update="Views\Patient\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_AddPatientInformation.cshtml">
+    <Content Update="Views\Patient\Partials\_PatientInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_AddPatientNaturality.cshtml">
+    <Content Update="Views\Patient\Partials\_PatientNaturality.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Patient\Partials\_PatientProfile.cshtml">

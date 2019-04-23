@@ -122,5 +122,6 @@ namespace LigaCancer.Data
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 
         public DbSet<Presence> Presences { get; set; }
+
     }
 }

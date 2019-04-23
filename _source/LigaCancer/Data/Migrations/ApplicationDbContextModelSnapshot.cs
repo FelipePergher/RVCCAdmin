@@ -273,6 +273,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Country");
 
+                    b.Property<int>("PatientId");
+
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<string>("State");
@@ -284,6 +286,9 @@ namespace LigaCancer.Migrations
                     b.Property<string>("UserUpdatedId");
 
                     b.HasKey("NaturalityId");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique();
 
                     b.HasIndex("UserCreatedId");
 
@@ -311,8 +316,6 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int?>("NaturalityId");
-
                     b.Property<int?>("PatientInformationId");
 
                     b.Property<string>("Profession");
@@ -337,8 +340,6 @@ namespace LigaCancer.Migrations
                         .IsUnique();
 
                     b.HasIndex("FamilyId");
-
-                    b.HasIndex("NaturalityId");
 
                     b.HasIndex("PatientInformationId");
 
@@ -804,6 +805,11 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Naturality", b =>
                 {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
+                        .WithOne("Naturality")
+                        .HasForeignKey("LigaCancer.Data.Models.PatientModels.Naturality", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()
                         .HasForeignKey("UserCreatedId");
@@ -818,10 +824,6 @@ namespace LigaCancer.Migrations
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Family", "Family")
                         .WithMany()
                         .HasForeignKey("FamilyId");
-
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.Naturality", "Naturality")
-                        .WithMany()
-                        .HasForeignKey("NaturalityId");
 
                     b.HasOne("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientInformation")
                         .WithMany()

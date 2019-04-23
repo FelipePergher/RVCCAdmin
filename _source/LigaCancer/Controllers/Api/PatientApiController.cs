@@ -32,7 +32,7 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
-                        "PatientInformation", "PatientInformation.ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "PatientInformation", "Naturality", "PatientInformation.ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "Family", "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
@@ -157,10 +157,13 @@ namespace LigaCancer.Controllers.Api
             {
                 string editPatient = $"<a href='/Patient/PatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar Paciente</a>";
+                string editNaturality = $"<a href='/Patient/PatientNaturality/{(patient.Naturality != null ? patient.Naturality.NaturalityId : patient.PatientId)}" +
+                    $"?isNaturalityId={patient.Naturality != null}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-edit'></i> Editar Naturalidade</a>";
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + archivePatient;
+                options = editPatient + editNaturality + archivePatient;
             }
             else
             {

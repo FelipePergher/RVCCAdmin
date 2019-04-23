@@ -38,7 +38,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public DateTime DateOfBirth { get; set; }
 
-        public Naturality Naturality { get; set; }
+        public virtual Naturality Naturality { get; set; }
 
         public string Profession { get; set; }
 

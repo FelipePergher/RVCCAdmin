@@ -26,6 +26,7 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
         private readonly IDataStore<CancerType> _cancerTypeService;
         private readonly IDataStore<Medicine> _medicineService;
+        private readonly IDataStore<Naturality> _naturalityService;
 
         public PatientController(
             IDataStore<Patient> patientService,
@@ -33,6 +34,7 @@ namespace LigaCancer.Controllers
             IDataStore<TreatmentPlace> treatmentPlaceService,
             IDataStore<CancerType> cancerTypeService,
             IDataStore<Medicine> medicineService,
+            IDataStore<Naturality> naturalityService,
             UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
@@ -41,6 +43,7 @@ namespace LigaCancer.Controllers
             _cancerTypeService = cancerTypeService;
             _treatmentPlaceService = treatmentPlaceService;
             _medicineService = medicineService;
+            _naturalityService = naturalityService;
         }
 
         [HttpGet]
@@ -126,7 +129,7 @@ namespace LigaCancer.Controllers
                 TaskResult taskResult = !string.IsNullOrEmpty(patientProfileForm.PatientId) ? await _patientService.UpdateAsync(patient) : await _patientService.CreateAsync(patient);
 
                 if (taskResult.Succeeded && string.IsNullOrEmpty(patientProfileForm.PatientId))
-                    return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
+                    return Ok(new { ok = true, url = Url.Action("PatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
                 else if(taskResult.Succeeded) return Ok();
                 else return PartialView("Partials/_PatientProfile", patientProfileForm); ;
             }
@@ -135,37 +138,61 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddPatientNaturality(string id)
+        public async Task<IActionResult> PatientNaturality(string id, bool isNaturalityId)
         {
-            return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
+            NaturalityFormModel naturalityForm = new NaturalityFormModel(id);
+            if (isNaturalityId)
+            {
+                Naturality naturality = await _naturalityService.FindByIdAsync(id);
+                naturalityForm = new NaturalityFormModel
+                {
+                    NaturalityId = id,
+                    City = naturality.City,
+                    Country = naturality.Country,
+                    State = naturality.State
+                };
+            }
+
+            return PartialView("Partials/_PatientNaturality", naturalityForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatientNaturality(NaturalityFormModel naturalityForm)
+        public async Task<IActionResult> PatientNaturality(NaturalityFormModel naturalityForm)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
+                Naturality naturality = new Naturality();
 
-                Patient patient = await _patientService.FindByIdAsync(naturalityForm.PatientId);
-                patient.Naturality = new Naturality
+                if (!string.IsNullOrEmpty(naturalityForm.NaturalityId))
                 {
-                    City = naturalityForm.City,
-                    State = naturalityForm.State,
-                    Country = naturalityForm.Country,
-                    UserCreated = user,
-                };
-                TaskResult taskResult = await _patientService.UpdateAsync(patient);
+                    BaseSpecification<Naturality> baseSpecification = new BaseSpecification<Naturality>(x => x.Patient);
+                    naturality = await _naturalityService.FindByIdAsync(naturalityForm.NaturalityId, baseSpecification);
+                }
+                else
+                {
+                    naturality.PatientId = int.Parse(naturalityForm.PatientId);
+                }
 
-                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", new { id = patient.PatientId }), title = "Adicionar Informação do Paciente" });
+                naturality.City = naturalityForm.City;
+                naturality.State = naturalityForm.State;
+                naturality.Country = naturalityForm.Country;
+
+                if (string.IsNullOrEmpty(naturalityForm.NaturalityId)) naturality.UserCreated = await _userManager.GetUserAsync(User);
+                else naturality.UserUpdated = await _userManager.GetUserAsync(User);
+
+                TaskResult taskResult = !string.IsNullOrEmpty(naturalityForm.NaturalityId) ? await _naturalityService.UpdateAsync(naturality) : await _naturalityService.CreateAsync(naturality);
+
+                if (taskResult.Succeeded && string.IsNullOrEmpty(naturalityForm.NaturalityId))
+                    return Ok(new { ok = true, url = Url.Action("PatientInformation", new { id = naturality.PatientId }), title = "Adicionar Informação do Paciente" });
+                else if(taskResult.Succeeded) return Ok();
                 else return BadRequest(taskResult.Errors);
             }
 
-            return PartialView("Partials/_AddPatientNaturality", naturalityForm);
+            return PartialView("Partials/_PatientNaturality", naturalityForm);
         }
 
         [HttpGet]
-        public IActionResult AddPatientInformation(string id)
+        public IActionResult PatientInformation(string id)
         {
             var patientInformationForm = new PatientInformationFormModel(id)
             {
@@ -190,11 +217,11 @@ namespace LigaCancer.Controllers
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList()
             };
-            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
+            return PartialView("Partials/_PatientInformation", patientInformationForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatientInformation(PatientInformationFormModel patientInformationForm)
+        public async Task<IActionResult> PatientInformation(PatientInformationFormModel patientInformationForm)
         {
             if (ModelState.IsValid)
             {
@@ -306,7 +333,7 @@ namespace LigaCancer.Controllers
                 Value = x.TreatmentPlaceId.ToString()
             }).ToList();
 
-            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
+            return PartialView("Partials/_PatientInformation", patientInformationForm);
         }
 
         #endregion

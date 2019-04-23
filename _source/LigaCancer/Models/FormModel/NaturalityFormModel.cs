@@ -12,6 +12,9 @@ namespace LigaCancer.Models.FormModel
         [HiddenInput]
         public string PatientId { get; set; }
 
+        [HiddenInput]
+        public string NaturalityId { get; set; }
+
         [Display(Name = "Cidade")]
         public string City { get; set; }
 

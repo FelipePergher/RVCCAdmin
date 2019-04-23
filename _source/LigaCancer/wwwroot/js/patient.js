@@ -25,6 +25,7 @@
     language: language,
     filter: false,
     scrollX: true,
+    scrollY: '50vh',
     ajax: {
         url: "/api/patient/search",
         type: "POST",
@@ -71,6 +72,10 @@
         $(".editPatientButton").click(function () {
             $(".modal-dialog").addClass("modal-lg");
             openModal($(this).attr("href"), $(this).data("title"), initProfileForm);
+        });
+
+        $(".editNaturalityButton").click(function () {
+            openModal($(this).attr("href"), $(this).data("title"), initNaturalityForm);
         });
 
         $(".archivePatientButton").click(function (e) {
@@ -132,7 +137,7 @@ function ProfileSuccess(data, textStatus) {
             type: 'success'
         }).then((result) => {
             cleanModal();
-            openModal(data.url, data.title, initAddNaturalityForm);
+            openModal(data.url, data.title, initNaturalityForm);
         });
     }
     else {
@@ -141,11 +146,16 @@ function ProfileSuccess(data, textStatus) {
     }
 }
 
-function initAddNaturalityForm() {
-    $.validator.unobtrusive.parse("#addPatientNaturalityForm");
+function initNaturalityForm() {
+    $.validator.unobtrusive.parse("#PatientNaturalityForm");
 }
 
-function addNaturalitySuccess(data, textStatus) {
+function NaturalitySuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Naturalidade atualizada com sucesso.", "success");
+    }
     if (data.ok) {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
@@ -158,7 +168,7 @@ function addNaturalitySuccess(data, textStatus) {
     }
     else {
         $("#modalBody").html(data);
-        initAddNaturalityForm();
+        initNaturalityForm();
     }
 }
 

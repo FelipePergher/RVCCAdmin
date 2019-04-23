@@ -1,17 +1,18 @@
 ﻿@model LigaCancer.Models.FormModel.NaturalityFormModel
 
-<form id="addPatientNaturalityForm" asp-action="AddPatientNaturality"
+<form id="PatientNaturalityForm" asp-action="PatientNaturality"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-failure="error"
-      data-ajax-success="addNaturalitySuccess"
+      data-ajax-success="NaturalitySuccess"
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body">
         <h4>Naturalidade</h4>
         <hr />
         <div class="form-row">
+            <input asp-for="NaturalityId" />
             <input asp-for="PatientId" />
             <div class="form-group col-md-12">
                 <label asp-for="City" class="control-label"></label>
