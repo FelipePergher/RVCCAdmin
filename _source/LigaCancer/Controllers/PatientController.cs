@@ -72,40 +72,66 @@ namespace LigaCancer.Controllers
             return View(patientSearch);
         }
 
+        #region Add/Edit Methods
+
         [HttpGet]
-        public IActionResult AddPatientProfile()
+        public async Task<IActionResult> PatientProfile(string id)
         {
-            return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel());
+            PatientProfileFormModel patientProfileForm = new PatientProfileFormModel();
+            if (!string.IsNullOrEmpty(id))
+            {
+                //Todo if is null is add, instead is edit
+                Patient patient = await _patientService.FindByIdAsync(id);
+                patientProfileForm = new PatientProfileFormModel
+                {
+                    PatientId = patient.PatientId.ToString(),
+                    FirstName = patient.FirstName,
+                    Surname = patient.Surname,
+                    RG = patient.RG,
+                    CPF = patient.CPF,
+                    FamiliarityGroup = patient.FamiliarityGroup,
+                    Sex = patient.Sex,
+                    CivilState = patient.CivilState,
+                    DateOfBirth = patient.DateOfBirth,
+                    MonthlyIncome = patient.Family.MonthlyIncome,
+                    Profession = patient.Profession
+                };
+            }
+
+            return PartialView("Partials/_PatientProfile", patientProfileForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatientProfile(PatientProfileFormModel patientProfileForm)
+        public async Task<IActionResult> PatientProfile(PatientProfileFormModel patientProfileForm)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
+                Patient patient = !string.IsNullOrEmpty(patientProfileForm.PatientId) ? await _patientService.FindByIdAsync(patientProfileForm.PatientId) : new Patient();
 
-                Patient patient = new Patient
-                {
-                    FirstName = patientProfileForm.FirstName,
-                    Surname = patientProfileForm.Surname,
-                    RG = patientProfileForm.RG,
-                    CPF = patientProfileForm.CPF,
-                    FamiliarityGroup = patientProfileForm.FamiliarityGroup,
-                    Sex = patientProfileForm.Sex,
-                    CivilState = patientProfileForm.CivilState,
-                    DateOfBirth = patientProfileForm.DateOfBirth.Value,
-                    Profession = patientProfileForm.Profession,
-                    UserCreated = user
-                };
+                patient.FirstName = patientProfileForm.FirstName;
+                patient.Surname = patientProfileForm.Surname;
+                patient.RG = patientProfileForm.RG;
+                patient.CPF = patientProfileForm.CPF;
+                patient.FamiliarityGroup = patientProfileForm.FamiliarityGroup;
+                patient.Sex = patientProfileForm.Sex;
+                patient.CivilState = patientProfileForm.CivilState;
+                patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
+                patient.Profession = patientProfileForm.Profession;
+                
+                if(string.IsNullOrEmpty(patientProfileForm.PatientId)) patient.UserCreated = await _userManager.GetUserAsync(User);
+                else patient.UserUpdated = await _userManager.GetUserAsync(User);
 
-                TaskResult taskResult = await _patientService.CreateAsync(patient);
+                patient.Family.MonthlyIncome = patientProfileForm.MonthlyIncome.HasValue ? patientProfileForm.MonthlyIncome.Value : 0;
 
-                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
-                else return BadRequest(taskResult.Errors);
+                TaskResult taskResult = !string.IsNullOrEmpty(patientProfileForm.PatientId) ? await _patientService.UpdateAsync(patient) : await _patientService.CreateAsync(patient);
+
+                if (taskResult.Succeeded && string.IsNullOrEmpty(patientProfileForm.PatientId))
+                    return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
+                else if(taskResult.Succeeded) return Ok();
+                else return PartialView("Partials/_PatientProfile", patientProfileForm); ;
             }
 
-            return PartialView("Partials/_AddPatientProfile", patientProfileForm);
+            return PartialView("Partials/_PatientProfile", patientProfileForm);
         }
 
         [HttpGet]
@@ -114,7 +140,7 @@ namespace LigaCancer.Controllers
             return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
         public async Task<IActionResult> AddPatientNaturality(NaturalityFormModel naturalityForm)
         {
             if (ModelState.IsValid)
@@ -283,7 +309,105 @@ namespace LigaCancer.Controllers
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
-        //Todo remove this
+        #endregion
+
+        #region Control Enable/Disable Methods
+
+        [HttpGet]
+        public IActionResult ArchivePatient(string id)
+        {
+            ArchivePatientFormModel archivePatientForm = new ArchivePatientFormModel
+            {
+                PatientId = id,
+                DateTime = DateTime.Now
+            };
+            return PartialView("Partials/_ArchivePatient", archivePatientForm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ArchivePatient(ArchivePatientFormModel archivePatientForm)
+        {
+            if (string.IsNullOrEmpty(archivePatientForm.PatientId)) return BadRequest();
+
+            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+            Patient patient = await _patientService.FindByIdAsync(archivePatientForm.PatientId, specification);
+            if (patient == null) return NotFound();
+
+            switch (archivePatientForm.ArchivePatientType)
+            {
+                case Globals.ArchivePatientType.death:
+                    patient.PatientInformation.ActivePatient.Death = true;
+                    patient.PatientInformation.ActivePatient.DeathDate = archivePatientForm.DateTime;
+                    break;
+                case Globals.ArchivePatientType.discharge:
+                    patient.PatientInformation.ActivePatient.Discharge = true;
+                    patient.PatientInformation.ActivePatient.DischargeDate = archivePatientForm.DateTime;
+                    break;
+            }
+
+            TaskResult taskResult = await _patientService.UpdateAsync(patient);
+
+            if (taskResult.Succeeded) return Ok();
+
+            return PartialView("Partials/_ArchivePatient", archivePatientForm);
+        }
+
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ActivePatient(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+            Patient patient = await _patientService.FindByIdAsync(id, specification);
+
+            if (patient == null) return NotFound();
+
+            patient.PatientInformation.ActivePatient.Discharge = false;
+            TaskResult result = await _patientService.UpdateAsync(patient);
+
+            if (result.Succeeded) return Ok();
+
+            return BadRequest();
+        }
+
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeletePatient(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            Patient patient = await _patientService.FindByIdAsync(id);
+
+            if (patient == null) return NotFound();
+
+            TaskResult result = await _patientService.DeleteAsync(patient);
+
+            if (result.Succeeded) return Ok();
+
+            return BadRequest();
+        }
+
+        #endregion
+
+        #region Custom Methods
+
+        public JsonResult IsCpfExist(string cpf, int patientId)
+        {
+            Patient patient = ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId).Result;
+
+            return patient != null ? Json(false) : Json(true);
+        }
+
+        public JsonResult IsRgExist(string rg, int patientId)
+        {
+            Patient patient = ((PatientStore)_patientService).FindByRgAsync(rg, patientId).Result;
+
+            return Json(patient == null);
+        }
+
+        #endregion
+
+        #region Remove this
+
         [HttpGet]
         public IActionResult AddPatient()
         {
@@ -343,9 +467,9 @@ namespace LigaCancer.Controllers
                     UserCreated = user,
                     Family = new Family
                     {
-                        MonthlyIncome = patientForm.MonthlyIncome != null ? patientForm.MonthlyIncome : 0,
-                        FamilyIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0,
-                        PerCapitaIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0
+                        MonthlyIncome = patientForm.MonthlyIncome.HasValue ? patientForm.MonthlyIncome.Value : 0,
+                        //FamilyIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0,
+                        //PerCapitaIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0
                     }
                 };
 
@@ -826,11 +950,11 @@ namespace LigaCancer.Controllers
                 patient.Naturality.Country = patientForm.Naturality.Country;
                 patient.Profession = patientForm.Profession;
 
-                patient.Family.FamilyIncome -= (double)patient.Family.MonthlyIncome;
-                patient.Family.FamilyIncome += (double)patientForm.MonthlyIncome;
-                patient.Family.MonthlyIncome = patientForm.MonthlyIncome;
+                //patient.Family.FamilyIncome -= (double)patient.Family.MonthlyIncome;
+                //patient.Family.FamilyIncome += (double)patientForm.MonthlyIncome;
+                patient.Family.MonthlyIncome = patientForm.MonthlyIncome.HasValue ? patientForm.MonthlyIncome.Value : 0;
 
-                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
+                //patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
                 if (result.Succeeded) return Ok();
@@ -862,97 +986,6 @@ namespace LigaCancer.Controllers
             }).ToList();
 
             return PartialView("Partials/_EditPatient", patientForm);
-        }
-
-        //Todo remove until here
-
-        [HttpGet]
-        public IActionResult ArchivePatient(string id)
-        {
-            ArchivePatientFormModel archivePatientForm = new ArchivePatientFormModel
-            {
-                PatientId = id,
-                DateTime = DateTime.Now
-            };
-            return PartialView("Partials/_ArchivePatient", archivePatientForm);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ArchivePatient(ArchivePatientFormModel archivePatientForm)
-        {
-            if (string.IsNullOrEmpty(archivePatientForm.PatientId)) return BadRequest();
-
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(archivePatientForm.PatientId, specification);
-            if (patient == null) return NotFound();
-
-            switch (archivePatientForm.ArchivePatientType)
-            {
-                case Globals.ArchivePatientType.death:
-                    patient.PatientInformation.ActivePatient.Death = true;
-                    patient.PatientInformation.ActivePatient.DeathDate = archivePatientForm.DateTime;
-                    break;
-                case Globals.ArchivePatientType.discharge:
-                    patient.PatientInformation.ActivePatient.Discharge = true;
-                    patient.PatientInformation.ActivePatient.DischargeDate = archivePatientForm.DateTime;
-                    break;
-            }
-
-            TaskResult taskResult = await _patientService.UpdateAsync(patient);
-
-            if (taskResult.Succeeded) return Ok();
-
-            return PartialView("Partials/_ArchivePatient", archivePatientForm);
-        }
-
-        [HttpPost, IgnoreAntiforgeryToken]
-        public async Task<IActionResult> ActivePatient(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
-
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(id, specification);
-
-            if (patient == null) return NotFound();
-
-            patient.PatientInformation.ActivePatient.Discharge = false;
-            TaskResult result = await _patientService.UpdateAsync(patient);
-
-            if (result.Succeeded) return Ok();
-
-            return BadRequest();
-        }
-
-        [HttpPost, IgnoreAntiforgeryToken]
-        public async Task<IActionResult> DeletePatient(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
-
-            Patient patient = await _patientService.FindByIdAsync(id);
-
-            if (patient == null) return NotFound();
-
-            TaskResult result = await _patientService.DeleteAsync(patient);
-
-            if (result.Succeeded) return Ok();
-
-            return BadRequest();
-        }
-
-        #region Custom Methods
-
-        public JsonResult IsCpfExist(string cpf, int patientId)
-        {
-            Patient patient = ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId).Result;
-
-            return patient != null ? Json(false) : Json(true);
-        }
-
-        public JsonResult IsRgExist(string rg, int patientId)
-        {
-            Patient patient = ((PatientStore)_patientService).FindByRgAsync(rg, patientId).Result;
-
-            return Json(patient == null);
         }
 
         #endregion

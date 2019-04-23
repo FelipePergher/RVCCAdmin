@@ -199,10 +199,10 @@ namespace LigaCancer.Data.Store
                 {
                     patient.Family = new Family();
                 }
-                patient.Family.FamilyIncome += (double)familyMember.MonthlyIncome;
+                //patient.Family.FamilyIncome += (double)familyMember.MonthlyIncome;
                 patient.Family.FamilyMembers.Add(familyMember);
 
-                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
+                //patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
 
                 _context.SaveChanges();
                 result.Succeeded = true;

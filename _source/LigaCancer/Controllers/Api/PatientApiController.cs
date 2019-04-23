@@ -50,8 +50,10 @@ namespace LigaCancer.Controllers.Api
                     CivilState = x.CivilState.ToString(),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
-                    FamilyIncome = $"${x.Family.FamilyIncome.ToString("N")}",
-                    PerCapitaIncome = $"${x.Family.PerCapitaIncome.ToString("N")}",
+                    //FamilyIncome = $"${x.Family.FamilyIncome.ToString("N")}",
+                    //PerCapitaIncome = $"${x.Family.PerCapitaIncome.ToString("N")}",
+                    FamilyIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
+                    PerCapitaIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
@@ -153,10 +155,10 @@ namespace LigaCancer.Controllers.Api
             string options = string.Empty;
             if (!patient.PatientInformation.ActivePatient.Death && !patient.PatientInformation.ActivePatient.Discharge)
             {
-                string editPatient = $"<a href='/Patient/EditPatient/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar </a>";
+                string editPatient = $"<a href='/Patient/PatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar Paciente</a>";
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Archivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
+                    $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
                 options = editPatient + archivePatient;
             }

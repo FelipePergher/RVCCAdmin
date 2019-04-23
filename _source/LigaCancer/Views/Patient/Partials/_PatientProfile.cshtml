@@ -1,17 +1,18 @@
 ﻿@model LigaCancer.Models.FormModel.PatientProfileFormModel
 @using LigaCancer.Code
 
-<form id="addPatientProfileForm" asp-action="AddPatientProfile"
+<form id="patientProfileForm" asp-action="PatientProfile"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-failure="error"
-      data-ajax-success="addProfileSuccess"
+      data-ajax-success="ProfileSuccess"
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body">
         <h4>Paciente</h4>
         <hr />
+        <input asp-for="PatientId" />
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label asp-for="FirstName" class="control-label label-required"></label>

@@ -24,7 +24,8 @@ namespace LigaCancer.Controllers.Api
             {
                 BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family);
                 Patient patient = await _patientService.FindByIdAsync(id, specification);
-                return Ok(new { patient.Family.FamilyIncome, patient.Family.PerCapitaIncome });
+                //return Ok(new { patient.Family.FamilyIncome, patient.Family.PerCapitaIncome });
+                return Ok();
             }
             catch
             {

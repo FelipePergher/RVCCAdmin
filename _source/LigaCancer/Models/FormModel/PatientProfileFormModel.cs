@@ -8,7 +8,7 @@ namespace LigaCancer.Models.FormModel
     public class PatientProfileFormModel
     {
         [HiddenInput]
-        public int PatientId { get; set; }
+        public string PatientId { get; set; }
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
