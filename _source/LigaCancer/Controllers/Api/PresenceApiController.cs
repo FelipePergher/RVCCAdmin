@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using LigaCancer.Code.Interface;
+﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
+using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {

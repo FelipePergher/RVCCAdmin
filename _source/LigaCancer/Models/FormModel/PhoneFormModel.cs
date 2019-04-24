@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using LigaCancer.Code;
+﻿using LigaCancer.Code;
+using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
 {

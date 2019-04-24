@@ -1,5 +1,4 @@
-﻿
-using LigaCancer.Code;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.SearchModel;

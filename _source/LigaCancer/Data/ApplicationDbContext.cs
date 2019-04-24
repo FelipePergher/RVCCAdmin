@@ -1,5 +1,5 @@
-﻿using LigaCancer.Data.Models.RelationModels;
-using LigaCancer.Data.Models.PatientModels;
+﻿using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Models.RelationModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

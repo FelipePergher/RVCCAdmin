@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
-using LigaCancer.Code;
 
 namespace LigaCancer.Models.FormModel
 {

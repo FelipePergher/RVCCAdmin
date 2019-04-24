@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using LigaCancer.Data.Models;
+﻿using LigaCancer.Data.Models;
 using LigaCancer.Models.AccountViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {

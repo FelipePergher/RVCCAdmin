@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Data.Models.PatientModels;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
-using Microsoft.AspNetCore.Identity;
 using LigaCancer.Data.Models;
-using LigaCancer.Code;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.FormModel;
-using System.Linq;
+using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
