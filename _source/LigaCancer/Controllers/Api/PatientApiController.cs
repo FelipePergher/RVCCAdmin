@@ -155,11 +155,16 @@ namespace LigaCancer.Controllers.Api
             string options = string.Empty;
             if (!patient.PatientInformation.ActivePatient.Death && !patient.PatientInformation.ActivePatient.Discharge)
             {
-                string editPatient = $"<a href='/Patient/PatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string editPatient = $"<a href='/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar Paciente</a>";
-                string editNaturality = $"<a href='/Patient/PatientNaturality/{(patient.Naturality != null ? patient.Naturality.NaturalityId : patient.PatientId)}" +
-                    $"?isNaturalityId={patient.Naturality != null}' data-toggle='modal' data-target='#modal-action' " +
+
+                string editNaturality = $"<a href='/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-edit'></i> Editar Naturalidade</a>";
+
+                //string editPatientInformation = $"<a href='/Patient/PatientInformation/{(patient.PatientInformation != null ? patient.PatientInformation.PatientInformationId : patient.PatientId)}" +
+                //    $"?isPatientInformationId={patient.PatientInformation != null}' data-toggle='modal' data-target='#modal-action' " +
+                //    $"data-title='Editar Naturalidade' class='dropdown-item editPatientInformationButton'><i class='fas fa-edit'></i> Editar Informação do Paciente</a>";
+
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 

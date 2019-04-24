@@ -75,125 +75,82 @@ namespace LigaCancer.Controllers
             return View(patientSearch);
         }
 
-        #region Add/Edit Methods
+        #region Add Methods
 
         [HttpGet]
-        public async Task<IActionResult> PatientProfile(string id)
+        public IActionResult AddPatientProfile()
         {
-            PatientProfileFormModel patientProfileForm = new PatientProfileFormModel();
-            if (!string.IsNullOrEmpty(id))
-            {
-                //Todo if is null is add, instead is edit
-                Patient patient = await _patientService.FindByIdAsync(id);
-                patientProfileForm = new PatientProfileFormModel
-                {
-                    PatientId = patient.PatientId.ToString(),
-                    FirstName = patient.FirstName,
-                    Surname = patient.Surname,
-                    RG = patient.RG,
-                    CPF = patient.CPF,
-                    FamiliarityGroup = patient.FamiliarityGroup,
-                    Sex = patient.Sex,
-                    CivilState = patient.CivilState,
-                    DateOfBirth = patient.DateOfBirth,
-                    MonthlyIncome = patient.Family.MonthlyIncome,
-                    Profession = patient.Profession
-                };
-            }
-
-            return PartialView("Partials/_PatientProfile", patientProfileForm);
+            return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> PatientProfile(PatientProfileFormModel patientProfileForm)
+        public async Task<IActionResult> AddPatientProfile(PatientProfileFormModel patientProfileForm)
         {
             if (ModelState.IsValid)
             {
-                Patient patient = !string.IsNullOrEmpty(patientProfileForm.PatientId) ? await _patientService.FindByIdAsync(patientProfileForm.PatientId) : new Patient();
-
-                patient.FirstName = patientProfileForm.FirstName;
-                patient.Surname = patientProfileForm.Surname;
-                patient.RG = patientProfileForm.RG;
-                patient.CPF = patientProfileForm.CPF;
-                patient.FamiliarityGroup = patientProfileForm.FamiliarityGroup;
-                patient.Sex = patientProfileForm.Sex;
-                patient.CivilState = patientProfileForm.CivilState;
-                patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
-                patient.Profession = patientProfileForm.Profession;
-                
-                if(string.IsNullOrEmpty(patientProfileForm.PatientId)) patient.UserCreated = await _userManager.GetUserAsync(User);
-                else patient.UserUpdated = await _userManager.GetUserAsync(User);
-
-                patient.Family.MonthlyIncome = patientProfileForm.MonthlyIncome.HasValue ? patientProfileForm.MonthlyIncome.Value : 0;
-
-                TaskResult taskResult = !string.IsNullOrEmpty(patientProfileForm.PatientId) ? await _patientService.UpdateAsync(patient) : await _patientService.CreateAsync(patient);
-
-                if (taskResult.Succeeded && string.IsNullOrEmpty(patientProfileForm.PatientId))
-                    return Ok(new { ok = true, url = Url.Action("PatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
-                else if(taskResult.Succeeded) return Ok();
-                else return PartialView("Partials/_PatientProfile", patientProfileForm); ;
-            }
-
-            return PartialView("Partials/_PatientProfile", patientProfileForm);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> PatientNaturality(string id, bool isNaturalityId)
-        {
-            NaturalityFormModel naturalityForm = new NaturalityFormModel(id);
-            if (isNaturalityId)
-            {
-                Naturality naturality = await _naturalityService.FindByIdAsync(id);
-                naturalityForm = new NaturalityFormModel
+                Patient patient = new Patient
                 {
-                    NaturalityId = id,
-                    City = naturality.City,
-                    Country = naturality.Country,
-                    State = naturality.State
+                    FirstName = patientProfileForm.FirstName,
+                    Surname = patientProfileForm.Surname,
+                    RG = patientProfileForm.RG,
+                    CPF = patientProfileForm.CPF,
+                    FamiliarityGroup = patientProfileForm.FamiliarityGroup,
+                    Sex = patientProfileForm.Sex,
+                    CivilState = patientProfileForm.CivilState,
+                    DateOfBirth = patientProfileForm.DateOfBirth.Value,
+                    Profession = patientProfileForm.Profession,
+                    UserCreated = await _userManager.GetUserAsync(User),
+                    Family = new Family
+                    {
+                        MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0
+                    }
                 };
-            }
 
-            return PartialView("Partials/_PatientNaturality", naturalityForm);
-        }
+                TaskResult taskResult = await _patientService.CreateAsync(patient);
 
-        [HttpPost]
-        public async Task<IActionResult> PatientNaturality(NaturalityFormModel naturalityForm)
-        {
-            if (ModelState.IsValid)
-            {
-                Naturality naturality = new Naturality();
-
-                if (!string.IsNullOrEmpty(naturalityForm.NaturalityId))
-                {
-                    BaseSpecification<Naturality> baseSpecification = new BaseSpecification<Naturality>(x => x.Patient);
-                    naturality = await _naturalityService.FindByIdAsync(naturalityForm.NaturalityId, baseSpecification);
-                }
-                else
-                {
-                    naturality.PatientId = int.Parse(naturalityForm.PatientId);
-                }
-
-                naturality.City = naturalityForm.City;
-                naturality.State = naturalityForm.State;
-                naturality.Country = naturalityForm.Country;
-
-                if (string.IsNullOrEmpty(naturalityForm.NaturalityId)) naturality.UserCreated = await _userManager.GetUserAsync(User);
-                else naturality.UserUpdated = await _userManager.GetUserAsync(User);
-
-                TaskResult taskResult = !string.IsNullOrEmpty(naturalityForm.NaturalityId) ? await _naturalityService.UpdateAsync(naturality) : await _naturalityService.CreateAsync(naturality);
-
-                if (taskResult.Succeeded && string.IsNullOrEmpty(naturalityForm.NaturalityId))
-                    return Ok(new { ok = true, url = Url.Action("PatientInformation", new { id = naturality.PatientId }), title = "Adicionar Informação do Paciente" });
-                else if(taskResult.Succeeded) return Ok();
+                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = taskResult.Id }), title = "Adicionar Naturalidade" });
                 else return BadRequest(taskResult.Errors);
             }
 
-            return PartialView("Partials/_PatientNaturality", naturalityForm);
+            return PartialView("Partials/_AddPatientProfile", patientProfileForm);
         }
 
         [HttpGet]
-        public IActionResult PatientInformation(string id)
+        public IActionResult AddPatientNaturality(string id)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPatientNaturality(NaturalityFormModel naturalityForm)
+        {
+            if (ModelState.IsValid)
+            {
+                BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Naturality);
+                Patient patient = await _patientService.FindByIdAsync(naturalityForm.PatientId, baseSpecification);
+
+                patient.Naturality.PatientId = int.Parse(naturalityForm.PatientId);
+                patient.Naturality.City = naturalityForm.City;
+                patient.Naturality.State = naturalityForm.State;
+                patient.Naturality.Country = naturalityForm.Country;
+                patient.Naturality.UserCreated = await _userManager.GetUserAsync(User);
+
+                TaskResult taskResult = await _naturalityService.UpdateAsync(patient.Naturality);
+
+                if (taskResult.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", new { id = patient.PatientId }), title = "Adicionar Informação do Paciente" });
+                else return BadRequest(taskResult.Errors);
+            }
+
+            return PartialView("Partials/_AddPatientNaturality", naturalityForm);
+        }
+
+        [HttpGet]
+        public IActionResult AddPatientInformation(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             var patientInformationForm = new PatientInformationFormModel(id)
             {
                 SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
@@ -217,11 +174,11 @@ namespace LigaCancer.Controllers
                     Value = x.TreatmentPlaceId.ToString()
                 }).ToList()
             };
-            return PartialView("Partials/_PatientInformation", patientInformationForm);
+            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PatientInformation(PatientInformationFormModel patientInformationForm)
+        public async Task<IActionResult> AddPatientInformation(PatientInformationFormModel patientInformationForm)
         {
             if (ModelState.IsValid)
             {
@@ -333,7 +290,109 @@ namespace LigaCancer.Controllers
                 Value = x.TreatmentPlaceId.ToString()
             }).ToList();
 
-            return PartialView("Partials/_PatientInformation", patientInformationForm);
+            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
+        }
+
+        #endregion
+
+        #region Edit Methods
+
+        [HttpGet]
+        public async Task<IActionResult> EditPatientProfile(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Family);
+            Patient patient = await _patientService.FindByIdAsync(id, baseSpecification);
+
+            if(patient == null) return NotFound();
+
+            PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
+            {
+                PatientId = patient.PatientId.ToString(),
+                FirstName = patient.FirstName,
+                Surname = patient.Surname,
+                RG = patient.RG,
+                CPF = patient.CPF,
+                FamiliarityGroup = patient.FamiliarityGroup,
+                Sex = patient.Sex,
+                CivilState = patient.CivilState,
+                DateOfBirth = patient.DateOfBirth,
+                MonthlyIncome = patient.Family.MonthlyIncome,
+                Profession = patient.Profession
+            };
+
+            return PartialView("Partials/_EditPatientProfile", patientProfileForm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPatientProfile(PatientProfileFormModel patientProfileForm)
+        {
+            if (ModelState.IsValid)
+            {
+                BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Family);
+                Patient patient = await _patientService.FindByIdAsync(patientProfileForm.PatientId, baseSpecification);
+
+                patient.FirstName = patientProfileForm.FirstName;
+                patient.Surname = patientProfileForm.Surname;
+                patient.RG = patientProfileForm.RG;
+                patient.CPF = patientProfileForm.CPF;
+                patient.FamiliarityGroup = patientProfileForm.FamiliarityGroup;
+                patient.Sex = patientProfileForm.Sex;
+                patient.CivilState = patientProfileForm.CivilState;
+                patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
+                patient.Profession = patientProfileForm.Profession;
+                patient.UserUpdated = await _userManager.GetUserAsync(User);
+                patient.Family.MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0;
+
+                TaskResult taskResult = await _patientService.UpdateAsync(patient);
+
+                if (taskResult.Succeeded) return Ok();
+                else return BadRequest(taskResult.Errors);
+            }
+
+            return PartialView("Partials/_EditPatientProfile", patientProfileForm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditPatientNaturality(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            Naturality naturality = await _naturalityService.FindByIdAsync(id);
+
+            if(naturality == null) return NotFound();
+
+            NaturalityFormModel naturalityForm = new NaturalityFormModel
+            {
+                NaturalityId = id,
+                City = naturality.City,
+                Country = naturality.Country,
+                State = naturality.State
+            };
+
+            return PartialView("Partials/_EditPatientNaturality", naturalityForm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPatientNaturality(NaturalityFormModel naturalityForm)
+        {
+            if (ModelState.IsValid)
+            {
+                Naturality naturality = await _naturalityService.FindByIdAsync(naturalityForm.NaturalityId);
+
+                naturality.City = naturalityForm.City;
+                naturality.State = naturalityForm.State;
+                naturality.Country = naturalityForm.Country;
+                naturality.UserUpdated = await _userManager.GetUserAsync(User);
+
+                TaskResult taskResult = await _naturalityService.UpdateAsync(naturality);
+
+                if (taskResult.Succeeded) return Ok();
+                else return BadRequest(taskResult.Errors);
+            }
+
+            return PartialView("Partials/_EditPatientNaturality", naturalityForm);
         }
 
         #endregion
@@ -494,7 +553,7 @@ namespace LigaCancer.Controllers
                     UserCreated = user,
                     Family = new Family
                     {
-                        MonthlyIncome = patientForm.MonthlyIncome.HasValue ? patientForm.MonthlyIncome.Value : 0,
+                        MonthlyIncome = patientForm.MonthlyIncome ?? 0,
                         //FamilyIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0,
                         //PerCapitaIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0
                     }
@@ -979,7 +1038,7 @@ namespace LigaCancer.Controllers
 
                 //patient.Family.FamilyIncome -= (double)patient.Family.MonthlyIncome;
                 //patient.Family.FamilyIncome += (double)patientForm.MonthlyIncome;
-                patient.Family.MonthlyIncome = patientForm.MonthlyIncome.HasValue ? patientForm.MonthlyIncome.Value : 0;
+                patient.Family.MonthlyIncome = patientForm.MonthlyIncome ?? 0;
 
                 //patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count + 1);
 
