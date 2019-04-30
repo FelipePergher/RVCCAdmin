@@ -50,30 +50,14 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             PatientSearchModel patientSearch = new PatientSearchModel
             {
-                SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.CancerTypeId.ToString()
-                }).ToList(),
-                SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.DoctorId.ToString()
-                }).ToList(),
-                SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.MedicineId.ToString()
-                }).ToList(),
-                SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.City,
-                    Value = x.TreatmentPlaceId.ToString()
-                }).ToList()
+                SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
+                SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
+                SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService),
+                SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService)
             };
             return View(patientSearch);
         }
@@ -150,32 +134,16 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddPatientInformation(string id)
+        public async Task<IActionResult> AddPatientInformation(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
             var patientInformationForm = new PatientInformationFormModel(id)
             {
-                SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.DoctorId.ToString()
-                }).ToList(),
-                SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.CancerTypeId.ToString()
-                }).ToList(),
-                SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.MedicineId.ToString()
-                }).ToList(),
-                SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.City,
-                    Value = x.TreatmentPlaceId.ToString()
-                }).ToList()
+                SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
+                SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
+                SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService),
+                SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService)
             };
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
@@ -247,26 +215,10 @@ namespace LigaCancer.Controllers
                 return BadRequest(result.Errors);
             }
 
-            patientInformationForm.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.DoctorId.ToString()
-            }).ToList();
-            patientInformationForm.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.CancerTypeId.ToString()
-            }).ToList();
-            patientInformationForm.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.MedicineId.ToString()
-            }).ToList();
-            patientInformationForm.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.City,
-                Value = x.TreatmentPlaceId.ToString()
-            }).ToList();
+            patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);
+            patientInformationForm.SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService);
+            patientInformationForm.SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService);
+            patientInformationForm.SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService);
 
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
@@ -388,27 +340,10 @@ namespace LigaCancer.Controllers
             var patientInformationForm = new PatientInformationFormModel(id)
             {
                 PatientInformationId = id,
-                SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.DoctorId.ToString()
-                }).ToList(),
-                SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.CancerTypeId.ToString()
-                }).ToList(),
-                SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.MedicineId.ToString()
-                }).ToList(),
-                SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-                {
-                    Text = x.City,
-                    Value = x.TreatmentPlaceId.ToString()
-                }).ToList(),
-
+                SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
+                SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
+                SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService),
+                SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService),
                 CancerTypes = patientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
                 Doctors = patientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
                 Medicines = patientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
@@ -535,26 +470,10 @@ namespace LigaCancer.Controllers
                 return BadRequest(result.Errors);
             }
 
-            patientInformationForm.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.DoctorId.ToString()
-            }).ToList();
-            patientInformationForm.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.CancerTypeId.ToString()
-            }).ToList();
-            patientInformationForm.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.MedicineId.ToString()
-            }).ToList();
-            patientInformationForm.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-            {
-                Text = x.City,
-                Value = x.TreatmentPlaceId.ToString()
-            }).ToList();
+            patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);
+            patientInformationForm.SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService);
+            patientInformationForm.SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService);
+            patientInformationForm.SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService);
 
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
@@ -658,63 +577,13 @@ namespace LigaCancer.Controllers
 
         #region Remove this
 
-        //[HttpGet]
-        //public IActionResult AddPatient()
-        //{
-        //    PatientFormModel patientForm = new PatientFormModel
-        //    {
-        //        SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.DoctorId.ToString()
-        //        }).ToList(),
-        //        SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.CancerTypeId.ToString()
-        //        }).ToList(),
-        //        SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.MedicineId.ToString()
-        //        }).ToList(),
-        //        SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.City,
-        //            Value = x.TreatmentPlaceId.ToString()
-        //        }).ToList(),
-        //        DateOfBirth = DateTime.Now
-        //    };
-
-        //    return PartialView("Partials/_AddPatient", patientForm);
-        //}
-
         //[HttpPost]
         //public async Task<IActionResult> AddPatient(PatientFormModel patientForm)
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        ApplicationUser user = await _userManager.GetUserAsync(User);
-
         //        Patient patient = new Patient
         //        {
-        //            FirstName = patientForm.FirstName,
-        //            Surname = patientForm.Surname,
-        //            RG = patientForm.RG,
-        //            CPF = patientForm.CPF,
-        //            FamiliarityGroup = patientForm.FamiliarityGroup,
-        //            Sex = patientForm.Sex,
-        //            CivilState = patientForm.CivilState,
-        //            DateOfBirth = patientForm.DateOfBirth,
-        //            Profession = patientForm.Profession,
-        //            Naturality = new Naturality
-        //            {
-        //                City = patientForm.Naturality.City,
-        //                State = patientForm.Naturality.State,
-        //                Country = patientForm.Naturality.Country,
-        //                UserCreated = user,
-        //            },
-        //            UserCreated = user,
         //            Family = new Family
         //            {
         //                MonthlyIncome = patientForm.MonthlyIncome ?? 0,
@@ -722,148 +591,6 @@ namespace LigaCancer.Controllers
         //                //PerCapitaIncome = patientForm.MonthlyIncome != null ? (double)patientForm.MonthlyIncome : 0
         //            }
         //        };
-
-        //        //Added Cancer Types to Patient Information
-        //        foreach (string item in patientForm.PatientInformation.CancerTypes)
-        //        {
-        //            CancerType cancerType = int.TryParse(item, out int num) ? await _cancerTypeService.FindByIdAsync(item) : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
-        //            if (cancerType == null)
-        //            {
-        //                cancerType = new CancerType(item, user);
-        //                TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
-        //                if (result.Succeeded)
-        //                {
-        //                    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
-        //                }
-        //            }
-        //            else
-        //            {
-        //                patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
-        //            }
-
-        //        }
-
-        //        //Added Doctor to Patient Information
-        //        foreach (string item in patientForm.PatientInformation.Doctors)
-        //        {
-        //            Doctor doctor = int.TryParse(item, out int num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
-        //            if (doctor == null)
-        //            {
-        //                doctor = new Doctor
-        //                {
-        //                    Name = item,
-        //                    UserCreated = user
-        //                };
-        //                TaskResult result = await _doctorService.CreateAsync(doctor);
-        //                if (result.Succeeded)
-        //                {
-        //                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
-        //                    {
-        //                        Doctor = doctor
-        //                    });
-        //                }
-        //            }
-        //            else
-        //            {
-        //                patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
-        //                {
-        //                    Doctor = doctor
-        //                });
-        //            }
-        //        }
-
-        //        //Added Treatment Place to Patient Information
-        //        foreach (string item in patientForm.PatientInformation.TreatmentPlaces)
-        //        {
-        //            TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ?
-        //                await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
-        //            if (treatmentPlace == null)
-        //            {
-        //                treatmentPlace = new TreatmentPlace
-        //                {
-        //                    City = item,
-        //                    UserCreated = user
-        //                };
-        //                TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
-        //                if (result.Succeeded)
-        //                {
-        //                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
-        //                    {
-        //                        TreatmentPlace = treatmentPlace
-        //                    });
-        //                }
-        //            }
-        //            else
-        //            {
-        //                patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
-        //                {
-        //                    TreatmentPlace = treatmentPlace
-        //                });
-        //            }
-
-        //        }
-
-        //        //Added Medicine to Patient Information
-        //        foreach (string item in patientForm.PatientInformation.Medicines)
-        //        {
-        //            Medicine medicine = int.TryParse(item, out int num) ?
-        //                await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
-
-        //            if (medicine == null)
-        //            {
-        //                medicine = new Medicine
-        //                {
-        //                    Name = item,
-        //                    UserCreated = user
-        //                };
-        //                TaskResult result = await _medicineService.CreateAsync(medicine);
-        //                if (result.Succeeded)
-        //                {
-        //                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
-        //                    {
-        //                        Medicine = medicine
-        //                    });
-        //                }
-        //            }
-        //            else
-        //            {
-        //                patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
-        //                {
-        //                    Medicine = medicine
-        //                });
-        //            }
-
-        //        }
-
-        //        TaskResult result = await _patientService.CreateAsync(patient);
-        //        if (result.Succeeded) return Ok();
-        //        ModelState.AddErrors(result);
-        //    }
-
-        //    patientForm.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.DoctorId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.CancerTypeId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.MedicineId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.City,
-        //        Value = x.TreatmentPlaceId.ToString()
-        //    }).ToList();
-        //    return PartialView("Partials/_AddPatient", patientForm);
         //}
 
         //public async Task<IActionResult> DetailsPatient(string id)
@@ -884,13 +611,6 @@ namespace LigaCancer.Controllers
         //    specification.IncludeStrings.Add("PatientInformation.PatientInformationMedicines.Medicine");
         //    specification.IncludeStrings.Add("PatientInformation.PatientInformationCancerTypes.CancerType");
         //    specification.IncludeStrings.Add("PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace");
-
-        //    Patient patient = await _patientService.FindByIdAsync(id, specification);
-
-        //    if (patient == null)
-        //    {
-        //        return NotFound();
-        //    }
 
         //    PatientShowFormModel patientShowForm = new PatientShowFormModel
         //    {
@@ -941,49 +661,6 @@ namespace LigaCancer.Controllers
 
         //    PatientFormModel patientForm = new PatientFormModel
         //    {
-        //        SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.DoctorId.ToString()
-        //        }).ToList(),
-        //        SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.CancerTypeId.ToString()
-        //        }).ToList(),
-        //        SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.Name,
-        //            Value = x.MedicineId.ToString()
-        //        }).ToList(),
-        //        SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-        //        {
-        //            Text = x.City,
-        //            Value = x.TreatmentPlaceId.ToString()
-        //        }).ToList(),
-        //        CivilState = patient.CivilState,
-        //        CPF = patient.CPF,
-        //        DateOfBirth = patient.DateOfBirth,
-        //        FamiliarityGroup = patient.FamiliarityGroup,
-        //        FirstName = patient.FirstName,
-        //        //Naturality = new NaturalityFormModel
-        //        //{
-        //        //    City = patient.Naturality.City,
-        //        //    Country = patient.Naturality.Country,
-        //        //    State = patient.Naturality.State
-        //        //},
-        //        PatientId = patient.PatientId,
-        //        //PatientInformation = new PatientInformationFormModel
-        //        //{
-        //        //    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.CancerTypeId.ToString()).ToList(),
-        //        //    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.DoctorId.ToString()).ToList(),
-        //        //    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
-        //        //    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
-        //        //},
-        //        Profession = patient.Profession,
-        //        RG = patient.RG,
-        //        Sex = patient.Sex,
-        //        Surname = patient.Surname,
         //        MonthlyIncome = patient.Family.MonthlyIncome
         //    };
 
@@ -1010,186 +687,6 @@ namespace LigaCancer.Controllers
         //        Patient patient = await _patientService.FindByIdAsync(id, specification);
         //        ApplicationUser user = await _userManager.GetUserAsync(User);
 
-
-        //        //Added Cancer Types to Patient Information
-        //        if (patientForm.PatientInformation.CancerTypes.Count == 0)
-        //        {
-        //            patient.PatientInformation.PatientInformationCancerTypes.Clear();
-        //        }
-        //        else
-        //        {
-        //            //Remove not selected of database
-        //            List<PatientInformationCancerType> removePatientInformationCancerTypes = new List<PatientInformationCancerType>();
-        //            foreach (PatientInformationCancerType item in patient.PatientInformation.PatientInformationCancerTypes)
-        //            {
-        //                if (patientForm.PatientInformation.CancerTypes.FirstOrDefault(x => x == item.CancerType.Name) == null)
-        //                    removePatientInformationCancerTypes.Add(item);
-        //            }
-        //            patient.PatientInformation.PatientInformationCancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Except(removePatientInformationCancerTypes).ToList();
-
-        //            //Add news cancer types
-        //            foreach (string item in patientForm.PatientInformation.CancerTypes)
-        //            {
-        //                CancerType cancerType = int.TryParse(item, out int num)
-        //                    ? await _cancerTypeService.FindByIdAsync(item)
-        //                    : await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(item);
-        //                //if (cancerType == null)
-        //                //{
-        //                //    cancerType = new CancerType
-        //                //    {
-        //                //        Name = item,
-        //                //        UserCreated = user
-        //                //    };
-        //                //}
-        //                //if (patient.PatientInformation.PatientInformationCancerTypes.FirstOrDefault(x => x.CancerTypeId == cancerType.CancerTypeId) == null)
-        //                //{
-        //                //    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType
-        //                //    {
-        //                //        CancerType = cancerType
-        //                //    });
-        //                //}
-        //            }
-        //        }
-
-        //        //Added Doctor to Patient Information
-        //        if (patientForm.PatientInformation.Doctors.Count == 0)
-        //        {
-        //            patient.PatientInformation.PatientInformationDoctors.Clear();
-        //        }
-        //        else
-        //        {
-        //            //Remove not selected of database
-        //            List<PatientInformationDoctor> removePatientInformationDoctors = new List<PatientInformationDoctor>();
-        //            foreach (PatientInformationDoctor item in patient.PatientInformation.PatientInformationDoctors)
-        //            {
-        //                if (patientForm.PatientInformation.Doctors.FirstOrDefault(x => x == item.Doctor.Name) == null)
-        //                {
-        //                    removePatientInformationDoctors.Add(item);
-        //                }
-        //            }
-        //            patient.PatientInformation.PatientInformationDoctors = patient.PatientInformation.PatientInformationDoctors.Except(removePatientInformationDoctors).ToList();
-
-        //            //Add news doctors
-        //            foreach (string item in patientForm.PatientInformation.Doctors)
-        //            {
-        //                Doctor doctor = int.TryParse(item, out int num) ? await _doctorService.FindByIdAsync(item) : await ((DoctorStore)_doctorService).FindByNameAsync(item);
-        //                if (doctor == null)
-        //                {
-        //                    doctor = new Doctor
-        //                    {
-        //                        Name = item,
-        //                        UserCreated = user
-        //                    };
-        //                }
-        //                if (patient.PatientInformation.PatientInformationDoctors.FirstOrDefault(x => x.DoctorId == doctor.DoctorId) == null)
-        //                {
-        //                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor
-        //                    {
-        //                        Doctor = doctor
-        //                    });
-        //                }
-        //            }
-
-        //        }
-
-        //        //Added Treatment Place to Patient Information
-        //        if (patientForm.PatientInformation.TreatmentPlaces.Count == 0) patient.PatientInformation.PatientInformationTreatmentPlaces.Clear();
-        //        else
-        //        {
-        //            //Remove not selected of database
-        //            List<PatientInformationTreatmentPlace> removePatientInformationTreatmentPlaces = new List<PatientInformationTreatmentPlace>();
-        //            foreach (PatientInformationTreatmentPlace item in patient.PatientInformation.PatientInformationTreatmentPlaces)
-        //            {
-        //                if (patientForm.PatientInformation.TreatmentPlaces.FirstOrDefault(x => x == item.TreatmentPlace.City) == null)
-        //                    removePatientInformationTreatmentPlaces.Add(item);
-        //            }
-        //            patient.PatientInformation.PatientInformationTreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Except(removePatientInformationTreatmentPlaces).ToList();
-
-        //            //Add new Treatment Place
-        //            foreach (string item in patientForm.PatientInformation.TreatmentPlaces)
-        //            {
-        //                TreatmentPlace treatmentPlace = int.TryParse(item, out int num) ?
-        //                    await _treatmentPlaceService.FindByIdAsync(item) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(item);
-
-        //                if (treatmentPlace == null)
-        //                {
-        //                    treatmentPlace = new TreatmentPlace
-        //                    {
-        //                        City = item,
-        //                        UserCreated = user
-        //                    };
-        //                }
-
-        //                if (patient.PatientInformation.PatientInformationTreatmentPlaces.FirstOrDefault(x => x.TreatmentPlaceId == treatmentPlace.TreatmentPlaceId) == null)
-        //                {
-        //                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace
-        //                    {
-        //                        TreatmentPlace = treatmentPlace
-        //                    });
-        //                }
-        //            }
-        //        }
-
-        //        //Added Medicine to Patient Information
-        //        if (patientForm.PatientInformation.Medicines.Count == 0)
-        //        {
-        //            patient.PatientInformation.PatientInformationMedicines.Clear();
-        //        }
-        //        else
-        //        {
-
-        //            //Remove not selected of database
-        //            List<PatientInformationMedicine> removePatientInformationMedicines = new List<PatientInformationMedicine>();
-        //            foreach (PatientInformationMedicine item in patient.PatientInformation.PatientInformationMedicines)
-        //            {
-        //                if (patientForm.PatientInformation.TreatmentPlaces.FirstOrDefault(x => x == item.Medicine.Name) == null)
-        //                {
-        //                    removePatientInformationMedicines.Add(item);
-        //                }
-        //            }
-        //            patient.PatientInformation.PatientInformationMedicines = patient.PatientInformation.PatientInformationMedicines.Except(removePatientInformationMedicines).ToList();
-
-        //            //Added Medicine to Patient Information
-        //            foreach (var item in patientForm.PatientInformation.Medicines)
-        //            {
-        //                Medicine medicine = int.TryParse(item, out int num) ?
-        //                    await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
-
-        //                if (medicine == null)
-        //                {
-        //                    medicine = new Medicine
-        //                    {
-        //                        Name = item,
-        //                        UserCreated = user
-        //                    };
-        //                }
-
-        //                if (patient.PatientInformation.PatientInformationMedicines.FirstOrDefault(x => x.MedicineId == medicine.MedicineId) == null)
-        //                {
-        //                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine
-        //                    {
-        //                        Medicine = medicine
-        //                    });
-        //                }
-        //            }
-        //        }
-
-        //        patient.UpdatedDate = DateTime.Now;
-        //        patient.UserUpdated = user;
-
-        //        patient.FirstName = patientForm.FirstName;
-        //        patient.Surname = patientForm.Surname;
-        //        patient.RG = patientForm.RG;
-        //        patient.CPF = patientForm.CPF;
-        //        patient.FamiliarityGroup = patientForm.FamiliarityGroup;
-        //        patient.Sex = patientForm.Sex;
-        //        patient.CivilState = patientForm.CivilState;
-        //        patient.DateOfBirth = patientForm.DateOfBirth;
-        //        patient.Naturality.City = patientForm.Naturality.City;
-        //        patient.Naturality.State = patientForm.Naturality.State;
-        //        patient.Naturality.Country = patientForm.Naturality.Country;
-        //        patient.Profession = patientForm.Profession;
-
         //        //patient.Family.FamilyIncome -= (double)patient.Family.MonthlyIncome;
         //        //patient.Family.FamilyIncome += (double)patientForm.MonthlyIncome;
         //        patient.Family.MonthlyIncome = patientForm.MonthlyIncome ?? 0;
@@ -1201,31 +698,6 @@ namespace LigaCancer.Controllers
         //        ModelState.AddErrors(result);
         //    }
 
-        //    patientForm.SelectDoctors = _doctorService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.DoctorId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectCancerTypes = _cancerTypeService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.CancerTypeId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectMedicines = _medicineService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.MedicineId.ToString()
-        //    }).ToList();
-
-        //    patientForm.SelectTreatmentPlaces = _treatmentPlaceService.GetAllAsync().Result.Select(x => new SelectListItem
-        //    {
-        //        Text = x.City,
-        //        Value = x.TreatmentPlaceId.ToString()
-        //    }).ToList();
-
-        //    return PartialView("Partials/_EditPatient", patientForm);
         //}
 
         #endregion

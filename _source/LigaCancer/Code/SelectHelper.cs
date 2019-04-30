@@ -10,31 +10,53 @@ namespace LigaCancer.Code
 {
     public class SelectHelper
     {
-        private readonly IDataStore<Doctor> _doctorService;
-        private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
-        private readonly IDataStore<CancerType> _cancerTypeService;
-        private readonly IDataStore<Medicine> _medicineService;
-
-        public SelectHelper(
-           IDataStore<Doctor> doctorService,
-           IDataStore<TreatmentPlace> treatmentPlaceService,
-           IDataStore<CancerType> cancerTypeService,
-           IDataStore<Medicine> medicineService)
+        public static async Task<List<SelectListItem>> GetDoctorSelectAsync(IDataStore<Doctor> doctorService)
         {
-            _doctorService = doctorService;
-            _cancerTypeService = cancerTypeService;
-            _treatmentPlaceService = treatmentPlaceService;
-            _medicineService = medicineService;
-        }
-
-        public async Task<List<SelectListItem>> GetDoctorSelectAsync()
-        {
-            List<Doctor> doctors = await _doctorService.GetAllAsync();
+            List<Doctor> doctors = await doctorService.GetAllAsync();
 
             List<SelectListItem> selectListItems = doctors.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.DoctorId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetTreatmentPlaceSelectAsync(IDataStore<TreatmentPlace> treatmentPlaceService)
+        {
+            List<TreatmentPlace> treatmentPlaces = await treatmentPlaceService.GetAllAsync();
+
+            List<SelectListItem> selectListItems = treatmentPlaces.Select(x => new SelectListItem
+            {
+                Text = x.City,
+                Value = x.TreatmentPlaceId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetCancerTypesSelectAsync(IDataStore<CancerType> cancerTypeService)
+        {
+            List<CancerType> cancerTypes = await cancerTypeService.GetAllAsync();
+
+            List<SelectListItem> selectListItems = cancerTypes.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.CancerTypeId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetMedicinesSelectAsync(IDataStore<Medicine> medicineService)
+        {
+            List<Medicine> medicines = await medicineService.GetAllAsync();
+
+            List<SelectListItem> selectListItems = medicines.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.MedicineId.ToString()
             }).ToList();
 
             return selectListItems;

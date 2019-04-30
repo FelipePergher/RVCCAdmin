@@ -7,21 +7,12 @@ namespace LigaCancer.Models.FormModel
 {
     public class PatientInformationFormModel
     {
-        public PatientInformationFormModel()
-        {
-            CancerTypes = new List<string>();
-            Medicines = new List<string>();
-            Doctors = new List<string>();
-            TreatmentPlaces = new List<string>();
-        }
+        public PatientInformationFormModel() => InitFields();
 
         public PatientInformationFormModel(string patientId)
         {
             PatientId = patientId;
-            CancerTypes = new List<string>();
-            Medicines = new List<string>();
-            Doctors = new List<string>();
-            TreatmentPlaces = new List<string>();
+            InitFields();
         }
 
         [HiddenInput]
@@ -51,6 +42,18 @@ namespace LigaCancer.Models.FormModel
         public List<SelectListItem> SelectMedicines { get; set; }
 
         public List<SelectListItem> SelectCancerTypes { get; set; }
+
+        #endregion
+
+        #region Functions 
+
+        private void InitFields()
+        {
+            CancerTypes = new List<string>();
+            Medicines = new List<string>();
+            Doctors = new List<string>();
+            TreatmentPlaces = new List<string>();
+        }
 
         #endregion
     }
