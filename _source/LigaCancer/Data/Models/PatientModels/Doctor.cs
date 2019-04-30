@@ -6,6 +6,21 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class Doctor : RegisterData
     {
+        public Doctor(){}
+
+        public Doctor(string name, ApplicationUser user)
+        {
+            Name = name;
+            UserCreated = user;
+        }
+
+        public Doctor(string name, string crm, ApplicationUser user)
+        {
+            Name = name;
+            CRM = crm;
+            UserCreated = user;
+        }
+
         [Key]
         public int DoctorId { get; set; }
 

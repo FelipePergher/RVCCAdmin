@@ -1,43 +1,33 @@
 ﻿@model LigaCancer.Models.FormModel.PatientInformationFormModel
 
-<form id="PatientInformationForm" asp-action="AddPatientInformation"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="PatientInformationSuccess"
-      data-ajax-loading="#submitSpinner">
+<div class="modal-body">
+    <h4>Informação do Paciente</h4>
+    <hr />
 
-    <div class="modal-body">
-        <h4>Informação do Paciente</h4>
-        <hr />
-        
-        <div class="form-row">
-            <input asp-for="PatientId" />
+    <div class="form-row">
+        <input asp-for="PatientId" />
 
-            <div class="form-group col-lg-12">
-                <label asp-for="CancerTypes" class="control-label"></label>
-                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Tipos de Câncer" data-allow-clear="true"></select>
-                <span asp-validation-for="CancerTypes" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="Medicines" class="control-label"></label>
-                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Remédios" data-allow-clear="true"></select>
-                <span asp-validation-for="Medicines" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="Doctors" class="control-label"></label>
-                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Médicos" data-allow-clear="true"></select>
-                <span asp-validation-for="Doctors" class="text-danger"></span>
-            </div>
-            <div class="form-group col-lg-12">
-                <label asp-for="TreatmentPlaces" class="control-label"></label>
-                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Locais de Tratamento" data-allow-clear="true"></select>
-                <span asp-validation-for="TreatmentPlaces" class="text-danger"></span>
-            </div>
+        <div class="form-group col-lg-12">
+            <label asp-for="CancerTypes" class="control-label"></label>
+            <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Tipos de Câncer" data-allow-clear="true"></select>
+            <span asp-validation-for="CancerTypes" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-12">
+            <label asp-for="Medicines" class="control-label"></label>
+            <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Remédios" data-allow-clear="true"></select>
+            <span asp-validation-for="Medicines" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-12">
+            <label asp-for="Doctors" class="control-label"></label>
+            <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Médicos" data-allow-clear="true"></select>
+            <span asp-validation-for="Doctors" class="text-danger"></span>
+        </div>
+        <div class="form-group col-lg-12">
+            <label asp-for="TreatmentPlaces" class="control-label"></label>
+            <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Locais de Tratamento" data-allow-clear="true"></select>
+            <span asp-validation-for="TreatmentPlaces" class="text-danger"></span>
         </div>
     </div>
+</div>
 
-    <partial name="_ModalFooter"  />
-
-</form>
+<partial name="_ModalFooter" />

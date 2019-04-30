@@ -1,0 +1,13 @@
+﻿@model LigaCancer.Models.FormModel.PatientInformationFormModel
+
+<form id="addPatientInformationForm" asp-action="AddPatientInformation"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="addPatientInformationSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="Partials/_PatientInformation"  />
+
+</form>

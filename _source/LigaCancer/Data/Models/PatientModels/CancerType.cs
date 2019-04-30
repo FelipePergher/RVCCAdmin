@@ -6,6 +6,14 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class CancerType : RegisterData
     {
+        public CancerType(){}
+
+        public CancerType(string name, ApplicationUser user)
+        {
+            Name = name;
+            UserCreated = user;
+        }
+
         [Key]
         public int CancerTypeId { get; set; }
 

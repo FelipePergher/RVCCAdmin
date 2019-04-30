@@ -4,6 +4,13 @@ namespace LigaCancer.Data.Models.RelationModels
 {
     public class PatientInformationMedicine
     {
+        public PatientInformationMedicine() { }
+
+        public PatientInformationMedicine(Medicine medicine)
+        {
+            Medicine = medicine;
+        }
+
         public int PatientInformationId { get; set; }
         public PatientInformation PatientInformation { get; set; }
 

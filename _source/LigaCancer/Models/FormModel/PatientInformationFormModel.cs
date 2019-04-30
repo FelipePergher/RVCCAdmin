@@ -27,6 +27,9 @@ namespace LigaCancer.Models.FormModel
         [HiddenInput]
         public string PatientId { get; set; }
 
+        [HiddenInput]
+        public string PatientInformationId { get; set; }
+
         [Display(Name = "Tipos de Câncer")]
         public List<string> CancerTypes { get; set; }
 

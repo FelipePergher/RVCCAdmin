@@ -61,7 +61,7 @@
         { data: "familyIncome", title: "FamilyIncome", name: "FamilyIncome" },
         { data: "perCapitaIncome", title: "PerCapitaIncome", name: "PerCapitaIncome" },
         { data: "medicines", title: "Medicines", name: "Medicines", orderable: false },
-        { data: "canceres", title: "Canceres", name: "Canceres", orderable: false },
+        { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
         { data: "doctors", title: "Doctors", name: "Doctors", orderable: false },
         { data: "treatmentPlaces", title: "TreatmentPlaces", name: "TreatmentPlaces", orderable: false }
     ],
@@ -76,6 +76,10 @@
 
         $(".editNaturalityButton").click(function () {
             openModal($(this).attr("href"), $(this).data("title"), initEditNaturalityForm);
+        });
+
+        $(".editPatientInformationButton").click(function () {
+            openModal($(this).attr("href"), $(this).data("title"), initEditPatientInformationForm);
         });
 
         $(".archivePatientButton").click(function (e) {
@@ -153,7 +157,7 @@ function addNaturalitySuccess(data, textStatus) {
             text: "Naturalidade adicionada com sucesso.",
             type: 'success'
         }).then((result) => {
-            openModal(data.url, data.title, initPatientInformationForm);
+            openModal(data.url, data.title, initAddPatientInformationForm);
         });
     }
     else {
@@ -162,20 +166,15 @@ function addNaturalitySuccess(data, textStatus) {
     }
 }
 
-function initPatientInformationForm() {
-    $.validator.unobtrusive.parse("#PatientInformationForm");
+function initAddPatientInformationForm() {
+    $.validator.unobtrusive.parse("#addPatientInformationForm");
     $(".patientInformationSelect").select2({
         theme: "bootstrap",
         language: languageSelect2
     });
 }
 
-function PatientInformationSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
-        $("#modal-action").modal("hide");
-        patientTable.ajax.reload(null, false);
-        swalWithBootstrapButtons.fire("Sucesso", "Informação do paciente atualizada com sucesso.", "success");
-    }
+function addPatientInformationSuccess(data, textStatus) {
     if (data.ok) {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
@@ -184,11 +183,13 @@ function PatientInformationSuccess(data, textStatus) {
             type: 'success'
         }).then((result) => {
             //Todo call Contact/address form
+            $("#modal-action").modal("hide");
+            patientTable.ajax.reload(null, false);
         });
     }
     else {
         $("#modalBody").html(data);
-        initPatientInformationForm();
+        initAddPatientInformationForm();
     }
 }
 
@@ -223,6 +224,26 @@ function editNaturalitySuccess(data, textStatus) {
     else {
         $("#modalBody").html(data);
         initEditNaturalityForm();
+    }
+}
+
+function initEditPatientInformationForm() {
+    $.validator.unobtrusive.parse("#editPatientInformationForm");
+    $(".patientInformationSelect").select2({
+        theme: "bootstrap",
+        language: languageSelect2
+    });
+}
+
+function editPatientInformationSuccess(data, textStatus) {
+    if (data === "" && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        patientTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Informação do paciente atualizada com sucesso.", "success");
+    }
+    else {
+        $("#modalBody").html(data);
+        initEditPatientInformationForm();
     }
 }
 

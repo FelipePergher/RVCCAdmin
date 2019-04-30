@@ -40,15 +40,11 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> AddMedicine(MedicineFormModel medicineForm)
         {
             if (ModelState.IsValid) {
-                Medicine medicine = new Medicine
-                {
-                    Name = medicineForm.Name,
-                    UserCreated = await _userManager.GetUserAsync(User)
-                };
+                Medicine medicine = new Medicine(medicineForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);
                 if (result.Succeeded) return Ok();
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
 
             return PartialView("Partials/_AddMedicine", medicineForm);
@@ -85,7 +81,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);
                 if (result.Succeeded) return Ok();
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
 
             return PartialView("Partials/_EditMedicine", medicineForm);

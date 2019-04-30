@@ -161,14 +161,13 @@ namespace LigaCancer.Controllers.Api
                 string editNaturality = $"<a href='/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-edit'></i> Editar Naturalidade</a>";
 
-                //string editPatientInformation = $"<a href='/Patient/PatientInformation/{(patient.PatientInformation != null ? patient.PatientInformation.PatientInformationId : patient.PatientId)}" +
-                //    $"?isPatientInformationId={patient.PatientInformation != null}' data-toggle='modal' data-target='#modal-action' " +
-                //    $"data-title='Editar Naturalidade' class='dropdown-item editPatientInformationButton'><i class='fas fa-edit'></i> Editar Informação do Paciente</a>";
+                string editPatientInformation = $"<a href='/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Editar Informação do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-edit'></i> Editar Informação do Paciente</a>";
 
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + editNaturality + archivePatient;
+                options = editPatient + editNaturality + editPatientInformation + archivePatient;
             }
             else
             {

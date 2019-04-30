@@ -41,17 +41,11 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Doctor doctor = new Doctor
-                {
-                    CRM = doctorForm.CRM,
-                    Name = doctorForm.Name,
-                    UserCreated = await _userManager.GetUserAsync(User)
-                };
+                Doctor doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
                 if (result.Succeeded) return Ok();
-
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
                 
             return PartialView("Partials/_AddDoctor", doctorForm);
@@ -87,8 +81,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
                 if (result.Succeeded) return Ok();
-
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
             
             return PartialView("Partials/_EditDoctor", doctorForm);
@@ -106,8 +99,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
             if (result.Succeeded) return Ok();
-
-            return BadRequest();
+            return BadRequest(result.Errors);
         }
 
         [HttpGet]

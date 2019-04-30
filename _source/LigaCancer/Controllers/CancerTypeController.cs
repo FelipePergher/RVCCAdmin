@@ -41,15 +41,11 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                CancerType cancerType = new CancerType
-                {
-                    Name = cancerTypeForm.Name,
-                    UserCreated = await _userManager.GetUserAsync(User)
-                };
+                CancerType cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
                 if (result.Succeeded) return Ok();
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
 
             return PartialView("Partials/_AddCancerType", cancerTypeForm);
@@ -90,8 +86,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
                 if (result.Succeeded) return Ok();
-
-                ModelState.AddErrors(result);
+                return BadRequest(result.Errors);
             }
 
             return PartialView("Partials/_EditCancerType", cancerTypeForm);
@@ -109,7 +104,6 @@ namespace LigaCancer.Controllers
             TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
 
             if (result.Succeeded) return Ok();
-
             return BadRequest(result);
         }
 
