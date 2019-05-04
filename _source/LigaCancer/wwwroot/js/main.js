@@ -54,6 +54,7 @@ function time(id) {
     });
 }
 
+//Modal Primary functions
 function openModal(url, title, callback = null) {
     $("#modal-title").text(title);
 
@@ -70,16 +71,8 @@ function openModal(url, title, callback = null) {
 function cleanModal() {
     $("#modalBody").html("");
     $("#modal-title").text("");
-    $(".modal-dialog").removeClass("modal-lg");
+    $("#modal-dialog").removeClass("modal-lg");
     showSpinnerModal();
-}
-
-function showSpinner() {
-    $("#spinner-container").show();
-}
-
-function hideSpinner() {
-    $("#spinner-container").hide();
 }
 
 function showSpinnerModal() {
@@ -90,47 +83,30 @@ function hideSpinnerModal() {
     $("#modalSpinner").hide();
 }
 
-//function AjaxError(error) {
-//    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-//}
+//Secondary Modal Functions
+function openModalSecondary(url, title, callback = null) {
+    $("#modal-title-secondary").text(title);
 
-//function AjaxSuccess(data) {
-//    if (data === "200") {
-//        $("#modal-action").modal("hide");
-//        $("#modal-action").removeClass("fade");
-//        if (dataTable !== null) {
-//            dataTable.ajax.reload();
-//        }
-//        swalWithBootstrapButtons.fire("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-//            if (dataTable === null) {
-//                location.reload();
-//            }
-//        });
-//    }
-//    else {
-//        $("#modalBody").html(data);
-//    }
-//}
+    $("#modalBodySecondary").load(url, function () {
+        if (callback !== null) callback();
+        hideSpinnerModalSecondary();
+    });
 
-//$("#modal-action").on("show.bs.modal", function (e) {
-//    var link = $(e.relatedTarget);
-//    $(this).find(".modal-content").load(link.attr("href"), function (e) {
-//        $.validator.unobtrusive.parse("form");
+    $("#modal-action-secondary").on("hidden.bs.modal", function (e) {
+        cleanModalSecondary();
+    });
+}
 
-//        if ($(".customSelect2").length > 0) {
-//            $(".customSelect2").select2({
-//                theme: "bootstrap",
-//                language: languageSelect2
-//            });
-//        }
-//    });
-//});
+function cleanModalSecondary() {
+    $("#modalBodySecondary").html("");
+    $("#modal-title-secondary").text("");
+    showSpinnerModalSecondary();
+}
 
-//function errorDataTable() {
-//    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
-//}
+function showSpinnerModalSecondary() {
+    $("#modalSpinnerSecondary").show();
+}
 
-//function DateFormat(dateOfBirth) {
-//    let date = new Date(dateOfBirth);
-//    return date.toLocaleDateString("pt-BR");
-//}
+function hideSpinnerModalSecondary() {
+    $("#modalSpinnerSecondary").hide();
+}

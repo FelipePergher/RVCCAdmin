@@ -39,9 +39,6 @@
         { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
         { data: "name", title: "Nome", name: "name" }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         $(".editCancerTypeButton").click(function () {
             openModal($(this).attr("href"), $(this).data("title"), initEditForm);
@@ -50,8 +47,6 @@
         $(".deleteCancerTypeButton").click(function (e) {
             initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         });
-
-        hideSpinner();
     }
 });
 
@@ -77,7 +72,7 @@ function initAddForm() {
 }
 
 function AddSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         cancerTypeTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer registrado com sucesso.", "success");
@@ -93,7 +88,7 @@ function initEditForm() {
 }
 
 function EditSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         cancerTypeTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso...", "Tipo de câncer  atualizado com sucesso.", "success");

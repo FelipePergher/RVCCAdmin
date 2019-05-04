@@ -41,9 +41,6 @@
         { data: "email", title: "Email", name: "email" },
         { data: "role", title: "Regra", name: "role" }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         //$(".editUserButton").click(function () {
         //    openModal($(this).attr("href"), $(this).data("title"), initEditForm);
@@ -52,8 +49,6 @@
         //$(".deleteUserButton").click(function (e) {
         //    initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         //});
-
-        hideSpinner();
     }
 });
 

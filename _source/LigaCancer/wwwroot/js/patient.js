@@ -65,12 +65,9 @@
         { data: "doctors", title: "Doctors", name: "Doctors", orderable: false },
         { data: "treatmentPlaces", title: "TreatmentPlaces", name: "TreatmentPlaces", orderable: false }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         $(".editPatientButton").click(function () {
-            $(".modal-dialog").addClass("modal-lg");
+            $("#modal-dialog").addClass("modal-lg");
             openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm);
         });
 
@@ -94,9 +91,13 @@
             initActivePatient($(this).data("url"), $(this).data("id"));
         });
 
-        hideSpinner();
+        $(".phonesButton").click(function () {
+            $("#modal-dialog").addClass("modal-lg");
+            openModal($(this).attr("href"), $(this).data("title"), initPhoneIndex);
+        });
     }
 });
+let phoneTable;
 
 $(function () {
     initPage();
@@ -116,7 +117,7 @@ function initPage() {
     });
 
     $("#addPatientButton").click(function () {
-        $(".modal-dialog").addClass("modal-lg");
+        $("#modal-dialog").addClass("modal-lg");
         openModal($(this).attr("href"), $(this).data("title"), initAddProfileForm);
     });
 }
@@ -200,7 +201,7 @@ function initEditProfileForm() {
 }
 
 function editProfileSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Paciente atualizado com sucesso.", "success");
@@ -216,7 +217,7 @@ function initEditNaturalityForm() {
 }
 
 function editNaturalitySuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Naturalidade atualizada com sucesso.", "success");
@@ -236,7 +237,7 @@ function initEditPatientInformationForm() {
 }
 
 function editPatientInformationSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Informação do paciente atualizada com sucesso.", "success");
@@ -247,6 +248,122 @@ function editPatientInformationSuccess(data, textStatus) {
     }
 }
 
+//Phone Functions
+function initPhoneIndex() {
+    phoneTable = $("#phoneTable").DataTable({
+        dom: "l<'export-buttons'B>frtip",
+        buttons: [
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                },
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            }
+        ],
+        processing: true,
+        serverSide: true,
+        language: language,
+        filter: false,
+        ajax: {
+            url: "/api/phone/search",
+            type: "POST",
+            data: function (d) {
+                d.patientId = $("#phonePatientId").val();
+            },
+            datatype: "json",
+            error: function () {
+                swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+            }
+        },
+        order: [1, "asc"],
+        columns: [
+            { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+            { data: "number", title: "Número", name: "Number" },
+            { data: "phoneType", title: "Tipo", name: "PhoneType" },
+            { data: "observationNote", title: "Observação", name: "ObservationNote" }
+        ],
+        drawCallback: function (settings) {
+            $(".editPhoneButton").click(function () {
+                openModalSecondary($(this).attr("href"), $(this).data("title"), initEditPhoneForm);
+            });
+            $(".deletePhoneButton").click(function (e) {
+                initDeletePhone($(this).data("url"), $(this).data("id"));
+            });
+        }
+    });
+    $('#phoneTable').attr('style', 'border-collapse: collapse !important');
+
+    $("#addPhoneButton").click(function () {
+        openModalSecondary($(this).attr("href"), $(this).data("title"), initAddPhoneForm);
+    });
+}
+
+function initAddPhoneForm() {
+    $.validator.unobtrusive.parse("#addPhoneForm");
+}
+
+function addPhoneSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action-secondary").modal("hide");
+        phoneTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Telefone adicionado com sucesso.", "success");
+    }
+    else {
+        $("#modalBodySecondary").html(data);
+        initAddPhoneForm();
+    }
+}
+
+function initEditPhoneForm() {
+    $.validator.unobtrusive.parse("#editPhoneForm");
+}
+
+function editPhoneSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action-secondary").modal("hide");
+        phoneTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Telefone atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modalBodySecondary").html(data);
+        initEditPhoneForm();
+    }
+}
+
+function initDeletePhone(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    phoneTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
 //Control Enable/Disable Functions
 
 function initArchivePatient() {
@@ -255,7 +372,7 @@ function initArchivePatient() {
 }
 
 function archivePatientSuccess(data, textStatus) {
-    if (data === "") {
+    if (!data && textStatus === "success") {
         patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire({
             title: 'Sucesso',

@@ -44,9 +44,6 @@
         { data: "patient", title: "Nome do Paciente", name: "patient" },
         { data: "hour", title: "Hora da presença", name: "hour" }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         $(".editPresenceButton").click(function () {
             openModal($(this).attr("href"), initEditForm);
@@ -55,8 +52,6 @@
         $(".deletePresenceButton").click(function (e) {
             initDelete($(this).data("url"));
         });
-
-        hideSpinner();
     }
 });
 
@@ -98,7 +93,7 @@ function initAddForm() {
 }
 
 function AddSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         presenceTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso...", "Presença registrada com sucesso.", "success");
@@ -119,7 +114,7 @@ function initEditForm() {
 }
 
 function EditSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         presenceTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Presença atualizada com sucesso.", "success");

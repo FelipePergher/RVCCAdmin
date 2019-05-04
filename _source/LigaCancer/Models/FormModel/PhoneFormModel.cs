@@ -1,10 +1,21 @@
 ﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
 {
     public class PhoneFormModel
     {
+        public PhoneFormModel(){}
+
+        public PhoneFormModel(string patientId) => PatientId = patientId;
+
+        public PhoneFormModel(int phoneId) => PhoneId = phoneId;
+
+        [HiddenInput]
+        public int PhoneId { get; set; }
+
+        [HiddenInput]
         public string PatientId { get; set; }
 
         [Display(Name = "Número")]

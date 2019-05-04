@@ -156,18 +156,21 @@ namespace LigaCancer.Controllers.Api
             if (!patient.PatientInformation.ActivePatient.Death && !patient.PatientInformation.ActivePatient.Discharge)
             {
                 string editPatient = $"<a href='/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Editar Paciente</a>";
+                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Perfil do Paciente</a>";
 
                 string editNaturality = $"<a href='/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-edit'></i> Editar Naturalidade</a>";
+                    $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-edit'></i> Naturalidade</a>";
 
                 string editPatientInformation = $"<a href='/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Informação do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-edit'></i> Editar Informação do Paciente</a>";
+                    $"data-title='Editar Informação do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-edit'></i> Informação do Paciente</a>";
+
+                string phones = $"<a href='/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Telefones' class='dropdown-item phonesButton'><i class='fas fa-phone'></i> Telefones</a>";
 
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + archivePatient;
+                options = editPatient + editNaturality + editPatientInformation + phones + archivePatient;
             }
             else
             {

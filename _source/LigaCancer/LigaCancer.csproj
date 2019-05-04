@@ -100,10 +100,13 @@
     <Content Update="Views\Address\_EditAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Phone\_AddPhone.cshtml">
+    <Content Update="Views\Phone\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Phone\_EditPhone.cshtml">
+    <Content Update="Views\Phone\Partials\_AddPhone.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Phone\Partials\_EditPhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Patient\Partials\_ArchivePatient.cshtml">

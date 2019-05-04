@@ -46,7 +46,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public PatientInformation PatientInformation { get; set; }
 
-        public ICollection<Phone> Phones { get; set; }
+        public virtual ICollection<Phone> Phones { get; set; }
 
         public ICollection<Address> Addresses { get; set; }
 

@@ -42,9 +42,6 @@
         { data: "name", title: "Nome", name: "name" },
         { data: "crm", title: "CRM", name: "crm" }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         $(".editDoctorButton").click(function () {
             openModal($(this).attr("href"), $(this).data("title"), initEditForm);
@@ -53,8 +50,6 @@
         $(".deleteDoctorButton").click(function (e) {
             initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         });
-
-        hideSpinner();
     }
 });
 
@@ -80,7 +75,7 @@ function initAddForm() {
 }
 
 function AddSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         doctorTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Médico registrado com sucesso.", "success");
@@ -96,7 +91,7 @@ function initEditForm() {
 }
 
 function EditSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         doctorTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Médico atualizado com sucesso.", "success");

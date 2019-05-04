@@ -39,9 +39,6 @@
         { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
         { data: "city", title: "Cidade", name: "city" }
     ],
-    preDrawCallback: function (settings) {
-        showSpinner();
-    },
     drawCallback: function (settings) {
         $(".editTreatmentPlaceButton").click(function () {
             openModal($(this).attr("href"), $(this).data("title"), initEditForm);
@@ -50,8 +47,6 @@
         $(".deleteTreatmentPlaceButton").click(function (e) {
             initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
         });
-
-        hideSpinner();
     }
 });
 
@@ -77,7 +72,7 @@ function initAddForm() {
 }
 
 function AddSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         treatmentPlaceTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento registrado com sucesso.", "success");
@@ -93,7 +88,7 @@ function initEditForm() {
 }
 
 function EditSuccess(data, textStatus) {
-    if (data === "" && textStatus === "success") {
+    if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         treatmentPlaceTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso...", "Local de tratamento atualizado com sucesso.", "success");

@@ -1,21 +1,16 @@
 ﻿@model LigaCancer.Models.FormModel.PhoneFormModel
 @using LigaCancer.Code
 
-<form asp-action="AddPhone"
+<form id="editPhoneForm" asp-action="EditPhone"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccessPatient"
+      data-ajax-failure="error"
+      data-ajax-success="editPhoneSuccess"
       data-ajax-loading="#submitSpinner">
 
-    <div class="modal-body form-horizontal" id="">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <h4>
-            Adicionar Telefone
-        </h4>
-
+    <div class="modal-body form-horizontal">
+        <input asp-for="PhoneId" />
         <div class="form-group">
             <label asp-for="Number" class="control-label"></label>
             <input asp-for="Number" class="form-control" />
@@ -31,7 +26,6 @@
             <input asp-for="ObservationNote" class="form-control" />
             <span asp-validation-for="ObservationNote" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
     </div>
 
     <partial name="_ModalFooter"  />

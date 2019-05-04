@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -99,7 +100,11 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPhones(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredPhones(query, (PhoneSearchModel)filter);
+
             return Task.FromResult(query.ToList());
+
         }
 
         public Task<TaskResult> UpdateAsync(Phone model)
@@ -122,5 +127,29 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
+        #region Private Methods
+
+        private IQueryable<Phone> GetOrdenationPhones(IQueryable<Phone> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Number":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Number) : query.OrderByDescending(x => x.Number);
+                case "PhoneType":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.PhoneType) : query.OrderByDescending(x => x.PhoneType);
+                case "ObservationNote":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationNote) : query.OrderByDescending(x => x.ObservationNote);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Number) : query.OrderByDescending(x => x.Number);
+            }
+        }
+
+        private IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)
+        {
+            if(!string.IsNullOrEmpty(phoneSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(phoneSearch.PatientId));
+            return query;
+        }
+
+        #endregion
     }
 }

@@ -2,8 +2,8 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -27,116 +27,91 @@ namespace LigaCancer.Controllers
             _patientService = patientService;
         }
 
+        [HttpGet]
+        public IActionResult Index(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_Index", new PhoneSearchModel(id));
+        }
 
         [HttpGet]
         public IActionResult AddPhone(string id)
         {
-            PhoneFormModel phoneForm = new PhoneFormModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddPhone", phoneForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_AddPhone", new PhoneFormModel(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPhone(PhoneFormModel phoneForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddPhone", phoneForm);
+            if (string.IsNullOrEmpty(phoneForm.PatientId)) return BadRequest();
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (ModelState.IsValid)
+            {
+                if (await _patientService.FindByIdAsync(phoneForm.PatientId) == null) return NotFound();
 
-            TaskResult result = await ((PatientStore)_patientService).AddPhone(
-                new Phone
-                {
-                    Number = phoneForm.Number,
-                    PhoneType = phoneForm.PhoneType,
-                    ObservationNote = phoneForm.ObservationNote,
-                    UserCreated = user
-                }, phoneForm.PatientId);
+                Phone phone = new Phone(phoneForm.PatientId, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
 
-            if (result.Succeeded) return Ok();
-            ModelState.AddErrors(result);
+                TaskResult result = await _phoneService.CreateAsync(phone);
 
-            return PartialView("_AddPhone", phoneForm);
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
+            }
+
+            return PartialView("Partials/_AddPhone", phoneForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditPhone(string id)
         {
-            PhoneFormModel phoneForm = new PhoneFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditPhone", phoneForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Phone phone = await _phoneService.FindByIdAsync(id);
-            if (phone != null)
-            {
-                phoneForm = new PhoneFormModel
-                {
-                    Number = phone.Number,
-                    PhoneType = phone.PhoneType,
-                    ObservationNote = phone.ObservationNote
-                };
-            }
 
-            return PartialView("_EditPhone", phoneForm);
+            if (phone == null) return NotFound();
+
+            return PartialView("Partials/_EditPhone", new PhoneFormModel(int.Parse(id))
+            {
+                Number = phone.Number,
+                PhoneType = phone.PhoneType,
+                ObservationNote = phone.ObservationNote
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> EditPhone(string id, PhoneFormModel phoneForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditPhone", phoneForm);
-
-            Phone phone = await _phoneService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-
-            phone.Number = phoneForm.Number;
-            phone.PhoneType = phoneForm.PhoneType;
-            phone.ObservationNote = phoneForm.ObservationNote;
-            phone.UpdatedDate = DateTime.Now;
-            phone.UserUpdated = user;
-
-            TaskResult result = await _phoneService.UpdateAsync(phone);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return StatusCode(200, "phone");
-            }
-            ModelState.AddErrors(result);
+                Phone phone = await _phoneService.FindByIdAsync(id);
 
-            return PartialView("_EditPhone", phoneForm);
+                phone.Number = phoneForm.Number;
+                phone.PhoneType = phoneForm.PhoneType;
+                phone.ObservationNote = phoneForm.ObservationNote;
+                phone.UpdatedDate = DateTime.Now;
+                phone.UserUpdated = await _userManager.GetUserAsync(User);
+
+                TaskResult result = await _phoneService.UpdateAsync(phone);
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
+            }
+
+            return PartialView("Partials/_EditPhone", phoneForm);
         }
 
-        [HttpGet]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePhone(string id)
         {
-            string number = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeletePhone", number);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Phone phone = await _phoneService.FindByIdAsync(id);
-            if (phone != null)
-            {
-                number = phone.Number;
-            }
 
-            return PartialView("_DeletePhone", number);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeletePhone(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
-
-            Phone phone = await _phoneService.FindByIdAsync(id);
-            if (phone == null) return RedirectToAction("Index");
+            if (phone == null) return NotFound();
 
             TaskResult result = await _phoneService.DeleteAsync(phone);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "phone");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeletePhone", phone.Number);
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
 
     }
