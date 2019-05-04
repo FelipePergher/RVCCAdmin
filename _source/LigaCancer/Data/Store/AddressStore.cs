@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,9 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationAddresses(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredAddresses(query, (AddressSearchModel)filter);
+
             return Task.FromResult(query.ToList());
         }
 
@@ -122,5 +126,39 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
+        #region Private Methods
+
+        private IQueryable<Address> GetOrdenationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Street":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
+                case "Neighborhood":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Neighborhood) : query.OrderByDescending(x => x.Neighborhood);
+                case "City":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
+                case "HouseNumber":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.HouseNumber) : query.OrderByDescending(x => x.HouseNumber);
+                case "Complement":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Complement) : query.OrderByDescending(x => x.Complement);
+                case "ResidenceType":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ResidenceType) : query.OrderByDescending(x => x.ResidenceType);
+                case "MonthlyAmmountResidence":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyAmmountResidence) : query.OrderByDescending(x => x.MonthlyAmmountResidence);
+                case "ObservationAddress":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationAddress) : query.OrderByDescending(x => x.ObservationAddress);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
+            }
+        }
+
+        private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
+        {
+            if (!string.IsNullOrEmpty(addressSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(addressSearch.PatientId));
+            return query;
+        }
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,25 +29,27 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_Index", new AddressSearchModel(id));
+        }
+
+        [HttpGet]
         public IActionResult AddAddress(string id)
         {
-            AddressFormModel addressForm = new AddressFormModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddAddress", addressForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_AddAddress", new AddressFormModel(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddAddress(AddressFormModel addressForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddAddress", addressForm);
-
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-
-            TaskResult result = await ((PatientStore)_patientService).AddAddress(
-                new Address
+            if (ModelState.IsValid)
+            {
+                Address address = new Address
                 {
+                    PatientId = int.Parse(addressForm.PatientId),
                     City = addressForm.City,
                     Complement = addressForm.Complement,
                     HouseNumber = addressForm.HouseNumber,
@@ -54,107 +57,82 @@ namespace LigaCancer.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0
-                }, addressForm.PatientId);
+                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0,
+                    UserCreated = await _userManager.GetUserAsync(User)
+                };
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "address");
+                TaskResult result = await _addressService.CreateAsync(address);
+
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
             }
-            ModelState.AddErrors(result);
 
-            return PartialView("_AddAddress", addressForm);
+            return PartialView("Partials/_AddAddress", addressForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditAddress(string id)
         {
-            AddressFormModel addressForm = new AddressFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditAddress", addressForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Address address = await _addressService.FindByIdAsync(id);
-            if (address != null)
-            {
-                addressForm = new AddressFormModel
-                {
-                    City = address.City,
-                    Complement = address.Complement,
-                    HouseNumber = address.HouseNumber,
-                    Neighborhood = address.Neighborhood,
-                    ObservationAddress = address.ObservationAddress,
-                    Street = address.Street,
-                    ResidenceType = address.ResidenceType,
-                    MonthlyAmmountResidence = address.MonthlyAmmountResidence
-                };
-            }
 
-            return PartialView("_EditAddress", addressForm);
+            if (address == null) return NotFound();
+
+            AddressFormModel addressForm = new AddressFormModel
+            {
+                City = address.City,
+                Complement = address.Complement,
+                HouseNumber = address.HouseNumber,
+                Neighborhood = address.Neighborhood,
+                ObservationAddress = address.ObservationAddress,
+                Street = address.Street,
+                ResidenceType = address.ResidenceType,
+                MonthlyAmmountResidence = address.MonthlyAmmountResidence
+            };
+
+            return PartialView("Partials/_EditAddress", addressForm);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditAddress(string id, AddressFormModel addressForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditAddress", addressForm);
-
-            Address address = await _addressService.FindByIdAsync(id);
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-
-            address.Complement = addressForm.Complement;
-            address.City = addressForm.City;
-            address.HouseNumber = addressForm.HouseNumber;
-            address.Neighborhood = addressForm.Neighborhood;
-            address.ObservationAddress = addressForm.ObservationAddress;
-            address.ResidenceType = addressForm.ResidenceType;
-            address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0;
-            address.Street = addressForm.Street;
-            address.UpdatedDate = DateTime.Now;
-            address.UserUpdated = user;
-
-            TaskResult result = await _addressService.UpdateAsync(address);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "address");
-            }
-            ModelState.AddErrors(result);
-
-            return PartialView("_EditAddress", addressForm);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> DeleteAddress(string id)
-        {
-            string addressText = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteAddress", addressText);
-
-            Address address = await _addressService.FindByIdAsync(id);
-            if (address != null)
-            {
-                addressText = $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}";
-            }
-
-            return PartialView("_DeleteAddress", addressText);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteAddress(string id, IFormCollection form)
-        {
-            if (!string.IsNullOrEmpty(id))
+            if (ModelState.IsValid)
             {
                 Address address = await _addressService.FindByIdAsync(id);
-                if (address == null) return RedirectToAction("Index");
 
-                TaskResult result = await _addressService.DeleteAsync(address);
+                address.Complement = addressForm.Complement;
+                address.City = addressForm.City;
+                address.HouseNumber = addressForm.HouseNumber;
+                address.Neighborhood = addressForm.Neighborhood;
+                address.ObservationAddress = addressForm.ObservationAddress;
+                address.ResidenceType = addressForm.ResidenceType;
+                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0;
+                address.Street = addressForm.Street;
+                address.UpdatedDate = DateTime.Now;
+                address.UserUpdated = await _userManager.GetUserAsync(User);
 
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "address");
-                }
-                ModelState.AddErrors(result);
-                return PartialView("_DeleteAddress", $"{address.Street} {address.Neighborhood} nº {address.HouseNumber}");
+                TaskResult result = await _addressService.UpdateAsync(address);
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
             }
-            return RedirectToAction("Index");
+
+            return PartialView("Partials/_EditAddress", addressForm);
+        }
+
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteAddress(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            Address address = await _addressService.FindByIdAsync(id);
+
+            if (address == null) return NotFound();
+
+            TaskResult result = await _addressService.DeleteAsync(address);
+
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
 
     }

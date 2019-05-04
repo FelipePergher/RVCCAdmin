@@ -26,10 +26,14 @@
     margin-top: 28px;
 }
 
-#modal-action-secondary{
+#modal-action-secondary {
     z-index: 1060;
 }
 
 .modal-backdrop.fade.show + div {
     z-index: 1050;
+}
+
+.modal-elg {
+    max-width: 80vw;
 }

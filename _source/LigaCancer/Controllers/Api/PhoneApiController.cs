@@ -13,12 +13,10 @@ namespace LigaCancer.Controllers.Api
     [Authorize(Roles = "Admin")]
     public class PhoneApiController : Controller
     {
-        private readonly IDataStore<Patient> _patientService;
         private readonly IDataStore<Phone> _phoneService;
 
-        public PhoneApiController(IDataStore<Patient> patientService, IDataStore<Phone> phoneService)
+        public PhoneApiController(IDataStore<Phone> phoneService)
         {
-            _patientService = patientService;
             _phoneService = phoneService;
         }
 

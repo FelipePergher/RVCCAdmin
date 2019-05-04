@@ -1,21 +1,16 @@
 ﻿@model LigaCancer.Models.FormModel.AddressFormModel
 @using LigaCancer.Code
 
-<form asp-action="EditAddress"
+<form id="addAddressForm" asp-action="AddAddress"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
-      data-ajax-failure="AjaxError"
-      data-ajax-success="AjaxSuccessPatient"
+      data-ajax-failure="error"
+      data-ajax-success="addAddressSuccess"
       data-ajax-loading="#submitSpinner">
 
-    <div class="modal-body form-horizontal" id="">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <h4>
-            Editar Endereço
-        </h4>
-
+    <div class="modal-body form-horizontal">
+        <input asp-for="PatientId" />
         <div class="form-group">
             <label asp-for="Street" class="control-label"></label>
             <input asp-for="Street" class="form-control" />
@@ -48,14 +43,7 @@
             </select>
             <span asp-validation-for="ResidenceType" class="text-danger"></span>
         </div>
-        @{ 
-            string style = "";
-            if(Model.ResidenceType == null)
-            {
-                style = "display: none;";
-            }
-        }
-        <div class="form-group" id="monthlyResidence" style="@style">
+        <div class="form-group" id="monthlyResidence" style="display: none;">
             <label asp-for="MonthlyAmmountResidence" class="control-label"></label>
             <input asp-for="MonthlyAmmountResidence" class="form-control" />
             <span asp-validation-for="MonthlyAmmountResidence" class="text-danger"></span>
@@ -65,7 +53,6 @@
             <input asp-for="ObservationAddress" class="form-control" />
             <span asp-validation-for="ObservationAddress" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
     </div>
 
     <partial name="_ModalFooter" />

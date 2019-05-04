@@ -72,6 +72,7 @@ function cleanModal() {
     $("#modalBody").html("");
     $("#modal-title").text("");
     $("#modal-dialog").removeClass("modal-lg");
+    $("#modal-dialog").removeClass("modal-elg");
     showSpinnerModal();
 }
 

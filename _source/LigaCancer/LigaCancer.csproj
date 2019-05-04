@@ -58,6 +58,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Address\Partials\_Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FamilyMember\_AddFamilyMember.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -94,10 +97,10 @@
     <Content Update="Views\Patient\Partials\_PatientProfile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Address\_AddAddress.cshtml">
+    <Content Update="Views\Address\Partials\_AddAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Address\_EditAddress.cshtml">
+    <Content Update="Views\Address\Partials\_EditAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Phone\Partials\_Index.cshtml">

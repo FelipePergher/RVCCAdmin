@@ -1,10 +1,16 @@
 ﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
 {
     public class AddressFormModel
     {
+        public AddressFormModel(){}
+
+        public AddressFormModel(string patientId) => PatientId = patientId;
+
+        [HiddenInput]
         public string PatientId { get; set; }
 
         [Display(Name = "Rua")]

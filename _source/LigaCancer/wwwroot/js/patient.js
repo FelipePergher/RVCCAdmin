@@ -95,9 +95,15 @@
             $("#modal-dialog").addClass("modal-lg");
             openModal($(this).attr("href"), $(this).data("title"), initPhoneIndex);
         });
+
+        $(".addressesButton").click(function () {
+            $("#modal-dialog").addClass("modal-elg");
+            openModal($(this).attr("href"), $(this).data("title"), initAddressIndex);
+        });
     }
 });
 let phoneTable;
+let addressTable;
 
 $(function () {
     initPage();
@@ -357,6 +363,135 @@ function initDeletePhone(url, id) {
                 .done(function (data, textStatus) {
                     phoneTable.ajax.reload(null, false);
                     swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+//Address Functions
+function initAddressIndex() {
+    addressTable = $("#addressTable").DataTable({
+        dom: "l<'export-buttons'B>frtip",
+        buttons: [
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                },
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            }
+        ],
+        processing: true,
+        serverSide: true,
+        language: language,
+        filter: false,
+        ajax: {
+            url: "/api/address/search",
+            type: "POST",
+            data: function (d) {
+                d.patientId = $("#addressPatientId").val();
+            },
+            datatype: "json",
+            error: function () {
+                swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+            }
+        },
+        order: [1, "asc"],
+        columns: [
+            { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+            { data: "street", title: "Rua", name: "Street" },
+            { data: "neighborhood", title: "Bairro", name: "Neighborhood" },
+            { data: "city", title: "Cidade", name: "City" },
+            { data: "houseNumber", title: "Nº", name: "HouseNumber" },
+            { data: "complement", title: "Complemento", name: "Complement" },
+            { data: "residenceType", title: "Residência", name: "ResidenceType" },
+            { data: "monthlyAmmountResidence", title: "Valor Mensal", name: "MonthlyAmmountResidence" },
+            { data: "observationAddress", title: "Observação", name: "ObservationAddress" }
+        ],
+        drawCallback: function (settings) {
+            $(".editAddressButton").click(function () {
+                openModalSecondary($(this).attr("href"), $(this).data("title"), initEditAddressForm);
+            });
+            $(".deleteAddressButton").click(function (e) {
+                initDeleteAddress($(this).data("url"), $(this).data("id"));
+            });
+        }
+    });
+    $('#addressTable').attr('style', 'border-collapse: collapse !important');
+
+    $("#addAddressButton").click(function () {
+        openModalSecondary($(this).attr("href"), $(this).data("title"), initAddAddressForm);
+    });
+}
+
+function initAddAddressForm() {
+    $.validator.unobtrusive.parse("#addAddressForm");
+
+    $("#ResidenceType").change(function (e) {
+        !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
+    });
+}
+
+function addAddressSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action-secondary").modal("hide");
+        addressTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Endereço adicionado com sucesso.", "success");
+    }
+    else {
+        $("#modalBodySecondary").html(data);
+        initAddAddressForm();
+    }
+}
+
+function initEditAddressForm() {
+    $.validator.unobtrusive.parse("#editAddressForm");
+
+    $("#ResidenceType").change(function (e) {
+        !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
+    });
+}
+
+function editAddressSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action-secondary").modal("hide");
+        addressTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso", "Endereço atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modalBodySecondary").html(data);
+        initEditAddressForm();
+    }
+}
+
+function initDeleteAddress(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    addressTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
                 }).fail(function (error) {
                     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });
