@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), ApiController]
+    [Authorize(Roles = "Admin")]
+    [ApiController]
     public class TreatmentPlaceApiController : Controller
     {
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;

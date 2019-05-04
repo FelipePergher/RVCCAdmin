@@ -39,17 +39,17 @@ namespace LigaCancer.Controllers
         public IActionResult AddAddress(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
-            return PartialView("Partials/_AddAddress", new AddressFormModel(id));
+            return PartialView("Partials/_AddAddress", new AddressFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAddress(AddressFormModel addressForm)
+        public async Task<IActionResult> AddAddress(int id, AddressFormModel addressForm)
         {
             if (ModelState.IsValid)
             {
                 Address address = new Address
                 {
-                    PatientId = int.Parse(addressForm.PatientId),
+                    PatientId = id,
                     City = addressForm.City,
                     Complement = addressForm.Complement,
                     HouseNumber = addressForm.HouseNumber,

@@ -15,7 +15,5 @@ namespace LigaCancer.Code
       
         public List<TaskError> Errors { get; }
 
-        public int Id { get; set; }
-
     }
 }

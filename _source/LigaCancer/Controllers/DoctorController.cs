@@ -61,7 +61,6 @@ namespace LigaCancer.Controllers
 
             return PartialView("Partials/_EditDoctor", new DoctorFormModel
             {
-                DoctorId = doctor.DoctorId,
                 CRM = doctor.CRM,
                 Name = doctor.Name
             });

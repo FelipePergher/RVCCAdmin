@@ -4,6 +4,7 @@ using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,127 +29,103 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_Index", new FamilyMemberSearchModel(id));
+        }
+
+        [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
-            FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddFamilyMember", familyMemberForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFamilyMember(FamilyMemberFormModel familyMemberForm)
+        public async Task<IActionResult> AddFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
-            if (!ModelState.IsValid) return PartialView("_AddFamilyMember", familyMemberForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (ModelState.IsValid)
+            {
+                if (await _patientService.FindByIdAsync(id) == null) return NotFound();
 
-            TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
-                new FamilyMember
+                FamilyMember familyMember = new FamilyMember
                 {
+                    PatientId = int.Parse(id),
                     Age = familyMemberForm.Age,
                     Kinship = familyMemberForm.Kinship,
                     MonthlyIncome = (double)familyMemberForm.MonthlyIncome,
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
-                    UserCreated = user
-                }, familyMemberForm.PatientId);
+                    UserCreated = await _userManager.GetUserAsync(User)
+                };
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "familyMember");
+                TaskResult result = await _familyMemberService.CreateAsync(familyMember);
+
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
             }
-            ModelState.AddErrors(result);
 
-            return PartialView("_AddFamilyMember", familyMemberForm);
+            return PartialView("Partials/_AddFamilyMember", familyMemberForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditFamilyMember(string id)
         {
-            FamilyMemberFormModel familyMemberForm = new FamilyMemberFormModel();
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_EditFamilyMember", familyMemberForm);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-            if (familyMember != null)
-            {
-                familyMemberForm = new FamilyMemberFormModel
-                {
-                    Age = familyMember.Age,
-                    Kinship = familyMember.Kinship,
-                    MonthlyIncome = (decimal)familyMember.MonthlyIncome,
-                    Name = familyMember.Name,
-                    Sex = familyMember.Sex
-                };
-            }
 
-            return PartialView("_EditFamilyMember", familyMemberForm);
+            if (familyMember == null) return NotFound();
+
+            return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
+            {
+                Age = familyMember.Age,
+                Kinship = familyMember.Kinship,
+                MonthlyIncome = (decimal)familyMember.MonthlyIncome,
+                Name = familyMember.Name,
+                Sex = familyMember.Sex
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditFamilyMember", familyMemberForm);
-
-            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-            TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
-
+                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+            
                 familyMember.Age = familyMemberForm.Age;
                 familyMember.Kinship = familyMemberForm.Kinship;
                 familyMember.MonthlyIncome = (double)familyMemberForm.MonthlyIncome;
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
                 familyMember.UpdatedDate = DateTime.Now;
-                familyMember.UserUpdated = user;
+                familyMember.UserUpdated = await _userManager.GetUserAsync(User);
 
-                result = await _familyMemberService.UpdateAsync(familyMember);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "familyMember");
-                }
+                TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
+
+                if (result.Succeeded) return Ok();
+                return BadRequest(result.Errors);
             }
-            ModelState.AddErrors(result);
-
-            return PartialView("_EditFamilyMember", familyMemberForm);
+            return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
 
-        [HttpGet]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id)
         {
-            string name = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteFamilyMember", name);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-            if (familyMember != null)
-            {
-                name = familyMember.Name;
-            }
 
-            return PartialView("_DeleteFamilyMember", name);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteFamilyMember(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
-
-            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-            if (familyMember == null) return RedirectToAction("Index");
+            if (familyMember == null) return NotFound();
 
             TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "familyMember");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteFamilyMember", familyMember.Name);
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
 
     }

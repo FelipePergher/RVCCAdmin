@@ -4,12 +4,6 @@
 <form id="formAddFile" asp-action="AddFileAttachment" method="post" enctype="multipart/form-data">
 
     <div class="modal-body form-horizontal" id="">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <h4>
-            Adicionar Arquivo
-        </h4>
-
         <div class="form-group">
             <label asp-for="FileName" class="control-label"></label>
             <input asp-for="FileName" class="form-control" />
@@ -25,7 +19,6 @@
             <input asp-for="File" class="form-control" />
             <span asp-validation-for="File" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
     </div>
 
     <partial name="_ModalFooter"  />

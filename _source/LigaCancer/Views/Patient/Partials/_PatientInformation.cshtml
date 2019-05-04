@@ -1,12 +1,7 @@
 ﻿@model LigaCancer.Models.FormModel.PatientInformationFormModel
 
 <div class="modal-body">
-    <h4>Informação do Paciente</h4>
-    <hr />
-
     <div class="form-row">
-        <input asp-for="PatientId" />
-
         <div class="form-group col-lg-12">
             <label asp-for="CancerTypes" class="control-label"></label>
             <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control patientInformationSelect" data-tags="true" data-placeholder="Tipos de Câncer" data-allow-clear="true"></select>

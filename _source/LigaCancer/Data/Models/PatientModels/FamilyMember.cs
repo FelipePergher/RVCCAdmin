@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -16,6 +17,11 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public Globals.Sex Sex { get; set; }
 
-        public double? MonthlyIncome { get; set; }
+        public double MonthlyIncome { get; set; }
+
+        public int PatientId { get; set; }
+
+        [ForeignKey("PatientId")]
+        public virtual Patient Patient { get; set; }
     }
 }

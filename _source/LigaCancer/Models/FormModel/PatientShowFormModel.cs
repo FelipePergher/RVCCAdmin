@@ -8,8 +8,6 @@ namespace LigaCancer.Models.FormModel
 {
     public class PatientShowFormModel
     {
-        public int PatientId { get; set; }
-
         [Display(Name = "Nome")]
         public string Name { get; set; }
 
@@ -36,8 +34,6 @@ namespace LigaCancer.Models.FormModel
         public NaturalityFormModel Naturality { get; set; }
 
         public PatientInformationFormModel PatientInformation { get; set; }
-
-        public Family Family { get; set; }
 
         public IEnumerable<FileAttachment> FileAttachments { get; set; }
     }

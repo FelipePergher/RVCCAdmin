@@ -252,7 +252,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Telefones
                                 <div class="card-header-actions">
-                                    <a asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
+                                    <a asp-action="AddPhone" asp-controller="Phone" asp-route-id="Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#phoneCollapse" aria-expanded="true">
@@ -271,7 +271,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Endereços
                                 <div class="card-header-actions">
-                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
+                                    <a asp-action="AddAddress" asp-controller="Address" asp-route-id="Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true">
@@ -290,7 +290,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Membros Familiares
                                 <div class="card-header-actions">
-                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
+                                    <a asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#familyMembersCollapse" aria-expanded="true">
@@ -329,7 +329,7 @@
                             <div class="card-header">
                                 <i class="fa fa-align-justify"></i> Arquivos
                                 <div class="card-header-actions">
-                                    <a asp-action="AddFileAttachment" asp-controller="FileAttachment" asp-route-id="@Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
+                                    <a asp-action="AddFileAttachment" asp-controller="FileAttachment" asp-route-id="Model.PatientId" class="card-header-action btn-setting" data-toggle="modal" data-target="#modal-action">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                     <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#attachmentsCollapse" aria-expanded="true">
@@ -354,7 +354,7 @@
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-            var patientId = @Model.PatientId;
+            var patientId = Model.PatientId;
     </script>
     <environment names="Development">
         <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>

@@ -74,7 +74,6 @@ namespace LigaCancer.Controllers
 
             EditUserFormModel editUserForm = new EditUserFormModel
             {
-                UserId = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email

@@ -105,8 +105,6 @@ namespace LigaCancer.Data
 
         public DbSet<Doctor> Doctors { get; set; }
 
-        public DbSet<Family> Families { get; set; }
-
         public DbSet<FamilyMember> FamilyMembers { get; set; }
 
         public DbSet<Medicine> Medicines { get; set; }

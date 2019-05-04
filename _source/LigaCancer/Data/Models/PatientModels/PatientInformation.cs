@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -22,7 +23,12 @@ namespace LigaCancer.Data.Models.PatientModels
         public DateTime TreatmentbeginDate { get; set; }
 
         public ActivePatient ActivePatient { get; set; }
-        
+
+        public int PatientId { get; set; }
+
+        [ForeignKey("PatientId")]
+        public virtual Patient Patient { get; set; }
+
         #region Relations
 
         public List<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }

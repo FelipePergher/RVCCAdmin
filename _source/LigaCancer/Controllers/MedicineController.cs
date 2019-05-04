@@ -61,7 +61,6 @@ namespace LigaCancer.Controllers
 
             MedicineFormModel medicineForm = new MedicineFormModel
             {
-                MedicineId = medicine.MedicineId,
                 Name = medicine.Name
             };
 

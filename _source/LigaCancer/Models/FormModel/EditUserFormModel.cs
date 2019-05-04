@@ -12,8 +12,6 @@ namespace LigaCancer.Models.UserViewModels
             ApplicationRoles = new List<SelectListItem>();
         }
 
-        public string UserId { get; set; }
-
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }

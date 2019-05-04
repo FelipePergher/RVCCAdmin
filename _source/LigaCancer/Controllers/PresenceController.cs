@@ -95,7 +95,6 @@ namespace LigaCancer.Controllers
             List<Patient> patients = await _patientService.GetAllAsync();
             PresenceFormModel presenceform = new PresenceFormModel
             {
-                PresenceId = presence.PresenceId,
                 PatientId = presence.PatientId.ToString(),
                 Date = presence.PresenceDateTime,
                 Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),

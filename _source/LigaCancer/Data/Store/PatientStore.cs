@@ -30,8 +30,6 @@ namespace LigaCancer.Data.Store
             {
                 _context.Patients.Add(patient);
                 _context.SaveChanges();
-
-                result.Id = patient.PatientId;
                 result.Succeeded = true;
             }
             catch (Exception e)
@@ -139,68 +137,15 @@ namespace LigaCancer.Data.Store
         }
 
         //Todo Change methods to other stores
-        public async Task<TaskResult> AddPhone(Phone phone, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.Phones.Add(phone);
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
-        }
-
-        public async Task<TaskResult> AddAddress(Address address, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.Addresses.Add(address);
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
-        }
-
         public async Task<TaskResult> AddFamilyMember(FamilyMember familyMember, string patientId)
         {
             TaskResult result = new TaskResult();
 
             try
             {
-                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family, x => x.Family.FamilyMembers);
+                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.FamilyMembers);
                 Patient patient = await FindByIdAsync(patientId, specification);
-                if (patient.Family == null)
-                {
-                    patient.Family = new Family();
-                }
-                //patient.Family.FamilyIncome += (double)familyMember.MonthlyIncome;
-                patient.Family.FamilyMembers.Add(familyMember);
+                patient.FamilyMembers.Add(familyMember);
 
                 //patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
 

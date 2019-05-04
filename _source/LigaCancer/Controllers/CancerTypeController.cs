@@ -62,7 +62,6 @@ namespace LigaCancer.Controllers
 
             CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel
             {
-                CancerTypeId = cancerType.CancerTypeId,
                 Name = cancerType.Name
             };
 

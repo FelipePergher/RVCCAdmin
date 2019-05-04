@@ -13,8 +13,6 @@ namespace LigaCancer.Models.FormModel
             Time = new TimeSpan(DateTime.Now.Hour,DateTime.Now.Minute, 0);
         }
 
-        public int PresenceId { get; set; }
-
         [Display(Name = "Paciente")]
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string PatientId { get; set; }

@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,9 @@ namespace LigaCancer.Data.Store
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationFamilyMembers(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredFamilyMembers(query, (FamilyMemberSearchModel)filter);
+
             return Task.FromResult(query.ToList());
         }
 
@@ -107,12 +111,6 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                Family family = _context.Families.Include(x => x.FamilyMembers).FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == model.FamilyMemberId) != null);
-                if(family != null)
-                {
-                    //family.FamilyIncome += (double)model.MonthlyIncome;
-                    //family.PerCapitaIncome = family.FamilyIncome / (family.FamilyMembers.Count() + 1);
-                }
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -128,31 +126,31 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        #region Custom Methods
+        #region Private Methods
 
-        public Task<TaskResult> UpdateFamilyIncomeByFamilyMember(FamilyMember familyMember)
+        private IQueryable<FamilyMember> GetOrdenationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
         {
-            TaskResult result = new TaskResult();
-            try
+            switch (sortColumn)
             {
-                Family family = _context.Families.FirstOrDefault(x => x.FamilyMembers.FirstOrDefault(y => y.FamilyMemberId == familyMember.FamilyMemberId) != null);
-                if (family != null)
-                {
-                    //family.FamilyIncome -= (double)familyMember.MonthlyIncome;
-                }
-                _context.SaveChanges();
-                result.Succeeded = true;
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                case "Kinship":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Kinship) : query.OrderByDescending(x => x.Kinship);
+                case "Age":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Age) : query.OrderByDescending(x => x.Age);
+                case "Sex":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
+                case "MonthlyIncome":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyIncome) : query.OrderByDescending(x => x.MonthlyIncome);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
             }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-            }
+        }
 
-            return Task.FromResult(result);
+        private IQueryable<FamilyMember> GetFilteredFamilyMembers(IQueryable<FamilyMember> query, FamilyMemberSearchModel familyMemberSearch)
+        {
+            if (!string.IsNullOrEmpty(familyMemberSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(familyMemberSearch.PatientId));
+            return query;
         }
 
         #endregion

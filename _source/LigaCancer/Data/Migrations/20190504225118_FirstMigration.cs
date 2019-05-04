@@ -252,35 +252,6 @@ namespace LigaCancer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Families",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    FamilyId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    MonthlyIncome = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Families", x => x.FamilyId);
-                    table.ForeignKey(
-                        name: "FK_Families_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Families_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Medicines",
                 columns: table => new
                 {
@@ -303,6 +274,45 @@ namespace LigaCancer.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Medicines_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    PatientId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(nullable: true),
+                    Surname = table.Column<string>(nullable: true),
+                    RG = table.Column<string>(nullable: true),
+                    CPF = table.Column<string>(nullable: true),
+                    Age = table.Column<int>(nullable: true),
+                    FamiliarityGroup = table.Column<bool>(nullable: false),
+                    MonthlyIncome = table.Column<double>(nullable: false),
+                    Sex = table.Column<int>(nullable: false),
+                    CivilState = table.Column<int>(nullable: false),
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
+                    Profession = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.PatientId);
+                    table.ForeignKey(
+                        name: "FK_Patients_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Patients_AspNetUsers_UserUpdatedId",
                         column: x => x.UserUpdatedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -370,35 +380,42 @@ namespace LigaCancer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PatientInformation",
+                name: "Addresses",
                 columns: table => new
                 {
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    PatientInformationId = table.Column<int>(nullable: false)
+                    AddressId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TreatmentbeginDate = table.Column<DateTime>(nullable: false),
-                    ActivePatientId = table.Column<int>(nullable: true)
+                    Street = table.Column<string>(nullable: true),
+                    Neighborhood = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    HouseNumber = table.Column<string>(nullable: true),
+                    Complement = table.Column<string>(nullable: true),
+                    ObservationAddress = table.Column<string>(nullable: true),
+                    ResidenceType = table.Column<int>(nullable: true),
+                    MonthlyAmmountResidence = table.Column<double>(nullable: false),
+                    PatientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PatientInformation", x => x.PatientInformationId);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                     table.ForeignKey(
-                        name: "FK_PatientInformation_ActivePatients_ActivePatientId",
-                        column: x => x.ActivePatientId,
-                        principalTable: "ActivePatients",
-                        principalColumn: "ActivePatientId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_Addresses_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PatientInformation_AspNetUsers_UserCreatedId",
+                        name: "FK_Addresses_AspNetUsers_UserCreatedId",
                         column: x => x.UserCreatedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PatientInformation_AspNetUsers_UserUpdatedId",
+                        name: "FK_Addresses_AspNetUsers_UserUpdatedId",
                         column: x => x.UserUpdatedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -419,18 +436,18 @@ namespace LigaCancer.Migrations
                     Kinship = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: true),
                     Sex = table.Column<int>(nullable: false),
-                    MonthlyIncome = table.Column<double>(nullable: true),
-                    FamilyId = table.Column<int>(nullable: true)
+                    MonthlyIncome = table.Column<double>(nullable: false),
+                    PatientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FamilyMembers", x => x.FamilyMemberId);
                     table.ForeignKey(
-                        name: "FK_FamilyMembers_Families_FamilyId",
-                        column: x => x.FamilyId,
-                        principalTable: "Families",
-                        principalColumn: "FamilyId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_FamilyMembers_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FamilyMembers_AspNetUsers_UserCreatedId",
                         column: x => x.UserCreatedId,
@@ -439,6 +456,163 @@ namespace LigaCancer.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FamilyMembers_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileAttachments",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    FileAttachmentId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FileName = table.Column<string>(nullable: true),
+                    FilePath = table.Column<string>(nullable: true),
+                    ArchiveCategorie = table.Column<int>(nullable: false),
+                    PatientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileAttachments", x => x.FileAttachmentId);
+                    table.ForeignKey(
+                        name: "FK_FileAttachments_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileAttachments_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FileAttachments_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Naturalities",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    NaturalityId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    PatientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Naturalities", x => x.NaturalityId);
+                    table.ForeignKey(
+                        name: "FK_Naturalities_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Naturalities_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Naturalities_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PatientInformation",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    PatientInformationId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TreatmentbeginDate = table.Column<DateTime>(nullable: false),
+                    ActivePatientId = table.Column<int>(nullable: true),
+                    PatientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PatientInformation", x => x.PatientInformationId);
+                    table.ForeignKey(
+                        name: "FK_PatientInformation_ActivePatients_ActivePatientId",
+                        column: x => x.ActivePatientId,
+                        principalTable: "ActivePatients",
+                        principalColumn: "ActivePatientId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PatientInformation_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PatientInformation_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PatientInformation_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Phones",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    PhoneId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Number = table.Column<string>(nullable: true),
+                    PhoneType = table.Column<int>(nullable: false),
+                    ObservationNote = table.Column<string>(nullable: true),
+                    PatientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phones", x => x.PhoneId);
+                    table.ForeignKey(
+                        name: "FK_Phones_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Phones_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Phones_AspNetUsers_UserUpdatedId",
                         column: x => x.UserUpdatedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -541,215 +715,6 @@ namespace LigaCancer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    PatientId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
-                    RG = table.Column<string>(nullable: true),
-                    CPF = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: true),
-                    FamiliarityGroup = table.Column<bool>(nullable: false),
-                    Sex = table.Column<int>(nullable: false),
-                    CivilState = table.Column<int>(nullable: false),
-                    DateOfBirth = table.Column<DateTime>(nullable: false),
-                    Profession = table.Column<string>(nullable: true),
-                    FamilyId = table.Column<int>(nullable: true),
-                    PatientInformationId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.PatientId);
-                    table.ForeignKey(
-                        name: "FK_Patients_Families_FamilyId",
-                        column: x => x.FamilyId,
-                        principalTable: "Families",
-                        principalColumn: "FamilyId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Patients_PatientInformation_PatientInformationId",
-                        column: x => x.PatientInformationId,
-                        principalTable: "PatientInformation",
-                        principalColumn: "PatientInformationId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Patients_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Patients_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    AddressId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Street = table.Column<string>(nullable: true),
-                    Neighborhood = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    HouseNumber = table.Column<string>(nullable: true),
-                    Complement = table.Column<string>(nullable: true),
-                    ObservationAddress = table.Column<string>(nullable: true),
-                    ResidenceType = table.Column<int>(nullable: true),
-                    MonthlyAmmountResidence = table.Column<double>(nullable: false),
-                    PatientId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "PatientId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Addresses_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Addresses_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FileAttachments",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    FileAttachmentId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FileName = table.Column<string>(nullable: true),
-                    FilePath = table.Column<string>(nullable: true),
-                    ArchiveCategorie = table.Column<int>(nullable: false),
-                    PatientId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileAttachments", x => x.FileAttachmentId);
-                    table.ForeignKey(
-                        name: "FK_FileAttachments_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "PatientId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FileAttachments_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FileAttachments_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Naturalities",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    NaturalityId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    City = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    PatientId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Naturalities", x => x.NaturalityId);
-                    table.ForeignKey(
-                        name: "FK_Naturalities_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "PatientId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Naturalities_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Naturalities_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phones",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    PhoneId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Number = table.Column<string>(nullable: true),
-                    PhoneType = table.Column<int>(nullable: false),
-                    ObservationNote = table.Column<string>(nullable: true),
-                    PatientId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phones", x => x.PhoneId);
-                    table.ForeignKey(
-                        name: "FK_Phones_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "PatientId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Phones_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Phones_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ActivePatients_UserCreatedId",
                 table: "ActivePatients",
@@ -845,19 +810,9 @@ namespace LigaCancer.Migrations
                 column: "UserUpdatedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Families_UserCreatedId",
-                table: "Families",
-                column: "UserCreatedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Families_UserUpdatedId",
-                table: "Families",
-                column: "UserUpdatedId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FamilyMembers_FamilyId",
+                name: "IX_FamilyMembers_PatientId",
                 table: "FamilyMembers",
-                column: "FamilyId");
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FamilyMembers_UserCreatedId",
@@ -922,6 +877,12 @@ namespace LigaCancer.Migrations
                 column: "ActivePatientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PatientInformation_PatientId",
+                table: "PatientInformation",
+                column: "PatientId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientInformation_UserCreatedId",
                 table: "PatientInformation",
                 column: "UserCreatedId");
@@ -956,16 +917,6 @@ namespace LigaCancer.Migrations
                 table: "Patients",
                 column: "CPF",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Patients_FamilyId",
-                table: "Patients",
-                column: "FamilyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Patients_PatientInformationId",
-                table: "Patients",
-                column: "PatientInformationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_RG",
@@ -1085,19 +1036,16 @@ namespace LigaCancer.Migrations
                 name: "Medicines");
 
             migrationBuilder.DropTable(
-                name: "TreatmentPlaces");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
-
-            migrationBuilder.DropTable(
-                name: "Families");
-
-            migrationBuilder.DropTable(
                 name: "PatientInformation");
 
             migrationBuilder.DropTable(
+                name: "TreatmentPlaces");
+
+            migrationBuilder.DropTable(
                 name: "ActivePatients");
+
+            migrationBuilder.DropTable(
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

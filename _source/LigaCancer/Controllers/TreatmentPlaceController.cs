@@ -64,7 +64,6 @@ namespace LigaCancer.Controllers
 
             TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel
             {
-                TreatmentPlaceId = treatmentPlace.TreatmentPlaceId,
                 City = treatmentPlace.City
             };
 

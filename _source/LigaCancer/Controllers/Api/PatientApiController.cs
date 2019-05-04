@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), ApiController]
+    [Authorize(Roles = "Admin")]
+    [ApiController]
     public class PatientApiController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
@@ -33,7 +34,7 @@ namespace LigaCancer.Controllers.Api
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
                         "PatientInformation", "Naturality", "PatientInformation.ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
-                        "Family", "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
+                        "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
                     }, 
@@ -52,8 +53,8 @@ namespace LigaCancer.Controllers.Api
                     Profession = x.Profession,
                     //FamilyIncome = $"${x.Family.FamilyIncome.ToString("N")}",
                     //PerCapitaIncome = $"${x.Family.PerCapitaIncome.ToString("N")}",
-                    FamilyIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
-                    PerCapitaIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
+                    //FamilyIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
+                    //PerCapitaIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
@@ -170,10 +171,13 @@ namespace LigaCancer.Controllers.Api
                 string addressses = $"<a href='/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Endereços' class='dropdown-item addressesButton'><i class='fas fa-address-book'></i> Endereços</a>";
 
+                string familyMembers = $"<a href='/FamilyMember/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Membros Familiares' class='dropdown-item familyMembersButton'><i class='fas fa-user-friends'></i> Membros Familiares</a>";
+
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + phones + addressses + archivePatient;
+                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + archivePatient;
             }
             else
             {

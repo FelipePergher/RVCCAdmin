@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin")]
+    [ApiController]
     public class PhoneApiController : Controller
     {
         private readonly IDataStore<Phone> _phoneService;

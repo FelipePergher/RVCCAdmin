@@ -38,19 +38,19 @@ namespace LigaCancer.Controllers
         public IActionResult AddPhone(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
-            return PartialView("Partials/_AddPhone", new PhoneFormModel(id));
+            return PartialView("Partials/_AddPhone", new PhoneFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPhone(PhoneFormModel phoneForm)
+        public async Task<IActionResult> AddPhone(string id, PhoneFormModel phoneForm)
         {
-            if (string.IsNullOrEmpty(phoneForm.PatientId)) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             if (ModelState.IsValid)
             {
-                if (await _patientService.FindByIdAsync(phoneForm.PatientId) == null) return NotFound();
+                if (await _patientService.FindByIdAsync(id) == null) return NotFound();
 
-                Phone phone = new Phone(phoneForm.PatientId, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
+                Phone phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _phoneService.CreateAsync(phone);
 
@@ -70,7 +70,7 @@ namespace LigaCancer.Controllers
 
             if (phone == null) return NotFound();
 
-            return PartialView("Partials/_EditPhone", new PhoneFormModel(int.Parse(id))
+            return PartialView("Partials/_EditPhone", new PhoneFormModel
             {
                 Number = phone.Number,
                 PhoneType = phone.PhoneType,

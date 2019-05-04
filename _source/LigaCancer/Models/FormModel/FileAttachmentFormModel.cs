@@ -6,10 +6,6 @@ namespace LigaCancer.Models.FormModel
 {
     public class FileAttachmentFormModel
     {
-        public string PatientId { get; set; }
-
-        public string FileAttachmentId { get; set; }
-
         [Display(Name = "Arquivo")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public IFormFile File { get; set; }

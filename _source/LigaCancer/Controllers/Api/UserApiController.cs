@@ -10,6 +10,7 @@ using System.Linq;
 namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin")]
+    [ApiController]
     public class UserApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

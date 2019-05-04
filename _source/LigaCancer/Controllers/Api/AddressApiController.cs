@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin")]
+    [ApiController]
     public class AddressApiController : Controller
     {
         private readonly IDataStore<Address> _addressService;

@@ -38,20 +38,16 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddFileAttachment(string id)
         {
-            FileAttachmentFormModel fileAttachmentForm = new FileAttachmentFormModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddFileAttachment", fileAttachmentForm);
+            return PartialView("_AddFileAttachment", new FileAttachmentFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFileAttachment(FileAttachmentFormModel fileAttachmentForm)
+        public async Task<IActionResult> AddFileAttachment(string id, FileAttachmentFormModel fileAttachmentForm)
         {
             if (!ModelState.IsValid) return StatusCode(500, "Invalid");
 
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            Patient patient = await _patientService.FindByIdAsync(fileAttachmentForm.PatientId);
+            Patient patient = await _patientService.FindByIdAsync(id);
             FileAttachment fileAttachment = new FileAttachment
             {
                 ArchiveCategorie = fileAttachmentForm.FileCategory,
@@ -86,7 +82,7 @@ namespace LigaCancer.Controllers
                 }
             }
 
-            TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, fileAttachmentForm.PatientId);
+            TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, id);
             if (result.Succeeded)
             {
                 return StatusCode(200, "attachmentFile");

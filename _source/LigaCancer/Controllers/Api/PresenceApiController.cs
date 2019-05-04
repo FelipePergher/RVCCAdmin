@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin"), ApiController]
+    [Authorize(Roles = "Admin")]
+    [ApiController]
     public class PresenceApiController : Controller
     {
         private readonly IDataStore<Presence> _presenceService;

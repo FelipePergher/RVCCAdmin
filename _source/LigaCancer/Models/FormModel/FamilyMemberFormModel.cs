@@ -5,8 +5,6 @@ namespace LigaCancer.Models.FormModel
 {
     public class FamilyMemberFormModel
     {
-        public string PatientId { get; set; }
-
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigátorio!")]
         public string Name { get; set; }

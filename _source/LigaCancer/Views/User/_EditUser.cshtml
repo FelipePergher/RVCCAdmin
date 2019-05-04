@@ -10,12 +10,6 @@
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body form-horizontal" id="">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <h4>
-            Editar Usuário
-        </h4>
-
         <div class="form-group">
             <label asp-for="FirstName" class="control-label"></label>
             <input asp-for="FirstName" class="form-control" />
@@ -39,7 +33,6 @@
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="UserId" />
     </div>
 
     <partial name="_ModalFooter"  />

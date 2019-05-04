@@ -7,9 +7,6 @@ namespace LigaCancer.Models.FormModel
 {
     public class ArchivePatientFormModel
     {
-        [HiddenInput]
-        public string PatientId { get; set; }
-
         [Display(Name = "Motivo")]
         public Globals.ArchivePatientType ArchivePatientType { get; set; }
 

@@ -14,9 +14,6 @@ namespace LigaCancer.Models.FormModel
             DateOfBirth = DateTime.Now;
         }
 
-        [HiddenInput]
-        public int PatientId { get; set; }
-
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }

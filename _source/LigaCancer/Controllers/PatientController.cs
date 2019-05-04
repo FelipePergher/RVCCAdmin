@@ -85,15 +85,12 @@ namespace LigaCancer.Controllers
                     DateOfBirth = patientProfileForm.DateOfBirth.Value,
                     Profession = patientProfileForm.Profession,
                     UserCreated = await _userManager.GetUserAsync(User),
-                    Family = new Family
-                    {
-                        MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0
-                    }
+                    MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0
                 };
 
                 TaskResult result = await _patientService.CreateAsync(patient);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = result.Id }), title = "Adicionar Naturalidade" });
+                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
                 return BadRequest(result.Errors);
             }
 
@@ -105,26 +102,26 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel(id));
+            return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatientNaturality(NaturalityFormModel naturalityForm)
+        public async Task<IActionResult> AddPatientNaturality(string id, NaturalityFormModel naturalityForm)
         {
             if (ModelState.IsValid)
             {
-                BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Naturality);
-                Patient patient = await _patientService.FindByIdAsync(naturalityForm.PatientId, baseSpecification);
+                BaseSpecification<Naturality> baseSpecification = new BaseSpecification<Naturality>(x => x.Patient, x => x.Patient.PatientInformation);
+                Naturality naturality = await _naturalityService.FindByIdAsync(id, baseSpecification);
 
-                patient.Naturality.PatientId = int.Parse(naturalityForm.PatientId);
-                patient.Naturality.City = naturalityForm.City;
-                patient.Naturality.State = naturalityForm.State;
-                patient.Naturality.Country = naturalityForm.Country;
-                patient.Naturality.UserCreated = await _userManager.GetUserAsync(User);
+                naturality.City = naturalityForm.City;
+                naturality.State = naturalityForm.State;
+                naturality.Country = naturalityForm.Country;
+                naturality.UserUpdated = await _userManager.GetUserAsync(User);
 
-                TaskResult result = await _naturalityService.UpdateAsync(patient.Naturality);
+                TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", new { id = patient.PatientId }), title = "Adicionar Informação do Paciente" });
+                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", 
+                    new { id = naturality.Patient.PatientInformation.PatientInformationId }), title = "Adicionar Informação do Paciente" });
                 return BadRequest(result.Errors);
             }
 
@@ -136,7 +133,7 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            var patientInformationForm = new PatientInformationFormModel(id)
+            var patientInformationForm = new PatientInformationFormModel()
             {
                 SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
                 SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
@@ -147,14 +144,16 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatientInformation(PatientInformationFormModel patientInformationForm)
+        public async Task<IActionResult> AddPatientInformation(string id, PatientInformationFormModel patientInformationForm)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                Patient patient = await _patientService.FindByIdAsync(patientInformationForm.PatientId);
-                patient.PatientInformation = new PatientInformation();
+                BaseSpecification<PatientInformation> specification = new BaseSpecification<PatientInformation>(
+                    x => x.PatientInformationCancerTypes, x => x.PatientInformationDoctors, x => x.PatientInformationMedicines, x => x.PatientInformationTreatmentPlaces);
+
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, specification);
 
                 //Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
@@ -167,7 +166,7 @@ namespace LigaCancer.Controllers
 
                     if (cancerType == null) cancerType = new CancerType(cancerTypeValue, user);
 
-                    patient.PatientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
+                    patientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
                 }
 
                 //Added Doctor to Patient Information
@@ -179,7 +178,7 @@ namespace LigaCancer.Controllers
                     if (doctor == null) doctor = await ((DoctorStore)_doctorService).FindByNameAsync(doctorValue);
                     if (doctor == null) doctor = new Doctor(doctorValue, user);
 
-                    patient.PatientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor(doctor));
+                    patientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor(doctor));
                 }
 
                 //Added Treatment Place to Patient Information
@@ -187,11 +186,8 @@ namespace LigaCancer.Controllers
                 {
                     TreatmentPlace treatmentPlace = int.TryParse(treatmentPlaceValue, out int num) ?
                         await _treatmentPlaceService.FindByIdAsync(treatmentPlaceValue) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(treatmentPlaceValue);
-                    if (treatmentPlace == null)
-                    {
-                        treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
-                    }
-                    patient.PatientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace(treatmentPlace));
+                    if (treatmentPlace == null) treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
+                    patientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace(treatmentPlace));
                 }
 
                 //Added Medicine to Patient Information
@@ -200,16 +196,13 @@ namespace LigaCancer.Controllers
                     Medicine medicine = int.TryParse(item, out int num) ?
                         await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
 
-                    if (medicine == null)
-                    {
-                        medicine = new Medicine(item, user);
-                    }
-                    patient.PatientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine(medicine));
+                    if (medicine == null) medicine = new Medicine(item, user);
+                    patientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine(medicine));
                 }
 
-                TaskResult result = await _patientService.UpdateAsync(patient);
+                TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patient.PatientId }), title = "Adicionar Telefone" });
+                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
                 return BadRequest(result.Errors);
             }
 
@@ -230,14 +223,13 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Family);
-            Patient patient = await _patientService.FindByIdAsync(id, baseSpecification);
+            Patient patient = await _patientService.FindByIdAsync(id);
 
             if(patient == null) return NotFound();
 
             PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
             {
-                PatientId = patient.PatientId.ToString(),
+                PatientId = id,
                 FirstName = patient.FirstName,
                 Surname = patient.Surname,
                 RG = patient.RG,
@@ -246,7 +238,7 @@ namespace LigaCancer.Controllers
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
                 DateOfBirth = patient.DateOfBirth,
-                MonthlyIncome = patient.Family.MonthlyIncome,
+                MonthlyIncome = patient.MonthlyIncome,
                 Profession = patient.Profession
             };
 
@@ -254,12 +246,11 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPatientProfile(PatientProfileFormModel patientProfileForm)
+        public async Task<IActionResult> EditPatientProfile(string id, PatientProfileFormModel patientProfileForm)
         {
             if (ModelState.IsValid)
             {
-                BaseSpecification<Patient> baseSpecification = new BaseSpecification<Patient>(x => x.Family);
-                Patient patient = await _patientService.FindByIdAsync(patientProfileForm.PatientId, baseSpecification);
+                Patient patient = await _patientService.FindByIdAsync(id);
 
                 patient.FirstName = patientProfileForm.FirstName;
                 patient.Surname = patientProfileForm.Surname;
@@ -271,7 +262,7 @@ namespace LigaCancer.Controllers
                 patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
                 patient.Profession = patientProfileForm.Profession;
                 patient.UserUpdated = await _userManager.GetUserAsync(User);
-                patient.Family.MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0;
+                patient.MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0;
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
@@ -293,7 +284,6 @@ namespace LigaCancer.Controllers
 
             NaturalityFormModel naturalityForm = new NaturalityFormModel
             {
-                NaturalityId = id,
                 City = naturality.City,
                 Country = naturality.Country,
                 State = naturality.State
@@ -303,11 +293,11 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPatientNaturality(NaturalityFormModel naturalityForm)
+        public async Task<IActionResult> EditPatientNaturality(string id, NaturalityFormModel naturalityForm)
         {
             if (ModelState.IsValid)
             {
-                Naturality naturality = await _naturalityService.FindByIdAsync(naturalityForm.NaturalityId);
+                Naturality naturality = await _naturalityService.FindByIdAsync(id);
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
@@ -335,9 +325,8 @@ namespace LigaCancer.Controllers
 
             if (patientInformation == null) return NotFound();
 
-            var patientInformationForm = new PatientInformationFormModel(id)
+            var patientInformationForm = new PatientInformationFormModel
             {
-                PatientInformationId = id,
                 SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
                 SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
                 SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService),
@@ -351,7 +340,7 @@ namespace LigaCancer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPatientInformation(PatientInformationFormModel patientInformationForm)
+        public async Task<IActionResult> EditPatientInformation(string id, PatientInformationFormModel patientInformationForm)
         {
             if (ModelState.IsValid)
             {
@@ -360,7 +349,7 @@ namespace LigaCancer.Controllers
                 BaseSpecification<PatientInformation> specification = new BaseSpecification<PatientInformation>(
                     x => x.PatientInformationCancerTypes, x => x.PatientInformationDoctors, x => x.PatientInformationMedicines, x => x.PatientInformationTreatmentPlaces);
 
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(patientInformationForm.PatientInformationId, specification);
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, specification);
 
                 //Added Cancer Types to Patient Information
                 if (patientInformationForm.CancerTypes.Count == 0) patientInformation.PatientInformationCancerTypes.Clear();
@@ -485,19 +474,18 @@ namespace LigaCancer.Controllers
         {
             ArchivePatientFormModel archivePatientForm = new ArchivePatientFormModel
             {
-                PatientId = id,
                 DateTime = DateTime.Now
             };
             return PartialView("Partials/_ArchivePatient", archivePatientForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ArchivePatient(ArchivePatientFormModel archivePatientForm)
+        public async Task<IActionResult> ArchivePatient(string id, ArchivePatientFormModel archivePatientForm)
         {
-            if (string.IsNullOrEmpty(archivePatientForm.PatientId)) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(archivePatientForm.PatientId, specification);
+            Patient patient = await _patientService.FindByIdAsync(id, specification);
             if (patient == null) return NotFound();
 
             switch (archivePatientForm.ArchivePatientType)
