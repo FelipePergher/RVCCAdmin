@@ -40,7 +40,7 @@ namespace LigaCancer.Controllers.Api
                     City = x.City,
                     HouseNumber = x.HouseNumber.ToString(),
                     Complement = x.Complement,
-                    ResidenceType = x.ResidenceType.ToString(),
+                    ResidenceType = Globals.GetDisplayName(x.ResidenceType),
                     MonthlyAmmountResidence = x.MonthlyAmmountResidence.ToString(),
                     ObservationAddress = x.ObservationAddress,
                     Actions = GetActionsHtml(x)

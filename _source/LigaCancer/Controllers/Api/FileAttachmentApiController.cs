@@ -9,7 +9,7 @@ namespace LigaCancer.Controllers.Api
     [ApiController]
     public class FileAttachmentApiController : Controller 
     {
-        public readonly IDataStore<Patient> _patientService;
+        private readonly IDataStore<Patient> _patientService;
 
         public FileAttachmentApiController(IDataStore<Patient> patientService)
         {

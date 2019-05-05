@@ -1,5 +1,7 @@
-﻿using LigaCancer.Code.Interface;
+﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -14,8 +16,8 @@ namespace LigaCancer.Controllers.Api
     [ApiController]
     public class FamilyMemberApiController : Controller 
     {
-        public readonly IDataStore<FamilyMember> _familyMemberService;
-        public readonly IDataStore<Patient> _patientService;
+        private readonly IDataStore<FamilyMember> _familyMemberService;
+        private readonly IDataStore<Patient> _patientService;
 
         public FamilyMemberApiController(IDataStore<FamilyMember> familyMemberService, IDataStore<Patient> patientService)
         {
@@ -39,16 +41,15 @@ namespace LigaCancer.Controllers.Api
                     Name = x.Name,
                     Kinship = x.Kinship,
                     Age = x.Age.ToString(),
-                    Sex = x.Sex.ToString(),
+                    Sex = Globals.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("C2"),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                double monthlyIncomeValue = familyMembers.Sum(x => (double)x.MonthlyIncome);
-                string familyIncome = monthlyIncomeValue.ToString("C2");
-                string perCapitaIncome= (monthlyIncomeValue / familyMembers.Count).ToString("C2");
+                string familyIncome = familyMembers.Sum(x => x.MonthlyIncome).ToString("C2");
+                string perCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(familyMembers);
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
-                
+
                 int recordsTotal = familyMembers.Count;
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal, perCapitaIncome, familyIncome, monthlyIncome = patient.MonthlyIncome.ToString("C2") });

@@ -1,13 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace LigaCancer.Code
 {
     public class Globals
     {
-       
+
         [JsonConverter(typeof(StringEnumConverter))]
         public enum Sex
         {
@@ -74,6 +77,15 @@ namespace LigaCancer.Code
             discharge,
             [Display(Name = "Óbito"), EnumMember(Value = "Óbito")]
             death
+        }
+
+        public static string GetDisplayName(Enum enumValue)
+        {
+            return enumValue.GetType()
+                            .GetMember(enumValue.ToString())
+                            .First()
+                            .GetCustomAttribute<DisplayAttribute>()
+                            .GetName();
         }
 
     }

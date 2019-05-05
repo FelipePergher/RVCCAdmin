@@ -1,4 +1,5 @@
-﻿using LigaCancer.Code.Interface;
+﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
@@ -35,7 +36,7 @@ namespace LigaCancer.Controllers.Api
                 IEnumerable<PhoneViewModel> data = phones.Select(x => new PhoneViewModel
                 {
                     Number = x.Number,
-                    PhoneType = x.PhoneType.ToString(),
+                    PhoneType = Globals.GetDisplayName(x.PhoneType),
                     ObservationNote = x.ObservationNote,
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);

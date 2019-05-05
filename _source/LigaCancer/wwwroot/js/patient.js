@@ -58,22 +58,21 @@ function initPage() {
         order: [1, "asc"],
         columns: [
             { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-            { data: "status", title: "Status", name: "status" },
             { data: "firstName", title: "Nome", name: "firstName" },
             { data: "lastName", title: "Sobrenome", name: "lastName" },
             { data: "rg", title: "RG", name: "rg" },
             { data: "cpf", title: "CPF", name: "cpf" },
-            { data: "dateOfBirth", title: "DateOfBirth", name: "DateOfBirth" },
-            { data: "sex", title: "Sex", name: "Sex" },
-            { data: "civilState", title: "CivilState", name: "CivilState" },
-            { data: "familiarityGroup", title: "FamiliarityGroup", name: "FamiliarityGroup" },
-            { data: "profession", title: "Profession", name: "Profession" },
-            { data: "familyIncome", title: "FamilyIncome", name: "FamilyIncome" },
-            { data: "perCapitaIncome", title: "PerCapitaIncome", name: "PerCapitaIncome" },
-            { data: "medicines", title: "Medicines", name: "Medicines", orderable: false },
+            { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return DateFormat(row.dateOfBirth); } },
+            { data: "sex", title: "Gênero", name: "Sex" },
+            { data: "civilState", title: "Estado Civil", name: "CivilState" },
+            { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
+            { data: "profession", title: "Profissão", name: "Profession" },
+            { data: "perCapitaIncome", title: "Renda Per Capita", name: "PerCapitaIncome" },
+            { data: "medicines", title: "Remédios", name: "Medicines", orderable: false },
             { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
-            { data: "doctors", title: "Doctors", name: "Doctors", orderable: false },
-            { data: "treatmentPlaces", title: "TreatmentPlaces", name: "TreatmentPlaces", orderable: false }
+            { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
+            { data: "treatmentPlaces", title: "Locais de Tratamento", name: "TreatmentPlaces", orderable: false },
+            { data: "status", title: "Status", name: "status" }
         ],
         drawCallback: function (settings) {
             $(".editPatientButton").click(function () {

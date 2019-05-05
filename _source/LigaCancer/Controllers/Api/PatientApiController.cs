@@ -1,5 +1,7 @@
-﻿using LigaCancer.Code.Interface;
+﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +17,12 @@ namespace LigaCancer.Controllers.Api
     public class PatientApiController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
+        private readonly IDataStore<FamilyMember> _familyMemberService;
 
-        public PatientApiController(IDataStore<Patient> patientService)
+        public PatientApiController(IDataStore<Patient> patientService, IDataStore<FamilyMember> familyMemberService)
         {
             _patientService = patientService;
+            _familyMemberService = familyMemberService;
         }
 
         [HttpPost("~/api/patient/search")]
@@ -37,24 +41,23 @@ namespace LigaCancer.Controllers.Api
                         "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
-                    }, 
-                    sortColumn, sortDirection);
+                    }, sortColumn, sortDirection);
+
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
-                    Status = x.PatientInformation.ActivePatient.Discharge ? "Alta" : x.PatientInformation.ActivePatient.Death ? "Óbito" : "Ativo",
+                    Status = x.PatientInformation.ActivePatient.Discharge 
+                        ? Globals.GetDisplayName(Globals.ArchivePatientType.discharge) 
+                        : x.PatientInformation.ActivePatient.Death ? Globals.GetDisplayName(Globals.ArchivePatientType.death) : "Ativo",
                     FirstName = x.FirstName,
                     LastName = x.Surname,
                     Rg = x.RG,
                     Cpf = x.CPF,
-                    DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
-                    Sex = x.Sex.ToString(),
-                    CivilState = x.CivilState.ToString(),
+                    DateOfBirth = x.DateOfBirth.ToString("MM/dd/yyyy"),
+                    Sex = Globals.GetDisplayName(x.Sex),
+                    CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
-                    //FamilyIncome = $"${x.Family.FamilyIncome.ToString("N")}",
-                    //PerCapitaIncome = $"${x.Family.PerCapitaIncome.ToString("N")}",
-                    //FamilyIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
-                    //PerCapitaIncome = $"${x.Family.MonthlyIncome.ToString("N")}",
+                    PerCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),

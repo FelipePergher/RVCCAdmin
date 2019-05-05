@@ -111,3 +111,8 @@ function showSpinnerModalSecondary() {
 function hideSpinnerModalSecondary() {
     $("#modalSpinnerSecondary").hide();
 }
+
+function DateFormat(dateOfBirth) {
+    let date = new Date(dateOfBirth);
+    return date.toLocaleDateString("pt-BR");
+}

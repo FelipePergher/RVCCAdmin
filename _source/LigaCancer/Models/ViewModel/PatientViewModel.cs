@@ -22,8 +22,6 @@
 
         public string Profession { get; set; }
 
-        public string FamilyIncome { get; set; }
-
         public string PerCapitaIncome { get; set; }
 
         public string Medicines { get; set; }

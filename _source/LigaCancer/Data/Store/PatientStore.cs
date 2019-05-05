@@ -136,35 +136,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(patient);
         }
 
-        //Todo Change methods to other stores
-        public async Task<TaskResult> AddFamilyMember(FamilyMember familyMember, string patientId)
+        public string GetPerCapitaIncome(List<FamilyMember> familyMembers)
         {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.FamilyMembers);
-                Patient patient = await FindByIdAsync(patientId, specification);
-                patient.FamilyMembers.Add(familyMember);
-
-                //patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
-
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
+            return familyMembers.Count > 0 ? (familyMembers.Sum(x => x.MonthlyIncome) / familyMembers.Count).ToString("C2") : 0.00.ToString("C2");
         }
 
+        //Todo Change methods to other stores
         public async Task<TaskResult> AddFileAttachment(FileAttachment fileAttachment, string patientId)
         {
             TaskResult result = new TaskResult();
