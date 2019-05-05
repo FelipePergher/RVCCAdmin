@@ -38,7 +38,7 @@ namespace LigaCancer.Controllers
 
         public IActionResult AddFileAttachment(string id)
         {
-            return PartialView("_AddFileAttachment", new FileAttachmentFormModel());
+            return PartialView("Partials/_AddFileAttachment", new FileAttachmentFormModel());
         }
 
         [HttpPost]
@@ -94,35 +94,16 @@ namespace LigaCancer.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
-            string name = string.Empty;
-
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteFileAttachment", name);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
-            if (fileAttachment != null)
-            {
-                name = fileAttachment.FileName;
-            }
 
-            return PartialView("_DeleteFileAttachment", name);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteFileAttachment(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
-
-            FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
-            if (fileAttachment == null) return RedirectToAction("Index");
+            if (fileAttachment == null) return NotFound();
 
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
 
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "attachmentFile");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteFileAttachment", fileAttachment.FileName);
+            if (result.Succeeded) return Ok();
+            return BadRequest();
         }
 
     }

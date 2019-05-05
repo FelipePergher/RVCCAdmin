@@ -29,6 +29,7 @@ namespace LigaCancer.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View(new PresenceSearchModel());
@@ -47,7 +48,7 @@ namespace LigaCancer.Controllers
                 }).ToList()
             };
 
-            return PartialView("_AddPresence", presenceForm);
+            return PartialView("Partials/_AddPresence", presenceForm);
         }
 
         [HttpPost]
@@ -55,22 +56,20 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
-
                 Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
 
                 Presence presence = new Presence
                 {
                     PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
                     Name = $"{patient.FirstName} {patient.Surname}",
-                    UserCreated = user
+                    UserCreated = await _userManager.GetUserAsync(User)
                 };
 
                 TaskResult result = await _presenceService.CreateAsync(presence);
 
                 if (result.Succeeded) return Ok();
 
-                ModelState.AddErrors(result);
+                return BadRequest();
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
@@ -80,7 +79,7 @@ namespace LigaCancer.Controllers
                 Value = x.PatientId.ToString()
             }).ToList();
 
-            return PartialView("_AddPresence", presenceForm);
+            return PartialView("Partials/_AddPresence", presenceForm);
         }
 
         [HttpGet]
@@ -105,13 +104,13 @@ namespace LigaCancer.Controllers
                 }).ToList()
             };
 
-            return PartialView("_EditPresence", presenceform);
+            return PartialView("Partials/_EditPresence", presenceform);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(presenceForm.PatientId)) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
             
             if (ModelState.IsValid)
             {
@@ -127,8 +126,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
                 if (result.Succeeded) return Ok();
-
-                ModelState.AddErrors(result);
+                return BadRequest();
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
@@ -138,10 +136,10 @@ namespace LigaCancer.Controllers
                 Value = x.PatientId.ToString()
             }).ToList();
 
-            return PartialView("_EditPresence", presenceForm);
+            return PartialView("Partials/_EditPresence", presenceForm);
         }
 
-        [HttpGet]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePresence(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();

@@ -30,6 +30,7 @@ namespace LigaCancer.Controllers
             _cancerTypeService = cancerTypeService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             HomeViewModel homeView = new HomeViewModel

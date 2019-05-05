@@ -1,8 +1,6 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Data.Models;
+﻿using LigaCancer.Data.Models;
 using LigaCancer.Models.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -32,7 +30,7 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            return PartialView("_AddUser", new UserFormModel());
+            return PartialView("Partials/_AddUser", new UserFormModel());
         }
 
         [HttpPost]
@@ -59,7 +57,7 @@ namespace LigaCancer.Controllers
                 }
             }
 
-            return PartialView("_AddUser", userForm);
+            return PartialView("Partials/_AddUser", userForm);
         }
 
         [HttpGet]
@@ -71,7 +69,6 @@ namespace LigaCancer.Controllers
             
             if (user == null) return NotFound();
 
-
             EditUserFormModel editUserForm = new EditUserFormModel
             {
                 FirstName = user.FirstName,
@@ -82,75 +79,56 @@ namespace LigaCancer.Controllers
             string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
             if (userRole != null) editUserForm.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
 
-            return PartialView("_EditUser", editUserForm);
+            return PartialView("Partials/_EditUser", editUserForm);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, EditUserFormModel editUserForm)
         {
-            if (!ModelState.IsValid) return PartialView("_EditUser", editUserForm);
-
+            if(string.IsNullOrEmpty(id)) return BadRequest();
+            
             ApplicationUser user = await _userManager.FindByIdAsync(id);
 
-            if (user == null) return PartialView("_EditUser", editUserForm);
+            if (user == null) return NotFound();
 
-            user.FirstName = editUserForm.FirstName;
-            user.LastName = editUserForm.LastName;
-            user.Email = editUserForm.Email;
-
-            IdentityResult result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                if(userRole != null)
-                {
-                    await _userManager.RemoveFromRoleAsync(user, userRole);
-                }
+                user.FirstName = editUserForm.FirstName;
+                user.LastName = editUserForm.LastName;
+                user.Email = editUserForm.Email;
 
-                IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == editUserForm.Role);
-                if(role != null)
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, role.Name);
-                }
+                    string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                    if (userRole != null) await _userManager.RemoveFromRoleAsync(user, userRole);
 
-                return StatusCode(200, "200");
+                    IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == editUserForm.Role);
+                    if (role != null) await _userManager.AddToRoleAsync(user, role.Name);
+
+                    return Ok();
+                }
             }
-            ModelState.AddErrors(result);
 
-            return PartialView("_EditUser", editUserForm);
+            return PartialView("Partials/_EditUser", editUserForm);
         }
 
-        [HttpGet]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            string name = string.Empty;
-            if (string.IsNullOrEmpty(id)) return PartialView("_DeleteUser", name);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-            if (applicationUser != null)
-            {
-                name = $"{applicationUser.FirstName} {applicationUser.LastName}";
-            }
-            return PartialView("_DeleteUser", name);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteUser(string id, IFormCollection form)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+            if (applicationUser == null) return NotFound();
 
-            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-            if (applicationUser == null) return RedirectToAction("Index");
-
+            //Todo see how use user identity to disable user
             applicationUser.DeletedDate = DateTime.Now;
             applicationUser.IsDeleted = true;
+
             IdentityResult result = await _userManager.UpdateAsync(applicationUser);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "200");
-            }
-            ModelState.AddErrors(result);
-            return PartialView("_DeleteUser", $"{applicationUser.FirstName} {applicationUser.LastName}");
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
 
         #region Custom Methods
