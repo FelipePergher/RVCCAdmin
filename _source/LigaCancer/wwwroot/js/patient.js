@@ -40,15 +40,19 @@ function initPage() {
             url: "/api/patient/search",
             type: "POST",
             data: function (d) {
-                //d.civilState $("#CivilState").val();
-                //d.Sex = $("#Sex").val();
-                //d.cancerTypes = $("#CancerTypes").val();
-                //d.medicines = $("#Medicines").val();
-                //d.doctors = $("#Doctors").val();
-                //d.treatmentPlaces = $("#TreatmentPlaces").val();
-                //d.familiarityGroup = $("#FamiliarityGroup").val();
-                //d.death = $("#Death").is(":checked");
-                //d.discharge = $("#Discharge").is(":checked");
+                d.name = $("#Name").val();
+                d.surname = $("#Surname").val();
+                d.rg = $("#Rg").val();
+                d.cpf = $("#Cpf").val();
+                d.civilState = $("#CivilState").val();
+                d.Sex = $("#Sex").val();
+                d.cancerTypes = $("#CancerTypes").val();
+                d.medicines = $("#Medicines").val();
+                d.doctors = $("#Doctors").val();
+                d.treatmentPlaces = $("#TreatmentPlaces").val();
+                d.familiarityGroup = $("#FamiliarityGroup").val();
+                d.death = $("#Death").is(":checked");
+                d.discharge = $("#Discharge").is(":checked");
             },
             datatype: "json",
             error: function () {
@@ -58,10 +62,10 @@ function initPage() {
         order: [1, "asc"],
         columns: [
             { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-            { data: "firstName", title: "Nome", name: "firstName" },
-            { data: "lastName", title: "Sobrenome", name: "lastName" },
-            { data: "rg", title: "RG", name: "rg" },
-            { data: "cpf", title: "CPF", name: "cpf" },
+            { data: "firstName", title: "Nome", name: "FirstName" },
+            { data: "lastName", title: "Sobrenome", name: "LastName" },
+            { data: "rg", title: "RG", name: "RG" },
+            { data: "cpf", title: "CPF", name: "CPF" },
             { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return DateFormat(row.dateOfBirth); } },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "civilState", title: "Estado Civil", name: "CivilState" },
@@ -72,7 +76,7 @@ function initPage() {
             { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
             { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
             { data: "treatmentPlaces", title: "Locais de Tratamento", name: "TreatmentPlaces", orderable: false },
-            { data: "status", title: "Status", name: "status" }
+            { data: "status", title: "Status", name: "status", orderable: false }
         ],
         drawCallback: function (settings) {
             $(".editPatientButton").click(function () {

@@ -45,26 +45,45 @@
                                     <div>
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
+                                                <label asp-for="Name"></label>
+                                                <input asp-for="Name" class="form-control" placeholder="Nome" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Surname"></label>
+                                                <input asp-for="Surname" class="form-control" placeholder="Sobrenome"  />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Rg"></label>
+                                                <input asp-for="Rg" class="form-control" placeholder="Rg"  />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Cpf"></label>
+                                                <input asp-for="Cpf" class="form-control" placeholder="Cpf"  />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row form-group">
+                                            <div class="col-lg-3">
                                                 <label asp-for="CancerTypes"></label>
-                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect">
+                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect" data-placeholder="Tipos de Câncer" >
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Medicines"></label>
-                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect">
+                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect" data-placeholder="Remédios">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Doctors"></label>
-                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect">
+                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect" data-placeholder="Médicos">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="TreatmentPlaces"></label>
-                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect">
+                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect" data-placeholder="Locais de Tratamento">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
@@ -99,6 +118,9 @@
                                             </div>
                                         </div>
 
+                                        <button type="reset" class="btn btn-secondary">
+                                            <i class="fas fa-filter"></i> Limpar
+                                        </button>
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-filter"></i> Filtrar
                                         </button>

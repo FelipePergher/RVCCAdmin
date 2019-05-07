@@ -14,7 +14,18 @@ namespace LigaCancer.Models.SearchModel
             Medicines = new List<string>();
         }
 
-        //Todo why use this -1?
+        [Display(Name = "Nome")]
+        public string Name { get; set; }
+
+        [Display(Name = "Sobrenome")]
+        public string Surname { get; set; }
+
+        [Display(Name = "RG")]
+        public string Rg { get; set; }
+
+        [Display(Name = "CPF")]
+        public string Cpf { get; set; }
+
         [Display(Name = "Estado civil")]
         public string CivilState { get; set; } = "-1";
 
