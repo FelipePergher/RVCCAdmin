@@ -26,6 +26,7 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Profissão")]

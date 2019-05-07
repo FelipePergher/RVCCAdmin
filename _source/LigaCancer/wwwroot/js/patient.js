@@ -555,7 +555,7 @@ function initFamilyMemberIndex() {
             { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
             { data: "name", title: "Nome", name: "Name" },
             { data: "kinship", title: "Parentesco", name: "Kinship" },
-            { data: "age", title: "Idade", name: "Age" },
+            { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return DateFormat(row.dateOfBirth); } },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
         ],
@@ -576,6 +576,7 @@ function initFamilyMemberIndex() {
 }
 
 function initAddFamilyMemberForm() {
+    calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#addFamilyMemberForm");
 }
 
@@ -592,6 +593,7 @@ function addFamilyMemberSuccess(data, textStatus) {
 }
 
 function initEditFamilyMemberForm() {
+    calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#editFamilyMemberForm");
 }
 

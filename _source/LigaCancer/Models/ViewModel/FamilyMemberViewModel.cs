@@ -6,7 +6,7 @@
 
         public string Kinship { get; set; }
 
-        public string Age { get; set; }
+        public string DateOfBirth { get; set; }
 
         public string Sex { get; set; }
 

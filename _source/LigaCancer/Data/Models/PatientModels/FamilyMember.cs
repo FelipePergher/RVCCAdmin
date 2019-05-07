@@ -1,4 +1,5 @@
 ﻿using LigaCancer.Code;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,7 +14,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Kinship { get; set; }
 
-        public int? Age { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public Globals.Sex Sex { get; set; }
 

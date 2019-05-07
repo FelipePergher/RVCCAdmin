@@ -30,9 +30,6 @@ namespace LigaCancer.Models.FormModel
         [Remote("IsCpfExist", "Patient", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
         public string CPF { get; set; }
 
-        [Display(Name = "Idade")]
-        public int? Age { get; set; }
-
         [Display(Name = "Grupo de Convivência")]
         public bool FamiliarityGroup { get; set; }
 
@@ -43,8 +40,8 @@ namespace LigaCancer.Models.FormModel
         public Globals.CivilState CivilState { get; set; }
 
         [Display(Name = "Data de Nascimento")]
-        [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Profissão")]
         public string Profession { get; set; }

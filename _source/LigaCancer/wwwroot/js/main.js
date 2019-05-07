@@ -86,6 +86,11 @@ function hideSpinnerModal() {
 
 //Secondary Modal Functions
 function openModalSecondary(url, title, callback = null) {
+    setTimeout(function () {
+        let overlaySecondModal = $(".modal-backdrop.fade.show");
+        if (overlaySecondModal.length === 2) $(overlaySecondModal[1]).css("z-index", 1050);
+    }, 10);
+
     $("#modal-title-secondary").text(title);
 
     $("#modalBodySecondary").load(url, function () {
@@ -114,5 +119,7 @@ function hideSpinnerModalSecondary() {
 
 function DateFormat(dateOfBirth) {
     let date = new Date(dateOfBirth);
-    return date.toLocaleDateString("pt-BR");
+    let dateString = date.toLocaleDateString("pt-BR");
+    if (dateString.toLowerCase().includes("invalid")) dateString = "";
+    return dateString;
 }

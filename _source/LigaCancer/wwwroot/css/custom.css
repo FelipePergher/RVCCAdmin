@@ -30,10 +30,10 @@
     z-index: 1060;
 }
 
-.modal-backdrop.fade.show + div {
-    z-index: 1050;
-}
-
 .modal-elg {
     max-width: 80vw;
+}
+
+.datepicker {
+    z-index: 1070 !important;
 }

@@ -54,7 +54,7 @@ namespace LigaCancer.Controllers
                 FamilyMember familyMember = new FamilyMember
                 {
                     PatientId = int.Parse(id),
-                    Age = familyMemberForm.Age,
+                    DateOfBirth = familyMemberForm.DateOfBirth,
                     Kinship = familyMemberForm.Kinship,
                     MonthlyIncome = (double)familyMemberForm.MonthlyIncome,
                     Name = familyMemberForm.Name,
@@ -82,7 +82,7 @@ namespace LigaCancer.Controllers
 
             return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
-                Age = familyMember.Age,
+                DateOfBirth = familyMember.DateOfBirth,
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = (decimal)familyMember.MonthlyIncome,
                 Name = familyMember.Name,
@@ -97,7 +97,7 @@ namespace LigaCancer.Controllers
             {
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
             
-                familyMember.Age = familyMemberForm.Age;
+                familyMember.DateOfBirth = familyMemberForm.DateOfBirth;
                 familyMember.Kinship = familyMemberForm.Kinship;
                 familyMember.MonthlyIncome = (double)familyMemberForm.MonthlyIncome;
                 familyMember.Name = familyMemberForm.Name;

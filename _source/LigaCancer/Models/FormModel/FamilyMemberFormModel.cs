@@ -1,4 +1,5 @@
 ﻿using LigaCancer.Code;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
@@ -13,10 +14,10 @@ namespace LigaCancer.Models.FormModel
         [Required(ErrorMessage = "Este campo é obrigátorio!")]
         public string Kinship { get; set; }
 
-        [Display(Name = "Idade")]
-        [Required(ErrorMessage = "Este campo é obrigátorio!")]
-        [Range(0, 120, ErrorMessage = "Insira um valor de 0 até 120")]
-        public int? Age { get; set; }
+        [Display(Name = "Data de Nascimento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Gênero")]
         public Globals.Sex Sex { get; set; }

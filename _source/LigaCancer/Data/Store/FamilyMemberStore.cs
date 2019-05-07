@@ -136,8 +136,8 @@ namespace LigaCancer.Data.Store
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
                 case "Kinship":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Kinship) : query.OrderByDescending(x => x.Kinship);
-                case "Age":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Age) : query.OrderByDescending(x => x.Age);
+                case "DateOfBirth":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
                 case "Sex":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
                 case "MonthlyIncome":
