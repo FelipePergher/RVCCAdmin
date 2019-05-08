@@ -15,6 +15,7 @@ namespace LigaCancer.Data.Models.PatientModels
             FamilyMembers = new HashSet<FamilyMember>();
             PatientInformation = new PatientInformation();
             Naturality = new Naturality();
+            ActivePatient = new ActivePatient();
         }
 
         [Key]
@@ -40,6 +41,8 @@ namespace LigaCancer.Data.Models.PatientModels
         public DateTime DateOfBirth { get; set; }
 
         public string Profession { get; set; }
+
+        public virtual ActivePatient ActivePatient { get; set; }
 
         public virtual PatientInformation PatientInformation { get; set; }
 

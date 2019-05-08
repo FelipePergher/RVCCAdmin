@@ -484,19 +484,19 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.ActivePatient);
             Patient patient = await _patientService.FindByIdAsync(id, specification);
             if (patient == null) return NotFound();
 
             switch (archivePatientForm.ArchivePatientType)
             {
                 case Globals.ArchivePatientType.death:
-                    patient.PatientInformation.ActivePatient.Death = true;
-                    patient.PatientInformation.ActivePatient.DeathDate = archivePatientForm.DateTime;
+                    patient.ActivePatient.Death = true;
+                    patient.ActivePatient.DeathDate = archivePatientForm.DateTime;
                     break;
                 case Globals.ArchivePatientType.discharge:
-                    patient.PatientInformation.ActivePatient.Discharge = true;
-                    patient.PatientInformation.ActivePatient.DischargeDate = archivePatientForm.DateTime;
+                    patient.ActivePatient.Discharge = true;
+                    patient.ActivePatient.DischargeDate = archivePatientForm.DateTime;
                     break;
             }
 
@@ -512,12 +512,12 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.PatientInformation.ActivePatient);
+            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.ActivePatient);
             Patient patient = await _patientService.FindByIdAsync(id, specification);
 
             if (patient == null) return NotFound();
 
-            patient.PatientInformation.ActivePatient.Discharge = false;
+            patient.ActivePatient.Discharge = false;
             TaskResult result = await _patientService.UpdateAsync(patient);
 
             if (result.Succeeded) return Ok();

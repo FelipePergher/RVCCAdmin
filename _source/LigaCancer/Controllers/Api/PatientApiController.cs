@@ -37,7 +37,7 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
-                        "PatientInformation", "Naturality", "PatientInformation.ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "PatientInformation", "Naturality", "ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
@@ -45,9 +45,9 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
-                    Status = x.PatientInformation.ActivePatient.Discharge 
+                    Status = x.ActivePatient.Discharge 
                         ? Globals.GetDisplayName(Globals.ArchivePatientType.discharge) 
-                        : x.PatientInformation.ActivePatient.Death ? Globals.GetDisplayName(Globals.ArchivePatientType.death) : "Ativo",
+                        : x.ActivePatient.Death ? Globals.GetDisplayName(Globals.ArchivePatientType.death) : "Ativo",
                     FirstName = x.FirstName,
                     LastName = x.Surname,
                     Rg = x.RG,
@@ -81,7 +81,7 @@ namespace LigaCancer.Controllers.Api
         private string GetActionsHtml(Patient patient)
         {
             string options = string.Empty;
-            if (!patient.PatientInformation.ActivePatient.Death && !patient.PatientInformation.ActivePatient.Discharge)
+            if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
             {
                 string editPatient = $"<a href='/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-edit'></i> Perfil do Paciente</a>";
@@ -113,7 +113,7 @@ namespace LigaCancer.Controllers.Api
                 string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
                 $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
-                if (!patient.PatientInformation.ActivePatient.Death)
+                if (!patient.ActivePatient.Death)
                 {
                     options = enablePatient;
                 }

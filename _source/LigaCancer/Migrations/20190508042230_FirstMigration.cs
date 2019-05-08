@@ -76,38 +76,6 @@ namespace LigaCancer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ActivePatients",
-                columns: table => new
-                {
-                    RegisterDate = table.Column<DateTime>(nullable: false),
-                    UserCreatedId = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false),
-                    UserUpdatedId = table.Column<string>(nullable: true),
-                    ActivePatientId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Death = table.Column<bool>(nullable: false),
-                    Discharge = table.Column<bool>(nullable: false),
-                    DeathDate = table.Column<DateTime>(nullable: false),
-                    DischargeDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActivePatients", x => x.ActivePatientId);
-                    table.ForeignKey(
-                        name: "FK_ActivePatients_AspNetUsers_UserCreatedId",
-                        column: x => x.UserCreatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ActivePatients_AspNetUsers_UserUpdatedId",
-                        column: x => x.UserUpdatedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -294,7 +262,6 @@ namespace LigaCancer.Migrations
                     Surname = table.Column<string>(nullable: true),
                     RG = table.Column<string>(nullable: true),
                     CPF = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: true),
                     FamiliarityGroup = table.Column<bool>(nullable: false),
                     MonthlyIncome = table.Column<double>(nullable: false),
                     Sex = table.Column<int>(nullable: false),
@@ -380,6 +347,45 @@ namespace LigaCancer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ActivePatients",
+                columns: table => new
+                {
+                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    UserCreatedId = table.Column<string>(nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: false),
+                    UserUpdatedId = table.Column<string>(nullable: true),
+                    ActivePatientId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Death = table.Column<bool>(nullable: false),
+                    Discharge = table.Column<bool>(nullable: false),
+                    DeathDate = table.Column<DateTime>(nullable: false),
+                    DischargeDate = table.Column<DateTime>(nullable: false),
+                    PatientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActivePatients", x => x.ActivePatientId);
+                    table.ForeignKey(
+                        name: "FK_ActivePatients_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActivePatients_AspNetUsers_UserCreatedId",
+                        column: x => x.UserCreatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ActivePatients_AspNetUsers_UserUpdatedId",
+                        column: x => x.UserUpdatedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
@@ -434,7 +440,7 @@ namespace LigaCancer.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Kinship = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: true),
                     Sex = table.Column<int>(nullable: false),
                     MonthlyIncome = table.Column<double>(nullable: false),
                     PatientId = table.Column<int>(nullable: false)
@@ -549,18 +555,11 @@ namespace LigaCancer.Migrations
                     PatientInformationId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TreatmentbeginDate = table.Column<DateTime>(nullable: false),
-                    ActivePatientId = table.Column<int>(nullable: true),
                     PatientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PatientInformation", x => x.PatientInformationId);
-                    table.ForeignKey(
-                        name: "FK_PatientInformation_ActivePatients_ActivePatientId",
-                        column: x => x.ActivePatientId,
-                        principalTable: "ActivePatients",
-                        principalColumn: "ActivePatientId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PatientInformation_Patients_PatientId",
                         column: x => x.PatientId,
@@ -714,6 +713,12 @@ namespace LigaCancer.Migrations
                         principalColumn: "TreatmentPlaceId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActivePatients_PatientId",
+                table: "ActivePatients",
+                column: "PatientId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivePatients_UserCreatedId",
@@ -872,11 +877,6 @@ namespace LigaCancer.Migrations
                 column: "UserUpdatedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PatientInformation_ActivePatientId",
-                table: "PatientInformation",
-                column: "ActivePatientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PatientInformation_PatientId",
                 table: "PatientInformation",
                 column: "PatientId",
@@ -979,6 +979,9 @@ namespace LigaCancer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ActivePatients");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
@@ -1040,9 +1043,6 @@ namespace LigaCancer.Migrations
 
             migrationBuilder.DropTable(
                 name: "TreatmentPlaces");
-
-            migrationBuilder.DropTable(
-                name: "ActivePatients");
 
             migrationBuilder.DropTable(
                 name: "Patients");

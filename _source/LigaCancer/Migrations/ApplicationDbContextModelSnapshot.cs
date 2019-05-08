@@ -30,6 +30,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<DateTime>("DischargeDate");
 
+                    b.Property<int>("PatientId");
+
                     b.Property<DateTime>("RegisterDate");
 
                     b.Property<DateTime>("UpdatedDate");
@@ -39,6 +41,9 @@ namespace LigaCancer.Migrations
                     b.Property<string>("UserUpdatedId");
 
                     b.HasKey("ActivePatientId");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique();
 
                     b.HasIndex("UserCreatedId");
 
@@ -326,8 +331,6 @@ namespace LigaCancer.Migrations
                     b.Property<int>("PatientInformationId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("ActivePatientId");
-
                     b.Property<int>("PatientId");
 
                     b.Property<DateTime>("RegisterDate");
@@ -341,8 +344,6 @@ namespace LigaCancer.Migrations
                     b.Property<string>("UserUpdatedId");
 
                     b.HasKey("PatientInformationId");
-
-                    b.HasIndex("ActivePatientId");
 
                     b.HasIndex("PatientId")
                         .IsUnique();
@@ -678,6 +679,11 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
+                    b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
+                        .WithOne("ActivePatient")
+                        .HasForeignKey("LigaCancer.Data.Models.PatientModels.ActivePatient", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
                         .WithMany()
                         .HasForeignKey("UserCreatedId");
@@ -797,10 +803,6 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.PatientInformation", b =>
                 {
-                    b.HasOne("LigaCancer.Data.Models.PatientModels.ActivePatient", "ActivePatient")
-                        .WithMany()
-                        .HasForeignKey("ActivePatientId");
-
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
                         .WithOne("PatientInformation")
                         .HasForeignKey("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientId")

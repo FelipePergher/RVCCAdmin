@@ -215,9 +215,9 @@ namespace LigaCancer.Data.Store
             if (!string.IsNullOrEmpty(patientSearch.Sex)) query = query.Where(x => x.Sex == (Globals.Sex)int.Parse(patientSearch.Sex));
             if (!string.IsNullOrEmpty(patientSearch.FamiliarityGroup)) query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
 
-            if (patientSearch.Death) query = query.Where(x => x.PatientInformation.ActivePatient.Death);
-            else if (patientSearch.Discharge) query = query.Where(x => x.PatientInformation.ActivePatient.Discharge);
-            else query = query.Where(x => !x.PatientInformation.ActivePatient.Discharge && !x.PatientInformation.ActivePatient.Death);
+            if (patientSearch.Death) query = query.Where(x => x.ActivePatient.Death);
+            else if (patientSearch.Discharge) query = query.Where(x => x.ActivePatient.Discharge);
+            else query = query.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death);
 
             foreach (string item in patientSearch.CancerTypes)
             {
