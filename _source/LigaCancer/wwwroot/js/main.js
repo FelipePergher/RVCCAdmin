@@ -19,7 +19,7 @@ let language = {
     },
     aria: {
         sortAscending: ": ativar ordenação ascendente",
-            sortDescending: ": ativar ordenação descendente"
+        sortDescending: ": ativar ordenação descendente"
     }
 };
 
@@ -111,7 +111,7 @@ function hideSpinnerModalSecondary() {
     $("#modalSpinnerSecondary").hide();
 }
 
-function DateFormat(dateOfBirth) {
+function dateFormat(dateOfBirth) {
     let date = new Date(dateOfBirth);
     let dateString = date.toLocaleDateString("pt-BR");
     if (dateString.toLowerCase().includes("invalid")) dateString = "";

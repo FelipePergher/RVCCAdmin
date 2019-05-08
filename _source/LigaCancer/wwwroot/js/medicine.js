@@ -71,7 +71,7 @@ function initAddForm() {
     $.validator.unobtrusive.parse("#addMedicineForm");
 }
 
-function AddSuccess(data, textStatus) {
+function addSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         medicineTable.ajax.reload(null, false);
@@ -87,7 +87,7 @@ function initEditForm() {
     $.validator.unobtrusive.parse("#editMedicineForm");
 }
 
-function EditSuccess(data, textStatus) {
+function editSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         medicineTable.ajax.reload(null, false);
@@ -124,6 +124,6 @@ function initDelete(url, id, relation) {
     });
 }
 
-function Error(error) {
+function error(error) {
     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }

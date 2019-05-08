@@ -66,7 +66,7 @@ function initPage() {
             { data: "lastName", title: "Sobrenome", name: "LastName" },
             { data: "rg", title: "RG", name: "RG" },
             { data: "cpf", title: "CPF", name: "CPF" },
-            { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return DateFormat(row.dateOfBirth); } },
+            { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return dateFormat(row.dateOfBirth); } },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "civilState", title: "Estado Civil", name: "CivilState" },
             { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
@@ -556,7 +556,7 @@ function initFamilyMemberIndex() {
             { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
             { data: "name", title: "Nome", name: "Name" },
             { data: "kinship", title: "Parentesco", name: "Kinship" },
-            { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return DateFormat(row.dateOfBirth); } },
+            { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return dateFormat(row.dateOfBirth); } },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
         ],

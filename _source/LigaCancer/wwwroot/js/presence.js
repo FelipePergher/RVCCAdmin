@@ -92,7 +92,7 @@ function initAddForm() {
     calendar("Date");
 }
 
-function AddSuccess(data, textStatus) {
+function addSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         presenceTable.ajax.reload(null, false);
@@ -113,7 +113,7 @@ function initEditForm() {
     calendar("Date");
 }
 
-function EditSuccess(data, textStatus) {
+function editSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action").modal("hide");
         presenceTable.ajax.reload(null, false);
@@ -153,6 +153,6 @@ function initDelete(url) {
     }]);
 }
 
-function Error(error) {
+function error(error) {
     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }
