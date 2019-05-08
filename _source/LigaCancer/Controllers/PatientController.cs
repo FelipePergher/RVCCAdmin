@@ -545,18 +545,16 @@ namespace LigaCancer.Controllers
 
         #region Custom Methods
 
-        public JsonResult IsCpfExist(string cpf, int patientId)
+        public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
         {
-            Patient patient = ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId).Result;
-
-            return patient != null ? Json(false) : Json(true);
+            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
+            return Ok(patient == null);
         }
 
-        public JsonResult IsRgExist(string rg, int patientId)
+        public async Task<IActionResult> IsRgExist(string rg, int patientId)
         {
-            Patient patient = ((PatientStore)_patientService).FindByRgAsync(rg, patientId).Result;
-
-            return Json(patient == null);
+            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
+            return Ok(patient == null);
         }
 
         #endregion

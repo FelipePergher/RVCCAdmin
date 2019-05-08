@@ -133,11 +133,10 @@ namespace LigaCancer.Controllers
 
         #region Custom Methods
 
-        public JsonResult IsEmailUsed(string Email, string UserId)
+        public async Task<IActionResult> IsEmailUsed(string Email, string UserId)
         {
-            ApplicationUser user = _userManager.FindByEmailAsync(Email).Result;
-
-            return user != null ? Json(user.Id == UserId) : Json(true);
+            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
+            return user != null ? Ok(user.Id == UserId) : Ok(true);
         }
 
         #endregion

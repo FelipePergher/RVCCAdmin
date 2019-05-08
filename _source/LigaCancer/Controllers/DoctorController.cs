@@ -105,7 +105,7 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> IsCrmExist(string crm, int doctorId)
         {
             Doctor doctor = await ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId);
-            return Json(doctor == null);
+            return Ok(doctor == null);
         }
 
     }

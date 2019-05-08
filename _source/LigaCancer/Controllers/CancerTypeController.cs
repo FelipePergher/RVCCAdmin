@@ -108,11 +108,11 @@ namespace LigaCancer.Controllers
 
         #region Custom Methods
 
-        public JsonResult IsNameExist(string name, int cancerTypeId)
+        [HttpGet]
+        public async Task<IActionResult> IsNameExist(string name, int cancerTypeId)
         {
-            CancerType cancerType = ((CancerTypeStore)_cancerTypeService).FindByNameAsync(name, cancerTypeId).Result;
-
-            return Json(cancerType == null);
+            CancerType cancerType = await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(name, cancerTypeId);
+            return Ok(cancerType == null);
         }
 
         #endregion

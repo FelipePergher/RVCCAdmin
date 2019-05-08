@@ -114,7 +114,7 @@ namespace LigaCancer.Controllers
         public async Task<IActionResult> IsCityExist(string city, int treatmentPlaceId)
         {
             TreatmentPlace treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
-            return Json(treatmentPlace == null);
+            return Ok(treatmentPlace == null);
         }
     }
 }
