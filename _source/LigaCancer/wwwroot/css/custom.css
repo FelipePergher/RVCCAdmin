@@ -37,3 +37,7 @@
 .datepicker {
     z-index: 1070 !important;
 }
+
+.select2NoSearch {
+    height: 39px !important;
+}

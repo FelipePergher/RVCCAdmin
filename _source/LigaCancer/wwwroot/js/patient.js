@@ -122,10 +122,7 @@ function initPage() {
     });
     $('#patientTable').attr('style', 'border-collapse: collapse !important');
 
-    $(".filterSelect").select2({
-        theme: "bootstrap",
-        language: languageSelect2
-    });
+    $(".filterSelect").select2();
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();

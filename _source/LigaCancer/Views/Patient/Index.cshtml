@@ -65,25 +65,37 @@
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CancerTypes"></label>
-                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect" data-placeholder="Tipos de Câncer" >
+                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Tipos de Câncer" >
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Medicines"></label>
-                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect" data-placeholder="Remédios">
+                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Remédios">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Doctors"></label>
-                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect" data-placeholder="Médicos">
+                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Médicos">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="TreatmentPlaces"></label>
-                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect" data-placeholder="Locais de Tratamento">
+                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Locais de Tratamento">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
@@ -92,19 +104,37 @@
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CivilState"></label>
-                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control filterSelect" 
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Estado Civil" 
+                                                        data-allow-clear="true" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch"> 
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Sex"></label>
-                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
+                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control filterSelect" 
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Gênero" 
+                                                        data-allow-clear="true" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="FamiliarityGroup"></label>
-                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
+                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-allow-clear="true" 
+                                                        data-placeholder="Grupo De Convivência" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch"></select>
                                             </div>
                                             <div class="col-lg-3 mt-3">
                                                 <div>
@@ -163,7 +193,8 @@
     <environment names="Development">
         <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/lib/select2/js/select2.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/lib/select2/js/i18n/pt-BR.js"></script>
         <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
         <script src="~/js/patient.js"></script>
     </environment>
