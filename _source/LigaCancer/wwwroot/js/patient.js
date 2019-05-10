@@ -182,10 +182,7 @@ function addNaturalitySuccess(data, textStatus) {
 
 function initAddPatientInformationForm() {
     $.validator.unobtrusive.parse("#addPatientInformationForm");
-    $(".patientInformationSelect").select2({
-        theme: "bootstrap",
-        language: "pt-BR"
-    });
+    $(".patientInformationSelect").select2();
 }
 
 function addPatientInformationSuccess(data, textStatus) {
@@ -243,10 +240,7 @@ function editNaturalitySuccess(data, textStatus) {
 
 function initEditPatientInformationForm() {
     $.validator.unobtrusive.parse("#editPatientInformationForm");
-    $(".patientInformationSelect").select2({
-        theme: "bootstrap",
-        language: "pt-BR"
-    });
+    $(".patientInformationSelect").select2();
 }
 
 function editPatientInformationSuccess(data, textStatus) {

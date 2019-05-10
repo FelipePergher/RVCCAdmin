@@ -85,9 +85,7 @@ function initPage() {
 
 function initAddForm() {
     $.validator.unobtrusive.parse("#addPresenceForm");
-    $(".select2").select2({
-        language: "pt-BR"
-    });
+    $(".select2").select2();
     time("Time");
     calendar("Date");
 }
@@ -106,9 +104,7 @@ function addSuccess(data, textStatus) {
 
 function initEditForm() {
     $.validator.unobtrusive.parse("#editPresenceForm");
-    $(".select2").select2({
-        language: "pt-BR"
-    });
+    $(".select2").select2();
     time("Time");
     calendar("Date");
 }
