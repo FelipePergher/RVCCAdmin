@@ -66,7 +66,7 @@ function initPage() {
     calendar("DateFrom");
 
     $(".select2").select2({
-        language: languageSelect2
+        language: "pt-BR"
     });
 
     $("#addPresenceButton").click(function () {
@@ -86,7 +86,7 @@ function initPage() {
 function initAddForm() {
     $.validator.unobtrusive.parse("#addPresenceForm");
     $(".select2").select2({
-        language: languageSelect2
+        language: "pt-BR"
     });
     time("Time");
     calendar("Date");
@@ -107,7 +107,7 @@ function addSuccess(data, textStatus) {
 function initEditForm() {
     $.validator.unobtrusive.parse("#editPresenceForm");
     $(".select2").select2({
-        language: languageSelect2
+        language: "pt-BR"
     });
     time("Time");
     calendar("Date");

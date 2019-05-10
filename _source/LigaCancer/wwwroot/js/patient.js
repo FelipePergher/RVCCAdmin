@@ -184,7 +184,7 @@ function initAddPatientInformationForm() {
     $.validator.unobtrusive.parse("#addPatientInformationForm");
     $(".patientInformationSelect").select2({
         theme: "bootstrap",
-        language: languageSelect2
+        language: "pt-BR"
     });
 }
 
@@ -245,7 +245,7 @@ function initEditPatientInformationForm() {
     $.validator.unobtrusive.parse("#editPatientInformationForm");
     $(".patientInformationSelect").select2({
         theme: "bootstrap",
-        language: languageSelect2
+        language: "pt-BR"
     });
 }
 
