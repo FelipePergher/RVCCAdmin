@@ -27,10 +27,10 @@ namespace LigaCancer.Models.SearchModel
         public string Cpf { get; set; }
 
         [Display(Name = "Estado civil")]
-        public string CivilState { get; set; } = "-1";
+        public string CivilState { get; set; }
 
         [Display(Name = "Gênero")]
-        public string Sex { get; set; } = "-1";
+        public string Sex { get; set; }
 
         [Display(Name = "Somente paciente com óbito")]
         public bool Death { get; set; }

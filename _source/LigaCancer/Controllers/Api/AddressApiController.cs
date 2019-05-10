@@ -38,10 +38,10 @@ namespace LigaCancer.Controllers.Api
                     Street = x.Street,
                     Neighborhood = x.Neighborhood,
                     City = x.City,
-                    HouseNumber = x.HouseNumber.ToString(),
+                    HouseNumber = x.HouseNumber != null ? x.HouseNumber.ToString() : string.Empty,
                     Complement = x.Complement,
                     ResidenceType = Globals.GetDisplayName(x.ResidenceType),
-                    MonthlyAmmountResidence = x.MonthlyAmmountResidence.ToString(),
+                    MonthlyAmmountResidence = x.MonthlyAmmountResidence == 0 ? string.Empty : x.MonthlyAmmountResidence.ToString("C2"),
                     ObservationAddress = x.ObservationAddress,
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);

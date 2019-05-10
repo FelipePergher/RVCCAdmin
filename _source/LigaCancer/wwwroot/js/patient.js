@@ -138,6 +138,7 @@ function initPage() {
 //Add Functions
 function initAddProfileForm() {
     calendar("DateOfBirth");
+    $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#addPatientProfileForm");
 }
 
@@ -207,6 +208,7 @@ function addPatientInformationSuccess(data, textStatus) {
 //Edit Functions
 function initEditProfileForm() {
     calendar("DateOfBirth");
+    $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#editPatientProfileForm");
 }
 
@@ -318,6 +320,7 @@ function initPhoneIndex() {
 }
 
 function initAddPhoneForm() {
+    $(".phoneSelect2").select2();
     $.validator.unobtrusive.parse("#addPhoneForm");
 }
 
@@ -334,6 +337,7 @@ function addPhoneSuccess(data, textStatus) {
 }
 
 function initEditPhoneForm() {
+    $(".phoneSelect2").select2();
     $.validator.unobtrusive.parse("#editPhoneForm");
 }
 
@@ -439,6 +443,8 @@ function initAddressIndex() {
 }
 
 function initAddAddressForm() {
+    $(".addressSelect2").select2();
+
     $.validator.unobtrusive.parse("#addAddressForm");
 
     $("#ResidenceType").change(function (e) {
@@ -459,6 +465,8 @@ function addAddressSuccess(data, textStatus) {
 }
 
 function initEditAddressForm() {
+    $(".addressSelect2").select2();
+
     $.validator.unobtrusive.parse("#editAddressForm");
 
     $("#ResidenceType").change(function (e) {
@@ -571,6 +579,7 @@ function initFamilyMemberIndex() {
 }
 
 function initAddFamilyMemberForm() {
+    $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#addFamilyMemberForm");
 }
@@ -588,6 +597,7 @@ function addFamilyMemberSuccess(data, textStatus) {
 }
 
 function initEditFamilyMemberForm() {
+    $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#editFamilyMemberForm");
 }
@@ -630,6 +640,7 @@ function initDeleteFamilyMember(url, id) {
 
 function initArchivePatient() {
     calendar("DateTime");
+    $(".archiveSelect2").select2();
     $.validator.unobtrusive.parse("#archivePatientForm");
 }
 

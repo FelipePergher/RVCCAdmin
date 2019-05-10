@@ -33,7 +33,7 @@ namespace LigaCancer.Models.FormModel
         public Globals.Sex Sex { get; set; }
 
         [Display(Name = "Estado Civil")]
-        public Globals.CivilState CivilState { get; set; }
+        public Globals.CivilState? CivilState { get; set; }
 
         [Display(Name = "Data de Nascimento")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]

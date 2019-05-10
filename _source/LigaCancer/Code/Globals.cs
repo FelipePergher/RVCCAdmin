@@ -81,11 +81,19 @@ namespace LigaCancer.Code
 
         public static string GetDisplayName(Enum enumValue)
         {
-            return enumValue.GetType()
+            if (enumValue == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return enumValue.GetType()
                             .GetMember(enumValue.ToString())
                             .First()
                             .GetCustomAttribute<DisplayAttribute>()
                             .GetName();
+            }
+
         }
 
     }

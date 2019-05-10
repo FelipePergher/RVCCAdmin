@@ -36,7 +36,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public Sex Sex { get; set; }
 
-        public CivilState CivilState { get; set; }
+        public CivilState? CivilState { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

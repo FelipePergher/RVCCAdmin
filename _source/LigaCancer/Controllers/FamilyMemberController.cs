@@ -56,7 +56,7 @@ namespace LigaCancer.Controllers
                     PatientId = int.Parse(id),
                     DateOfBirth = familyMemberForm.DateOfBirth,
                     Kinship = familyMemberForm.Kinship,
-                    MonthlyIncome = (double)familyMemberForm.MonthlyIncome,
+                    MonthlyIncome = familyMemberForm.MonthlyIncome ?? 0,
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
                     UserCreated = await _userManager.GetUserAsync(User)
@@ -84,7 +84,7 @@ namespace LigaCancer.Controllers
             {
                 DateOfBirth = familyMember.DateOfBirth,
                 Kinship = familyMember.Kinship,
-                MonthlyIncome = (decimal)familyMember.MonthlyIncome,
+                MonthlyIncome = familyMember.MonthlyIncome,
                 Name = familyMember.Name,
                 Sex = familyMember.Sex
             });

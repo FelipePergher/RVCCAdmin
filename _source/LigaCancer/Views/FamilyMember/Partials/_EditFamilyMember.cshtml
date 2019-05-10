@@ -27,7 +27,12 @@
         </div>
         <div class="form-group">
             <label asp-for="Sex" class="control-label"></label>
-            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control"></select>
+            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control familyMemberSelect2"
+                    data-theme="bootstrap"
+                    data-language="pt-BR" 
+                    data-placeholder="Gênero" 
+                    data-minimum-results-for-search="Infinity" 
+                    data-container-css-class="select2NoSearch"></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
         <div class="form-group">

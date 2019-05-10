@@ -8,7 +8,7 @@ namespace LigaCancer.Data.Models.PatientModels
     {
         public Phone(){}
 
-        public Phone(string patientId, string number, Globals.PhoneType phoneType, string observationNote, ApplicationUser user)
+        public Phone(string patientId, string number, Globals.PhoneType? phoneType, string observationNote, ApplicationUser user)
         {
             Number = number;
             PhoneType = phoneType;
@@ -22,7 +22,7 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Number { get; set; }
 
-        public Globals.PhoneType PhoneType { get; set; }
+        public Globals.PhoneType? PhoneType { get; set; }
 
         public string ObservationNote { get; set; }
 

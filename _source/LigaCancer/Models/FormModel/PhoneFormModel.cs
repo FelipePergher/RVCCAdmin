@@ -10,7 +10,7 @@ namespace LigaCancer.Models.FormModel
         public string Number { get; set; }
 
         [Display(Name = "Tipo de telefone")]
-        public Globals.PhoneType PhoneType { get; set; }
+        public Globals.PhoneType? PhoneType { get; set; }
 
         [Display(Name = "Observações")]
         public string ObservationNote { get; set; }
