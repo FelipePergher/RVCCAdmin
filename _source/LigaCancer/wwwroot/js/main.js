@@ -27,21 +27,19 @@ function calendar(id) {
     $("#" + id).datepicker({
         format: "dd/mm/yyyy",
         iconsLibrary: "fontawesome",
-        uiLibrary: "bootstrap4",
-        showRightIcon: false
+        uiLibrary: "bootstrap4"
     });
 }
 
 function time(id) {
     let timepicker = $("#" + id).timepicker({
-        iconsLibrary: "fontawesome",
         uiLibrary: "bootstrap4",
         modal: false,
         header: false,
         footer: false,
         mode: '24hr'
     });
-    $(".input-group-append").remove();
+    $("#" + id).siblings(".input-group-append").find("i").removeClass("gj-icon").removeClass("clock").addClass("fa").addClass("fa-clock");
 
     $("#" + id).click(function () {
         $(".timepicker").is(":visible") ? timepicker.close() : timepicker.open();
