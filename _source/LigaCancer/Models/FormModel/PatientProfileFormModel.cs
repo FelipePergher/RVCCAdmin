@@ -38,6 +38,7 @@ namespace LigaCancer.Models.FormModel
         [Display(Name = "Data de Nascimento")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DateRange]
         public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Profissão")]

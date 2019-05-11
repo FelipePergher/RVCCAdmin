@@ -19,10 +19,12 @@ namespace LigaCancer.Models.SearchModel
 
         [Display(Name = "Data Inicial")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DateRange]
         public DateTime? DateFrom { get; set; }
 
         [Display(Name = "Data Final")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DateRange]
         public DateTime? DateTo { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace LigaCancer.Models.FormModel
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [Display(Name = "Data")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DateRange]
         public DateTime DateTime { get; set; }
     }
 }
