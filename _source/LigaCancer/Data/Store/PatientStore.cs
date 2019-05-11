@@ -140,9 +140,9 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(patient);
         }
 
-        public string GetPerCapitaIncome(List<FamilyMember> familyMembers)
+        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double montlhyPatient)
         {
-            return familyMembers.Count > 0 ? (familyMembers.Sum(x => x.MonthlyIncome) / familyMembers.Count).ToString("C2") : 0.00.ToString("C2");
+            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)).ToString("C2") : montlhyPatient.ToString("C2");
         }
 
         //Todo Change methods to other stores
@@ -197,8 +197,6 @@ namespace LigaCancer.Data.Store
                     return sortDirection == "asc" ? query.OrderBy(x => x.FamiliarityGroup) : query.OrderByDescending(x => x.FamiliarityGroup);
                 case "Profession":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Profession) : query.OrderByDescending(x => x.Profession);
-                case "PerCapitaIncome":
-                    return sortDirection == "asc" ? query.OrderBy(x => GetPerCapitaIncome(x.FamilyMembers.ToList())) : query.OrderByDescending(x => GetPerCapitaIncome(x.FamilyMembers.ToList()));
                 default:
                     return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
             }

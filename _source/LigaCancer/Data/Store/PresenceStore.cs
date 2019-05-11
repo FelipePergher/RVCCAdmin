@@ -132,11 +132,11 @@ namespace LigaCancer.Data.Store
         {
             switch (sortColumn)
             {
-                case "patient":
+                case "Patient":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name); 
-                case "date":
+                case "Date":
                     return sortDirection == "asc" ? query.OrderBy(x => x.PresenceDateTime.Date) : query.OrderByDescending(x => x.PresenceDateTime.Date);
-                case "hour":
+                case "Hour":
                     return sortDirection == "asc" ? query.OrderBy(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}") : query.OrderByDescending(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}");
                 default:
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);

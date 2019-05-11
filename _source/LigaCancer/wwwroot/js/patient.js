@@ -61,7 +61,7 @@ function initPage() {
         },
         order: [1, "asc"],
         columns: [
-            { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+            { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
             { data: "firstName", title: "Nome", name: "FirstName" },
             { data: "lastName", title: "Sobrenome", name: "LastName" },
             { data: "rg", title: "RG", name: "RG" },

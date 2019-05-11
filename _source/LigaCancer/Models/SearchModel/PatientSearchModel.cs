@@ -53,16 +53,6 @@ namespace LigaCancer.Models.SearchModel
         [Display(Name = "Locais de Tratamentos")]
         public List<string> TreatmentPlaces { get; set; }
 
-        #region Selects
-
-        public List<SelectListItem> SelectCancerTypes { get; set; }
-
-        public List<SelectListItem> SelectMedicines { get; set; }
-
-        public List<SelectListItem> SelectDoctors { get; set; }
-
-        public List<SelectListItem> SelectTreatmentPlaces { get; set; }
-
         public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
             {
                 new SelectListItem
@@ -81,7 +71,5 @@ namespace LigaCancer.Models.SearchModel
                     Value = "false"
                 }
             };
-
-        #endregion
     }
 }

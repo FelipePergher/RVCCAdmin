@@ -39,8 +39,8 @@
     order: [1, "asc"],
     columns: [
         { data: "actions", title: "Ações", name: "actions", width:"20px", orderable: false },
-        { data: "name", title: "Nome", name: "name" },
-        { data: "crm", title: "CRM", name: "crm" }
+        { data: "name", title: "Nome", name: "Name" },
+        { data: "crm", title: "CRM", name: "CRM" }
     ],
     drawCallback: function (settings) {
         $(".editDoctorButton").click(function () {

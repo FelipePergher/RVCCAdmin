@@ -36,10 +36,10 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-        { data: "name", title: "Nome", name: "name" },
-        { data: "email", title: "Email", name: "email" },
-        { data: "role", title: "Regra", name: "role" }
+        { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
+        { data: "name", title: "Nome", name: "Name" },
+        { data: "email", title: "Email", name: "Email" },
+        { data: "role", title: "Regra", name: "Role" }
     ],
     drawCallback: function (settings) {
         //$(".editUserButton").click(function () {

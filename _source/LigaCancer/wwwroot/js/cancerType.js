@@ -36,8 +36,8 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-        { data: "name", title: "Nome", name: "name" }
+        { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
+        { data: "name", title: "Nome", name: "Name" }
     ],
     drawCallback: function (settings) {
         $(".editCancerTypeButton").click(function () {

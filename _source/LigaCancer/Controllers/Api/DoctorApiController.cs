@@ -49,6 +49,22 @@ namespace LigaCancer.Controllers.Api
             }
         }
 
+        [HttpGet("~/api/doctor/select2Get")]
+        public async Task<IActionResult> Select2GetDoctors(string term)
+        {
+            IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(null, "Name", "asc", new DoctorSearchModel { Name = term });
+            Select2PagedResult select2PagedResult = new Select2PagedResult
+            {
+                Results = doctors.Select(x => new Result
+                {
+                    Id = x.DoctorId.ToString(),
+                    Text = x.Name
+                }).ToList(),
+            };
+
+            return Ok(select2PagedResult);
+        }
+
         #region Private Methods
 
         private string GetActionsHtml(Doctor doctor)

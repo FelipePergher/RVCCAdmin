@@ -143,7 +143,7 @@ namespace LigaCancer.Data.Store
         {
             switch (sortColumn)
             {
-                case "name":
+                case "Name":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
                 default:
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);

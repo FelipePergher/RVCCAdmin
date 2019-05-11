@@ -39,10 +39,10 @@
     },
     order: [1, "desc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", orderable: false},
-        { data: "date", title: "Data da presença", name: "date" },
-        { data: "patient", title: "Nome do Paciente", name: "patient" },
-        { data: "hour", title: "Hora da presença", name: "hour" }
+        { data: "actions", title: "Ações", name: "Actions", orderable: false},
+        { data: "date", title: "Data da presença", name: "Date" },
+        { data: "patient", title: "Nome do Paciente", name: "Patient" },
+        { data: "hour", title: "Hora da presença", name: "Hour" }
     ],
     drawCallback: function (settings) {
         $(".editPresenceButton").click(function () {

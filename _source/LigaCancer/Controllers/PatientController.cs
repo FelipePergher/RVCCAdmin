@@ -48,16 +48,9 @@ namespace LigaCancer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            PatientSearchModel patientSearch = new PatientSearchModel
-            {
-                SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService),
-                SelectCancerTypes = await SelectHelper.GetCancerTypesSelectAsync(_cancerTypeService),
-                SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService),
-                SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService)
-            };
-            return View(patientSearch);
+            return View(new PatientSearchModel());
         }
 
         #region Add Methods

@@ -65,36 +65,44 @@
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CancerTypes"></label>
-                                                <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control filterSelect" 
-                                                        data-theme="bootstrap" 
-                                                        data-language="pt-BR" 
-                                                        data-placeholder="Tipos de Câncer" >
+                                                <select asp-for="CancerTypes" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/cancerType/select2Get" 
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Tipos de Câncer">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Medicines"></label>
-                                                <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control filterSelect" 
-                                                        data-theme="bootstrap" 
-                                                        data-language="pt-BR" 
+                                                <select asp-for="Medicines" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/Medicine/select2Get"
+                                                        data-ajax--data-type="json"
                                                         data-placeholder="Remédios">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Doctors"></label>
-                                                <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control filterSelect" 
-                                                        data-theme="bootstrap" 
-                                                        data-language="pt-BR" 
+                                                <select asp-for="Doctors" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/Doctor/select2Get" 
+                                                        data-ajax--data-type="json"
                                                         data-placeholder="Médicos">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="TreatmentPlaces"></label>
-                                                <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control filterSelect" 
-                                                        data-theme="bootstrap" 
-                                                        data-language="pt-BR" 
+                                                <select asp-for="TreatmentPlaces" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/TreatmentPlace/select2Get" 
+                                                        data-ajax--data-type="json"
                                                         data-placeholder="Locais de Tratamento">
                                                     <option value=""></option>
                                                 </select>

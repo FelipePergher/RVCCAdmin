@@ -46,9 +46,9 @@ namespace LigaCancer.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                string familyIncome = familyMembers.Sum(x => x.MonthlyIncome).ToString("C2");
-                string perCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(familyMembers);
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
+                string familyIncome = (familyMembers.Sum(x => x.MonthlyIncome) + patient.MonthlyIncome).ToString("C2");
+                string perCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(familyMembers, patient.MonthlyIncome);
 
                 int recordsTotal = familyMembers.Count;
 

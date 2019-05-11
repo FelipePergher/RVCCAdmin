@@ -23,6 +23,8 @@
         public string Profession { get; set; }
 
         public string PerCapitaIncome { get; set; }
+        
+        public double PerCapitaIncomeToSort { get; set; }
 
         public string Medicines { get; set; }
 

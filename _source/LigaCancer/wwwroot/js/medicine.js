@@ -36,8 +36,8 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", width: "20px", name: "actions", orderable: false },
-        { data: "name", title: "Nome", name: "name" }
+        { data: "actions", title: "Ações", width: "20px", name: "Actions", orderable: false },
+        { data: "name", title: "Nome", name: "Name" }
     ],
     drawCallback: function (settings) {
         $(".editMedicineButton").click(function () {

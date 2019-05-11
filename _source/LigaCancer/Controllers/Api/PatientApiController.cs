@@ -57,18 +57,27 @@ namespace LigaCancer.Controllers.Api
                     CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
-                    PerCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result),
+                    PerCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(
+                        _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
+                    PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
                     TreatmentPlaces = string.Join(", ", x.PatientInformation.PatientInformationTreatmentPlaces.Select(y => y.TreatmentPlace.City).ToList()),
                     Actions = GetActionsHtml(x)
-                }).Skip(skip).Take(take);
+                });
+
+                if(sortColumn == "PerCapitaIncome")
+                {
+                    data = sortDirection == "asc" 
+                        ? data.OrderBy(x => x.PerCapitaIncomeToSort) 
+                        : data.OrderByDescending(x => x.PerCapitaIncomeToSort);
+                }
 
                 int recordsTotal = _patientService.Count();
                 int recordsFiltered = patients.Count();
 
-                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
+                return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
             }
             catch
             {
@@ -130,6 +139,11 @@ namespace LigaCancer.Controllers.Api
                 $"</div>";
 
             return actionsHtml;
+        }
+
+        private double GetPerCapitaIncomeToSort(List<FamilyMember> familyMembers, double montlhyPatient)
+        {
+            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)) : montlhyPatient;
         }
 
         #endregion

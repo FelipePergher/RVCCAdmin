@@ -36,8 +36,8 @@
     },
     order: [1, "asc"],
     columns: [
-        { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-        { data: "city", title: "Cidade", name: "city" }
+        { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
+        { data: "city", title: "Cidade", name: "City" }
     ],
     drawCallback: function (settings) {
         $(".editTreatmentPlaceButton").click(function () {
