@@ -41,7 +41,6 @@
     <None Include="wwwroot\js\home.js" />
     <None Include="wwwroot\js\main.js" />
     <None Include="wwwroot\js\medicine.js" />
-    <None Include="wwwroot\js\patient-details.js" />
     <None Include="wwwroot\js\patient.js" />
     <None Include="wwwroot\js\treatmentPlace.js" />
     <None Include="wwwroot\js\user.js" />

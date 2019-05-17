@@ -47,17 +47,6 @@ namespace LigaCancer.Code
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum ArchiveCategorie
-        {
-            [Display(Name = "Pessoal"), EnumMember(Value = "Pessoal")]
-            Personal,
-            [Display(Name = "Médico"), EnumMember(Value = "Médico")]
-            Medical,
-            [Display(Name = "Outros"), EnumMember(Value = "Outros")]
-            Other
-        }
-
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum ResidenceType
         {
             [Display(Name = "Própria"), EnumMember(Value = "Própria")]

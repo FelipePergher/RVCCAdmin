@@ -9,7 +9,6 @@ using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -465,11 +464,8 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult ArchivePatient(string id)
         {
-            ArchivePatientFormModel archivePatientForm = new ArchivePatientFormModel
-            {
-                DateTime = DateTime.Now
-            };
-            return PartialView("Partials/_ArchivePatient", archivePatientForm);
+            if(string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_ArchivePatient", new ArchivePatientFormModel());
         }
 
         [HttpPost]

@@ -1,5 +1,4 @@
-﻿using LigaCancer.Code;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LigaCancer.Data.Models.PatientModels
@@ -11,9 +10,11 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string FileName { get; set; }
 
-        public string FilePath { get; set; }
+        public string FileExtension { get; set; }
 
-        public Globals.ArchiveCategorie ArchiveCategorie { get; set; }
+        public double FileSize { get; set; }
+
+        public string FilePath { get; set; }
 
         public int PatientId { get; set; }
 

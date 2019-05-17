@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190510030548_AlterCivilStateToNulable")]
-    partial class AlterCivilStateToNulable
+    [Migration("20190515233913_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
@@ -193,11 +193,11 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FileAttachmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ArchiveCategorie");
-
                     b.Property<string>("FileName");
 
                     b.Property<string>("FilePath");
+
+                    b.Property<double>("FileSize");
 
                     b.Property<int>("PatientId");
 

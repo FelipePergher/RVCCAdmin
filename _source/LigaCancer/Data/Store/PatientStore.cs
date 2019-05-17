@@ -145,32 +145,6 @@ namespace LigaCancer.Data.Store
             return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)).ToString("C2") : montlhyPatient.ToString("C2");
         }
 
-        //Todo Change methods to other stores
-        public async Task<TaskResult> AddFileAttachment(FileAttachment fileAttachment, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.FileAttachments.Add(fileAttachment);
-
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
-        }
-
         #endregion
 
         #region Private Methods

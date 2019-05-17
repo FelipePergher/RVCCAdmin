@@ -45,3 +45,7 @@
 .select2-container--open {
     z-index: 1070
 }
+
+#attachmentsTable_wrapper{
+    margin-top: 10px;
+}

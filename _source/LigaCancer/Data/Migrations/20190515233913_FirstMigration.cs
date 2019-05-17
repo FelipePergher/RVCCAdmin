@@ -265,7 +265,7 @@ namespace LigaCancer.Migrations
                     FamiliarityGroup = table.Column<bool>(nullable: false),
                     MonthlyIncome = table.Column<double>(nullable: false),
                     Sex = table.Column<int>(nullable: false),
-                    CivilState = table.Column<int>(nullable: false),
+                    CivilState = table.Column<int>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     Profession = table.Column<string>(nullable: true)
                 },
@@ -479,8 +479,8 @@ namespace LigaCancer.Migrations
                     FileAttachmentId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FileName = table.Column<string>(nullable: true),
+                    FileSize = table.Column<double>(nullable: false),
                     FilePath = table.Column<string>(nullable: true),
-                    ArchiveCategorie = table.Column<int>(nullable: false),
                     PatientId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -591,7 +591,7 @@ namespace LigaCancer.Migrations
                     PhoneId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Number = table.Column<string>(nullable: true),
-                    PhoneType = table.Column<int>(nullable: false),
+                    PhoneType = table.Column<int>(nullable: true),
                     ObservationNote = table.Column<string>(nullable: true),
                     PatientId = table.Column<int>(nullable: false)
                 },
