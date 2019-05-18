@@ -85,6 +85,20 @@ namespace LigaCancer.Controllers.Api
             }
         }
 
+        [HttpGet("~/api/patient/IsCpfExist")]
+        public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
+        {
+            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
+            return Ok(patient == null);
+        }
+
+        [HttpGet("~/api/patient/IsRgExist")]
+        public async Task<IActionResult> IsRgExist(string rg, int patientId)
+        {
+            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
+            return Ok(patient == null);
+        }
+
         #region Private Methods
 
         private string GetActionsHtml(Patient patient)

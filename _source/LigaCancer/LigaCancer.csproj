@@ -142,10 +142,10 @@
     <Content Update="Views\User\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\User\_AddUser.cshtml">
+    <Content Update="Views\User\Partials\_AddUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\User\_EditUser.cshtml">
+    <Content Update="Views\User\Partials\_EditUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

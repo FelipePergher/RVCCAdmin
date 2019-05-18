@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,13 @@ namespace LigaCancer.Controllers.Api
             };
 
             return Ok(select2PagedResult);
+        }
+
+        [HttpGet("~/api/doctor/IsCrmExist")]
+        public async Task<IActionResult> IsCrmExist(string crm, int doctorId)
+        {
+            Doctor doctor = await ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId);
+            return Ok(doctor == null);
         }
 
         #region Private Methods

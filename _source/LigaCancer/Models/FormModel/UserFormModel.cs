@@ -3,10 +3,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.UserViewModels
+namespace LigaCancer.Models.FormModel
 {
     public class UserFormModel
     {
+        public UserFormModel() { }
+
+        public UserFormModel(string userId)
+        {
+            UserId = userId;
+        }
+
+        [HiddenInput]
+        public string UserId { get; set; }
+
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string FirstName { get; set; }
@@ -17,7 +27,7 @@ namespace LigaCancer.Models.UserViewModels
 
         [EmailAddress(ErrorMessage = "Insira um email válido!")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
+        [Remote("IsEmailUsed", "UserApi", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
         public string Email { get; set; }
 
         [Display(Name = "Senha")]
@@ -34,16 +44,8 @@ namespace LigaCancer.Models.UserViewModels
 
         public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
                 {
-                    new SelectListItem
-                    {
-                        Text = "Administrador",
-                        Value = "Admin"
-                    },
-                    new SelectListItem
-                    {
-                        Text = "Usuário",
-                        Value = "User"
-                    }
+                    new SelectListItem("Administrador", "Admin"),
+                    new SelectListItem("Usuário", "User")
                 };
 
         [Display(Name = "Roles")]

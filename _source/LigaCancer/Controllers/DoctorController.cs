@@ -57,13 +57,10 @@ namespace LigaCancer.Controllers
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
+            
             if (doctor == null) return NotFound();
 
-            return PartialView("Partials/_EditDoctor", new DoctorFormModel
-            {
-                CRM = doctor.CRM,
-                Name = doctor.Name
-            });
+            return PartialView("Partials/_EditDoctor", new DoctorFormModel(doctor.Name, doctor.CRM, doctor.DoctorId));
         }
 
         [HttpPost]
@@ -99,13 +96,6 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
             return BadRequest(result.Errors);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> IsCrmExist(string crm, int doctorId)
-        {
-            Doctor doctor = await ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId);
-            return Ok(doctor == null);
         }
 
     }

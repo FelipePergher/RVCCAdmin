@@ -60,10 +60,7 @@ namespace LigaCancer.Controllers
 
             if (cancerType == null) return NotFound();
 
-            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel
-            {
-                Name = cancerType.Name
-            };
+            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel(cancerType.Name, cancerType.CancerTypeId);
 
             return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
@@ -105,17 +102,6 @@ namespace LigaCancer.Controllers
             if (result.Succeeded) return Ok();
             return BadRequest(result);
         }
-
-        #region Custom Methods
-
-        [HttpGet]
-        public async Task<IActionResult> IsNameExist(string name, int cancerTypeId)
-        {
-            CancerType cancerType = await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(name, cancerTypeId);
-            return Ok(cancerType == null);
-        }
-
-        #endregion
 
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
@@ -35,6 +36,13 @@ namespace LigaCancer.Controllers.Api
 
 
             return Ok(new { data });
+        }
+
+        [HttpGet("~/api/user/IsEmailUsed")]
+        public async Task<IActionResult> IsEmailUsed(string Email, string UserId)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
+            return user != null ? Ok(user.Id == UserId) : Ok(true);
         }
     }
 }

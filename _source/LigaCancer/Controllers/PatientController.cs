@@ -221,7 +221,7 @@ namespace LigaCancer.Controllers
 
             PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
             {
-                PatientId = id,
+                PatientId = patient.PatientId,
                 FirstName = patient.FirstName,
                 Surname = patient.Surname,
                 RG = patient.RG,
@@ -528,22 +528,6 @@ namespace LigaCancer.Controllers
             if (result.Succeeded) return Ok();
 
             return BadRequest();
-        }
-
-        #endregion
-
-        #region Custom Methods
-
-        public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
-        {
-            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
-            return Ok(patient == null);
-        }
-
-        public async Task<IActionResult> IsRgExist(string rg, int patientId)
-        {
-            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
-            return Ok(patient == null);
         }
 
         #endregion

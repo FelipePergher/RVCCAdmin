@@ -1,7 +1,7 @@
-﻿@model LigaCancer.Models.UserViewModels.EditUserFormModel
+﻿@model LigaCancer.Models.FormModel.UserFormModel
 @using LigaCancer.Code
 
-<form asp-action="EditUser"
+<form asp-action="AddUser"
       role="form"
       data-ajax="true"
       data-ajax-method="POST"
@@ -10,6 +10,7 @@
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body form-horizontal" id="">
+        <input asp-for="UserId" />
         <div class="form-group">
             <label asp-for="FirstName" class="control-label"></label>
             <input asp-for="FirstName" class="form-control" />
@@ -20,18 +21,25 @@
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
-        @if (Model.Email != "felipepergher_10@hotmail.com")
-        {
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" asp-items="@Model.ApplicationRoles" class="form-control"></select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-        }
+        <div class="form-group">
+            <label asp-for="RoleId" class="control-label"></label>
+            <select asp-for="RoleId" asp-items="@Model.ApplicationRoles" class="form-control"></select>
+            <span asp-validation-for="RoleId" class="text-danger"></span>
+        </div>
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword" class="control-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
     </div>
 

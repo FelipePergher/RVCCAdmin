@@ -62,10 +62,7 @@ namespace LigaCancer.Controllers
             
             if (treatmentPlace == null) return NotFound();
 
-            TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel
-            {
-                City = treatmentPlace.City
-            };
+            TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel(treatmentPlace.City, treatmentPlace.TreatmentPlaceId);
 
             return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
         }
@@ -110,11 +107,5 @@ namespace LigaCancer.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> IsCityExist(string city, int treatmentPlaceId)
-        {
-            TreatmentPlace treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
-            return Ok(treatmentPlace == null);
-        }
     }
 }
