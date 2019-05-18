@@ -9,12 +9,7 @@
       data-ajax-loading="#submitSpinner">
 
     <div class="modal-body">
-        <input asp-for="MedicineId" />
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+        <partial name="Partials/_FormMedicine" />
     </div>
 
     <partial name="_ModalFooter" />
