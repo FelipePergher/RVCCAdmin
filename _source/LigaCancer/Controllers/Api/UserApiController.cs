@@ -33,10 +33,7 @@ namespace LigaCancer.Controllers.Api
 
                 List<ApplicationUser> users = _userManager.Users.ToList();
                 //Filter
-                if (!string.IsNullOrEmpty(name))
-                {
-                    users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
-                }
+                if (!string.IsNullOrEmpty(name)) users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
 
                 IEnumerable<UserViewModel> data = users.Select(x => new UserViewModel
                 {
