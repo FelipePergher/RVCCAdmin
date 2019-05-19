@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
             <label asp-for="ResidenceType" class="control-label"></label>
-            <select asp-for="ResidenceType" asp-items="@Html.GetEnumSelectList<Globals.ResidenceType>()" class="form-control addressSelect2"
+            <select asp-for="ResidenceType" asp-items="Html.GetEnumSelectList<Globals.ResidenceType>()" class="form-control addressSelect2"
                     data-theme="bootstrap"
                     data-language="pt-BR"
                     data-placeholder="Tipo de Residência"

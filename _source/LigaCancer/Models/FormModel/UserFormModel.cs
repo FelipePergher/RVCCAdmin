@@ -19,11 +19,7 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string FirstName { get; set; }
-
-        [Display(Name = "Sobrenome")]
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         [EmailAddress(ErrorMessage = "Insira um email válido!")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
@@ -48,8 +44,8 @@ namespace LigaCancer.Models.FormModel
                     new SelectListItem("Usuário", "User")
                 };
 
-        [Display(Name = "Roles")]
+        [Display(Name = "Regra")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string RoleId { get; set; }
+        public string Role { get; set; }
     }
 }

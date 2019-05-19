@@ -1,4 +1,6 @@
-﻿let userTable = $("#userTable").DataTable({
+﻿
+
+let userTable = $("#userTable").DataTable({
     dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
@@ -20,14 +22,15 @@
             }
         }
     ],
+    serverSide: true,
     processing: true,
     language: language,
     filter: false,
     ajax: {
         url: "/api/user/search",
-        type: "GET",
+        type: "POST",
         data: function (d) {
-            //d.name = $("#Name").val();
+            d.name = $("#Name").val();
         },
         datatype: "json",
         error: function () {
@@ -42,13 +45,13 @@
         { data: "role", title: "Regra", name: "Role" }
     ],
     drawCallback: function (settings) {
-        //$(".editUserButton").click(function () {
-        //    openModal($(this).attr("href"), $(this).data("title"), initEditForm);
-        //});
+        $(".editUserButton").click(function () {
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
+        });
 
-        //$(".deleteUserButton").click(function (e) {
-        //    initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
-        //});
+        $(".deleteUserButton").click(function (e) {
+            initDelete($(this).data("url"), $(this).data("id"));
+        });
     }
 });
 
@@ -61,10 +64,71 @@ function initPage() {
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
-        userTable.search("").draw("");
+        console.log("aaa");
+        userTable.search("").draw();
     });
 
-    //$("#addUserButton").click(function () {
-    //    openModal($(this).attr("href"), $(this).data("title"), initAddForm);
-    //});
+    $("#addUserButton").click(function () {
+        openModal($(this).attr("href"), $(this).data("title"), initAddForm);
+    });
+}
+
+function initAddForm() {
+    $.validator.unobtrusive.parse("#addUserForm");
+    $(".userSelect2").select2();
+}
+
+function addSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        userTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Usuário registrado com sucesso.", "success");
+    }
+    else {
+        $("#modalBody").html(data);
+        initAddForm();
+    }
+}
+
+function initEditForm() {
+    $.validator.unobtrusive.parse("#editUserForm");
+    $(".userSelect2").select2();
+}
+
+function editSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        userTable.ajax.reload(null, false);
+        swalWithBootstrapButtons.fire("Sucesso...", "Usuário atualizado com sucesso.", "success");
+    }
+    else {
+        $("#modalBody").html(data);
+        initEditForm();
+    }
+}
+
+function initDelete(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    userTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "Usuário removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+function error(error) {
+    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
 }

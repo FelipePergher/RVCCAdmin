@@ -172,8 +172,7 @@ namespace LigaCancer
                 {
                     ApplicationUser user = new ApplicationUser
                     {
-                        FirstName = "Felipe",
-                        LastName = "Pergher",
+                        Name = "Felipe Pergher",
                         UserName = "felipepergher_10@hotmail.com",
                         Email = "felipepergher_10@hotmail.com",
                         RegisterDate = DateTime.Now,

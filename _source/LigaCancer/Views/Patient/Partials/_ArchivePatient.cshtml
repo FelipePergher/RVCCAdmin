@@ -12,7 +12,7 @@
     <div class="modal-body form-horizontal">
         <div class="form-group">
             <label asp-for="ArchivePatientType" class="control-label"></label>
-            <select asp-for="ArchivePatientType" asp-items="@Html.GetEnumSelectList<Globals.ArchivePatientType>()" class="form-control archiveSelect2"
+            <select asp-for="ArchivePatientType" asp-items="Html.GetEnumSelectList<Globals.ArchivePatientType>()" class="form-control archiveSelect2"
                     data-theme="bootstrap"
                     data-language="pt-BR" 
                     data-minimum-results-for-search="Infinity" 
