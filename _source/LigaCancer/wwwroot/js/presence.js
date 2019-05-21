@@ -68,7 +68,7 @@ function initPage() {
     $(".select2").select2();
 
     $("#addPresenceButton").click(function () {
-        openModal($(this).attr("href"), "", initAddForm);
+        openModal($(this).attr("href"), "Adicionar Presença", initAddForm);
     });
 
     $("#searchForm").submit(function (e) {

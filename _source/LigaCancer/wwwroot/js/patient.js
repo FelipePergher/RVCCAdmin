@@ -301,6 +301,7 @@ function initPhoneIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
@@ -419,6 +420,7 @@ function initAddressIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
@@ -552,6 +554,7 @@ function initFamilyMemberIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
