@@ -64,7 +64,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _addressService.CreateAsync(address);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddAddress", addressForm);
@@ -114,7 +114,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _addressService.UpdateAsync(address);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditAddress", addressForm);
@@ -132,7 +132,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _addressService.DeleteAsync(address);
 
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
 
     }

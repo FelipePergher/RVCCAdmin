@@ -65,7 +65,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddFamilyMember", familyMemberForm);
@@ -108,7 +108,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
             return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
@@ -125,7 +125,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
 
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
 
     }

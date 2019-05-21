@@ -45,7 +45,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
                 
             return PartialView("Partials/_AddDoctor", doctorForm);
@@ -77,7 +77,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
             
             return PartialView("Partials/_EditDoctor", doctorForm);
@@ -95,7 +95,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
 
     }

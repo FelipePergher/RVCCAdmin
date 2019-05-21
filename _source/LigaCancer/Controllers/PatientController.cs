@@ -83,7 +83,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.CreateAsync(patient);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddPatientProfile", patientProfileForm);
@@ -114,7 +114,7 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", 
                     new { id = naturality.Patient.PatientInformation.PatientInformationId }), title = "Adicionar Informação do Paciente" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddPatientNaturality", naturalityForm);
@@ -195,7 +195,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);
@@ -259,7 +259,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);
@@ -299,7 +299,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPatientNaturality", naturalityForm);
@@ -446,7 +446,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);

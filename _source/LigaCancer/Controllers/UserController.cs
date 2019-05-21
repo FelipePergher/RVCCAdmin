@@ -54,7 +54,7 @@ namespace LigaCancer.Controllers
                     if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     return Ok();
                 }
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddUser", userForm);
@@ -123,7 +123,7 @@ namespace LigaCancer.Controllers
             IdentityResult result = await _userManager.DeleteAsync(applicationUser);
 
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
     }
 }

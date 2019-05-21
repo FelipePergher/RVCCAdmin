@@ -66,7 +66,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _presenceService.CreateAsync(presence);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
@@ -107,7 +107,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPresence", presenceForm);
@@ -127,7 +127,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
 
     }

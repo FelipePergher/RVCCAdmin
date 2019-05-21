@@ -46,8 +46,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
                 if (result.Succeeded) return Ok();
-             
-                ModelState.AddErrors(result);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddTreatmentPlace", treatmentPlaceForm);
@@ -84,8 +83,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
                 if (result.Succeeded) return Ok();
-
-                ModelState.AddErrors(result);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
