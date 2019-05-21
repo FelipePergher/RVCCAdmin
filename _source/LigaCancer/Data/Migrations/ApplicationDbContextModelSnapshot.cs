@@ -14,7 +14,7 @@ namespace LigaCancer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
@@ -667,8 +667,6 @@ namespace LigaCancer.Migrations
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("RegisterDate");
-
-                    b.ToTable("ApplicationUser");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });

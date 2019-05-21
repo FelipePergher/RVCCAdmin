@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190518224356_USerChane")]
-    partial class USerChane
+    [Migration("20190521025544_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
@@ -669,8 +669,6 @@ namespace LigaCancer.Migrations
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("RegisterDate");
-
-                    b.ToTable("ApplicationUser");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });

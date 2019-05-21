@@ -42,12 +42,9 @@ namespace LigaCancer.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     RegisterDate = table.Column<DateTime>(nullable: true),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: true),
-                    DeletedDate = table.Column<DateTime>(nullable: true)
+                    CreatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,12 +161,12 @@ namespace LigaCancer.Migrations
                 name: "CancerTypes",
                 columns: table => new
                 {
+                    CancerTypeId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    CancerTypeId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -193,12 +190,12 @@ namespace LigaCancer.Migrations
                 name: "Doctors",
                 columns: table => new
                 {
+                    DoctorId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    DoctorId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     CRM = table.Column<string>(nullable: true)
                 },
@@ -223,12 +220,12 @@ namespace LigaCancer.Migrations
                 name: "Medicines",
                 columns: table => new
                 {
+                    MedicineId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    MedicineId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -252,12 +249,12 @@ namespace LigaCancer.Migrations
                 name: "Patients",
                 columns: table => new
                 {
+                    PatientId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    PatientId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true),
                     RG = table.Column<string>(nullable: true),
@@ -290,12 +287,12 @@ namespace LigaCancer.Migrations
                 name: "Presences",
                 columns: table => new
                 {
+                    PresenceId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    PresenceId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PatientId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PresenceDateTime = table.Column<DateTime>(nullable: false)
@@ -321,12 +318,12 @@ namespace LigaCancer.Migrations
                 name: "TreatmentPlaces",
                 columns: table => new
                 {
+                    TreatmentPlaceId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    TreatmentPlaceId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -350,12 +347,12 @@ namespace LigaCancer.Migrations
                 name: "ActivePatients",
                 columns: table => new
                 {
+                    ActivePatientId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    ActivePatientId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Death = table.Column<bool>(nullable: false),
                     Discharge = table.Column<bool>(nullable: false),
                     DeathDate = table.Column<DateTime>(nullable: false),
@@ -389,12 +386,12 @@ namespace LigaCancer.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
+                    AddressId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    AddressId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Street = table.Column<string>(nullable: true),
                     Neighborhood = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
@@ -432,12 +429,12 @@ namespace LigaCancer.Migrations
                 name: "FamilyMembers",
                 columns: table => new
                 {
+                    FamilyMemberId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    FamilyMemberId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Kinship = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: true),
@@ -472,13 +469,14 @@ namespace LigaCancer.Migrations
                 name: "FileAttachments",
                 columns: table => new
                 {
+                    FileAttachmentId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    FileAttachmentId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FileName = table.Column<string>(nullable: true),
+                    FileExtension = table.Column<string>(nullable: true),
                     FileSize = table.Column<double>(nullable: false),
                     FilePath = table.Column<string>(nullable: true),
                     PatientId = table.Column<int>(nullable: false)
@@ -510,12 +508,12 @@ namespace LigaCancer.Migrations
                 name: "Naturalities",
                 columns: table => new
                 {
+                    NaturalityId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    NaturalityId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
@@ -548,12 +546,12 @@ namespace LigaCancer.Migrations
                 name: "PatientInformation",
                 columns: table => new
                 {
+                    PatientInformationId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    PatientInformationId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TreatmentbeginDate = table.Column<DateTime>(nullable: false),
                     PatientId = table.Column<int>(nullable: false)
                 },
@@ -584,12 +582,12 @@ namespace LigaCancer.Migrations
                 name: "Phones",
                 columns: table => new
                 {
+                    PhoneId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     UserCreatedId = table.Column<string>(nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: false),
                     UserUpdatedId = table.Column<string>(nullable: true),
-                    PhoneId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Number = table.Column<string>(nullable: true),
                     PhoneType = table.Column<int>(nullable: true),
                     ObservationNote = table.Column<string>(nullable: true),
