@@ -3,29 +3,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.UserViewModels
+namespace LigaCancer.Models.FormModel
 {
     public class EditUserFormModel
     {
-        public EditUserFormModel()
+        public EditUserFormModel() { }
+
+        public EditUserFormModel(string userId, string name)
         {
-            ApplicationRoles = new List<SelectListItem>();
+            UserId = userId;
+            Name = name;
         }
+
+        [HiddenInput]
+        public string UserId { get; set; }
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
-        [Display(Name = "Sobrenome")]
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
-        public string LastName { get; set; }
-
-        [EmailAddress(ErrorMessage = "Insira um email válido!")]
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsEmailUsed", "User", AdditionalFields = "UserId", ErrorMessage = "Email já utilizado!")]
-        public string Email { get; set; }
-
-        public List<SelectListItem> ApplicationRoles { get; set; }
+        public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
+                {
+                    new SelectListItem("Administrador", "Admin"),
+                    new SelectListItem("Usuário", "User")
+                };
 
         [Display(Name = "Regra")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]

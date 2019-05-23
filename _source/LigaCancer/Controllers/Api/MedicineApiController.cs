@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,14 @@ namespace LigaCancer.Controllers.Api
             };
 
             return Ok(select2PagedResult);
+        }
+
+        [HttpGet("~/api/Medicine/IsNameExist")]
+        public async Task<IActionResult> IsNameExist(string name, int medicineId)
+        {
+            Medicine medicine = await ((MedicineStore)_medicineService).FindByNameAsync(name, medicineId);
+
+            return Ok(medicine == null);
         }
 
         #region Private Methods

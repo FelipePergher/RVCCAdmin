@@ -55,7 +55,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _phoneService.CreateAsync(phone);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddPhone", phoneForm);
@@ -93,7 +93,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPhone", phoneForm);
@@ -111,7 +111,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _phoneService.DeleteAsync(phone);
 
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
 
     }

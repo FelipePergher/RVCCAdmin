@@ -1,9 +1,9 @@
 ﻿using LigaCancer.Data.Models;
-using LigaCancer.Models.UserViewModels;
+using LigaCancer.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,8 +40,7 @@ namespace LigaCancer.Controllers
             {
                 ApplicationUser user = new ApplicationUser
                 {
-                    FirstName = userForm.FirstName,
-                    LastName = userForm.LastName,
+                    Name = userForm.Name,
                     UserName = userForm.Email,
                     Email = userForm.Email,
                     CreatedBy = User.Identity.Name
@@ -51,10 +50,11 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded)
                 {
-                    IdentityRole applicationRole = await _roleManager.FindByIdAsync(userForm.RoleId);
+                    IdentityRole applicationRole = await _roleManager.FindByNameAsync(userForm.Role);
                     if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     return Ok();
                 }
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddUser", userForm);
@@ -69,21 +69,18 @@ namespace LigaCancer.Controllers
             
             if (user == null) return NotFound();
 
-            EditUserFormModel editUserForm = new EditUserFormModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email
-            };
+            EditUserFormModel userForm = new EditUserFormModel(user.Id, user.Name);
 
-            string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
-            if (userRole != null) editUserForm.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
+            //Todo change to use await
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+            string userRole = roles.Any() ? roles.FirstOrDefault() : string.Empty;
+            if (!string.IsNullOrEmpty(userRole)) userForm.Role = userRole;
 
-            return PartialView("Partials/_EditUser", editUserForm);
+            return PartialView("Partials/_EditUser", userForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(string id, EditUserFormModel editUserForm)
+        public async Task<IActionResult> EditUser(string id, EditUserFormModel userForm)
         {
             if(string.IsNullOrEmpty(id)) return BadRequest();
             
@@ -93,24 +90,25 @@ namespace LigaCancer.Controllers
 
             if (ModelState.IsValid)
             {
-                user.FirstName = editUserForm.FirstName;
-                user.LastName = editUserForm.LastName;
-                user.Email = editUserForm.Email;
+                user.Name = userForm.Name;
 
                 IdentityResult result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                    if (userRole != null) await _userManager.RemoveFromRoleAsync(user, userRole);
+                    IList<string> userRoles = await _userManager.GetRolesAsync(user);
+                    string userRole = userRoles.FirstOrDefault();
+                    if (userRole != null && userRole != userForm.Role) { 
+                        await _userManager.RemoveFromRoleAsync(user, userRole);
+                    }
 
-                    IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == editUserForm.Role);
-                    if (role != null) await _userManager.AddToRoleAsync(user, role.Name);
+                    IdentityRole role = await _roleManager.FindByNameAsync(userForm.Role);
+                    if (role != null && role.Name != userRole) await _userManager.AddToRoleAsync(user, role.Name);
 
                     return Ok();
                 }
             }
 
-            return PartialView("Partials/_EditUser", editUserForm);
+            return PartialView("Partials/_EditUser", userForm);
         }
 
         [HttpPost, IgnoreAntiforgeryToken]
@@ -122,23 +120,10 @@ namespace LigaCancer.Controllers
 
             if (applicationUser == null) return NotFound();
 
-            //Todo see how use user identity to disable user
-            applicationUser.DeletedDate = DateTime.Now;
-            applicationUser.IsDeleted = true;
+            IdentityResult result = await _userManager.DeleteAsync(applicationUser);
 
-            IdentityResult result = await _userManager.UpdateAsync(applicationUser);
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
-
-        #region Custom Methods
-
-        public async Task<IActionResult> IsEmailUsed(string Email, string UserId)
-        {
-            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
-            return user != null ? Ok(user.Id == UserId) : Ok(true);
-        }
-
-        #endregion
     }
 }

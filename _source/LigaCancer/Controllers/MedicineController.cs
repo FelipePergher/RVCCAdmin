@@ -44,7 +44,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddMedicine", medicineForm);
@@ -59,10 +59,7 @@ namespace LigaCancer.Controllers
 
             if (medicine == null) return NotFound();
 
-            MedicineFormModel medicineForm = new MedicineFormModel
-            {
-                Name = medicine.Name
-            };
+            MedicineFormModel medicineForm = new MedicineFormModel(medicine.Name, medicine.MedicineId);
 
             return PartialView("Partials/_EditMedicine", medicineForm);
         }
@@ -80,14 +77,14 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditMedicine", medicineForm);
         }
 
         [HttpPost, IgnoreAntiforgeryToken]
-        public async Task<IActionResult> DeleteMedicine(string id, IFormCollection form)
+        public async Task<IActionResult> DeleteMedicine(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
@@ -101,18 +98,6 @@ namespace LigaCancer.Controllers
 
             return BadRequest(result);
         }
-
-        #region Custom Methods
-        
-        [HttpGet]
-        public async Task<IActionResult> IsNameExist(string name, int medicineId)
-        {
-            Medicine medicine = await ((MedicineStore)_medicineService).FindByNameAsync(name, medicineId);
-
-            return Json(medicine == null);
-        }
-
-        #endregion
 
     }
 }

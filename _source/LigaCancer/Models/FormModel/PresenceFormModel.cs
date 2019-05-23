@@ -20,7 +20,6 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Data")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        [DateRange]
         public DateTime Date { get; set; }
 
         [Display(Name = "Hora")]

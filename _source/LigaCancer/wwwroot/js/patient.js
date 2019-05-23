@@ -2,6 +2,21 @@
 let phoneTable;
 let addressTable;
 let familyMemberTable;
+let attachmentsTable;
+
+let dropzoneConfiguration = {
+    maxFilesize: 20,
+    acceptedFiles: "image/*,application/pdf",
+    dictDefaultMessage: "Arraste seus arquivos aqui para upload.",
+    dictFallbackMessage: "Seu navegador não tem suporte para arrastar e upload.",
+    dictFileTooBig: "O arquivo é muito grande ({{filesize}}MiB). Tamanho máximo: {{maxFilesize}}MiB.",
+    dictInvalidFileType: "Você não pode fazer upload de arquivos deste tipo.",
+    dictResponseError: "Servidor respondu com status de {{statusCode}}.",
+    dictCancelUpload: "Cancelar upload",
+    dictCancelUploadConfirmation: "Você têm certeza que quer cancelar este upload?",
+    dictRemoveFile: "Remover arquivo",
+    dictMaxFilesExceeded: "Você não pode fazer upload de mais arquivos."
+};
 
 $(function () {
     initPage();
@@ -117,6 +132,11 @@ function initPage() {
             $(".familyMembersButton").click(function () {
                 $("#modal-dialog").addClass("modal-elg");
                 openModal($(this).attr("href"), $(this).data("title"), initFamilyMemberIndex);
+            });
+
+            $(".fileUploadPatientButton").click(function () {
+                $("#modal-dialog").addClass("modal-lg");
+                openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
             });
         }
     });
@@ -281,6 +301,7 @@ function initPhoneIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
@@ -399,6 +420,7 @@ function initAddressIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
@@ -532,6 +554,7 @@ function initFamilyMemberIndex() {
                 }
             }
         ],
+        autoWidth: false,
         processing: true,
         serverSide: true,
         language: language,
@@ -629,6 +652,120 @@ function initDeleteFamilyMember(url, id) {
                 .done(function (data, textStatus) {
                     familyMemberTable.ajax.reload(null, false);
                     swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+//Files
+function initFileUpload() {
+    var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
+
+    attachmentsTable = $("#attachmentsTable").DataTable({
+        dom: "l<'export-buttons'B>frtip",
+        buttons: [
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                },
+                customize: function (doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            }
+        ],
+        processing: true,
+        language: language,
+        filter: false,
+        autoWidth: false,
+        ajax: {
+            url: "/api/FileAttachment/search",
+            type: "POST",
+            data: function (d) {
+                d.patientId = $("#PatientId").val();
+            },
+            datatype: "json",
+            error: function () {
+                swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+            }
+        },
+        order: [1, "asc"],
+        columns: [
+            { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+            {
+                data: "size", title: "Tamanho", name: "Size",
+                render: function (data, type, row, meta) {
+                    return row.size + " Mb";
+                }
+            },
+            {
+                data: "name", title: "Arquivo", name: "Name",
+                render: function (data, type, row, meta) {
+                    let html =
+                        '   <span class="editable" data-fileAttachmentId="' + row.fileAttachmentId + '">' + row.name + '</span>' +
+                        '   <a class="float-right fa fa-download mt-1 ml-2" class="fa fa-download" href=" / ' + row.filePath + '" download="' + row.name + row.extension + '"></a>';
+                    return html;
+                }}
+        ],
+        drawCallback: function (settings) {
+            $(".deleteFileAttachmentButton").click(function (e) {
+                initDeleteFileAttachment($(this).data("url"), $(this).data("id"));
+            });
+
+            $('.editable').editable(function (value, settings) {
+                let fileAttachmentId = $(this).data("fileattachmentid");
+
+                $.post("/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
+                    .done(function (data, textStatus) {
+                        attachmentsTable.ajax.reload(null, false);
+                    }).fail(function (error) {
+                        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }, {
+                    indicator: 'salvando…',
+                    cssclass: "form-row",
+                    placeholder: "",
+                    submit: 'Salvar',
+                    submitcssclass: 'btn btn-primary ml-2',
+                    inputcssclass: "form-control",
+                    placeholder: "Clique para editar",
+                    tooltip: "Clique para editar"
+                });
+        }
+    });
+    $('#attachmentsTable').attr('style', 'border-collapse: collapse !important');
+
+    myDropzone.on("success", function (file) {
+        attachmentsTable.ajax.reload(null, false);
+    });
+}
+
+function initDeleteFileAttachment(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "Você não poderá reverter isso!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    attachmentsTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido!", "O arquivo foi removido com sucesso.", "success");
                 }).fail(function (error) {
                     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });

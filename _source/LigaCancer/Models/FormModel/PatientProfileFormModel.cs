@@ -7,8 +7,15 @@ namespace LigaCancer.Models.FormModel
 {
     public class PatientProfileFormModel
     {
+        public PatientProfileFormModel(){ }
+
+        public PatientProfileFormModel(int patientId)
+        {
+            PatientId = patientId;
+        }
+
         [HiddenInput]
-        public string PatientId { get; set; }
+        public int PatientId { get; set; }
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
@@ -19,11 +26,11 @@ namespace LigaCancer.Models.FormModel
         public string Surname { get; set; }
         
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsRgExist", "Patient", AdditionalFields = "PatientId", ErrorMessage = "RG já registrado!")]
+        [Remote("IsRgExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "RG já registrado!")]
         public string RG { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsCpfExist", "Patient", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
+        [Remote("IsCpfExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
         public string CPF { get; set; }
 
         [Display(Name = "Grupo de Convivência")]

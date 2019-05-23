@@ -37,10 +37,11 @@
         </div>
         <div class="form-group">
             <label asp-for="ResidenceType" class="control-label"></label>
-            <select asp-for="ResidenceType" asp-items="@Html.GetEnumSelectList<Globals.ResidenceType>()" class="form-control addressSelect2"
+            <select asp-for="ResidenceType" asp-items="Html.GetEnumSelectList<Globals.ResidenceType>()" class="form-control addressSelect2" style="width: 100%"
                     data-theme="bootstrap"
                     data-language="pt-BR" 
                     data-placeholder="Tipo de Residência" 
+                    data-width="resolve"
                     data-allow-clear="true" 
                     data-minimum-results-for-search="Infinity" 
                     data-container-css-class="select2NoSearch">

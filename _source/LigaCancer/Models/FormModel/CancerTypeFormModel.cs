@@ -5,9 +5,20 @@ namespace LigaCancer.Models.FormModel
 {
     public class CancerTypeFormModel
     {
+        public CancerTypeFormModel(){}
+
+        public CancerTypeFormModel(string name, int cancerTypeId)
+        {
+            Name = name;
+            CancerTypeId = cancerTypeId;
+        }
+
+        [HiddenInput]
+        public int CancerTypeId { get; set; }
+
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsNameExist", "CancerType", AdditionalFields = "CancerTypeId", ErrorMessage = "Tipo de câncer já registrado!")]
+        [Remote("IsNameExist", "CancerTypeApi", AdditionalFields = "CancerTypeId", ErrorMessage = "Tipo de câncer já registrado!")]
         public string Name { get; set; }
     }
 }

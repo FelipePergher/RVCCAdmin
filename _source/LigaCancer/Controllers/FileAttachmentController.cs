@@ -2,8 +2,8 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
+using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +24,11 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<Patient> _patientService;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public FileAttachmentController(IDataStore<FileAttachment> fileAttachmentService,
+        public FileAttachmentController(
+            IDataStore<FileAttachment> fileAttachmentService,
             IDataStore<Patient> patientService,
             UserManager<ApplicationUser> userManager,
-            IHostingEnvironment hostingEnvironment
-            )
+            IHostingEnvironment hostingEnvironment)
         {
             _fileAttachmentService = fileAttachmentService;
             _userManager = userManager;
@@ -36,62 +36,58 @@ namespace LigaCancer.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public IActionResult AddFileAttachment(string id)
+
+        [HttpGet]
+        public IActionResult FileUpload(string id)
         {
-            return PartialView("Partials/_AddFileAttachment", new FileAttachmentFormModel());
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_FileUpload", new FileAttachmentSearchModel(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFileAttachment(string id, FileAttachmentFormModel fileAttachmentForm)
+        public async Task<IActionResult> FileUpload(string id, IFormFile file)
         {
-            if (!ModelState.IsValid) return StatusCode(500, "Invalid");
+            if (string.IsNullOrEmpty(id) || file == null || file.Length == 0) return BadRequest();
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
             Patient patient = await _patientService.FindByIdAsync(id);
+
+            if(patient == null) return NotFound();
+
             FileAttachment fileAttachment = new FileAttachment
             {
-                ArchiveCategorie = fileAttachmentForm.FileCategory,
-                FileName = $"{fileAttachmentForm.FileName}{Path.GetExtension(fileAttachmentForm.File.FileName)}",
-                UserCreated = user
+                PatientId = patient.PatientId,
+                FileName = Path.GetFileNameWithoutExtension(file.FileName),
+                FileExtension = Path.GetExtension(file.FileName),
+                FileSize = (double) file.Length / 1024 / 1024,
+                UserCreated = await _userManager.GetUserAsync(User)
             };
 
-            if (fileAttachmentForm.File != null && fileAttachmentForm.File.Length > 0)
+            string path = $"uploads\\files\\{patient.PatientId}";
+            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
+            try
             {
-                if (patient != null)
+                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                 {
-                    string path = $"uploads\\files\\{patient.PatientId}";
-                    string uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
-                    try
-                    {
-                        if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
-
-                        string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(fileAttachmentForm.File.FileName)}";
-                        using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-                        {
-                            await fileAttachmentForm.File.CopyToAsync(fileStream);
-                        }
-                        string imageUrl = Path.Combine(path + "\\" + fileName);
-                        fileAttachment.FilePath = imageUrl;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                        return StatusCode(500, e.Message);
-                    }
-
+                    await file.CopyToAsync(fileStream);
                 }
+                string imageUrl = Path.Combine(path + "\\" + fileName);
+                fileAttachment.FilePath = imageUrl;
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
-            TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, id);
-            if (result.Succeeded)
-            {
-                return StatusCode(200, "attachmentFile");
-            }
-            ModelState.AddErrors(result);
-            return StatusCode(500, result.Errors.First().Description);
+            TaskResult result = await _fileAttachmentService.CreateAsync(fileAttachment);
+            
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors.FirstOrDefault().Description);
         }
 
-        [HttpPost]
+        [HttpPost, IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -106,5 +102,21 @@ namespace LigaCancer.Controllers
             return BadRequest();
         }
 
+        [HttpPost, IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
+        {
+            if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId)) return BadRequest();
+
+            FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(fileAttachmentModel.FileAttachmentId);
+
+            if (fileAttachment == null) return NotFound();
+
+            fileAttachment.FileName = fileAttachmentModel.Name;
+
+            TaskResult result = await _fileAttachmentService.UpdateAsync(fileAttachment);
+
+            if (result.Succeeded) return Ok();
+            return BadRequest();
+        }
     }
 }

@@ -132,6 +132,21 @@
       "files": [
         "umd/popper.min.js"
       ]
+    },
+    {
+      "library": "dropzone@5.5.1",
+      "destination": "wwwroot/lib/dropzone",
+      "files": [
+        "min/dropzone.min.js",
+        "min/dropzone.min.css"
+      ]
+    },
+    {
+      "library": "jeditable.js@2.0.8",
+      "destination": "wwwroot/lib/jeditable",
+      "files": [
+        "jquery.jeditable.min.js"
+      ]
     }
   ]
 }

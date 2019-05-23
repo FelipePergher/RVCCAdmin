@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,6 @@ namespace LigaCancer.Data.Store
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -98,6 +98,12 @@ namespace LigaCancer.Data.Store
             if (include != null)
             {
                 query = include.Aggregate(query, (current, inc) => current.Include(inc));
+            }
+
+            var fileAttachmentSearch = (FileAttachmentSearchModel) filter;
+            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
             }
 
             return Task.FromResult(query.ToList());

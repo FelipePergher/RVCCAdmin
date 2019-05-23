@@ -85,6 +85,20 @@ namespace LigaCancer.Controllers.Api
             }
         }
 
+        [HttpGet("~/api/patient/IsCpfExist")]
+        public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
+        {
+            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
+            return Ok(patient == null);
+        }
+
+        [HttpGet("~/api/patient/IsRgExist")]
+        public async Task<IActionResult> IsRgExist(string rg, int patientId)
+        {
+            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
+            return Ok(patient == null);
+        }
+
         #region Private Methods
 
         private string GetActionsHtml(Patient patient)
@@ -113,7 +127,10 @@ namespace LigaCancer.Controllers.Api
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + archivePatient;
+                string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
+                    $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
+
+                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient ;
             }
             else
             {

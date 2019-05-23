@@ -5,9 +5,20 @@ namespace LigaCancer.Models.FormModel
 {
     public class TreatmentPlaceFormModel
     {
+        public TreatmentPlaceFormModel() { }
+
+        public TreatmentPlaceFormModel(string city, int treatmentPlaceId)
+        {
+            City = city;
+            TreatmentPlaceId = treatmentPlaceId;
+        }
+
+        [HiddenInput]
+        public int TreatmentPlaceId { get; set; }
+
         [Display(Name = "Cidade")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [Remote("IsCityExist", "TreatmentPlace", AdditionalFields = "TreatmentPlaceId", ErrorMessage = "Cidade já registrada!", HttpMethod = "GET")]
+        [Remote("IsCityExist", "TreatmentPlaceApi", AdditionalFields = "TreatmentPlaceId", ErrorMessage = "Cidade já registrada!")]
         public string City { get; set; }
     }
 }

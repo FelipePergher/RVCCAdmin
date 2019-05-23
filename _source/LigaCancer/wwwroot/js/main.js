@@ -5,21 +5,26 @@
 });
 
 let language = {
-    emptyTable: "Nenhum dado encontrado!",
-    info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
-    infoEmpty: "",
-    zeroRecords: "Não foi encontrado resultados",
-    lengthMenu: "Mostrar _MENU_ registros por página",
-    loadingRecords: "<span class='fa fa-spinner fa-pulse' style='font-size: 35px; margin-left:-60px; ' ></span>",
-    paginate: {
-        first: "Primeiro",
-        last: "Último",
-        next: "Próximo",
-        previous: "Anterior"
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+        "sNext": "Próximo",
+        "sPrevious": "Anterior",
+        "sFirst": "Primeiro",
+        "sLast": "Último"
     },
-    aria: {
-        sortAscending: ": ativar ordenação ascendente",
-        sortDescending: ": ativar ordenação descendente"
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
     }
 };
 

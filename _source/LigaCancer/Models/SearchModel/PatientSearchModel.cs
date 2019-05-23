@@ -55,21 +55,9 @@ namespace LigaCancer.Models.SearchModel
 
         public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
             {
-                new SelectListItem
-                {
-                    Text = "",
-                    Value = ""
-                },
-                new SelectListItem
-                {
-                    Text = "Participa",
-                    Value = "true"
-                },
-                new SelectListItem
-                {
-                    Text = "Não Participa",
-                    Value = "false"
-                }
+                new SelectListItem("", ""),
+                new SelectListItem("Participa", "true"),
+                new SelectListItem("Não Participa", "false")
             };
     }
 }

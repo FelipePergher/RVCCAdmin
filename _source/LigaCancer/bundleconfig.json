@@ -44,9 +44,11 @@
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
     "inputFiles": [
-      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css",
       "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
-      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/gijgo/combined/css/gijgo.min.css",
+      "wwwroot/dropzone/min/dropzone.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -57,12 +59,16 @@
   {
     "outputFileName": "wwwroot/dist/js/patient.min.js",
     "inputFiles": [
-      "wwwroot/lib/select2/js/select2.full.min.js",
-      "wwwroot/lib/select2/js/i18n/pt-BR.js",
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
       "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
-      "js/patient.js"
+      "js/patient.js",
+      "wwwroot/lib/select2/js/select2.full.min.js",
+      "wwwroot/lib/select2/js/i18n/pt-BR.js",
+      "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
+      "wwwroot/lib/dropzone/min/dropzone.min.js",
+      "wwwroot/lib/jeditable/jquery.jeditable.min.js",
+      "wwwroot/js/patient.js"
     ],
     "minify": {
       "enabled": true,

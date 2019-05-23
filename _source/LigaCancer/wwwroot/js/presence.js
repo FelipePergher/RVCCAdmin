@@ -28,29 +28,29 @@
         type: "POST",
         data: function (d) {
             d.name = $("#Name").val();
-            d.surname = $("#Surname").val();
             d.dateFrom = $("#DateFrom").val();
             d.dateTo = $("#DateTo").val();
         },
         datatype: "json",
-        error: function () {
+        error: function (error) {
+            console.log(error);
             swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
-    order: [1, "desc"],
+    order: [2, "desc"],
     columns: [
         { data: "actions", title: "Ações", name: "Actions", orderable: false},
-        { data: "date", title: "Data da presença", name: "Date" },
         { data: "patient", title: "Nome do Paciente", name: "Patient" },
+        { data: "date", title: "Data da presença", name: "Date" },
         { data: "hour", title: "Hora da presença", name: "Hour" }
     ],
     drawCallback: function (settings) {
         $(".editPresenceButton").click(function () {
-            openModal($(this).attr("href"), initEditForm);
+            openModal($(this).attr("href"), $(this).data("title"), initEditForm);
         });
 
         $(".deletePresenceButton").click(function (e) {
-            initDelete($(this).data("url"));
+            initDelete($(this).data("url"), $(this).data("id"));
         });
     }
 });
@@ -65,21 +65,15 @@ function initPage() {
     calendar("DateTo");
     calendar("DateFrom");
 
-    $(".select2").select2({
-        language: "pt-BR"
-    });
+    $(".select2").select2();
 
     $("#addPresenceButton").click(function () {
-        openModal($(this).attr("href"), "", initAddForm);
+        openModal($(this).attr("href"), "Adicionar Presença", initAddForm);
     });
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
         presenceTable.search("").draw("");
-    });
-
-    $("#modal-action").on("hidden.bs.modal", function (e) {
-        $("#modal-content").html("");
     });
 }
 
@@ -104,7 +98,6 @@ function addSuccess(data, textStatus) {
 
 function initEditForm() {
     $.validator.unobtrusive.parse("#editPresenceForm");
-    $(".select2").select2();
     time("Time");
     calendar("Date");
 }
@@ -121,9 +114,9 @@ function editSuccess(data, textStatus) {
     }
 }
 
-function initDelete(url) {
-    swalWithBootstrapButtons.queue([{
-        title: 'Você tem certeza?',
+function initDelete(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
         text: "Você não poderá reverter isso!",
         type: 'warning',
         showCancelButton: true,
@@ -132,21 +125,15 @@ function initDelete(url) {
         showLoaderOnConfirm: true,
         reverseButtons: true,
         preConfirm: () => {
-            return fetch(url)
-                .then(response => {
-                    if (response.status === 200) {
-                        presenceTable.ajax.reload(null, false);
-                        return swalWithBootstrapButtons.fire("Removido", "A presença foi removida com sucesso.", "success");
-                    }
-                    return swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-                })
-                .catch(error => {
-                    Swal.showValidationMessage(
-                        `Alguma coisa deu errado: ${error}`
-                    );
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    presenceTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Removido", "A presença foi removida com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });
         }
-    }]);
+    });
 }
 
 function error(error) {

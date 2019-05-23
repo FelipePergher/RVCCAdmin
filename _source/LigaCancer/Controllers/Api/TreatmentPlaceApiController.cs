@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,13 @@ namespace LigaCancer.Controllers.Api
             };
 
             return Ok(select2PagedResult);
+        }
+
+        [HttpGet("~/api/TreatmentPlace/IsCityExist")]
+        public async Task<IActionResult> IsCityExist(string city, int treatmentPlaceId)
+        {
+            TreatmentPlace treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
+            return Ok(treatmentPlace == null);
         }
 
         #region Private Methods

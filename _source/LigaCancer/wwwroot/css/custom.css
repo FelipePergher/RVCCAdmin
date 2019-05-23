@@ -45,3 +45,11 @@
 .select2-container--open {
     z-index: 1070
 }
+
+#attachmentsTable_wrapper{
+    margin-top: 10px;
+}
+
+.select2-search__field{
+    width: 100% !important;
+}

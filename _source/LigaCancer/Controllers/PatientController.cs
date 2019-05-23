@@ -9,7 +9,6 @@ using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,7 +83,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.CreateAsync(patient);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddPatientProfile", patientProfileForm);
@@ -115,7 +114,7 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", 
                     new { id = naturality.Patient.PatientInformation.PatientInformationId }), title = "Adicionar Informação do Paciente" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_AddPatientNaturality", naturalityForm);
@@ -196,7 +195,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);
@@ -222,7 +221,7 @@ namespace LigaCancer.Controllers
 
             PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
             {
-                PatientId = id,
+                PatientId = patient.PatientId,
                 FirstName = patient.FirstName,
                 Surname = patient.Surname,
                 RG = patient.RG,
@@ -260,7 +259,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);
@@ -300,7 +299,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             return PartialView("Partials/_EditPatientNaturality", naturalityForm);
@@ -447,7 +446,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok();
-                return BadRequest(result.Errors);
+                return BadRequest();
             }
 
             patientInformationForm.SelectDoctors = await SelectHelper.GetDoctorSelectAsync(_doctorService);
@@ -465,11 +464,8 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult ArchivePatient(string id)
         {
-            ArchivePatientFormModel archivePatientForm = new ArchivePatientFormModel
-            {
-                DateTime = DateTime.Now
-            };
-            return PartialView("Partials/_ArchivePatient", archivePatientForm);
+            if(string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_ArchivePatient", new ArchivePatientFormModel());
         }
 
         [HttpPost]
@@ -532,22 +528,6 @@ namespace LigaCancer.Controllers
             if (result.Succeeded) return Ok();
 
             return BadRequest();
-        }
-
-        #endregion
-
-        #region Custom Methods
-
-        public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
-        {
-            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
-            return Ok(patient == null);
-        }
-
-        public async Task<IActionResult> IsRgExist(string rg, int patientId)
-        {
-            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
-            return Ok(patient == null);
         }
 
         #endregion

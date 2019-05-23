@@ -15,7 +15,8 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -41,11 +42,7 @@ namespace LigaCancer.Controllers
             List<Patient> patients = await _patientService.GetAllAsync();
             PresenceFormModel presenceForm = new PresenceFormModel
             {
-                Patients = patients.Select(x => new SelectListItem
-                {
-                    Text = x.FirstName + " " + x.Surname,
-                    Value = x.PatientId.ToString()
-                }).ToList()
+                Patients = patients.Select(x => new SelectListItem($"{x.FirstName} {x.Surname}", x.PatientId.ToString())).ToList()
             };
 
             return PartialView("Partials/_AddPresence", presenceForm);
@@ -61,6 +58,7 @@ namespace LigaCancer.Controllers
                 Presence presence = new Presence
                 {
                     PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
+                    PatientId = patient.PatientId,
                     Name = $"{patient.FirstName} {patient.Surname}",
                     UserCreated = await _userManager.GetUserAsync(User)
                 };
@@ -68,16 +66,11 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _presenceService.CreateAsync(presence);
 
                 if (result.Succeeded) return Ok();
-
                 return BadRequest();
             }
 
             List<Patient> patients = await _patientService.GetAllAsync();
-            presenceForm.Patients = patients.Select(x => new SelectListItem
-            {
-                Text = x.FirstName + " " + x.Surname,
-                Value = x.PatientId.ToString()
-            }).ToList();
+            presenceForm.Patients = patients.Select(x => new SelectListItem($"{x.FirstName} {x.Surname}", x.PatientId.ToString())).ToList();
 
             return PartialView("Partials/_AddPresence", presenceForm);
         }
@@ -91,17 +84,11 @@ namespace LigaCancer.Controllers
 
             if (presence == null) return NotFound();
 
-            List<Patient> patients = await _patientService.GetAllAsync();
             PresenceFormModel presenceform = new PresenceFormModel
             {
-                PatientId = presence.PatientId.ToString(),
+                PatientId = presence.Name,
                 Date = presence.PresenceDateTime,
-                Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0),
-                Patients = patients.Select(x => new SelectListItem
-                {
-                    Text = x.FirstName + " " + x.Surname,
-                    Value = x.PatientId.ToString()
-                }).ToList()
+                Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0)
             };
 
             return PartialView("Partials/_EditPresence", presenceform);
@@ -115,12 +102,6 @@ namespace LigaCancer.Controllers
             if (ModelState.IsValid)
             {
                 Presence presence = await _presenceService.FindByIdAsync(id);
-                
-                if (presence == null) return NotFound();
-
-                Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
-
-                presence.Name = $"{patient.FirstName} {patient.Surname}";
                 presence.PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
                 presence.UserUpdated = await _userManager.GetUserAsync(User);
 
@@ -129,17 +110,11 @@ namespace LigaCancer.Controllers
                 return BadRequest();
             }
 
-            List<Patient> patients = await _patientService.GetAllAsync();
-            presenceForm.Patients = patients.Select(x => new SelectListItem
-            {
-                Text = x.FirstName + " " + x.Surname,
-                Value = x.PatientId.ToString()
-            }).ToList();
-
             return PartialView("Partials/_EditPresence", presenceForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePresence(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -152,7 +127,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
-            return BadRequest(result);
+            return BadRequest();
         }
 
     }

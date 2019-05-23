@@ -146,7 +146,6 @@ namespace LigaCancer.Data.Store
         private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
             if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Name.Contains(presenceSearch.Name));
-            if (!string.IsNullOrEmpty(presenceSearch.Surname)) query = query.Where(x => x.Name.Contains(presenceSearch.Surname));
             
             if (presenceSearch.DateFrom != null) query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
             if (presenceSearch.DateTo != null) query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);

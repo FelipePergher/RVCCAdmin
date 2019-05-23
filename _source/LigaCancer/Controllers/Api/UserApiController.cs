@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
@@ -20,21 +21,89 @@ namespace LigaCancer.Controllers.Api
             _userManager = userManager;
         }
 
-        [HttpGet("~/api/user/search")]
-        public IActionResult UserSearch([FromForm] SearchModel searchModel)
+        [HttpPost("~/api/user/search")]
+        public IActionResult UserSearch([FromForm] SearchModel searchModel, [FromForm] string name)
         {
-            List<ApplicationUser> users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
-
-            IEnumerable<UserViewModel> data = users.Select(x => new UserViewModel
+            try
             {
-                UserId = x.Id,
-                Name = $"{x.FirstName} {x.LastName}",
-                Email = x.Email,
-                Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "User" ? "Usuário" : "Administrador"
-            });
+                string sortColumn = searchModel.Columns[searchModel.Order[0].Column].Name;
+                string sortDirection = searchModel.Order[0].Dir;
+                int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
+                int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
+                List<ApplicationUser> users = _userManager.Users.ToList();
+                //Filter
+                if (!string.IsNullOrEmpty(name)) users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
 
-            return Ok(new { data });
+                IEnumerable<UserViewModel> data = users.Select(x => new UserViewModel
+                {
+                    UserId = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "Admin" ? "Administrador" : "Usuário",
+                    Actions = GetActionsHtml(x)
+                });
+
+                //Sort
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) data = GetOrdenationUser(data, sortColumn, sortDirection);
+
+                int recordsTotal =_userManager.Users.Count();
+                int recordsFiltered = data.Count();
+
+                return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
+
+        [HttpGet("~/api/user/IsEmailUsed")]
+        public async Task<IActionResult> IsEmailUsed(string Email, string UserId)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
+            return user != null ? Ok(user.Id == UserId) : Ok(true);
+        }
+
+        #region Private Methods
+
+        private string GetActionsHtml(ApplicationUser user)
+        {
+            if(user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM" ) return string.Empty;
+
+            string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
+                $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";
+
+            string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
+                $" class='dropdown-item deleteUserButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+
+            string actionsHtml =
+                $"<div class='dropdown'>" +
+                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                $"  <div class='dropdown-menu'>" +
+                $"      {editUser}" +
+                $"      {deleteUser}" +
+                $"  </div>" +
+                $"</div>";
+
+            return actionsHtml;
+        }
+
+        private IEnumerable<UserViewModel> GetOrdenationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name).ToList() : query.OrderByDescending(x => x.Name).ToList();
+                case "Email":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Email).ToList() : query.OrderByDescending(x => x.Email).ToList();
+                case "Role":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Role).ToList() : query.OrderByDescending(x => x.Role).ToList();
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name).ToList() : query.OrderByDescending(x => x.Name).ToList();
+            }
+        }
+
+        #endregion
     }
 }
