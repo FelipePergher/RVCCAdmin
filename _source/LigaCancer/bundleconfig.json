@@ -61,6 +61,8 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
+      "js/patient.js",
       "wwwroot/lib/select2/js/select2.full.min.js",
       "wwwroot/lib/select2/js/i18n/pt-BR.js",
       "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
@@ -204,6 +206,7 @@
       "wwwroot/lib/select2/js/select2.full.min.js",
       "wwwroot/lib/select2/js/i18n/pt-BR.js",
       "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
+      "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
       "wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
       "wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
       "wwwroot/lib/jszip/jszip.min.js",

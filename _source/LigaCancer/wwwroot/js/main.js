@@ -32,7 +32,8 @@ function calendar(id) {
     $("#" + id).datepicker({
         format: "dd/mm/yyyy",
         iconsLibrary: "fontawesome",
-        uiLibrary: "bootstrap4"
+        locale: "pt-br",
+        uiLibrary: "bootstrap4",
     });
 }
 
