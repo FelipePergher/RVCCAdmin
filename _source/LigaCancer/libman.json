@@ -89,7 +89,8 @@
       "destination": "wwwroot/lib/gijgo",
       "files": [
         "combined/js/gijgo.min.js",
-        "combined/css/gijgo.min.css"
+        "combined/css/gijgo.min.css",
+        "combined/js/messages/messages.pt-br.min.js"
       ]
     },
     {
