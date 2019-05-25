@@ -5,6 +5,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace LigaCancer.Controllers.Api
     public class TreatmentPlaceApiController : Controller
     {
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
+        private readonly ILogger<TreatmentPlaceApiController> _logger;
 
-        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService)
+        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService, ILogger<TreatmentPlaceApiController> logger)
         {
             _treatmentPlaceService = treatmentPlaceService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/TreatmentPlace/search")]
@@ -44,8 +48,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Treatment Place Search Error", null);
                 return BadRequest();
             }
         }

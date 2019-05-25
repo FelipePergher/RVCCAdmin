@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,24 +17,28 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class FileAttachmentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<FileAttachment> _fileAttachmentService;
         private readonly IDataStore<Patient> _patientService;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger<FileAttachmentController> _logger;
 
         public FileAttachmentController(
             IDataStore<FileAttachment> fileAttachmentService,
             IDataStore<Patient> patientService,
-            UserManager<ApplicationUser> userManager,
-            IHostingEnvironment hostingEnvironment)
+            ILogger<FileAttachmentController> logger,
+            IHostingEnvironment hostingEnvironment,
+            UserManager<ApplicationUser> userManager)
         {
             _fileAttachmentService = fileAttachmentService;
             _userManager = userManager;
             _patientService = patientService;
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
 
@@ -78,16 +83,19 @@ namespace LigaCancer.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                _logger.LogError(e, "File Upload Error", null);
+                return BadRequest();
             }
 
             TaskResult result = await _fileAttachmentService.CreateAsync(fileAttachment);
             
             if (result.Succeeded) return Ok();
-            return BadRequest(result.Errors.FirstOrDefault().Description);
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -99,10 +107,12 @@ namespace LigaCancer.Controllers
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {
             if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId)) return BadRequest();
@@ -116,6 +126,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _fileAttachmentService.UpdateAsync(fileAttachment);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
     }

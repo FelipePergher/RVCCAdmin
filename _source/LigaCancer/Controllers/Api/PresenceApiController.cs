@@ -4,6 +4,7 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,13 @@ namespace LigaCancer.Controllers.Api
     {
         private readonly IDataStore<Presence> _presenceService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<PresenceApiController> _logger;
 
-        public PresenceApiController(IDataStore<Presence> presenceService, IDataStore<Patient> patientService)
+        public PresenceApiController(IDataStore<Presence> presenceService, IDataStore<Patient> patientService, ILogger<PresenceApiController> logger)
         {
             _presenceService = presenceService;
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/presence/search")]
@@ -48,8 +51,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Presence Search Error", null);
                 return BadRequest();
             }
         }

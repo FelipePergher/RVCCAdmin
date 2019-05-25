@@ -9,12 +9,14 @@ using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class PatientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -25,6 +27,7 @@ namespace LigaCancer.Controllers
         private readonly IDataStore<Medicine> _medicineService;
         private readonly IDataStore<Naturality> _naturalityService;
         private readonly IDataStore<PatientInformation> _patientInformationService;
+        private readonly ILogger<PatientController> _logger;
 
         public PatientController(
             IDataStore<Patient> patientService,
@@ -34,6 +37,7 @@ namespace LigaCancer.Controllers
             IDataStore<Medicine> medicineService,
             IDataStore<Naturality> naturalityService,
             IDataStore<PatientInformation> patientInformationService,
+            ILogger<PatientController> logger,
             UserManager<ApplicationUser> userManager)
         {
             _patientService = patientService;
@@ -44,6 +48,7 @@ namespace LigaCancer.Controllers
             _medicineService = medicineService;
             _naturalityService = naturalityService;
             _patientInformationService = patientInformationService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -83,6 +88,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.CreateAsync(patient);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -114,6 +120,7 @@ namespace LigaCancer.Controllers
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", 
                     new { id = naturality.Patient.PatientInformation.PatientInformationId }), title = "Adicionar Informação do Paciente" });
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -195,6 +202,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -259,6 +267,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -299,6 +308,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -446,6 +456,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -496,7 +507,8 @@ namespace LigaCancer.Controllers
             return PartialView("Partials/_ArchivePatient", archivePatientForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> ActivePatient(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -511,10 +523,12 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePatient(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -527,6 +541,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

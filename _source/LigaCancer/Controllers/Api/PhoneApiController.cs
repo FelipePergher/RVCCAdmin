@@ -5,6 +5,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace LigaCancer.Controllers.Api
     public class PhoneApiController : Controller
     {
         private readonly IDataStore<Phone> _phoneService;
+        private readonly ILogger<PhoneApiController> _logger;
 
-        public PhoneApiController(IDataStore<Phone> phoneService)
+        public PhoneApiController(IDataStore<Phone> phoneService, ILogger<PhoneApiController> logger)
         {
             _phoneService = phoneService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/phone/search")]
@@ -45,8 +49,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Phone Search Error", null);
                 return BadRequest();
             }
         }

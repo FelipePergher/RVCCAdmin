@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly IDataStore<Patient> _patientService;

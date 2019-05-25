@@ -2,27 +2,33 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class MedicineController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Medicine> _medicineService;
+        private readonly ILogger<MedicineController> _logger;
 
-        public MedicineController(IDataStore<Medicine> medicineService, UserManager<ApplicationUser> userManager)
+        public MedicineController(
+            IDataStore<Medicine> medicineService,
+            ILogger<MedicineController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _medicineService = medicineService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -44,6 +50,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -77,13 +84,15 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
             return PartialView("Partials/_EditMedicine", medicineForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteMedicine(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -96,6 +105,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
         }
 

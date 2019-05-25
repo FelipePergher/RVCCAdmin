@@ -2,30 +2,34 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class AddressController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Address> _addressService;
-        private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<AddressController> _logger;
 
-        public AddressController(IDataStore<Address> addressService, UserManager<ApplicationUser> userManager, IDataStore<Patient> patientService)
+        public AddressController(
+            IDataStore<Address> addressService, 
+            ILogger<AddressController> logger, 
+            UserManager<ApplicationUser> userManager )
         {
             _addressService = addressService;
             _userManager = userManager;
-            _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -64,6 +68,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _addressService.CreateAsync(address);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -114,13 +119,15 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _addressService.UpdateAsync(address);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
             return PartialView("Partials/_EditAddress", addressForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteAddress(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -132,6 +139,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _addressService.DeleteAsync(address);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

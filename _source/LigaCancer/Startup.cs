@@ -12,9 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LigaCancer
 {
@@ -87,7 +86,7 @@ namespace LigaCancer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -106,6 +105,8 @@ namespace LigaCancer
 
             app.UseAuthentication();
 
+            loggerFactory.AddLog4Net();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -118,79 +119,6 @@ namespace LigaCancer
             IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             SeedData.SeedRoles(scopeFactory).Wait();
             SeedData.SeedAdminUser(scopeFactory).Wait();
-        }
-    }
-
-    public static class SeedData
-    {
-        private static readonly string[] Roles = new string[] { "Admin", "User" };
-
-        public static void ApplyMigrations(IServiceProvider serviceProvider)
-        {
-            using (IServiceScope serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                using (ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
-        }
-
-        public static async Task SeedRoles(IServiceScopeFactory scopeFactory)
-        {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
-            {
-                ApplicationDbContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-
-                if (!dbContext.UserRoles.Any())
-                {
-                    RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                    foreach (string role in Roles)
-                    {
-                        if (!await roleManager.RoleExistsAsync(role))
-                        {
-                            await roleManager.CreateAsync(new IdentityRole
-                            {
-                                Name = role
-
-                            });
-                        }
-                    }
-                }
-            }
-        }
-
-        public static async Task SeedAdminUser(IServiceScopeFactory scopeFactory)
-        {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
-            {
-                UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
-                {
-                    ApplicationUser user = new ApplicationUser
-                    {
-                        Name = "Felipe Pergher",
-                        UserName = "felipepergher_10@hotmail.com",
-                        Email = "felipepergher_10@hotmail.com",
-                        RegisterDate = DateTime.Now,
-                        CreatedBy = "System"
-                    };
-
-                    IdentityResult result = await userManager.CreateAsync(user, "Password123");
-
-                    if (result.Succeeded)
-                    {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync("Admin");
-                        if (applicationRole != null)
-                        {
-                            IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);
-                        }
-                    }
-                }
-            }
         }
     }
 
