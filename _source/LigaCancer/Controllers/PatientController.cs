@@ -108,8 +108,7 @@ namespace LigaCancer.Controllers
         {
             if (ModelState.IsValid)
             {
-                BaseSpecification<Naturality> baseSpecification = new BaseSpecification<Naturality>(x => x.Patient, x => x.Patient.PatientInformation);
-                Naturality naturality = await _naturalityService.FindByIdAsync(id, baseSpecification);
+                Naturality naturality = await _naturalityService.FindByIdAsync(id, new [] { "Patient", "Patient.PatientInformation" });
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
@@ -149,10 +148,8 @@ namespace LigaCancer.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                BaseSpecification<PatientInformation> specification = new BaseSpecification<PatientInformation>(
-                    x => x.PatientInformationCancerTypes, x => x.PatientInformationDoctors, x => x.PatientInformationMedicines, x => x.PatientInformationTreatmentPlaces);
-
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, specification);
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, 
+                    new [] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
                 //Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
@@ -320,10 +317,8 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<PatientInformation> specification = new BaseSpecification<PatientInformation>(
-                x => x.PatientInformationCancerTypes, x => x.PatientInformationDoctors, x => x.PatientInformationMedicines, x => x.PatientInformationTreatmentPlaces);
-
-            PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, specification);
+            PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
+                new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
             if (patientInformation == null) return NotFound();
 
@@ -348,10 +343,8 @@ namespace LigaCancer.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                BaseSpecification<PatientInformation> specification = new BaseSpecification<PatientInformation>(
-                    x => x.PatientInformationCancerTypes, x => x.PatientInformationDoctors, x => x.PatientInformationMedicines, x => x.PatientInformationTreatmentPlaces);
-
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, specification);
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
+                    new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
                 //Added Cancer Types to Patient Information
                 if (patientInformationForm.CancerTypes.Count == 0) patientInformation.PatientInformationCancerTypes.Clear();
@@ -484,8 +477,8 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(id, specification);
+            Patient patient = await _patientService.FindByIdAsync(id, new [] { "ActivePatient", "PatientInformation" });
+
             if (patient == null) return NotFound();
 
             switch (archivePatientForm.ArchivePatientType)
@@ -513,8 +506,7 @@ namespace LigaCancer.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.PatientInformation, x => x.ActivePatient);
-            Patient patient = await _patientService.FindByIdAsync(id, specification);
+            Patient patient = await _patientService.FindByIdAsync(id, new [] { "PatientInformation", "ActivePatient" });
 
             if (patient == null) return NotFound();
 

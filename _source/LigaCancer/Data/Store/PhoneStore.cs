@@ -72,33 +72,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Phone> FindByIdAsync(string id, ISpecification<Phone> specification = null)
+        public Task<Phone> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Phone> query = _context.Phones;
 
-            if (specification != null)
-            {
-                if (specification.Includes.Any())
-                {
-                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
-                }
-                if (specification.IncludeStrings.Any())
-                {
-                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             return Task.FromResult(query.FirstOrDefault(x => x.PhoneId == int.Parse(id)));
         }
 
-        public Task<List<Phone>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Phone>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Phone> query = _context.Phones;
 
-            if (include != null)
-            {
-                query = include.Aggregate(query, (current, inc) => current.Include(inc));
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPhones(query, sortColumn, sortDirection);
             if (filter != null) query = GetFilteredPhones(query, (PhoneSearchModel)filter);

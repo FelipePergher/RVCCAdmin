@@ -70,7 +70,6 @@ namespace LigaCancer
             services.AddAntiforgery();
 
             //Application Services
-            services.AddTransient(typeof(ISpecification<>), typeof(BaseSpecification<>));
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
             services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
             services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();
