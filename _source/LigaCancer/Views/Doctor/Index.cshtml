@@ -7,10 +7,10 @@
 @section styles{
     <environment names="Development">
         <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-        <link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+        @*<link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
     </environment>
     <environment exclude="Development">
-        <link href="~/dist/css/datatables.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/dist/css/doctor.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 }
 
@@ -94,12 +94,12 @@
     <environment names="Development">
         <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        @*<script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
         <script src="~/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
         <script src="~/lib/jszip/jszip.min.js"></script>
         <script src="~/lib/pdfmake/pdfmake.min.js"></script>
         <script src="~/lib/pdfmake/vfs_fonts.js"></script>
-        <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>*@
         <script src="~/js/doctor.js"></script>
     </environment>
     <environment exclude="Development">
