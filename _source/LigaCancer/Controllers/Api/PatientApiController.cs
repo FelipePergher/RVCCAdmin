@@ -41,7 +41,8 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
-                        "PatientInformation", "Naturality", "ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
+                        "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
@@ -58,6 +59,8 @@ namespace LigaCancer.Controllers.Api
                     Cpf = x.CPF,
                     DateOfBirth = x.DateOfBirth.ToString(),
                     Sex = Globals.GetDisplayName(x.Sex),
+                    Phone = x.Phones.FirstOrDefault()?.Number,
+                    Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
                     CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
@@ -166,6 +169,15 @@ namespace LigaCancer.Controllers.Api
         private double GetPerCapitaIncomeToSort(List<FamilyMember> familyMembers, double montlhyPatient)
         {
             return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)) : montlhyPatient;
+        }
+
+        private string GetAddressToTable(Address address)
+        {
+            string addressString = string.Empty;
+
+            if (address != null) addressString = $"{address.Street} {address.Neighborhood} {address.HouseNumber} {address.City}";
+
+            return addressString;
         }
 
         #endregion
