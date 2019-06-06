@@ -104,6 +104,16 @@ namespace LigaCancer.Controllers
 
             if (fileAttachment == null) return NotFound();
 
+            try
+            {
+                string uploadFile = Path.Combine(_hostingEnvironment.WebRootPath, fileAttachment.FilePath);
+                if (System.IO.File.Exists(uploadFile)) System.IO.File.Delete(uploadFile);
+            }
+            catch (IOException ioExp)
+            {
+                _logger.LogError(ioExp, "Upload File", null);
+            }
+
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
 
             if (result.Succeeded) return Ok();
