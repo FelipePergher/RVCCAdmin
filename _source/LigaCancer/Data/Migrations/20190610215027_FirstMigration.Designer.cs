@@ -3,13 +3,14 @@ using System;
 using LigaCancer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190521025544_FirstMigration")]
+    [Migration("20190610215027_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,12 +18,14 @@ namespace LigaCancer.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
                     b.Property<int>("ActivePatientId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Death");
 
@@ -57,7 +60,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Address", b =>
                 {
                     b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City");
 
@@ -99,7 +103,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
                 {
                     b.Property<int>("CancerTypeId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -114,7 +119,8 @@ namespace LigaCancer.Migrations
                     b.HasKey("CancerTypeId");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.HasIndex("UserCreatedId");
 
@@ -126,7 +132,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Doctor", b =>
                 {
                     b.Property<int>("DoctorId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CRM");
 
@@ -143,7 +150,8 @@ namespace LigaCancer.Migrations
                     b.HasKey("DoctorId");
 
                     b.HasIndex("CRM")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CRM] IS NOT NULL");
 
                     b.HasIndex("UserCreatedId");
 
@@ -155,7 +163,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
                 {
                     b.Property<int>("FamilyMemberId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("DateOfBirth");
 
@@ -191,7 +200,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
                 {
                     b.Property<int>("FileAttachmentId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FileExtension");
 
@@ -225,7 +235,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Medicine", b =>
                 {
                     b.Property<int>("MedicineId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -240,7 +251,8 @@ namespace LigaCancer.Migrations
                     b.HasKey("MedicineId");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.HasIndex("UserCreatedId");
 
@@ -252,7 +264,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Naturality", b =>
                 {
                     b.Property<int>("NaturalityId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City");
 
@@ -285,7 +298,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Patient", b =>
                 {
                     b.Property<int>("PatientId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CPF");
 
@@ -318,10 +332,12 @@ namespace LigaCancer.Migrations
                     b.HasKey("PatientId");
 
                     b.HasIndex("CPF")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CPF] IS NOT NULL");
 
                     b.HasIndex("RG")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[RG] IS NOT NULL");
 
                     b.HasIndex("UserCreatedId");
 
@@ -333,7 +349,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.PatientInformation", b =>
                 {
                     b.Property<int>("PatientInformationId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("PatientId");
 
@@ -362,7 +379,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Phone", b =>
                 {
                     b.Property<int>("PhoneId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Number");
 
@@ -394,7 +412,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Presence", b =>
                 {
                     b.Property<int>("PresenceId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -422,7 +441,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
                 {
                     b.Property<int>("TreatmentPlaceId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City");
 
@@ -437,7 +457,8 @@ namespace LigaCancer.Migrations
                     b.HasKey("TreatmentPlaceId");
 
                     b.HasIndex("City")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[City] IS NOT NULL");
 
                     b.HasIndex("UserCreatedId");
 
@@ -516,7 +537,8 @@ namespace LigaCancer.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -524,7 +546,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -588,7 +611,8 @@ namespace LigaCancer.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
 
@@ -598,7 +622,8 @@ namespace LigaCancer.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
