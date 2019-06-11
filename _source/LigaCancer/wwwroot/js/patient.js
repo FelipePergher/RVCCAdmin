@@ -23,6 +23,8 @@ $(function () {
 });
 
 function initPage() {
+    $("#Cpf").mask(masks.Cpf);
+
     patientTable = $("#patientTable").DataTable({
         dom: "l<'export-buttons'B>frtip",
         buttons: [
@@ -50,7 +52,7 @@ function initPage() {
         language: language,
         filter: false,
         scrollX: true,
-        scrollY: '50vh',
+        scrollY: '450px',
         ajax: {
             url: "/api/patient/search",
             type: "POST",
@@ -157,6 +159,8 @@ function initPage() {
 
 //Add Functions
 function initAddProfileForm() {
+    $("#CPF").mask(masks.Cpf);
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#addPatientProfileForm");
@@ -227,6 +231,8 @@ function addPatientInformationSuccess(data, textStatus) {
 
 //Edit Functions
 function initEditProfileForm() {
+    $("#CPF").mask(masks.Cpf);
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#editPatientProfileForm");
@@ -341,6 +347,7 @@ function initPhoneIndex() {
 }
 
 function initAddPhoneForm() {
+    $('#Number').mask(SPMaskBehavior, spOptions);
     $(".phoneSelect2").select2();
     $.validator.unobtrusive.parse("#addPhoneForm");
 }
@@ -358,6 +365,7 @@ function addPhoneSuccess(data, textStatus) {
 }
 
 function initEditPhoneForm() {
+    $('#Number').mask(SPMaskBehavior, spOptions);
     $(".phoneSelect2").select2();
     $.validator.unobtrusive.parse("#editPhoneForm");
 }
@@ -369,6 +377,7 @@ function editPhoneSuccess(data, textStatus) {
         swalWithBootstrapButtons.fire("Sucesso", "Telefone atualizado com sucesso.", "success");
     }
     else {
+        $('.phone').mask('(00) 9999-9999?9');
         $("#modalBodySecondary").html(data);
         initEditPhoneForm();
     }
@@ -602,6 +611,7 @@ function initFamilyMemberIndex() {
 }
 
 function initAddFamilyMemberForm() {
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#addFamilyMemberForm");
@@ -620,6 +630,7 @@ function addFamilyMemberSuccess(data, textStatus) {
 }
 
 function initEditFamilyMemberForm() {
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#editFamilyMemberForm");
@@ -774,7 +785,6 @@ function initDeleteFileAttachment(url, id) {
 }
 
 //Control Enable/Disable Functions
-
 function initArchivePatient() {
     calendar("DateTime");
     $(".archiveSelect2").select2();

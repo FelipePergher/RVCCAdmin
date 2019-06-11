@@ -147,6 +147,14 @@
       "files": [
         "jquery.jeditable.min.js"
       ]
+    },
+    {
+      "library": "jquery.mask@1.14.15",
+      "destination": "wwwroot/lib/jquery-mask/",
+      "files": [
+        "jquery.mask.min.js"
+
+      ]
     }
   ]
 }

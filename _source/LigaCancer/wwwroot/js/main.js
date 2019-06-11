@@ -28,6 +28,28 @@ let language = {
     }
 };
 
+function setupPhoneMaskOnField(selector) {
+    var inputElement = $(selector)
+
+    setCorrectPhoneMask(inputElement);
+    inputElement.on('input, keyup', function () {
+        setCorrectPhoneMask(inputElement);
+    });
+}
+
+var SPMaskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+}, spOptions = {
+        onKeyPress: function (val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
+        }
+    };
+
+let masks= {
+    Cpf: '000.000.000-00',
+    Price: '000.000.000.000.000,00'
+}
+
 function calendar(id) {
     $("#" + id).datepicker({
         format: "dd/mm/yyyy",
