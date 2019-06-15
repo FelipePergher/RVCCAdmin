@@ -48,7 +48,7 @@ namespace LigaCancer.Models.FormModel
         public string Profession { get; set; }
 
         [Display(Name = "Renda Mensal")]
-        public double? MonthlyIncome { get; set; }
+        public decimal MonthlyIncome { get; set; }
 
         public NaturalityFormModel Naturality { get; set; }
 

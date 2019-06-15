@@ -82,7 +82,7 @@ namespace LigaCancer.Controllers
                     DateOfBirth = patientProfileForm.DateOfBirth.Value,
                     Profession = patientProfileForm.Profession,
                     UserCreated = await _userManager.GetUserAsync(User),
-                    MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0
+                    MonthlyIncome = (double) patientProfileForm.MonthlyIncome
                 };
 
                 TaskResult result = await _patientService.CreateAsync(patient);
@@ -235,7 +235,7 @@ namespace LigaCancer.Controllers
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
                 DateOfBirth = patient.DateOfBirth,
-                MonthlyIncome = patient.MonthlyIncome,
+                MonthlyIncome = (decimal) patient.MonthlyIncome,
                 Profession = patient.Profession
             };
 
@@ -259,7 +259,7 @@ namespace LigaCancer.Controllers
                 patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
                 patient.Profession = patientProfileForm.Profession;
                 patient.UserUpdated = await _userManager.GetUserAsync(User);
-                patient.MonthlyIncome = patientProfileForm.MonthlyIncome ?? 0;
+                patient.MonthlyIncome = (double) patientProfileForm.MonthlyIncome;
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 

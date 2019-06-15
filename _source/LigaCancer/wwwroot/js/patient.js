@@ -162,7 +162,6 @@ function initPage() {
 //Add Functions
 function initAddProfileForm() {
     $("#CPF").mask(masks.Cpf);
-    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#addPatientProfileForm");
@@ -234,7 +233,6 @@ function addPatientInformationSuccess(data, textStatus) {
 //Edit Functions
 function initEditProfileForm() {
     $("#CPF").mask(masks.Cpf);
-    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#editPatientProfileForm");
@@ -619,7 +617,6 @@ function initFamilyMemberIndex() {
 }
 
 function initAddFamilyMemberForm() {
-    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#addFamilyMemberForm");
@@ -638,7 +635,6 @@ function addFamilyMemberSuccess(data, textStatus) {
 }
 
 function initEditFamilyMemberForm() {
-    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#editFamilyMemberForm");
@@ -754,7 +750,6 @@ function initFileUpload() {
             }, {
                     indicator: 'salvando…',
                     cssclass: "form-row",
-                    placeholder: "",
                     submit: 'Salvar',
                     submitcssclass: 'btn btn-primary ml-2',
                     inputcssclass: "form-control",

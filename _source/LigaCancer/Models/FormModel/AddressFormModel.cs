@@ -28,6 +28,6 @@ namespace LigaCancer.Models.FormModel
         public Globals.ResidenceType? ResidenceType { get; set; }
 
         [Display(Name = "Valor Mensal Residência")]
-        public double MonthlyAmmountResidence { get; set; }
+        public decimal MonthlyAmmountResidence { get; set; }
     }
 }

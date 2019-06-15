@@ -29,7 +29,7 @@ let language = {
 };
 
 function setupPhoneMaskOnField(selector) {
-    var inputElement = $(selector)
+    var inputElement = $(selector);
 
     setCorrectPhoneMask(inputElement);
     inputElement.on('input, keyup', function () {
@@ -45,10 +45,9 @@ var SPMaskBehavior = function (val) {
         }
     };
 
-let masks= {
-    Cpf: '000.000.000-00',
-    Price: '000.000.000.000.000,00'
-}
+let masks = {
+    Cpf: '000.000.000-00'
+};
 
 function calendar(id) {
     $("#" + id).datepicker({

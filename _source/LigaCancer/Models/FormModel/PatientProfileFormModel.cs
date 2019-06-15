@@ -53,8 +53,7 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Renda mensal")]
         [Range(0, 1000000.00, ErrorMessage = "Insira um valor de 0.00 até 1,000,000")]
-        [RegularExpression(@"[0-9]{0,5}\,?[0-9]{1,2}", ErrorMessage = "Insira um valor válido!")]
-        public double? MonthlyIncome { get; set; }
+        public decimal MonthlyIncome { get; set; }
 
     }
 }

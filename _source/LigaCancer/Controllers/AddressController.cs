@@ -61,7 +61,7 @@ namespace LigaCancer.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0,
+                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double) addressForm.MonthlyAmmountResidence : 0,
                     UserCreated = await _userManager.GetUserAsync(User)
                 };
 
@@ -93,7 +93,7 @@ namespace LigaCancer.Controllers
                 ObservationAddress = address.ObservationAddress,
                 Street = address.Street,
                 ResidenceType = address.ResidenceType,
-                MonthlyAmmountResidence = address.MonthlyAmmountResidence
+                MonthlyAmmountResidence = (decimal) address.MonthlyAmmountResidence
             };
 
             return PartialView("Partials/_EditAddress", addressForm);
@@ -112,7 +112,7 @@ namespace LigaCancer.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? addressForm.MonthlyAmmountResidence : 0;
+                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double) addressForm.MonthlyAmmountResidence : 0;
                 address.Street = addressForm.Street;
                 address.UpdatedDate = DateTime.Now;
                 address.UserUpdated = await _userManager.GetUserAsync(User);
