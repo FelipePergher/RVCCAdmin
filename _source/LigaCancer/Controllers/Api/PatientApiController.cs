@@ -6,6 +6,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +20,13 @@ namespace LigaCancer.Controllers.Api
     {
         private readonly IDataStore<Patient> _patientService;
         private readonly IDataStore<FamilyMember> _familyMemberService;
+        private readonly ILogger<PatientApiController> _logger;
 
-        public PatientApiController(IDataStore<Patient> patientService, IDataStore<FamilyMember> familyMemberService)
+        public PatientApiController(IDataStore<Patient> patientService, IDataStore<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;
             _familyMemberService = familyMemberService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/patient/search")]
@@ -37,7 +41,8 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
                     new string[] { 
-                        "PatientInformation", "Naturality", "ActivePatient", "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                        "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
+                        "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
                         "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
                         "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
@@ -54,6 +59,8 @@ namespace LigaCancer.Controllers.Api
                     Cpf = x.CPF,
                     DateOfBirth = x.DateOfBirth.ToString(),
                     Sex = Globals.GetDisplayName(x.Sex),
+                    Phone = x.Phones.FirstOrDefault()?.Number,
+                    Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
                     CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
@@ -79,8 +86,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Patient Search Error", null);
                 return BadRequest();
             }
         }
@@ -161,6 +169,15 @@ namespace LigaCancer.Controllers.Api
         private double GetPerCapitaIncomeToSort(List<FamilyMember> familyMembers, double montlhyPatient)
         {
             return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)) : montlhyPatient;
+        }
+
+        private string GetAddressToTable(Address address)
+        {
+            string addressString = string.Empty;
+
+            if (address != null) addressString = $"{address.Street} {address.Neighborhood} {address.HouseNumber} {address.City}";
+
+            return addressString;
         }
 
         #endregion

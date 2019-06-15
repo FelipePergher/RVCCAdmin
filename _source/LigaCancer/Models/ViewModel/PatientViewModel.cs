@@ -14,6 +14,10 @@
 
         public string DateOfBirth { get; set; }
 
+        public string Phone { get; set; }
+
+        public string Address { get; set; }
+
         public string Sex { get; set; }
 
         public string CivilState { get; set; }

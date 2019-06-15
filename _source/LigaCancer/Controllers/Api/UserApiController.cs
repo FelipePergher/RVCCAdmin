@@ -4,6 +4,8 @@ using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +17,12 @@ namespace LigaCancer.Controllers.Api
     public class UserApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<UserApiController> _logger;
 
-        public UserApiController(UserManager<ApplicationUser> userManager)
+        public UserApiController(ILogger<UserApiController> logger, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpPost("~/api/user/search")]
@@ -52,8 +56,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "User Search Error", null);
                 return BadRequest();
             }
         }

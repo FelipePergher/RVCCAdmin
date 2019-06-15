@@ -2,26 +2,33 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class DoctorController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Doctor> _doctorService;
+        private readonly ILogger<DoctorController> _logger;
 
-        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager)
+        public DoctorController(
+            IDataStore<Doctor> doctorService,
+            ILogger<DoctorController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _doctorService = doctorService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -45,6 +52,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
                 
@@ -77,13 +85,15 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
             
             return PartialView("Partials/_EditDoctor", doctorForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -95,6 +105,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

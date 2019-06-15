@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,18 @@ namespace LigaCancer.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Presence> _presenceService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<PresenceController> _logger;
 
-        public PresenceController(IDataStore<Presence> presenceService, IDataStore<Patient> patientService, UserManager<ApplicationUser> userManager)
+        public PresenceController(
+            IDataStore<Presence> presenceService,
+            IDataStore<Patient> patientService,
+            ILogger<PresenceController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _presenceService = presenceService;
             _patientService = patientService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -66,6 +73,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _presenceService.CreateAsync(presence);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -107,6 +115,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -127,6 +136,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

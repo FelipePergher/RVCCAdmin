@@ -5,26 +5,34 @@ using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Models.FormModel;
 using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Phone> _phoneService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<PhoneController> _logger;
 
-        public PhoneController(IDataStore<Phone> phoneService, UserManager<ApplicationUser> userManager, IDataStore<Patient> patientService)
+        public PhoneController(
+            IDataStore<Phone> phoneService,
+            IDataStore<Patient> patientService,
+            ILogger<PhoneController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _phoneService = phoneService;
             _userManager = userManager;
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -55,6 +63,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _phoneService.CreateAsync(phone);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -93,13 +102,15 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
             return PartialView("Partials/_EditPhone", phoneForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePhone(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -111,6 +122,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _phoneService.DeleteAsync(phone);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

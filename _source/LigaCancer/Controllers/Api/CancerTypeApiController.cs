@@ -5,6 +5,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace LigaCancer.Controllers.Api
     public class CancerTypeApiController : Controller
     {
         private readonly IDataStore<CancerType> _cancerTypeService;
+        private readonly ILogger<CancerTypeApiController> _logger;
 
-        public CancerTypeApiController(IDataStore<CancerType> cancerTypeService)
+        public CancerTypeApiController(IDataStore<CancerType> cancerTypeService, ILogger<CancerTypeApiController> logger)
         {
             _cancerTypeService = cancerTypeService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/CancerType/search")]
@@ -44,8 +48,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Cancer Type Search Error", null);
                 return BadRequest();
             }
         }

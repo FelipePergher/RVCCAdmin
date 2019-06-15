@@ -72,33 +72,20 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null)
+        public Task<Patient> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Patient> query = _context.Patients;
 
-            if (specification != null)
-            {
-                if (specification.Includes.Any())
-                {
-                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
-                }
-                if (specification.IncludeStrings.Any())
-                {
-                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
         }
 
-        public Task<List<Patient>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Patient>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Patient> query = _context.Patients;
 
-            if (include != null)
-            {
-                query = include.Aggregate(query, (current, inc) => current.Include(inc));
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPatients(query, sortColumn, sortDirection);
             if (filter != null) query = GetFilteredPatients(query, (PatientSearchModel)filter);

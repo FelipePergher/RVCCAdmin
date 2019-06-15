@@ -4,6 +4,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +17,12 @@ namespace LigaCancer.Controllers.Api
     public class FileAttachmentApiController : Controller 
     {
         private readonly IDataStore<FileAttachment> _fileAttachmentService;
+        private readonly ILogger<FileAttachmentApiController> _logger;
 
-        public FileAttachmentApiController(IDataStore<FileAttachment> fileAttachmentService)
+        public FileAttachmentApiController(IDataStore<FileAttachment> fileAttachmentService, ILogger<FileAttachmentApiController> logger)
         {
             _fileAttachmentService = fileAttachmentService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/FileAttachment/search")]
@@ -41,8 +45,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { data });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "File Attachment Search Error", null);
                 return BadRequest();
             }
         }

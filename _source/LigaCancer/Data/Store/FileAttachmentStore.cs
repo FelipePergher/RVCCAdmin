@@ -72,39 +72,24 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null)
+        public Task<FileAttachment> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
-            if (specification != null)
-            {
-                if (specification.Includes.Any())
-                {
-                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
-                }
-                if (specification.IncludeStrings.Any())
-                {
-                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
         }
 
-        public Task<List<FileAttachment>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<FileAttachment>> GetAllAsync(string[] includes = null,
+            string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
-            if (include != null)
-            {
-                query = include.Aggregate(query, (current, inc) => current.Include(inc));
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             var fileAttachmentSearch = (FileAttachmentSearchModel) filter;
-            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId))
-            {
-                query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
-            }
+            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
 
             return Task.FromResult(query.ToList());
         }

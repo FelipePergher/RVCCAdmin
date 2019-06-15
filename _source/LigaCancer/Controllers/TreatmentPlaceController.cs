@@ -2,27 +2,34 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class TreatmentPlaceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
+        private readonly ILogger<TreatmentPlaceController> _logger;
 
-        public TreatmentPlaceController(IDataStore<TreatmentPlace> treatmentPlaceService, UserManager<ApplicationUser> userManager)
+        public TreatmentPlaceController(
+            IDataStore<TreatmentPlace> treatmentPlaceService,
+            ILogger<TreatmentPlaceController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _treatmentPlaceService = treatmentPlaceService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -46,6 +53,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -83,13 +91,15 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
             return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteTreatmentPlace(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -102,6 +112,7 @@ namespace LigaCancer.Controllers
 
             if (result.Succeeded) return Ok();
 
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
         }
 

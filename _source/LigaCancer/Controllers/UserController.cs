@@ -3,22 +3,26 @@ using LigaCancer.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<UserController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -54,6 +58,7 @@ namespace LigaCancer.Controllers
                     if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     return Ok();
                 }
+                _logger.LogError(result.Errors.FirstOrDefault().Description);
                 return BadRequest();
             }
 
@@ -106,12 +111,14 @@ namespace LigaCancer.Controllers
 
                     return Ok();
                 }
+                _logger.LogError(result.Errors.FirstOrDefault().Description);
             }
 
             return PartialView("Partials/_EditUser", userForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -123,6 +130,7 @@ namespace LigaCancer.Controllers
             IdentityResult result = await _userManager.DeleteAsync(applicationUser);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(result.Errors.FirstOrDefault().Description);
             return BadRequest();
         }
     }

@@ -5,6 +5,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace LigaCancer.Controllers.Api
     public class AddressApiController : Controller
     {
         private readonly IDataStore<Address> _addressService;
+        private readonly ILogger<AddressApiController> _logger;
 
-        public AddressApiController(IDataStore<Address> addressService)
+        public AddressApiController(IDataStore<Address> addressService, ILogger<AddressApiController> logger)
         {
             _addressService = addressService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/address/search")]
@@ -50,8 +54,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Address Search Error", null);
                 return BadRequest();
             }
         }

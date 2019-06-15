@@ -6,6 +6,8 @@ using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +20,13 @@ namespace LigaCancer.Controllers.Api
     {
         private readonly IDataStore<FamilyMember> _familyMemberService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<FamilyMemberApiController> _logger;
 
-        public FamilyMemberApiController(IDataStore<FamilyMember> familyMemberService, IDataStore<Patient> patientService)
+        public FamilyMemberApiController(IDataStore<FamilyMember> familyMemberService, IDataStore<Patient> patientService, ILogger<FamilyMemberApiController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpPost("~/api/familyMember/search")]
@@ -54,8 +58,9 @@ namespace LigaCancer.Controllers.Api
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal, perCapitaIncome, familyIncome, monthlyIncome = patient.MonthlyIncome.ToString("C2") });
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, "Family Member Search Error", null);
                 return BadRequest();
             }
         }

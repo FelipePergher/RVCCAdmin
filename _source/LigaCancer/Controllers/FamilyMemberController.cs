@@ -2,30 +2,37 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin"), AutoValidateAntiforgeryToken]
+    [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class FamilyMemberController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<FamilyMember> _familyMemberService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<FamilyMemberController> _logger;
 
-        public FamilyMemberController(IDataStore<FamilyMember> familyMemberService, UserManager<ApplicationUser> userManager, IDataStore<Patient> patientService)
+        public FamilyMemberController(
+            IDataStore<FamilyMember> familyMemberService,
+            IDataStore<Patient> patientService,
+            ILogger<FamilyMemberController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _familyMemberService = familyMemberService;
             _userManager = userManager;
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -65,6 +72,7 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
 
@@ -108,12 +116,14 @@ namespace LigaCancer.Controllers
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 
                 if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
             return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
 
-        [HttpPost, IgnoreAntiforgeryToken]
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
@@ -125,6 +135,7 @@ namespace LigaCancer.Controllers
             TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
 
             if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
 

@@ -9,9 +9,9 @@ let dropzoneConfiguration = {
     acceptedFiles: "image/*,application/pdf",
     dictDefaultMessage: "Arraste seus arquivos aqui para upload.",
     dictFallbackMessage: "Seu navegador não tem suporte para arrastar e upload.",
-    dictFileTooBig: "O arquivo é muito grande ({{filesize}}MiB). Tamanho máximo: {{maxFilesize}}MiB.",
+    dictFileTooBig: "O arquivo é muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
     dictInvalidFileType: "Você não pode fazer upload de arquivos deste tipo.",
-    dictResponseError: "Servidor respondu com status de {{statusCode}}.",
+    dictResponseError: "Servidor respondeu com status de {{statusCode}}.",
     dictCancelUpload: "Cancelar upload",
     dictCancelUploadConfirmation: "Você têm certeza que quer cancelar este upload?",
     dictRemoveFile: "Remover arquivo",
@@ -85,6 +85,8 @@ function initPage() {
             { data: "cpf", title: "CPF", name: "CPF" },
             { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return dateFormat(row.dateOfBirth); } },
             { data: "sex", title: "Gênero", name: "Sex" },
+            { data: "phone", title: "Telefone", name: "Phone" },
+            { data: "address", title: "Endereço", name: "Address" },
             { data: "civilState", title: "Estado Civil", name: "CivilState" },
             { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
             { data: "profession", title: "Profissão", name: "Profession" },
@@ -356,6 +358,7 @@ function addPhoneSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         phoneTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Telefone adicionado com sucesso.", "success");
     }
     else {
@@ -374,6 +377,7 @@ function editPhoneSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         phoneTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Telefone atualizado com sucesso.", "success");
     }
     else {
@@ -397,6 +401,7 @@ function initDeletePhone(url, id) {
             $.post(url, { id: id })
                 .done(function (data, textStatus) {
                     phoneTable.ajax.reload(null, false);
+                    patientTable.ajax.reload(null, false);
                     swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
                 }).fail(function (error) {
                     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
@@ -487,6 +492,7 @@ function addAddressSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         addressTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Endereço adicionado com sucesso.", "success");
     }
     else {
@@ -509,6 +515,7 @@ function editAddressSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         addressTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Endereço atualizado com sucesso.", "success");
     }
     else {
@@ -531,6 +538,7 @@ function initDeleteAddress(url, id) {
             $.post(url, { id: id })
                 .done(function (data, textStatus) {
                     addressTable.ajax.reload(null, false);
+                    patientTable.ajax.reload(null, false);
                     swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
                 }).fail(function (error) {
                     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");

@@ -71,26 +71,16 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Naturality> FindByIdAsync(string id, ISpecification<Naturality> specification = null)
+        public Task<Naturality> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Naturality> query = _context.Naturalities;
 
-            if(specification != null)
-            {
-                if (specification.Includes.Any())
-                {
-                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
-                }
-                if (specification.IncludeStrings.Any())
-                {
-                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             return Task.FromResult(query.FirstOrDefault(x => x.NaturalityId == int.Parse(id)));
         }
 
-        public Task<List<Naturality>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Naturality>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             throw new NotImplementedException();
         }

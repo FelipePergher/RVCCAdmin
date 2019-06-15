@@ -72,33 +72,20 @@ namespace LigaCancer.Data.Store
            _context?.Dispose();
         }
 
-        public Task<Presence> FindByIdAsync(string id, ISpecification<Presence> specification = null)
+        public Task<Presence> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Presence> query = _context.Presences;
 
-            if (specification != null)
-            {
-                if (specification.Includes.Any())
-                {
-                    query = specification.Includes.Aggregate(query, (current, inc) => current.Include(inc));
-                }
-                if (specification.IncludeStrings.Any())
-                {
-                    query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             return Task.FromResult(query.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
 
-        public Task<List<Presence>> GetAllAsync(string[] include = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Presence>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Presence> query = _context.Presences;
 
-            if (include != null)
-            {
-                query = include.Aggregate(query, (current, inc) => current.Include(inc));
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPresences(query, sortColumn, sortDirection);
             if (filter != null) query = GetFilteredPresences(query, (PresenceSearchModel) filter);
