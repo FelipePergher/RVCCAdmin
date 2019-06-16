@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
     [AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {

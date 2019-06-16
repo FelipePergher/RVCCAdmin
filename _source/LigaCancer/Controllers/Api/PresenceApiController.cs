@@ -12,18 +12,16 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
     [ApiController]
     public class PresenceApiController : Controller
     {
         private readonly IDataStore<Presence> _presenceService;
-        private readonly IDataStore<Patient> _patientService;
         private readonly ILogger<PresenceApiController> _logger;
 
-        public PresenceApiController(IDataStore<Presence> presenceService, IDataStore<Patient> patientService, ILogger<PresenceApiController> logger)
+        public PresenceApiController(IDataStore<Presence> presenceService, ILogger<PresenceApiController> logger)
         {
             _presenceService = presenceService;
-            _patientService = patientService;
             _logger = logger;
         }
 

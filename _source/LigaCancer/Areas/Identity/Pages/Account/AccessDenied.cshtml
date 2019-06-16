@@ -1,0 +1,22 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Acesso negado";
+}
+
+<main class="main">
+    <div class="container-fluid" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <div class="row justify-content-center" style="width: 50%;">
+            <div class="col-md-6">
+                <div class="clearfix">
+                    <h1 class="text-danger">@ViewData["Title"]</h1>
+                    <p class="text-danger">Você não têm acesso a este recurso.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -54,7 +54,7 @@ function calendar(id) {
         format: "dd/mm/yyyy",
         iconsLibrary: "fontawesome",
         locale: "pt-br",
-        uiLibrary: "bootstrap4",
+        uiLibrary: "bootstrap4"
     });
 }
 
@@ -142,3 +142,21 @@ function dateFormat(dateOfBirth) {
     if (dateString.toLowerCase().includes("invalid")) dateString = "";
     return dateString;
 }
+
+//Configure to add error class to input when have error
+$(function () {
+    $.validator.setDefaults({
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+            element.prop('type') === 'checkbox' ? error.insertAfter(element.parent('label')) : error.insertAfter(element);
+        }
+    });
+});

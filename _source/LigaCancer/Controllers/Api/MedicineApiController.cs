@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
     [ApiController]
     public class MedicineApiController : Controller
     {

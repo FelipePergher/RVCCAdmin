@@ -4,10 +4,12 @@ using LigaCancer.Data;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Data.Store;
+using LigaCancer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,9 +63,27 @@ namespace LigaCancer
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddMvc().AddJsonOptions(
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<IEmailSender, EmailSender>(i =>
+               new EmailSender(
+                   Configuration["EmailSender:Host"],
+                   Configuration.GetValue<int>("EmailSender:Port"),
+                   Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                   Configuration["EmailSender:UserName"],
+                   Configuration["EmailSender:Password"],
+                   Configuration["EmailSender:EmailFrom"]
+               ));
 
             services.AddLogging();
             
