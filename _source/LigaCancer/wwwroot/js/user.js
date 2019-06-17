@@ -42,6 +42,8 @@ let userTable = $("#userTable").DataTable({
         { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
         { data: "name", title: "Nome", name: "Name" },
         { data: "email", title: "Email", name: "Email" },
+        { data: "confirmedEmail", title: "Email confirmado", name: "ConfirmedEmail" },
+        { data: "lockout", title: "Conta bloqueada", name: "Lockout" },
         { data: "role", title: "Regra", name: "Role" }
     ],
     drawCallback: function (settings) {
@@ -51,6 +53,10 @@ let userTable = $("#userTable").DataTable({
 
         $(".deleteUserButton").click(function (e) {
             initDelete($(this).data("url"), $(this).data("id"));
+        });
+
+        $(".unlockUserButton").click(function (e) {
+            initUnlock($(this).data("url"), $(this).data("id"));
         });
     }
 });
@@ -122,6 +128,28 @@ function initDelete(url, id) {
                 .done(function (data, textStatus) {
                     userTable.ajax.reload(null, false);
                     swalWithBootstrapButtons.fire("Removido!", "Usuário removido com sucesso.", "success");
+                }).fail(function (error) {
+                    swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                });
+        }
+    });
+}
+
+function initUnlock(url, id) {
+    swalWithBootstrapButtons({
+        title: 'Você têm certeza?',
+        text: "A conta será desbloqueada!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        showLoaderOnConfirm: true,
+        reverseButtons: true,
+        preConfirm: () => {
+            $.post(url, { id: id })
+                .done(function (data, textStatus) {
+                    userTable.ajax.reload(null, false);
+                    swalWithBootstrapButtons.fire("Desbloqueado!", "Usuário desbloqueado com sucesso.", "success");
                 }).fail(function (error) {
                     swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 });

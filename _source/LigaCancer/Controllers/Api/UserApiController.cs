@@ -44,6 +44,8 @@ namespace LigaCancer.Controllers.Api
                     UserId = x.Id,
                     Name = x.Name,
                     Email = x.Email,
+                    ConfirmedEmail = _userManager.IsEmailConfirmedAsync(x).Result ? "<span class='fa fa-check'></span>" : "",
+                    Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : "",
                     Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "Admin" ? "Administrador" : "Usuário",
                     Actions = GetActionsHtml(x)
                 });
@@ -82,11 +84,19 @@ namespace LigaCancer.Controllers.Api
             string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
                 $" class='dropdown-item deleteUserButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
+            string unlockAccount = string.Empty;
+            if (user.LockoutEnd != null)
+            {
+                unlockAccount = $"<a href='javascript:void(0);' data-url='/User/UnlockUser' data-id='{user.Id}' " +
+                $" class='dropdown-item unlockUserButton'><i class='fas fa-unlock'></i> Desbloquear </a>";
+            }
+
             string actionsHtml =
                 $"<div class='dropdown'>" +
                 $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 $"  <div class='dropdown-menu'>" +
                 $"      {editUser}" +
+                $"      {unlockAccount}" +
                 $"      {deleteUser}" +
                 $"  </div>" +
                 $"</div>";
@@ -102,6 +112,10 @@ namespace LigaCancer.Controllers.Api
                     return sortDirection == "asc" ? query.OrderBy(x => x.Name).ToList() : query.OrderByDescending(x => x.Name).ToList();
                 case "Email":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Email).ToList() : query.OrderByDescending(x => x.Email).ToList();
+                case "ConfirmedEmail":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ConfirmedEmail).ToList() : query.OrderByDescending(x => x.ConfirmedEmail).ToList();
+                case "Lockout":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Lockout).ToList() : query.OrderByDescending(x => x.Lockout).ToList();
                 case "Role":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Role).ToList() : query.OrderByDescending(x => x.Role).ToList();
                 default:

@@ -72,6 +72,7 @@ namespace LigaCancer.Areas.Identity.Pages.Account
             var result = await _userManager.ResetPasswordAsync(user, ResetPassword.Code, ResetPassword.Password);
             if (result.Succeeded)
             {
+                await _userManager.SetLockoutEndDateAsync(user, null);
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
