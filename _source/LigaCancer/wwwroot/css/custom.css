@@ -53,3 +53,8 @@
 .select2-search__field{
     width: 100% !important;
 }
+
+.field-readonly {
+    background-color: transparent !important;
+    border-color: #e4e7ea;
+}
