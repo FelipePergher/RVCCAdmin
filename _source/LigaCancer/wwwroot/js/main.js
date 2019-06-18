@@ -78,18 +78,12 @@ function openModal(url, title, callback = null) {
     $("#modal-title").text(title);
 
     $("#modalBody").load(url, function () {
-        $(document).off('focusin.modal');
-
         if (callback !== null) callback();
         hideSpinnerModal();
     });
 
     $("#modal-action").on("hidden.bs.modal", function (e) {
         cleanModal();
-    });
-
-    $('#modal-action').on('shown.bs.modal', function () {
-        $(document).off('focusin.modal');
     });
 }
 

@@ -72,7 +72,6 @@ function initPage() {
 
 function initAddForm() {
     $.validator.unobtrusive.parse("#addDoctorForm");
-    $("#Name").focus();
 }
 
 function addSuccess(data, textStatus) {
