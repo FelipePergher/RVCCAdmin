@@ -54,7 +54,7 @@
     width: 100% !important;
 }
 
-.field-readonly {
+.dateField {
     background-color: transparent !important;
     border-color: #e4e7ea;
 }
