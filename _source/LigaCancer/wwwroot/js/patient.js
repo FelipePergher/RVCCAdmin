@@ -53,7 +53,6 @@ function initPage() {
         language: language,
         filter: false,
         scrollX: true,
-        scrollY: '450px',
         ajax: {
             url: "/api/patient/search",
             type: "POST",
