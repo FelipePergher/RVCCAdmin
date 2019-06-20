@@ -1,8 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class PatientStore : IDataStore<Patient>, IDataTable<Patient>
+    public class PatientStore : IDataStore<Patient>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public PatientStore(ApplicationDbContext context)
         {
@@ -25,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.Patients.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Patient model)
+        public Task<TaskResult> CreateAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Patients.Add(model);
+                _context.Patients.Add(patient);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,16 +46,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Patient model)
+        public Task<TaskResult> DeleteAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Patient patient = _context.Patients.FirstOrDefault(b => b.PatientId == model.PatientId);
-                patient.IsDeleted = true;
-                patient.DeletedDate = DateTime.Now;
-                _context.Update(patient);
-
+                _context.Patients.Remove(patient);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -77,38 +72,28 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Patient> FindByIdAsync(string id, ISpecification<Patient> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<Patient> queryable = _context.Patients;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.PatientId == int.Parse(id)));
-        }
-
-        public Task<List<Patient>> GetAllAsync(string[] include = null)
+        public Task<Patient> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Patient> query = _context.Patients;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
+        }
+
+        public Task<List<Patient>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<Patient> query = _context.Patients;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPatients(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredPatients(query, (PatientSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Patient model)
+        public Task<TaskResult> UpdateAsync(Patient patient)
         {
             TaskResult result = new TaskResult();
             try
@@ -128,177 +113,92 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        //DataTable Methods
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Patient> specification)
-        {
-            var data = await _context.Set<Patient>()
-                            .IncludeExpressions(specification.Includes)
-                            .IncludeWheres(specification.Wheres)
-                            .IncludeByNames(specification.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponseWithSpecIgnoreQueryFilter(DataTableOptions options, ISpecification<Patient> specification)
-        {
-            var data = await _context.Set<Patient>()
-                            .IncludeExpressions(specification.Includes)
-                            .IncludeWheres(specification.Wheres)
-                            .IncludeByNames(specification.IncludeStrings)
-                            .IgnoreQueryFilters()
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Patient>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
-        public Task<Patient> FindByCpfAsync(string Cpf, int PatientId)
+        public Task<Patient> FindByCpfAsync(string cpf, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.CPF == Cpf && x.PatientId != PatientId);
+            Patient patient = _context.Patients.FirstOrDefault(x => x.CPF == cpf && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 
-        public Task<Patient> FindByRgAsync(string Rg, int PatientId)
+        public Task<Patient> FindByRgAsync(string rg, int patientId)
         {
-            Patient patient = _context.Patients.IgnoreQueryFilters().FirstOrDefault(x => x.RG == Rg && x.PatientId != PatientId);
+            Patient patient = _context.Patients.FirstOrDefault(x => x.RG == rg && x.PatientId != patientId);
             return Task.FromResult(patient);
         }
 
-        public TaskResult ActivePatient(Patient patient)
+        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double montlhyPatient)
         {
-            TaskResult result = new TaskResult();
-            try
-            {
-                patient.IsDeleted = false;
-                patient.DeletedDate = DateTime.MinValue;
-                _context.Update(patient);
-
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-            }
-
-            return result;
+            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)).ToString("C2") : montlhyPatient.ToString("C2");
         }
 
-        public async Task<TaskResult> AddPhone(Phone phone, string patientId)
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<Patient> GetOrdenationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
         {
-            TaskResult result = new TaskResult();
-
-            try
+            switch (sortColumn)
             {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.Phones.Add(phone);
-                _context.SaveChanges();
-                result.Succeeded = true;
+                case "FirstName":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
+                case "LastName":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Surname) : query.OrderByDescending(x => x.Surname);
+                case "RG":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.RG) : query.OrderByDescending(x => x.RG);
+                case "CPF":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF);
+                case "DateOfBirth":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
+                case "Sex":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
+                case "CivilState":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.CivilState) : query.OrderByDescending(x => x.CivilState);
+                case "FamiliarityGroup":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FamiliarityGroup) : query.OrderByDescending(x => x.FamiliarityGroup);
+                case "Profession":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Profession) : query.OrderByDescending(x => x.Profession);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
             }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
         }
 
-        public async Task<TaskResult> AddAddress(Address address, string patientId)
+        private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, PatientSearchModel patientSearch)
         {
-            TaskResult result = new TaskResult();
+            if (!string.IsNullOrEmpty(patientSearch.Name)) query = query.Where(x => x.FirstName.Contains(patientSearch.Name));
+            if (!string.IsNullOrEmpty(patientSearch.Surname)) query = query.Where(x => x.Surname.Contains(patientSearch.Surname));
+            if (!string.IsNullOrEmpty(patientSearch.Rg)) query = query.Where(x => x.RG.Contains(patientSearch.Rg));
+            if (!string.IsNullOrEmpty(patientSearch.Cpf)) query = query.Where(x => x.CPF.Contains(patientSearch.Cpf));
 
-            try
+            if (!string.IsNullOrEmpty(patientSearch.CivilState)) query = query.Where(x => x.CivilState == (Globals.CivilState)int.Parse(patientSearch.CivilState));
+            if (!string.IsNullOrEmpty(patientSearch.Sex)) query = query.Where(x => x.Sex == (Globals.Sex)int.Parse(patientSearch.Sex));
+            if (!string.IsNullOrEmpty(patientSearch.FamiliarityGroup)) query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
+
+            if (patientSearch.Death) query = query.Where(x => x.ActivePatient.Death);
+            else if (patientSearch.Discharge) query = query.Where(x => x.ActivePatient.Discharge);
+            else query = query.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death);
+
+            foreach (string item in patientSearch.CancerTypes)
             {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.Addresses.Add(address);
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
-            }
-
-            return result;
-        }
-
-        public async Task<TaskResult> AddFamilyMember(FamilyMember familyMember, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
-            {
-                BaseSpecification<Patient> specification = new BaseSpecification<Patient>(x => x.Family, x => x.Family.FamilyMembers);
-                Patient patient = await FindByIdAsync(patientId, specification);
-                if (patient.Family == null)
-                {
-                    patient.Family = new Family();
-                }
-                patient.Family.FamilyIncome += familyMember.MonthlyIncome;
-                patient.Family.FamilyMembers.Add(familyMember);
-
-                patient.Family.PerCapitaIncome = patient.Family.FamilyIncome / (patient.Family.FamilyMembers.Count() + 1);
-
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
+                query = query.Where(x => x.PatientInformation.PatientInformationCancerTypes.FirstOrDefault(y => y.CancerTypeId == int.Parse(item)) != null);
             }
 
-            return result;
-        }
-
-        public async Task<TaskResult> AddFileAttachment(FileAttachment fileAttachment, string patientId)
-        {
-            TaskResult result = new TaskResult();
-
-            try
+            foreach (string item in patientSearch.TreatmentPlaces)
             {
-                Patient patient = await FindByIdAsync(patientId);
-                patient.FileAttachments.Add(fileAttachment);
-
-                _context.SaveChanges();
-                result.Succeeded = true;
-            }
-            catch (Exception e)
-            {
-                result.Errors.Add(new TaskError
-                {
-                    Code = e.HResult.ToString(),
-                    Description = e.Message
-                });
-
+                query = query.Where(x => x.PatientInformation.PatientInformationTreatmentPlaces.FirstOrDefault(y => y.TreatmentPlaceId == int.Parse(item)) != null);
             }
 
-            return result;
+            foreach (string item in patientSearch.Doctors)
+            {
+                query = query.Where(x => x.PatientInformation.PatientInformationDoctors.FirstOrDefault(y => y.DoctorId == int.Parse(item)) != null);
+            }
+
+            foreach (string item in patientSearch.Medicines)
+            {
+                query = query.Where(x => x.PatientInformation.PatientInformationMedicines.FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
+            }
+
+            return query;
         }
 
         #endregion

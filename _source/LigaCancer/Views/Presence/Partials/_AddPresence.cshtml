@@ -1,0 +1,38 @@
+﻿@model LigaCancer.Models.FormModel.PresenceFormModel
+
+<form id="addPresenceForm" asp-action="AddPresence"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="addSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label asp-for="PatientId" class="control-label label-required"></label>
+            <select asp-for="PatientId" asp-items="Model.Patients" class="select2 form-control" 
+                    data-theme="bootstrap" 
+                    data-language="pt-BR" 
+                    data-placeholder="Paciente" 
+                    data-allow-clear="true">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date" class="control-label label-required"></label>
+            <input asp-for="Date" readonly type="text" class="form-control dateField"/>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Time" class="control-label label-required"></label>
+            <input asp-for="Time" readonly type="text" class="form-control dateField"/>
+            <span asp-validation-for="Time" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <partial name="_ModalFooter"  />
+
+</form>

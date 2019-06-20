@@ -1,8 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class DoctorStore : IDataStore<Doctor>, IDataTable<Doctor>
+    public class DoctorStore : IDataStore<Doctor>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public DoctorStore(ApplicationDbContext context)
         {
@@ -25,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.Doctors.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Doctor model)
+        public Task<TaskResult> CreateAsync(Doctor doctor)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Doctors.Add(model);
+                _context.Doctors.Add(doctor);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,26 +46,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Doctor model)
+        public Task<TaskResult> DeleteAsync(Doctor doctor)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Doctor doctor = _context.Doctors.Include(x => x.PatientInformationDoctors).FirstOrDefault(b => b.DoctorId == model.DoctorId);
-                if (doctor.PatientInformationDoctors.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este médico"
-                    });
-                    return Task.FromResult(result);
-                }
-                doctor.IsDeleted = true;
-                doctor.DeletedDate = DateTime.Now;
-                doctor.CRM = DateTime.Now + "||" + doctor.CRM;
-                _context.Update(doctor);
-
+                _context.Doctors.Remove(doctor);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -87,33 +72,23 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Doctor> FindByIdAsync(string id, ISpecification<Doctor> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<Doctor> queryable = _context.Doctors;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
-        }
-
-        public Task<List<Doctor>> GetAllAsync(string[] include = null)
+        public Task<Doctor> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Doctor> query = _context.Doctors;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
+        }
+
+        public Task<List<Doctor>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<Doctor> query = _context.Doctors;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationDoctor(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredDoctors(query, (DoctorSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -138,39 +113,42 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Doctor> spec)
-        {
-            var data = await _context.Set<Doctor>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Doctor>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
-        public Task<Doctor> FindByCRMAsync(string crm, int DoctorId)
+        public Task<Doctor> FindByCrmAsync(string crm, int doctorId)
         {
-            Doctor doctor = _context.Doctors.IgnoreQueryFilters().FirstOrDefault(x => x.CRM == crm && x.DoctorId != DoctorId);
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.CRM == crm && x.DoctorId != doctorId);
             return Task.FromResult(doctor);
         }
 
-        public Task<Doctor> FindByNameAsync(string Name)
+        public Task<Doctor> FindByNameAsync(string name)
         {
-            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == Name);
-            if (doctor != null && doctor.IsDeleted)
-            {
-                doctor.IsDeleted = false;
-                doctor.LastUpdatedDate = DateTime.Now;
-            }
+            Doctor doctor = _context.Doctors.FirstOrDefault(x => x.Name == name);
             return Task.FromResult(doctor);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<Doctor> GetOrdenationDoctor(IQueryable<Doctor> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                case "CRM":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.CRM) : query.OrderByDescending(x => x.CRM);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+            }
+        }
+
+        private IQueryable<Doctor> GetFilteredDoctors(IQueryable<Doctor> query, DoctorSearchModel doctorSearch)
+        {
+            if (!string.IsNullOrEmpty(doctorSearch.Name)) query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+            if (!string.IsNullOrEmpty(doctorSearch.CRM)) query = query.Where(x => x.CRM.Contains(doctorSearch.CRM));
+            return query;
         }
 
         #endregion

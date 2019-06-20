@@ -1,0 +1,17 @@
+﻿@model LigaCancer.Models.FormModel.MedicineFormModel
+
+<form id="editMedicineForm" asp-action="EditMedicine"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="editSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <div class="modal-body">
+        <partial name="Partials/_FormMedicine" />
+    </div>
+
+    <partial name="_ModalFooter" />
+
+</form>

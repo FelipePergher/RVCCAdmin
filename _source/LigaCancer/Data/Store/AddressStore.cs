@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace LigaCancer.Data.Store
 {
     public class AddressStore : IDataStore<Address>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public AddressStore(ApplicationDbContext context)
         {
@@ -23,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.Addresses.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Address model)
+        public Task<TaskResult> CreateAsync(Address address)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Addresses.Add(model);
+                _context.Addresses.Add(address);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -45,16 +46,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Address model)
+        public Task<TaskResult> DeleteAsync(Address address)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Address address = _context.Addresses.FirstOrDefault(b => b.AddressId == model.AddressId);
-                address.IsDeleted = true;
-                address.DeletedDate = DateTime.Now;
-                _context.Update(address);
-
+                _context.Addresses.Remove(address);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -75,33 +72,23 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Address> FindByIdAsync(string id, ISpecification<Address> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<Address> queryable = _context.Addresses;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.AddressId == int.Parse(id)));
-        }
-
-        public Task<List<Address>> GetAllAsync(string[] include = null)
+        public Task<Address> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Address> query = _context.Addresses;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.AddressId == int.Parse(id)));
+        }
+
+        public Task<List<Address>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<Address> query = _context.Addresses;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationAddresses(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredAddresses(query, (AddressSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -126,5 +113,39 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
+        #region Private Methods
+
+        private IQueryable<Address> GetOrdenationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Street":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
+                case "Neighborhood":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Neighborhood) : query.OrderByDescending(x => x.Neighborhood);
+                case "City":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
+                case "HouseNumber":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.HouseNumber) : query.OrderByDescending(x => x.HouseNumber);
+                case "Complement":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Complement) : query.OrderByDescending(x => x.Complement);
+                case "ResidenceType":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ResidenceType) : query.OrderByDescending(x => x.ResidenceType);
+                case "MonthlyAmmountResidence":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyAmmountResidence) : query.OrderByDescending(x => x.MonthlyAmmountResidence);
+                case "ObservationAddress":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationAddress) : query.OrderByDescending(x => x.ObservationAddress);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
+            }
+        }
+
+        private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
+        {
+            if (!string.IsNullOrEmpty(addressSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(addressSearch.PatientId));
+            return query;
+        }
+
+        #endregion
     }
 }

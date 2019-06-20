@@ -1,156 +1,129 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
-using LigaCancer.Code;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Phone> _phoneService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<PhoneController> _logger;
 
-        public PhoneController(IDataStore<Phone> phoneService, UserManager<ApplicationUser> userManager, IDataStore<Patient> patientService)
+        public PhoneController(
+            IDataStore<Phone> phoneService,
+            IDataStore<Patient> patientService,
+            ILogger<PhoneController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _phoneService = phoneService;
             _userManager = userManager;
             _patientService = patientService;
+            _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult Index(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_Index", new PhoneSearchModel(id));
+        }
 
         [HttpGet]
         public IActionResult AddPhone(string id)
         {
-            PhoneViewModel phoneViewModel = new PhoneViewModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddPhone", phoneViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_AddPhone", new PhoneFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhone(PhoneViewModel model)
+        public async Task<IActionResult> AddPhone(string id, PhoneFormModel phoneForm)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                if (await _patientService.FindByIdAsync(id) == null) return NotFound();
 
-                TaskResult result = await ((PatientStore)_patientService).AddPhone(
-                    new Phone
-                    {
-                        Number = model.Number,
-                        PhoneType = model.PhoneType,
-                        ObservationNote = model.ObservationNote,
-                        UserCreated = user
-                    }, model.PatientId);
+                Phone phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
 
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "phone");
-                }
-                ModelState.AddErrors(result);
+                TaskResult result = await _phoneService.CreateAsync(phone);
+
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
 
-            return PartialView("_AddPhone", model);
+            return PartialView("Partials/_AddPhone", phoneForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditPhone(string id)
         {
-            PhoneViewModel phoneViewModel = new PhoneViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (!string.IsNullOrEmpty(id))
+            Phone phone = await _phoneService.FindByIdAsync(id);
+
+            if (phone == null) return NotFound();
+
+            return PartialView("Partials/_EditPhone", new PhoneFormModel
             {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
-                {
-                    phoneViewModel = new PhoneViewModel
-                    {
-                        Number = phone.Number,
-                        PhoneType = phone.PhoneType,
-                        ObservationNote = phone.ObservationNote
-                    };
-                }
-            }
-
-            return PartialView("_EditPhone", phoneViewModel);
+                Number = phone.Number,
+                PhoneType = phone.PhoneType,
+                ObservationNote = phone.ObservationNote
+            });
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPhone(string id, PhoneViewModel model)
+        public async Task<IActionResult> EditPhone(string id, PhoneFormModel phoneForm)
         {
             if (ModelState.IsValid)
             {
                 Phone phone = await _phoneService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                phone.Number = model.Number;
-                phone.PhoneType = model.PhoneType;
-                phone.ObservationNote = model.ObservationNote;
-                phone.LastUpdatedDate = DateTime.Now;
-                phone.LastUserUpdate = user;
+                phone.Number = phoneForm.Number;
+                phone.PhoneType = phoneForm.PhoneType;
+                phone.ObservationNote = phoneForm.ObservationNote;
+                phone.UpdatedDate = DateTime.Now;
+                phone.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "phone");
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
 
-            return PartialView("_EditPhone", model);
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> DeletePhone(string id)
-        {
-            string number = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
-                {
-                    number = phone.Number;
-                }
-            }
-
-            return PartialView("_DeletePhone", number);
+            return PartialView("Partials/_EditPhone", phoneForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePhone(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeletePhone(string id)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Phone phone = await _phoneService.FindByIdAsync(id);
-                if (phone != null)
-                {
-                    TaskResult result = await _phoneService.DeleteAsync(phone);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "phone");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeletePhone", phone.Number);
-                }
-            }
-            return RedirectToAction("Index");
+            Phone phone = await _phoneService.FindByIdAsync(id);
+
+            if (phone == null) return NotFound();
+
+            TaskResult result = await _phoneService.DeleteAsync(phone);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
 
     }

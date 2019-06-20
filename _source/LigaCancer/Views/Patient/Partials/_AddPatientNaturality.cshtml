@@ -1,0 +1,13 @@
+﻿@model LigaCancer.Models.FormModel.NaturalityFormModel
+
+<form id="addPatientNaturalityForm" asp-action="AddPatientNaturality"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="addNaturalitySuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="Partials/_PatientNaturality" />
+
+</form>

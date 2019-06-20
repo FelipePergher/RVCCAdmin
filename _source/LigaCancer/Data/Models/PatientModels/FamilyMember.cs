@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
+using System;
 using System.ComponentModel.DataAnnotations;
-using static LigaCancer.Code.Globals;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LigaCancer.Data.Models.PatientModels
 {
@@ -13,10 +14,15 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public string Kinship { get; set; }
 
-        public int Age { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
-        public Sex Sex { get; set; }
+        public Globals.Sex Sex { get; set; }
 
         public double MonthlyIncome { get; set; }
+
+        public int PatientId { get; set; }
+
+        [ForeignKey("PatientId")]
+        public virtual Patient Patient { get; set; }
     }
 }

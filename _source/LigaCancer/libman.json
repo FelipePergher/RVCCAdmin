@@ -24,10 +24,10 @@
       ]
     },
     {
-      "library": "sweetalert@2.1.2",
-      "destination": "wwwroot/lib/sweetalert",
+      "library": "limonte-sweetalert2@7.33.1",
+      "destination": "wwwroot/lib/sweetalert2",
       "files": [
-        "sweetalert.min.js"
+        "sweetalert2.all.min.js"
       ]
     },
     {
@@ -49,7 +49,8 @@
       "destination": "wwwroot/lib/select2",
       "files": [
         "css/select2.min.css",
-        "js/select2.min.js"
+        "js/select2.full.min.js",
+        "js/i18n/pt-BR.js"
       ]
     },
     {
@@ -70,11 +71,89 @@
       "library": "datatables@1.10.19",
       "destination": "wwwroot/lib/datatables",
       "files": [
-        "css/jquery.dataTables.min.css",
-        "css/dataTables.bootstrap.min.css",
         "css/dataTables.bootstrap4.min.css",
         "js/jquery.dataTables.min.js",
         "js/dataTables.bootstrap4.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive",
+      "files": [
+        "dist/jquery.unobtrusive-ajax.min.js"
+      ]
+    },
+    {
+      "library": "gijgo@1.9.11",
+      "destination": "wwwroot/lib/gijgo",
+      "files": [
+        "combined/js/gijgo.min.js",
+        "combined/css/gijgo.min.css",
+        "combined/js/messages/messages.pt-br.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-buttons@1.5.4",
+      "destination": "wwwroot/lib/datatables-buttons",
+      "files": [
+        "js/dataTables.buttons.min.js",
+        "js/buttons.html5.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-buttons-bs4@1.5.4",
+      "destination": "wwwroot/lib/datatables-buttons-bs4/",
+      "files": [
+        "css/buttons.bootstrap4.min.css",
+        "js/buttons.bootstrap4.min.js"
+      ]
+    },
+    {
+      "library": "jszip@3.1.5",
+      "destination": "wwwroot/lib/jszip",
+      "files": [
+        "jszip.min.js"
+      ]
+    },
+    {
+      "library": "pdfmake@0.1.50",
+      "destination": "wwwroot/lib/pdfmake",
+      "files": [
+        "pdfmake.min.js",
+        "vfs_fonts.js"
+      ]
+    },
+    {
+      "library": "popper.js@1.14.7",
+      "destination": "wwwroot/lib/popper",
+      "files": [
+        "umd/popper.min.js"
+      ]
+    },
+    {
+      "library": "dropzone@5.5.1",
+      "destination": "wwwroot/lib/dropzone",
+      "files": [
+        "min/dropzone.min.js",
+        "min/dropzone.min.css"
+      ]
+    },
+    {
+      "library": "jeditable.js@2.0.8",
+      "destination": "wwwroot/lib/jeditable",
+      "files": [
+        "jquery.jeditable.min.js"
+      ]
+    },
+    {
+      "library": "jquery.mask@1.14.15",
+      "destination": "wwwroot/lib/jquery-mask/",
+      "files": [
+        "jquery.mask.min.js"
+
       ]
     }
   ]

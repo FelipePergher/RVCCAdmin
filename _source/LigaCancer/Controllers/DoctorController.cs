@@ -1,168 +1,113 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
-using LigaCancer.Code;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.FormModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class DoctorController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<Doctor> _doctorService;
+        private readonly ILogger<DoctorController> _logger;
 
-        public DoctorController(IDataStore<Doctor> doctorService, UserManager<ApplicationUser> userManager)
+        public DoctorController(
+            IDataStore<Doctor> doctorService,
+            ILogger<DoctorController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _doctorService = doctorService;
             _userManager = userManager;
+            _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddDoctor()
         {
-            return PartialView("_AddDoctor", new DoctorViewModel());
+            return PartialView("Partials/_AddDoctor", new DoctorFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDoctor(DoctorViewModel model)
+        public async Task<IActionResult> AddDoctor(DoctorFormModel doctorForm)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                Doctor doctor = new Doctor
-                {
-                    CRM = model.CRM,
-                    Name = model.Name,
-                    UserCreated = user
-                };
+                Doctor doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
-
-            return PartialView("_AddDoctor", model);
+                
+            return PartialView("Partials/_AddDoctor", doctorForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditDoctor(string id)
         {
-            DoctorViewModel doctorViewModel = new DoctorViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (!string.IsNullOrEmpty(id))
-            {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if(doctor != null)
-                {
-                    doctorViewModel = new DoctorViewModel
-                    {
-                        DoctorId = doctor.DoctorId,
-                        CRM = doctor.CRM,
-                        Name = doctor.Name
-                    };
-                }
-            }
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+            
+            if (doctor == null) return NotFound();
 
-            return PartialView("_EditDoctor", doctorViewModel);
+            return PartialView("Partials/_EditDoctor", new DoctorFormModel(doctor.Name, doctor.CRM, doctor.DoctorId));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDoctor(string id, DoctorViewModel model)
+        public async Task<IActionResult> EditDoctor(string id, DoctorFormModel doctorForm)
         {
             if (ModelState.IsValid)
             {
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                doctor.Name = model.Name;
-                doctor.CRM = model.CRM;
-                doctor.LastUpdatedDate = DateTime.Now;
-                doctor.LastUserUpdate = user;
+                doctor.Name = doctorForm.Name;
+                doctor.CRM = doctorForm.CRM;
+                doctor.UpdatedDate = DateTime.Now;
+                doctor.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
-
-            return PartialView("_EditDoctor", model);
-        }
-
-
-        public async Task<IActionResult> DeleteDoctor(string id)
-        {
-            string name = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
-                {
-                    name = doctor.Name;
-                }
-            }
-
-            return PartialView("_DeleteDoctor", name);
+            
+            return PartialView("Partials/_EditDoctor", doctorForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDoctor(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteDoctor(string id)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Doctor doctor = await _doctorService.FindByIdAsync(id);
-                if (doctor != null)
-                {
-                    TaskResult result = await _doctorService.DeleteAsync(doctor);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteDoctor", doctor.Name);
-                }
-            }
-            return RedirectToAction("Index");
+            Doctor doctor = await _doctorService.FindByIdAsync(id);
+
+            if (doctor == null) return NotFound();
+
+            TaskResult result = await _doctorService.DeleteAsync(doctor);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
-
-        #region Custom Methods
-
-        public JsonResult IsCRMExist(string Crm, int DoctorId)
-        {
-            Doctor doctor = ((DoctorStore)_doctorService).FindByCRMAsync(Crm, DoctorId).Result;
-
-            if (doctor != null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
-        }
-
-        #endregion
 
     }
 }

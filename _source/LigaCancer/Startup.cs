@@ -1,20 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
+using LigaCancer.Data;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
+using LigaCancer.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LigaCancer.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using LigaCancer.Data.Models;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code;
-using LigaCancer.Code.Interface;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace LigaCancer
 {
@@ -38,7 +39,7 @@ namespace LigaCancer
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
               .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -62,35 +63,49 @@ namespace LigaCancer
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddMvc().AddJsonOptions(
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddTransient<IEmailSender, EmailSender>(i =>
+               new EmailSender(
+                   Configuration["EmailSender:Host"],
+                   Configuration.GetValue<int>("EmailSender:Port"),
+                   Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                   Configuration["EmailSender:UserName"],
+                   Configuration["EmailSender:Password"],
+                   Configuration["EmailSender:EmailFrom"]
+               ));
+
             services.AddLogging();
             
+            services.AddAntiforgery();
+
             //Application Services
-            services.AddTransient(typeof(ISpecification<>), typeof(BaseSpecification<>));
             services.AddTransient<IDataStore<Doctor>, DoctorStore>();
             services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
             services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();
             services.AddTransient<IDataStore<Medicine>, MedicineStore>();
             services.AddTransient<IDataStore<Patient>, PatientStore>();
-            services.AddTransient<IDataStore<Profession>, ProfessionStore>();
             services.AddTransient<IDataStore<Phone>, PhoneStore>();
             services.AddTransient<IDataStore<Address>, AddressStore>();
             services.AddTransient<IDataStore<FamilyMember>, FamilyMemberStore>();
             services.AddTransient<IDataStore<FileAttachment>, FileAttachmentStore>();
-
-            //DataTable Services
-            services.AddTransient<IDataTable<Patient>, PatientStore>();
-            services.AddTransient<IDataTable<TreatmentPlace>, TreatmentPlaceStore>();
-            services.AddTransient<IDataTable<Medicine>, MedicineStore>();
-            services.AddTransient<IDataTable<CancerType>, CancerTypeStore>();
-            services.AddTransient<IDataTable<Doctor>, DoctorStore>();
+            services.AddTransient<IDataStore<Presence>, PresenceStore>();
+            services.AddTransient<IDataStore<Naturality>, NaturalityStore>();
+            services.AddTransient<IDataStore<PatientInformation>, PatientInformationStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -99,15 +114,31 @@ namespace LigaCancer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error/500");
                 app.UseHsts();
             }
+
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+
+                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+                {
+                    //Re-execute the request so the user gets the error page
+                    string originalPath = ctx.Request.Path.Value;
+                    ctx.Items["originalPath"] = originalPath;
+                    ctx.Request.Path = "/error/404";
+                    await next();
+                }
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            loggerFactory.AddLog4Net();
 
             app.UseMvc(routes =>
             {
@@ -121,80 +152,6 @@ namespace LigaCancer
             IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             SeedData.SeedRoles(scopeFactory).Wait();
             SeedData.SeedAdminUser(scopeFactory).Wait();
-        }
-    }
-
-    public static class SeedData
-    {
-        private static readonly string[] Roles = new string[] { Globals.Roles.Admin.ToString(), Globals.Roles.User.ToString() };
-
-        public static void ApplyMigrations(IServiceProvider serviceProvider)
-        {
-            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
-        }
-
-        public static async Task SeedRoles(IServiceScopeFactory scopeFactory)
-        {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-
-                if (!dbContext.UserRoles.Any())
-                {
-                    RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                    foreach (var role in Roles)
-                    {
-                        if (!await roleManager.RoleExistsAsync(role))
-                        {
-                            await roleManager.CreateAsync(new IdentityRole
-                            {
-                                Name = role
-
-                            });
-                        }
-                    }
-                }
-            }
-        }
-
-        public static async Task SeedAdminUser(IServiceScopeFactory scopeFactory)
-        {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
-            {
-                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                if (!userManager.GetUsersInRoleAsync(Globals.Roles.Admin.ToString()).Result.Any())
-                {
-                    ApplicationUser user = new ApplicationUser
-                    {
-                        FirstName = "Felipe",
-                        LastName = "Pergher",
-                        UserName = "felipepergher_10@hotmail.com",
-                        Email = "felipepergher_10@hotmail.com",
-                        RegisterDate = DateTime.Now,
-                        CreatedBy = "System"
-                    };
-
-                    IdentityResult result = await userManager.CreateAsync(user, "Password123");
-
-                    if (result.Succeeded)
-                    {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync(Globals.Roles.Admin.ToString());
-                        if (applicationRole != null)
-                        {
-                            IdentityResult roleResult = await userManager.AddToRoleAsync(user, applicationRole.Name);
-                        }
-                    }
-                }
-            }
         }
     }
 

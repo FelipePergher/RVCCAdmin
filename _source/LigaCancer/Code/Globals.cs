@@ -10,7 +10,7 @@ namespace LigaCancer.Code
 {
     public class Globals
     {
-       
+
         [JsonConverter(typeof(StringEnumConverter))]
         public enum Sex
         {
@@ -47,17 +47,6 @@ namespace LigaCancer.Code
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum ArchiveCategorie
-        {
-            [Display(Name = "Pessoal"), EnumMember(Value = "Pessoal")]
-            Personal,
-            [Display(Name = "Médico"), EnumMember(Value = "Médico")]
-            Medical,
-            [Display(Name = "Outros"), EnumMember(Value = "Outros")]
-            Other
-        }
-
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum ResidenceType
         {
             [Display(Name = "Própria"), EnumMember(Value = "Própria")]
@@ -71,7 +60,7 @@ namespace LigaCancer.Code
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enum DisablePatientType
+        public enum ArchivePatientType
         {
             [Display(Name = "Alta"), EnumMember(Value = "Alta")]
             discharge,
@@ -79,28 +68,22 @@ namespace LigaCancer.Code
             death
         }
 
-        public enum ModalSize
-        {
-            Small,
-            Large,
-            Medium
-        }
-
-        public enum Roles
-        {
-            [Display(Name = "Administrador")]
-            Admin,
-            [Display(Name = "Usuário")]
-            User
-        }
-
         public static string GetDisplayName(Enum enumValue)
         {
-            return enumValue.GetType()
+            if (enumValue == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return enumValue.GetType()
                             .GetMember(enumValue.ToString())
                             .First()
                             .GetCustomAttribute<DisplayAttribute>()
                             .GetName();
+            }
+
         }
+
     }
 }

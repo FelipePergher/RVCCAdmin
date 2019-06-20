@@ -1,165 +1,118 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
-using LigaCancer.Code;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class CancerTypeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<CancerType> _cancerTypeService;
+        private readonly ILogger<CancerTypeController> _logger;
 
-        public CancerTypeController(IDataStore<CancerType> cancerTypeService, UserManager<ApplicationUser> userManager)
+        public CancerTypeController(
+            IDataStore<CancerType> cancerTypeService, 
+            ILogger<CancerTypeController> logger, 
+            UserManager<ApplicationUser> userManager)
         {
             _cancerTypeService = cancerTypeService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(new CancerTypeSearchModel());
         }
 
+        [HttpGet]
         public IActionResult AddCancerType()
         {
-            return PartialView("_AddCancerType", new CancerTypeViewModel());
+            return PartialView("Partials/_AddCancerType", new CancerTypeFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCancerType(CancerTypeViewModel model)
+        public async Task<IActionResult> AddCancerType(CancerTypeFormModel cancerTypeForm)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                CancerType cancerType = new CancerType
-                {
-                    Name = model.Name,
-                    UserCreated = user
-                };
+                CancerType cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
 
-            return PartialView("_AddCancerType", model);
+            return PartialView("Partials/_AddCancerType", cancerTypeForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditCancerType(string id)
         {
-            CancerTypeViewModel cancerTypeViewModel = new CancerTypeViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (!string.IsNullOrEmpty(id))
-            {
-                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-                if(cancerType != null)
-                {
-                    cancerTypeViewModel = new CancerTypeViewModel
-                    {
-                        CancerTypeId = cancerType.CancerTypeId,
-                        Name = cancerType.Name
-                    };
-                }
-            }
+            CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
 
-            return PartialView("_EditCancerType", cancerTypeViewModel);
+            if (cancerType == null) return NotFound();
+
+            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel(cancerType.Name, cancerType.CancerTypeId);
+
+            return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCancerType(string id, CancerTypeViewModel model)
+        public async Task<IActionResult> EditCancerType(string id, CancerTypeFormModel cancerTypeForm)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             if (ModelState.IsValid)
             {
                 CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
 
-                cancerType.Name = model.Name;
-                cancerType.LastUpdatedDate = DateTime.Now;
-                cancerType.LastUserUpdate = user;
+                if (cancerType == null) return NotFound();
+
+                cancerType.Name = cancerTypeForm.Name;
+                cancerType.UpdatedDate = DateTime.Now;
+                cancerType.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "200");
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
 
-            return PartialView("_EditCancerType", model);
+            return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
-
-
-        public async Task<IActionResult> DeleteCancerType(string id)
-        {
-            string name = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-                if (cancerType != null)
-                {
-                    name = cancerType.Name;
-                }
-            }
-
-            return PartialView("_DeleteCancerType", name);
-        }
-
+    
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCancerType(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteCancerType([FromForm] string id)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
-                if (cancerType != null)
-                {
-                    TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteCancerType", cancerType.Name);
-                }
-            }
-            return RedirectToAction("Index");
+            CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
+
+            if (cancerType == null) return NotFound();
+
+            TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
+
+            if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest(result);
         }
-
-        #region Custom Methods
-
-        public JsonResult IsNameExist(string Name, int CancerTypeId)
-        {
-            CancerType cancerType = ((CancerTypeStore)_cancerTypeService).FindByNameAsync(Name, CancerTypeId).Result;
-
-            if (cancerType != null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
-        }
-
-        #endregion
 
     }
 }

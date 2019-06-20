@@ -1,0 +1,16 @@
+﻿@page
+@model LockoutModel
+@{
+    Layout = "_LayoutBase";
+    ViewData["Title"] = "Bloqueada";
+}
+
+<div class="col-8">
+    <div class="card-group">
+        <div class="card p-4">
+            <h1 class="text-danger">@ViewData["Title"]</h1>
+            <p class="text-danger">Esta conta foi bloqueada, por favor tente novamente mais tarde.</p>
+        </div>
+    </div>
+</div>
+

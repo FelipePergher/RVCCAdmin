@@ -1,13 +1,13 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Interface;
+using LigaCancer.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly IDataStore<Patient> _patientService;
@@ -31,9 +31,10 @@ namespace LigaCancer.Controllers
             _cancerTypeService = cancerTypeService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            HomeViewModel homeViewModel = new HomeViewModel
+            HomeViewModel homeView = new HomeViewModel
             {
               CancerTypeCount = _cancerTypeService.Count(),
               DoctorCount = _doctorService.Count(),
@@ -42,13 +43,8 @@ namespace LigaCancer.Controllers
               TreatmentPlaceCount = _treatmentPlaceService.Count()
             };
 
-            return View(homeViewModel);
+            return View(homeView);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

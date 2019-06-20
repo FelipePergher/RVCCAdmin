@@ -1,9 +1,16 @@
-﻿@model LigaCancer.Models.BootstrapModel
+﻿<div aria-hidden="true" aria-labelledby="modal-action-label" role="dialog" id="modal-action" class="modal fade" data-backdrop="static" data-focus-on="input:first">
+    <div id="modal-dialog" class="modal-dialog modal-dialog-centered modal-primary">
+        <div class="modal-content" id="modal-content">
+            <div class="modal-header">
+                <h5 id="modal-title" class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-<div aria-hidden="true" aria-labelledby="@Model.AreaLabeledId" role="dialog" id="@Model.Id" class="modal fade">
-    <div class="modal-dialog modal-primary @Model.ModalSizeClass">
-        <div class="modal-content" id="modal-content">  
-            <span class="fa fa-spinner fa-pulse modal-spinner"></span>
+            <div id="modalBody"></div>
+
+            <span id="modalSpinner" class="fa fa-spinner fa-pulse modal-spinner"></span>
         </div>
     </div>
 </div>

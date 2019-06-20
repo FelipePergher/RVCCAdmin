@@ -4,3 +4,57 @@
     font-size: 50px;
     color: #20a8d8;
 }
+
+
+.dt-buttons button {
+    margin-right: 5px;
+    border-radius: 0.25em !important;
+}
+
+.label-required:after {
+    content: "*";
+    color: red;
+}
+
+.export-buttons {
+    position: absolute;
+    left: 280px;
+    top: 67px;
+}
+
+.filter-button {
+    margin-top: 28px;
+}
+
+#modal-action-secondary {
+    z-index: 1060;
+}
+
+.modal-elg {
+    max-width: 80vw;
+}
+
+.datepicker {
+    z-index: 1070 !important;
+}
+
+.select2NoSearch {
+    height: 39px !important;
+}
+
+.select2-container--open {
+    z-index: 1070
+}
+
+#attachmentsTable_wrapper{
+    margin-top: 10px;
+}
+
+.select2-search__field{
+    width: 100% !important;
+}
+
+.dateField {
+    background-color: transparent !important;
+    border-color: #e4e7ea;
+}

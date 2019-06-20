@@ -1,8 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>, IDataTable<TreatmentPlace>
+    public class TreatmentPlaceStore : IDataStore<TreatmentPlace>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public TreatmentPlaceStore(ApplicationDbContext context)
         {
@@ -25,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.TreatmentPlaces.Count();
         }
 
-        public Task<TaskResult> CreateAsync(TreatmentPlace model)
+        public Task<TaskResult> CreateAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.TreatmentPlaces.Add(model);
+                _context.TreatmentPlaces.Add(treatmentPlace);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,26 +46,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(TreatmentPlace model)
+        public Task<TaskResult> DeleteAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
             {
-                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.Include(x => x.PatientInformationTreatmentPlaces).FirstOrDefault(b => b.TreatmentPlaceId == model.TreatmentPlaceId);
-                if (treatmentPlace.PatientInformationTreatmentPlaces.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar esta cidade"
-                    });
-                    return Task.FromResult(result);
-                }
-                treatmentPlace.IsDeleted = true;
-                treatmentPlace.DeletedDate = DateTime.Now;
-                treatmentPlace.City = DateTime.Now + "||" + treatmentPlace.City;
-                _context.Update(treatmentPlace);
-
+                _context.TreatmentPlaces.Remove(treatmentPlace);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -87,38 +72,28 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<TreatmentPlace> FindByIdAsync(string id, ISpecification<TreatmentPlace> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<TreatmentPlace> queryable = _context.TreatmentPlaces;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.TreatmentPlaceId == int.Parse(id)));
-        }
-
-        public Task<List<TreatmentPlace>> GetAllAsync(string[] include = null)
+        public Task<TreatmentPlace> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.TreatmentPlaceId == int.Parse(id)));
+        }
+
+        public Task<List<TreatmentPlace>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationTreatmentPlace(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredTreatmentPlaces(query, (TreatmentPlaceSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(TreatmentPlace model)
+        public Task<TaskResult> UpdateAsync(TreatmentPlace treatmentPlace)
         {
             TaskResult result = new TaskResult();
             try
@@ -138,38 +113,32 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<TreatmentPlace> spec)
-        {
-            var data = await _context.Set<TreatmentPlace>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<TreatmentPlace>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
-        public Task<TreatmentPlace> FindByCityAsync(string city, int TreatmentPlaceId = -1)
+        public Task<TreatmentPlace> FindByCityAsync(string city, int treatmentPlaceId = 1)
         {
-            if(TreatmentPlaceId == -1)
-            {
-                TreatmentPlace treatmentPlace = _context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city);
-                if (treatmentPlace != null && treatmentPlace.IsDeleted)
-                {
-                    treatmentPlace.IsDeleted = false;
-                    treatmentPlace.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(treatmentPlace);
-            }
+            return Task.FromResult(_context.TreatmentPlaces.FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != treatmentPlaceId));
+        }
 
-            return Task.FromResult(_context.TreatmentPlaces.IgnoreQueryFilters().FirstOrDefault(x => x.City == city && x.TreatmentPlaceId != TreatmentPlaceId));
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<TreatmentPlace> GetOrdenationTreatmentPlace(IQueryable<TreatmentPlace> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "City":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
+            }
+        }
+
+        private IQueryable<TreatmentPlace> GetFilteredTreatmentPlaces(IQueryable<TreatmentPlace> query, TreatmentPlaceSearchModel treatmentPlaceSearch)
+        {
+            if (!string.IsNullOrEmpty(treatmentPlaceSearch.City)) query = query.Where(x => x.City.Contains(treatmentPlaceSearch.City));
+            return query;
         }
 
         #endregion

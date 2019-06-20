@@ -1,72 +1,162 @@
-﻿var dataTable = null;
-var language = {
-    emptyTable: "Nenhum dado encontrado!",
-    info: "Mostrando _START_ até _END_ de _TOTAL_ registros - Página _PAGE_ de _PAGES_",
-    infoEmpty: "",
-    search: "Procurar",
-    zeroRecords: "Não foi encontrado resultados",
-    lengthMenu: "Mostrar _MENU_ registros por página",
-    processing: '<span class="fa fa-spinner fa-pulse" style="font-size: 35px;" ></span>',
-    loadingRecords: '<span class="fa fa-spinner fa-pulse" style="font-size: 35px; margin-left: -60px;" ></span>',
-    paginate: {
-        first: "Primeiro",
-        last: "Último",
-        next: "Próximo",
-        previous: "Anterior"
+﻿const swalWithBootstrapButtons = Swal.mixin({
+    confirmButtonClass: 'btn btn-success ml-2',
+    cancelButtonClass: 'btn btn-danger',
+    buttonsStyling: false
+});
+
+let language = {
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+        "sNext": "Próximo",
+        "sPrevious": "Anterior",
+        "sFirst": "Primeiro",
+        "sLast": "Último"
     },
-    aria: {
-        sortAscending: ": ativar ordenação ascendente",
-        sortDescending: ": ativar ordenação descendente"
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
     }
 };
 
-var languageSelect2 = {
-    noResults: function () {
-        return "Não foi encontrado resultados";
-    }
-};
+function setupPhoneMaskOnField(selector) {
+    var inputElement = $(selector);
 
-function AjaxError(error) {
-    swal("Oops...", "Alguma coisa deu errado!\n", "error");
+    setCorrectPhoneMask(inputElement);
+    inputElement.on('input, keyup', function () {
+        setCorrectPhoneMask(inputElement);
+    });
 }
 
-function AjaxSuccess(data) {
-    if (data === "200") {
-        $("#modal-action").modal('hide');
-        $('#modal-action').removeClass("fade");
-        if (dataTable !== null) {
-            dataTable.ajax.reload();
+var SPMaskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+}, spOptions = {
+        onKeyPress: function (val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
         }
-        swal("Sucesso...", "Registro salvo com sucesso", "success").then((result) => {
-            if (dataTable === null) {
-                location.reload();
-            }
-        });
-    }
-    else {
-        $("#modal-content").html(data);
-    }
+    };
+
+let masks = {
+    Cpf: '000.000.000-00'
+};
+
+function calendar(id) {
+    $("#" + id).datepicker({
+        format: "dd/mm/yyyy",
+        iconsLibrary: "fontawesome",
+        locale: "pt-br",
+        uiLibrary: "bootstrap4"
+    });
 }
 
-$("#modal-action").on("show.bs.modal", function (e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-content").load(link.attr("href"), function (e) {
-        $.validator.unobtrusive.parse('form');
+function time(id) {
+    let timepicker = $("#" + id).timepicker({
+        uiLibrary: "bootstrap4",
+        modal: false,
+        header: false,
+        footer: false,
+        mode: '24hr'
+    });
+    $("#" + id).siblings(".input-group-append").find("i").removeClass("gj-icon").removeClass("clock").addClass("fa").addClass("fa-clock");
 
-        if ($(".customSelect2").length > 0) {
-            $(".customSelect2").select2({
-                theme: "bootstrap",
-                language: languageSelect2
-            });
+    $("#" + id).click(function () {
+        $(".timepicker").is(":visible") ? timepicker.close() : timepicker.open();
+    });
+}
+
+//Modal Primary functions
+function openModal(url, title, callback = null) {
+    $("#modal-title").text(title);
+
+    $("#modalBody").load(url, function () {
+        if (callback !== null) callback();
+        hideSpinnerModal();
+    });
+
+    $("#modal-action").on("hidden.bs.modal", function (e) {
+        cleanModal();
+    });
+}
+
+function cleanModal() {
+    $("#modalBody").html("");
+    $("#modal-title").text("");
+    $("#modal-dialog").removeClass("modal-lg");
+    $("#modal-dialog").removeClass("modal-elg");
+    showSpinnerModal();
+}
+
+function showSpinnerModal() {
+    $("#modalSpinner").show();
+}
+
+function hideSpinnerModal() {
+    $("#modalSpinner").hide();
+}
+
+//Secondary Modal Functions
+function openModalSecondary(url, title, callback = null) {
+    setTimeout(function () {
+        let overlaySecondModal = $(".modal-backdrop.fade.show");
+        if (overlaySecondModal.length === 2) $(overlaySecondModal[1]).css("z-index", 1050);
+    }, 10);
+
+    $("#modal-title-secondary").text(title);
+
+    $("#modalBodySecondary").load(url, function () {
+        if (callback !== null) callback();
+        hideSpinnerModalSecondary();
+    });
+
+    $("#modal-action-secondary").on("hidden.bs.modal", function (e) {
+        cleanModalSecondary();
+    });
+}
+
+function cleanModalSecondary() {
+    $("#modalBodySecondary").html("");
+    $("#modal-title-secondary").text("");
+    showSpinnerModalSecondary();
+}
+
+function showSpinnerModalSecondary() {
+    $("#modalSpinnerSecondary").show();
+}
+
+function hideSpinnerModalSecondary() {
+    $("#modalSpinnerSecondary").hide();
+}
+
+function dateFormat(dateOfBirth) {
+    let date = new Date(dateOfBirth);
+    let dateString = date.toLocaleDateString("pt-BR");
+    if (dateString.toLowerCase().includes("invalid")) dateString = "";
+    return dateString;
+}
+
+//Configure to add error class to input when have error
+$(function () {
+    $.validator.setDefaults({
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+            element.prop('type') === 'checkbox' ? error.insertAfter(element.parent('label')) : error.insertAfter(element);
         }
     });
 });
-
-function errorDataTable() {
-    swal("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
-}
-
-function DateFormat(dateOfBirth) {
-    let date = new Date(dateOfBirth);
-    return date.toLocaleDateString("pt-BR");
-}

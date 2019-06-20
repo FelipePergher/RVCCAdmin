@@ -1,16 +1,19 @@
-﻿@model LigaCancer.Models.SearchViewModels.PatientSearchViewModel
+﻿@model LigaCancer.Models.SearchModel.PatientSearchModel
 @using LigaCancer.Code
 @{
     ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <environment names="Development">
-        <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-        <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
-        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    </environment>
+@section styles{
+<environment names="Development">
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    @*<link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
+    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
+    <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+</environment>
     <environment exclude="Development">
         <link href="~/dist/css/patient.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
@@ -32,83 +35,153 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
+                                <i class="fas fa-filter"></i> Pesquisar
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-block collapse show" id="filterCollapse">
+                                <form id="searchForm">
+                                    <div>
+                                        <div class="form-row form-group">
+                                            <div class="col-lg-3">
+                                                <label asp-for="Name"></label>
+                                                <input asp-for="Name" class="form-control" placeholder="Nome" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Surname"></label>
+                                                <input asp-for="Surname" class="form-control" placeholder="Sobrenome"  />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Rg"></label>
+                                                <input asp-for="Rg" class="form-control" placeholder="Rg"  />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Cpf"></label>
+                                                <input asp-for="Cpf" class="form-control" placeholder="Cpf"  />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row form-group">
+                                            <div class="col-lg-3">
+                                                <label asp-for="CancerTypes"></label>
+                                                <select asp-for="CancerTypes" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/cancerType/select2Get" 
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Tipos de Câncer">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Medicines"></label>
+                                                <select asp-for="Medicines" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/Medicine/select2Get"
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Remédios">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Doctors"></label>
+                                                <select asp-for="Doctors" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/Doctor/select2Get" 
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Médicos">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="TreatmentPlaces"></label>
+                                                <select asp-for="TreatmentPlaces" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/TreatmentPlace/select2Get" 
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Locais de Tratamento">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row form-group">
+                                            <div class="col-lg-3">
+                                                <label asp-for="CivilState"></label>
+                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control filterSelect" 
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Estado Civil" 
+                                                        data-allow-clear="true" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch"> 
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Sex"></label>
+                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control filterSelect" 
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR" 
+                                                        data-placeholder="Gênero" 
+                                                        data-allow-clear="true" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="FamiliarityGroup"></label>
+                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control filterSelect" 
+                                                        data-theme="bootstrap" 
+                                                        data-language="pt-BR" 
+                                                        data-allow-clear="true" 
+                                                        data-placeholder="Grupo De Convivência" 
+                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-container-css-class="select2NoSearch"></select>
+                                            </div>
+                                            <div class="col-lg-3 mt-3">
+                                                <div>
+                                                    <input asp-for="Discharge" />
+                                                    <label asp-for="Discharge"></label>
+                                                </div>
+                                                <div>
+                                                    <input asp-for="Death" />
+                                                    <label asp-for="Death"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="reset" class="btn btn-secondary">
+                                            <i class="fas fa-eraser"></i> Limpar
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i> Filtrar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
                                 <i class="fa fa-male"></i> Pacientes
                             </div>
                             <div class="card-block">
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <div class="btn-group">
-                                            <a asp-action="AddPatient" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                                <i class="fa fa-plus"></i> Adicionar Paciente
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="form-inline float-right">
+                                    <a id="addPatientButton" asp-action="AddPatientProfile" data-title="Adicionar Paciente" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i> Adicionar Paciente
+                                    </a>
                                 </div>
-
-                                <hr />
-
-                                <div class="form-row form-group">
-                                    <div class="col-lg-3">
-                                        <label asp-for="CancerTypes"></label>
-                                        <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label asp-for="Medicines"></label>
-                                        <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label asp-for="Doctors"></label>
-                                        <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label asp-for="TreatmentPlaces"></label>
-                                        <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-row form-group">
-                                    <div class="col-lg-3">
-                                        <label asp-for="CivilState"></label>
-                                        <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label asp-for="Sex"></label>
-                                        <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label asp-for="FamiliarityGroup"></label>
-                                        <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
-                                    </div>
-                                    <div class="col-lg-3 mt-3">
-                                        <div>
-                                            <input asp-for="Discharge" />
-                                            <label asp-for="Discharge"></label>
-                                        </div>
-                                        <div>
-                                            <input asp-for="Death" />
-                                            <label asp-for="Death"></label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <hr />
-
+                                
                                 <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -122,14 +195,28 @@
     <!-- /.conainer-fluid -->
 </main>
 
-<partial name="_Modal" model='new BootstrapModel { Id = "modal-action", AreaLabeledId = "modal-action-label", Size = Globals.ModalSize.Medium }' />
+<partial name="_Modal" />
+<partial name="_ModalSecondary" />
 
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <environment names="Development">
-        <script src="~/lib/select2/js/select2.min.js"></script>
         <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/lib/select2/js/i18n/pt-BR.js"></script>
+        @*<script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+        <script src="~/lib/jszip/jszip.min.js"></script>
+        <script src="~/lib/pdfmake/pdfmake.min.js"></script>
+        <script src="~/lib/pdfmake/vfs_fonts.js"></script>
+        <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>*@
+        <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
+        <script src="~/lib/dropzone/min/dropzone.min.js"></script>
+        <script src="~/lib/jeditable/jquery.jeditable.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
+        <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
         <script src="~/js/patient.js"></script>
     </environment>
     <environment exclude="Development">

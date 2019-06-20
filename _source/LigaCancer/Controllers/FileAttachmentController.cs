@@ -1,140 +1,143 @@
-﻿using System;
+﻿using LigaCancer.Code;
+using LigaCancer.Code.Interface;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
+using LigaCancer.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
-using LigaCancer.Code;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using LigaCancer.Code.Interface;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class FileAttachmentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<FileAttachment> _fileAttachmentService;
         private readonly IDataStore<Patient> _patientService;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger<FileAttachmentController> _logger;
 
-        public FileAttachmentController(IDataStore<FileAttachment> fileAttachmentService,
+        public FileAttachmentController(
+            IDataStore<FileAttachment> fileAttachmentService,
             IDataStore<Patient> patientService,
-            UserManager<ApplicationUser> userManager,
-            IHostingEnvironment hostingEnvironment
-            )
+            ILogger<FileAttachmentController> logger,
+            IHostingEnvironment hostingEnvironment,
+            UserManager<ApplicationUser> userManager)
         {
             _fileAttachmentService = fileAttachmentService;
             _userManager = userManager;
             _patientService = patientService;
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
-        public IActionResult AddFileAttachment(string id)
+
+        [HttpGet]
+        public IActionResult FileUpload(string id)
         {
-            FileAttachmentViewModel fileAttachmentViewModel = new FileAttachmentViewModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddFileAttachment", fileAttachmentViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_FileUpload", new FileAttachmentSearchModel(id));
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddFileAttachment(FileAttachmentViewModel model)
+        public async Task<IActionResult> FileUpload(string id, IFormFile file)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(id) || file == null || file.Length == 0) return BadRequest();
+
+            Patient patient = await _patientService.FindByIdAsync(id);
+
+            if(patient == null) return NotFound();
+
+            FileAttachment fileAttachment = new FileAttachment
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
-                Patient patient = await _patientService.FindByIdAsync(model.PatientId);
-                FileAttachment fileAttachment = new FileAttachment
+                PatientId = patient.PatientId,
+                FileName = Path.GetFileNameWithoutExtension(file.FileName),
+                FileExtension = Path.GetExtension(file.FileName),
+                FileSize = (double) file.Length / 1024 / 1024,
+                UserCreated = await _userManager.GetUserAsync(User)
+            };
+
+            string path = $"uploads\\files\\{patient.PatientId}";
+            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
+            try
+            {
+                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                 {
-                    ArchiveCategorie = model.FileCategory,
-                    FileName = $"{model.FileName}{Path.GetExtension(model.File.FileName)}",
-                    UserCreated = user
-                };
-
-                if (model.File != null && model.File.Length > 0)
-                {
-                    if (patient != null)
-                    {
-                        string path = $"uploads\\files\\{patient.PatientId}";
-                        var uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
-                        try
-                        {
-                            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
-
-                            string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(model.File.FileName)}";
-                            using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-                            {
-                                await model.File.CopyToAsync(fileStream);
-                            }
-                            var imageUrl = Path.Combine(path + "\\" + fileName);
-                            fileAttachment.FilePath = imageUrl;
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                            return StatusCode(500, e.Message);
-                        }
-
-                    }
+                    await file.CopyToAsync(fileStream);
                 }
-
-                TaskResult result = await ((PatientStore)_patientService).AddFileAttachment(fileAttachment, model.PatientId);
-                if (result.Succeeded)
-                {
-                    return StatusCode(200, "attachmentFile");
-                }
-                ModelState.AddErrors(result);
-                return StatusCode(500, result.Errors.First().Description);
+                string imageUrl = Path.Combine(path + "\\" + fileName);
+                fileAttachment.FilePath = imageUrl;
             }
-            return StatusCode(500, "Invalid");
+            catch (Exception e)
+            {
+                _logger.LogError(e, "File Upload Error", null);
+                return BadRequest();
+            }
+
+            TaskResult result = await _fileAttachmentService.CreateAsync(fileAttachment);
+            
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
-            string name = string.Empty;
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (!string.IsNullOrEmpty(id))
+            FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
+
+            if (fileAttachment == null) return NotFound();
+
+            try
             {
-                FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
-                if (fileAttachment != null)
-                {
-                    name = fileAttachment.FileName;
-                }
+                string uploadFile = Path.Combine(_hostingEnvironment.WebRootPath, fileAttachment.FilePath);
+                if (System.IO.File.Exists(uploadFile)) System.IO.File.Delete(uploadFile);
+            }
+            catch (IOException ioExp)
+            {
+                _logger.LogError(ioExp, "Upload File", null);
             }
 
-            return PartialView("_DeleteFileAttachment", name);
+            TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteFileAttachment(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
-                if (fileAttachment != null)
-                {
-                    TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
+            if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId)) return BadRequest();
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "attachmentFile");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteFileAttachment", fileAttachment.FileName);
-                }
-            }
-            return RedirectToAction("Index");
+            FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(fileAttachmentModel.FileAttachmentId);
+
+            if (fileAttachment == null) return NotFound();
+
+            fileAttachment.FileName = fileAttachmentModel.Name;
+
+            TaskResult result = await _fileAttachmentService.UpdateAsync(fileAttachment);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
-
     }
 }

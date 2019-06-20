@@ -1,5 +1,5 @@
-﻿using LigaCancer.Data.Models.ManyToManyModels;
-using LigaCancer.Data.Models.PatientModels;
+﻿using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Models.RelationModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +7,7 @@ namespace LigaCancer.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -24,12 +24,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationCancerType>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationCancerTypes)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationCancerType>()
                 .HasOne(bc => bc.CancerType)
                 .WithMany(c => c.PatientInformationCancerTypes)
-                .HasForeignKey(bc => bc.CancerTypeId);
+                .HasForeignKey(bc => bc.CancerTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Doctor
             builder.Entity<PatientInformationDoctor>()
@@ -38,12 +40,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationDoctor>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationDoctors)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationDoctor>()
                 .HasOne(bc => bc.Doctor)
                 .WithMany(c => c.PatientInformationDoctors)
-                .HasForeignKey(bc => bc.DoctorId);
+                .HasForeignKey(bc => bc.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Treatment Place
             builder.Entity<PatientInformationTreatmentPlace>()
@@ -52,12 +56,14 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationTreatmentPlace>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationTreatmentPlaces)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationTreatmentPlace>()
                 .HasOne(bc => bc.TreatmentPlace)
                 .WithMany(c => c.PatientInformationTreatmentPlaces)
-                .HasForeignKey(bc => bc.TreatmentPlaceId);
+                .HasForeignKey(bc => bc.TreatmentPlaceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //Patient Information and Medicine
             builder.Entity<PatientInformationMedicine>()
@@ -66,42 +72,24 @@ namespace LigaCancer.Data
             builder.Entity<PatientInformationMedicine>()
                 .HasOne(bc => bc.PatientInformation)
                 .WithMany(b => b.PatientInformationMedicines)
-                .HasForeignKey(bc => bc.PatientInformationId);
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PatientInformationMedicine>()
                 .HasOne(bc => bc.Medicine)
                 .WithMany(c => c.PatientInformationMedicines)
-                .HasForeignKey(bc => bc.MedicineId);
-
-            #endregion
-
-            #region Entity Filters
-
-            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<ActivePatient>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Address>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<CancerType>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Doctor>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Family>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<FamilyMember>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<FileAttachment>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Medicine>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Naturality>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<PatientInformation>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Phone>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<Profession>().HasQueryFilter(p => !p.IsDeleted);
-            builder.Entity<TreatmentPlace>().HasQueryFilter(p => !p.IsDeleted);
+                .HasForeignKey(bc => bc.MedicineId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 
             #region Unique
+
             builder.Entity<CancerType>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Doctor>().HasIndex(p => p.CRM).IsUnique();
             builder.Entity<Medicine>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
-            builder.Entity<Profession>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
 
             #endregion
@@ -117,8 +105,6 @@ namespace LigaCancer.Data
 
         public DbSet<Doctor> Doctors { get; set; }
 
-        public DbSet<Family> Families { get; set; }
-
         public DbSet<FamilyMember> FamilyMembers { get; set; }
 
         public DbSet<Medicine> Medicines { get; set; }
@@ -131,8 +117,9 @@ namespace LigaCancer.Data
 
         public DbSet<Phone> Phones { get; set; }
 
-        public DbSet<Profession> Professions { get; set; }
-
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
+
+        public DbSet<Presence> Presences { get; set; }
+
     }
 }

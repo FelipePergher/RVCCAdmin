@@ -1,0 +1,41 @@
+﻿@model LigaCancer.Models.FormModel.PhoneFormModel
+@using LigaCancer.Code
+
+<form id="editPhoneForm" asp-action="EditPhone"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="editPhoneSuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label asp-for="Number" class="control-label"></label>
+            <input asp-for="Number" class="form-control" />
+            <span asp-validation-for="Number" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneType" class="control-label"></label>
+            <select asp-for="PhoneType" asp-items="Html.GetEnumSelectList<Globals.PhoneType>()" class="form-control phoneSelect2" style="width: 100%"
+                    data-theme="bootstrap"
+                    data-language="pt-BR" 
+                    data-placeholder="Tipo do Telefone" 
+                    data-width="resolve"
+                    data-allow-clear="true" 
+                    data-minimum-results-for-search="Infinity" 
+                    data-container-css-class="select2NoSearch">
+                <option value="" selected="selected" ></option>
+            </select>
+            <span asp-validation-for="PhoneType" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ObservationNote" class="control-label"></label>
+            <input asp-for="ObservationNote" class="form-control" />
+            <span asp-validation-for="ObservationNote" class="text-danger"></span>
+        </div>
+    </div>
+
+    <partial name="_ModalFooter"  />
+
+</form>

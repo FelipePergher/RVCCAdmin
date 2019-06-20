@@ -1,0 +1,37 @@
+﻿@model LigaCancer.Models.SearchModel.FamilyMemberSearchModel
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <input asp-for="PatientId" id="familyMemberPatientId" />
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <strong>Renda do Paciente:</strong>
+                        <span id="monthlyIncome"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong>Renda Familiar Total:</strong>
+                        <span id="familyIncome"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong>Renda Per Capita:</strong>
+                        <span id="perCapitaIncome"></span>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-inline float-right">
+                    <a id="addFamilyMemberButton" asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" data-title="Adicionar Membro Familiar" class="btn btn-primary"
+                       data-toggle="modal" data-target="#modal-action-secondary">
+                        <i class="fa fa-plus"></i> Adicionar Membro Familiar
+                    </a>
+                </div>
+
+                <table class="table table-bordered table-striped table-condensed text-center" id="familyMemberTable"></table>
+            </div>
+        </div>
+    </div>
+</div>

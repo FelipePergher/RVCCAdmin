@@ -1,6 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace LigaCancer.Data.Store
 {
     public class FileAttachmentStore : IDataStore<FileAttachment>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public FileAttachmentStore(ApplicationDbContext context)
         {
@@ -23,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.FileAttachments.Count();
         }
 
-        public Task<TaskResult> CreateAsync(FileAttachment model)
+        public Task<TaskResult> CreateAsync(FileAttachment fileAttachment)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.FileAttachments.Add(model);
+                _context.FileAttachments.Add(fileAttachment);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -39,22 +40,18 @@ namespace LigaCancer.Data.Store
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(FileAttachment model)
+        public Task<TaskResult> DeleteAsync(FileAttachment fileAttachment)
         {
             TaskResult result = new TaskResult();
             try
             {
-                FileAttachment fileAttachment = _context.FileAttachments.FirstOrDefault(b => b.FileAttachmentId == model.FileAttachmentId);
-                fileAttachment.IsDeleted = true;
-                fileAttachment.DeletedDate = DateTime.Now;
-                _context.Update(fileAttachment);
-
+                //Todo remove file of disk too
+                _context.FileAttachments.Remove(fileAttachment);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -75,33 +72,24 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<FileAttachment> FindByIdAsync(string id, ISpecification<FileAttachment> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<FileAttachment> queryable = _context.FileAttachments;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
-        }
-
-        public Task<List<FileAttachment>> GetAllAsync(string[] include = null)
+        public Task<FileAttachment> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
+        }
+
+        public Task<List<FileAttachment>> GetAllAsync(string[] includes = null,
+            string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<FileAttachment> query = _context.FileAttachments;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            var fileAttachmentSearch = (FileAttachmentSearchModel) filter;
+            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
 
             return Task.FromResult(query.ToList());
         }

@@ -2,7 +2,7 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/lib/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css",
+      "wwwroot/css/fontawesome.min.css",
       "wwwroot/css/style.css",
       "wwwroot/css/custom.css"
     ],
@@ -16,8 +16,10 @@
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/lib/core-ui/coreui.min.js",
+      "wwwroot/js/coreui.min.js",
+      "wwwroot/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
+      "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
       "wwwroot/js/main.js"
     ],
     "minify": {
@@ -31,8 +33,7 @@
     "inputFiles": [
       "wwwroot/lib/jquery-validate/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "wwwroot/lib/jquery-ajax-unobtrusive/src/jquery.unobtrusive-ajax.js",
-      "wwwroot/lib/sweetalert/sweetalert.min.js"
+      "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"
     ],
     "minify": {
       "enabled": true,
@@ -40,12 +41,16 @@
       "renameLocals": true
     }
   },
+  /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
     "inputFiles": [
-      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css",
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
       "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
-      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/gijgo/combined/css/gijgo.min.css",
+      "wwwroot/dropzone/min/dropzone.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -56,9 +61,20 @@
   {
     "outputFileName": "wwwroot/dist/js/patient.min.js",
     "inputFiles": [
-      "wwwroot/lib/select2/js/select2.min.js",
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/lib/select2/js/select2.full.min.js",
+      "wwwroot/lib/select2/js/i18n/pt-BR.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
+      "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
+      "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
+      "wwwroot/lib/dropzone/min/dropzone.min.js",
+      "wwwroot/lib/jeditable/jquery.jeditable.min.js",
       "wwwroot/js/patient.js"
     ],
     "minify": {
@@ -67,10 +83,14 @@
       "renameLocals": true
     }
   },
+  /* Patient */
+
+  /* Treatment Place */
   {
-    "outputFileName": "wwwroot/dist/css/datatables.min.css",
+    "outputFileName": "wwwroot/dist/css/treatment-place.min.css",
     "inputFiles": [
       "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -83,7 +103,28 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/js/treatmentPlace.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Treatment Place */
+
+  /* Cancer Type */
+  {
+    "outputFileName": "wwwroot/dist/css/cancer-type.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -96,7 +137,28 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/js/cancerType.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Cancer Type */
+
+  /* Doctor */
+  {
+    "outputFileName": "wwwroot/dist/css/doctor.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -109,7 +171,28 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/js/doctor.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Doctor */
+
+  /* Medicine */
+  {
+    "outputFileName": "wwwroot/dist/css/medicine.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -122,7 +205,30 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/js/medicine.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Medicine */
+
+  /* User */
+  {
+    "outputFileName": "wwwroot/dist/css/user.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -135,6 +241,14 @@
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
+      "wwwroot/lib/select2/js/select2.full.min.js",
+      "wwwroot/lib/select2/js/i18n/pt-BR.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/js/user.js"
     ],
     "minify": {
@@ -143,11 +257,14 @@
       "renameLocals": true
     }
   },
+  /* User */
+
+  /* Home */
   {
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
       "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/lib/core-ui/custom-tooltips.min.js",
+      "wwwroot/js/custom-tooltips.min.js",
       "wwwroot/js/home.js"
     ],
     "minify": {
@@ -156,13 +273,40 @@
       "renameLocals": true
     }
   },
+  /* Home */
+
+  /* Presence */
   {
-    "outputFileName": "wwwroot/dist/js/patient-details.min.js",
+    "outputFileName": "wwwroot/dist/css/presence.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
+      "wwwroot/lib/datatables/css/dataTables.bootstrap4.min.css",
+      "wwwroot/lib/gijgo/combined/css/gijgo.min.css"
+      //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/presence.min.js",
     "inputFiles": [
       "wwwroot/lib/datatables/js/jquery.dataTables.min.js",
       "wwwroot/lib/datatables/js/dataTables.bootstrap4.min.js",
-      "wwwroot/lib/select2/js/select2.min.js",
-      "wwwroot/js/patient-details.js"
+      "wwwroot/lib/select2/js/select2.full.min.js",
+      "wwwroot/lib/select2/js/i18n/pt-BR.js",
+      "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
+      "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
+      //"wwwroot/lib/datatables-buttons/js/dataTables.buttons.min.js",
+      //"wwwroot/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js",
+      //"wwwroot/lib/jszip/jszip.min.js",
+      //"wwwroot/lib/pdfmake/pdfmake.min.js",
+      //"wwwroot/lib/pdfmake/vfs_fonts.js",
+      //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
+      "wwwroot/js/presence.js"
     ],
     "minify": {
       "enabled": true,
@@ -170,4 +314,5 @@
       "renameLocals": true
     }
   }
+  /* Presence */
 ]

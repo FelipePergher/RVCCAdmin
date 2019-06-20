@@ -1,10 +1,6 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Data.Models.ManyToManyModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using static LigaCancer.Code.Globals;
 
 namespace LigaCancer.Data.Models.PatientModels
@@ -16,8 +12,10 @@ namespace LigaCancer.Data.Models.PatientModels
             Phones = new HashSet<Phone>();
             Addresses = new HashSet<Address>();
             FileAttachments = new HashSet<FileAttachment>();
+            FamilyMembers = new HashSet<FamilyMember>();
             PatientInformation = new PatientInformation();
-            Family = new Family();
+            Naturality = new Naturality();
+            ActivePatient = new ActivePatient();
         }
 
         [Key]
@@ -34,25 +32,29 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public bool FamiliarityGroup { get; set; }
 
+        public double MonthlyIncome { get; set; }
+
         public Sex Sex { get; set; }
 
-        public CivilState CivilState { get; set; }
+        public CivilState? CivilState { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
-        public Naturality Naturality { get; set; }
+        public string Profession { get; set; }
 
-        public Profession Profession { get; set; }
+        public virtual ActivePatient ActivePatient { get; set; }
 
-        public Family Family { get; set; }
+        public virtual PatientInformation PatientInformation { get; set; }
 
-        public PatientInformation PatientInformation { get; set; }
+        public virtual Naturality Naturality { get; set; }
 
-        public ICollection<Phone> Phones { get; set; }
+        public virtual ICollection<Phone> Phones { get; set; }
 
-        public ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
 
-        public ICollection<FileAttachment> FileAttachments { get; set; }
+        public virtual ICollection<FamilyMember> FamilyMembers { get; set; }
+
+        public virtual ICollection<FileAttachment> FileAttachments { get; set; }
 
     }
 }

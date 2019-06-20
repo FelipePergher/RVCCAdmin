@@ -1,164 +1,142 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.MedicalViewModels;
-using LigaCancer.Code;
-using LigaCancer.Data.Store;
-using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
+using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Models.FormModel;
+using LigaCancer.Models.SearchModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, User")]
+    [AutoValidateAntiforgeryToken]
     public class FamilyMemberController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataStore<FamilyMember> _familyMemberService;
         private readonly IDataStore<Patient> _patientService;
+        private readonly ILogger<FamilyMemberController> _logger;
 
-        public FamilyMemberController(IDataStore<FamilyMember> familyMemberService, UserManager<ApplicationUser> userManager, IDataStore<Patient> patientService)
+        public FamilyMemberController(
+            IDataStore<FamilyMember> familyMemberService,
+            IDataStore<Patient> patientService,
+            ILogger<FamilyMemberController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _familyMemberService = familyMemberService;
             _userManager = userManager;
             _patientService = patientService;
+            _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult Index(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_Index", new FamilyMemberSearchModel(id));
+        }
 
+        [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
-            FamilyMemberViewModel familyMemberViewModel = new FamilyMemberViewModel
-            {
-                PatientId = id
-            };
-            return PartialView("_AddFamilyMember", familyMemberViewModel);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddFamilyMember(FamilyMemberViewModel model)
+        public async Task<IActionResult> AddFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(this.User);
+                if (await _patientService.FindByIdAsync(id) == null) return NotFound();
 
-                TaskResult result = await ((PatientStore)_patientService).AddFamilyMember(
-                    new FamilyMember
-                    {
-                        Age = model.Age,
-                        Kinship = model.Kinship,
-                        MonthlyIncome = (double)model.MonthlyIncome,
-                        Name = model.Name,
-                        Sex = model.Sex,
-                        UserCreated = user
-                    }, model.PatientId);
-
-                if (result.Succeeded)
+                FamilyMember familyMember = new FamilyMember
                 {
-                    return StatusCode(200, "familyMember");
-                }
-                ModelState.AddErrors(result);
+                    PatientId = int.Parse(id),
+                    DateOfBirth = familyMemberForm.DateOfBirth,
+                    Kinship = familyMemberForm.Kinship,
+                    MonthlyIncome = (double) familyMemberForm.MonthlyIncome,
+                    Name = familyMemberForm.Name,
+                    Sex = familyMemberForm.Sex,
+                    UserCreated = await _userManager.GetUserAsync(User)
+                };
+
+                TaskResult result = await _familyMemberService.CreateAsync(familyMember);
+
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
 
-            return PartialView("_AddFamilyMember", model);
+            return PartialView("Partials/_AddFamilyMember", familyMemberForm);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditFamilyMember(string id)
         {
-            FamilyMemberViewModel familyMemberViewModel = new FamilyMemberViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (!string.IsNullOrEmpty(id))
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+
+            if (familyMember == null) return NotFound();
+
+            return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
-                {
-                    familyMemberViewModel = new FamilyMemberViewModel
-                    {
-                        Age = familyMember.Age,
-                        Kinship = familyMember.Kinship,
-                        MonthlyIncome = (decimal)familyMember.MonthlyIncome,
-                        Name = familyMember.Name,
-                        Sex = familyMember.Sex
-                    };
-                }
-            }
-
-            return PartialView("_EditFamilyMember", familyMemberViewModel);
+                DateOfBirth = familyMember.DateOfBirth,
+                Kinship = familyMember.Kinship,
+                MonthlyIncome = (decimal) familyMember.MonthlyIncome,
+                Name = familyMember.Name,
+                Sex = familyMember.Sex
+            });
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberViewModel model)
+        public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
             if (ModelState.IsValid)
             {
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                TaskResult result = await ((FamilyMemberStore)_familyMemberService).UpdateFamilyIncomeByFamilyMember(familyMember);
-                if (result.Succeeded)
-                {
-                    ApplicationUser user = await _userManager.GetUserAsync(this.User);
+            
+                familyMember.DateOfBirth = familyMemberForm.DateOfBirth;
+                familyMember.Kinship = familyMemberForm.Kinship;
+                familyMember.MonthlyIncome = (double)familyMemberForm.MonthlyIncome;
+                familyMember.Name = familyMemberForm.Name;
+                familyMember.Sex = familyMemberForm.Sex;
+                familyMember.UpdatedDate = DateTime.Now;
+                familyMember.UserUpdated = await _userManager.GetUserAsync(User);
 
-                    familyMember.Age = model.Age;
-                    familyMember.Kinship = model.Kinship;
-                    familyMember.MonthlyIncome = (double)model.MonthlyIncome;
-                    familyMember.Name = model.Name;
-                    familyMember.Sex = model.Sex;
-                    familyMember.LastUpdatedDate = DateTime.Now;
-                    familyMember.LastUserUpdate = user;
+                TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 
-                    result = await _familyMemberService.UpdateAsync(familyMember);
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "familyMember");
-                    }
-                }
-                ModelState.AddErrors(result);
+                if (result.Succeeded) return Ok();
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
             }
-
-            return PartialView("_EditFamilyMember", model);
-        }
-
-
-        public async Task<IActionResult> DeleteFamilyMember(string id)
-        {
-            string name = string.Empty;
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
-                {
-                    name = familyMember.Name;
-                }
-            }
-
-            return PartialView("_DeleteFamilyMember", name);
+            return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteFamilyMember(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteFamilyMember(string id)
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-                if (familyMember != null)
-                {
-                    TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "familyMember");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteFamilyMember", familyMember.Name);
-                }
-            }
-            return RedirectToAction("Index");
+            FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
+
+            if (familyMember == null) return NotFound();
+
+            TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            return BadRequest();
         }
 
     }

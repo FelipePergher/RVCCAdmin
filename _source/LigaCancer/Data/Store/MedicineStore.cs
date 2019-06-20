@@ -1,8 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class MedicineStore : IDataStore<Medicine>, IDataTable<Medicine>
+    public class MedicineStore : IDataStore<Medicine>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public MedicineStore(ApplicationDbContext context)
         {
@@ -25,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.Medicines.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Medicine model)
+        public Task<TaskResult> CreateAsync(Medicine medicine)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.Medicines.Add(model);
+                _context.Medicines.Add(medicine);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,26 +46,12 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(Medicine model)
+        public Task<TaskResult> DeleteAsync(Medicine medicine)
         {
             TaskResult result = new TaskResult();
             try
             {
-                Medicine medicine = _context.Medicines.Include(x => x.PatientInformationMedicines).FirstOrDefault(b => b.MedicineId == model.MedicineId);
-                if (medicine.PatientInformationMedicines.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este remédio"
-                    });
-                    return Task.FromResult(result);
-                }
-                medicine.IsDeleted = true;
-                medicine.DeletedDate = DateTime.Now;
-                medicine.Name = DateTime.Now + "||" + medicine.Name;
-                _context.Update(medicine);
-
+                _context.Medicines.Remove(medicine);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -87,33 +72,24 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<Medicine> FindByIdAsync(string id, ISpecification<Medicine> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<Medicine> queryable = _context.Medicines;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
-        }
-
-        public Task<List<Medicine>> GetAllAsync(string[] include = null)
+        public Task<Medicine> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Medicine> query = _context.Medicines;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
+        }
+
+        public Task<List<Medicine>> GetAllAsync(string[] includes = null,
+            string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<Medicine> query = _context.Medicines;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationMedicine(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredMedicines(query, (MedicineSearchModel)filter);
 
             return Task.FromResult(query.ToList());
         }
@@ -138,37 +114,32 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<Medicine> spec)
-        {
-            var data = await _context.Set<Medicine>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<Medicine>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<Medicine> FindByNameAsync(string name, int MedicineId = -1)
         {
-            if (MedicineId == -1)
+            return Task.FromResult(_context.Medicines.FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<Medicine> GetOrdenationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
             {
-                Medicine medicine = _context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-                if (medicine != null && medicine.IsDeleted)
-                {
-                    medicine.IsDeleted = false;
-                    medicine.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(medicine);
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
             }
-            return Task.FromResult(_context.Medicines.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
+        }
+
+        private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel doctorSearch)
+        {
+            if (!string.IsNullOrEmpty(doctorSearch.Name)) query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+            return query;
         }
 
         #endregion

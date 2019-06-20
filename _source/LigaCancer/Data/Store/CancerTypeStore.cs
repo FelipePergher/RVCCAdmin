@@ -1,8 +1,7 @@
 ﻿using LigaCancer.Code;
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Code.Requests;
-using LigaCancer.Code.Responses;
+using LigaCancer.Models.SearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LigaCancer.Data.Store
 {
-    public class CancerTypeStore : IDataStore<CancerType>, IDataTable<CancerType>
+    public class CancerTypeStore : IDataStore<CancerType>
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public CancerTypeStore(ApplicationDbContext context)
         {
@@ -25,12 +24,12 @@ namespace LigaCancer.Data.Store
             return _context.CancerTypes.Count();
         }
 
-        public Task<TaskResult> CreateAsync(CancerType model)
+        public Task<TaskResult> CreateAsync(CancerType cancerType)
         {
             TaskResult result = new TaskResult();
             try
             {
-                _context.CancerTypes.Add(model);
+                _context.CancerTypes.Add(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -47,26 +46,13 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(CancerType model)
+        public Task<TaskResult> DeleteAsync(CancerType cancerType)
         {
             TaskResult result = new TaskResult();
             try
             {
-                CancerType cancerType = _context.CancerTypes.Include(x => x.PatientInformationCancerTypes).FirstOrDefault(b => b.CancerTypeId == model.CancerTypeId);
-                if (cancerType.PatientInformationCancerTypes.Count > 0)
-                {
-                    result.Errors.Add(new TaskError
-                    {
-                        Code = "Acesso Negado",
-                        Description = "Não é possível apagar este tipo de cancêr"
-                    });
-                    return Task.FromResult(result);
-                }
-                cancerType.IsDeleted = true;
-                cancerType.DeletedDate = DateTime.Now;
-                cancerType.Name = DateTime.Now + "||" + cancerType.Name;
-                _context.Update(cancerType);
-
+                
+                _context.CancerTypes.Remove(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -87,35 +73,27 @@ namespace LigaCancer.Data.Store
             _context?.Dispose();
         }
 
-        public Task<CancerType> FindByIdAsync(string id, ISpecification<CancerType> specification = null, bool ignoreQueryFilter = false)
-        {
-            IQueryable<CancerType> queryable = _context.CancerTypes;
-            if (ignoreQueryFilter)
-            {
-                queryable = queryable.IgnoreQueryFilters();
-            }
-
-            if (specification != null)
-            {
-                queryable = queryable.IncludeExpressions(specification.Includes).IncludeByNames(specification.IncludeStrings);
-            }
-
-            return Task.FromResult(queryable.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
-        }
-
-        public Task<List<CancerType>> GetAllAsync(string[] include = null)
+        public Task<CancerType> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<CancerType> query = _context.CancerTypes;
 
-            if (include != null)
-            {
-                foreach (var inc in include)
-                {
-                    query = query.Include(inc);
-                }
-            }
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
+        }
+
+        public Task<List<CancerType>> GetAllAsync(string[] includes = null,
+            string sortColumn = "", string sortDirection = "", object filter = null)
+        {
+            IQueryable<CancerType> query = _context.CancerTypes;
+
+            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationCancerType(query, sortColumn, sortDirection);
+            if (filter != null) query = GetFilteredCancerTypes(query, (CancerTypeSearchModel)filter);
 
             return Task.FromResult(query.ToList());
+
         }
 
         public Task<TaskResult> UpdateAsync(CancerType model)
@@ -138,38 +116,32 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
         
-        //IDataTable
-        public async Task<DataTableResponse> GetOptionResponseWithSpec(DataTableOptions options, ISpecification<CancerType> spec)
-        {
-            var data = await _context.Set<CancerType>()
-                            .IncludeExpressions(spec.Includes)
-                            .IncludeByNames(spec.IncludeStrings)
-                            .GetOptionResponseAsync(options);
-
-            return data;
-        }
-
-        public async Task<DataTableResponse> GetOptionResponse(DataTableOptions options)
-        {
-            return await _context.Set<CancerType>().GetOptionResponseAsync(options);
-        }
-
         #region Custom Methods
 
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
         {
-            if (CancerTypeId == -1)
-            {
-                CancerType cancerType = _context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name);
-                if (cancerType != null && cancerType.IsDeleted)
-                {
-                    cancerType.IsDeleted = false;
-                    cancerType.LastUpdatedDate = DateTime.Now;
-                }
-                return Task.FromResult(cancerType);
-            }
+            return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
+        }
 
-            return Task.FromResult(_context.CancerTypes.IgnoreQueryFilters().FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
+        #endregion
+
+        #region Private Methods
+
+        private IQueryable<CancerType> GetOrdenationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
+            }
+        }
+
+        private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel CancerTypeSearch)
+        {
+            if (!string.IsNullOrEmpty(CancerTypeSearch.Name)) query = query.Where(x => x.Name.Contains(CancerTypeSearch.Name));
+            return query;
         }
 
         #endregion

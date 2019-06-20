@@ -1,31 +1,39 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using LigaCancer.Data.Models;
+using LigaCancer.Models.FormModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace LigaCancer.Controllers
 {
-    using Code;
-    using Data.Models;
-    using Data.Store;
-    using LigaCancer.Models.UserViewModels;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Options;
-
     [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class UserController : Controller
     {
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserController> _logger;
+        private readonly IEmailSender _emailSender;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            ILogger<UserController> logger, 
+            IEmailSender emailSender)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _roleManager = roleManager;
+            _logger = logger;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -37,206 +45,132 @@ namespace LigaCancer.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            UserViewModel model = new UserViewModel();
-
-            IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
-            IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
-           
-            if(userRoleOption != null)
-            {
-                model.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.User),
-                    Value = userRoleOption.Id
-                });
-                model.RoleId = userRoleOption.Id;
-            }
-            if (adminRoleOption != null)
-            {
-                model.ApplicationRoles.Add(new SelectListItem
-                {
-                    Text = Globals.GetDisplayName(Globals.Roles.Admin),
-                    Value = adminRoleOption.Id
-                });
-            }
-
-            return PartialView("_AddUser", model);
+            return PartialView("Partials/_AddUser", new UserFormModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(UserViewModel model)
+        public async Task<IActionResult> AddUser(UserFormModel userForm)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UserName = model.Email,
-                    Email = model.Email,
-                    CreatedBy = User.Identity.Name,
+                    Name = userForm.Name,
+                    UserName = userForm.Email,
+                    Email = userForm.Email,
+                    CreatedBy = User.Identity.Name
                 };
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+                IdentityResult result = await _userManager.CreateAsync(user, userForm.Password);
+
                 if (result.Succeeded)
                 {
-                    IdentityRole applicationRole = await _roleManager.FindByIdAsync(model.RoleId);
-                    if (applicationRole != null)
-                    {
-                        IdentityResult roleResult = await _userManager.AddToRoleAsync(user, applicationRole.Name);
-                    }
-                    return StatusCode(200, "200");
+                    IdentityRole applicationRole = await _roleManager.FindByNameAsync(userForm.Role);
+                    if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
 
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Page(
+                       "/Account/ConfirmEmail",
+                       pageHandler: null,
+                       values: new { area = "Identity", userId = user.Id, code = code },
+                       protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirme seu email",
+                        $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+
+                    return Ok();
                 }
-                ModelState.AddErrors(result);
+                _logger.LogError(result.Errors.FirstOrDefault().Description);
+                return BadRequest();
             }
 
-            model.ApplicationRoles = _roleManager.Roles.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.Id
-            }).ToList();
-
-            return PartialView("_AddUser", model);
+            return PartialView("Partials/_AddUser", userForm);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
-            EditUserViewModel model = new EditUserViewModel();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+            
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            
+            if (user == null) return NotFound();
 
-            if (!String.IsNullOrEmpty(id))
-            {
-                IdentityRole adminRoleOption = _roleManager.FindByNameAsync(Globals.Roles.Admin.ToString()).Result;
-                IdentityRole userRoleOption = _roleManager.FindByNameAsync(Globals.Roles.User.ToString()).Result;
+            EditUserFormModel userForm = new EditUserFormModel(user.Id, user.Name);
 
-                if (userRoleOption != null)
-                {
-                    model.ApplicationRoles.Add(new SelectListItem
-                    {
-                        Text = Globals.GetDisplayName(Globals.Roles.User),
-                        Value = userRoleOption.Id
-                    });
-                }
-                if (adminRoleOption != null)
-                {
-                    model.ApplicationRoles.Add(new SelectListItem
-                    {
-                        Text = Globals.GetDisplayName(Globals.Roles.Admin),
-                        Value = adminRoleOption.Id
-                    });
-                }
+            //Todo change to use await
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+            string userRole = roles.Any() ? roles.FirstOrDefault() : string.Empty;
+            if (!string.IsNullOrEmpty(userRole)) userForm.Role = userRole;
 
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                string userRole = _userManager.GetRolesAsync(user).Result?.FirstOrDefault();
-                if (userRole != null)
-                {
-                    model.Role = _roleManager.FindByNameAsync(userRole).Result.Id;
-                }
-
-                if (user != null)
-                {
-                    model.UserId = user.Id;
-                    model.FirstName = user.FirstName;
-                    model.LastName = user.LastName;
-                    model.Email = user.Email;
-                }
-            }
-            return PartialView("_EditUser", model);
+            return PartialView("Partials/_EditUser", userForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(string id, EditUserViewModel model)
+        public async Task<IActionResult> EditUser(string id, EditUserFormModel userForm)
         {
+            if(string.IsNullOrEmpty(id)) return BadRequest();
+            
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+
+            if (user == null) return NotFound();
+
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                if (user != null)
+                user.Name = userForm.Name;
+
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.Email = model.Email;
-
-                    IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        string userRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                        if(userRole != null)
-                        {
-                            IdentityResult roleResult = await _userManager.RemoveFromRoleAsync(user, userRole);
-                        }
-
-                        IdentityRole role = _roleManager.Roles.FirstOrDefault(x => x.Id == model.Role);
-                        if(role != null)
-                        {
-                            IdentityResult newRoleResult = await _userManager.AddToRoleAsync(user, role.Name);
-                        }
-
-                        return StatusCode(200, "200");
+                    IList<string> userRoles = await _userManager.GetRolesAsync(user);
+                    string userRole = userRoles.FirstOrDefault();
+                    if (userRole != null && userRole != userForm.Role) { 
+                        await _userManager.RemoveFromRoleAsync(user, userRole);
                     }
-                    ModelState.AddErrors(result);
+
+                    IdentityRole role = await _roleManager.FindByNameAsync(userForm.Role);
+                    if (role != null && role.Name != userRole) await _userManager.AddToRoleAsync(user, role.Name);
+
+                    return Ok();
                 }
+                _logger.LogError(result.Errors.FirstOrDefault().Description);
             }
 
-            return PartialView("_EditUser", model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            string name = string.Empty;
-            if (!String.IsNullOrEmpty(id))
-            {
-                ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-                if (applicationUser != null)
-                {
-                    name = $"{applicationUser.FirstName} {applicationUser.LastName}";
-                }
-            }
-            return PartialView("_DeleteUser", name);
+            return PartialView("Partials/_EditUser", userForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteUser(string id, IFormCollection form)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            if (!String.IsNullOrEmpty(id))
-            {
-                ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
-                if (applicationUser != null)
-                {
-                    applicationUser.DeletedDate = DateTime.Now;
-                    applicationUser.IsDeleted = true;
-                    IdentityResult result = await _userManager.UpdateAsync(applicationUser);
-                    if (result.Succeeded)
-                    {
-                        return StatusCode(200, "200");
-                    }
-                    ModelState.AddErrors(result);
-                    return PartialView("_DeleteUser", $"{applicationUser.FirstName} {applicationUser.LastName}");
-                }
-            }
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+
+            if (applicationUser == null) return NotFound();
+
+            IdentityResult result = await _userManager.DeleteAsync(applicationUser);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(result.Errors.FirstOrDefault().Description);
+            return BadRequest();
         }
 
-        #region Custom Methods
-
-        public JsonResult IsEmailUsed(string Email, string UserId)
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UnlockUser(string id)
         {
-            ApplicationUser user = _userManager.FindByEmailAsync(Email).Result;
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            if (user != null)
-            {
-                if(user.Id == UserId)
-                {
-                    return Json(true);
-                }
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+
+            if (applicationUser == null) return NotFound();
+
+            IdentityResult result = await _userManager.SetLockoutEndDateAsync(applicationUser, null);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(result.Errors.FirstOrDefault().Description);
+            return BadRequest();
         }
-
-        #endregion
     }
 }
