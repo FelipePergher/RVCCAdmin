@@ -75,6 +75,7 @@
       "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
       "wwwroot/lib/dropzone/min/dropzone.min.js",
       "wwwroot/lib/jeditable/jquery.jeditable.min.js",
+      "wwwroot/lib/jquery-mask/jquery.mask.min.js",
       "wwwroot/js/patient.js"
     ],
     "minify": {

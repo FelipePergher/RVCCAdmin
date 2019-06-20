@@ -67,6 +67,7 @@ $(function () {
 
 function initPage() {
     $('#userTable').attr('style', 'border-collapse: collapse !important');
+    setupValidation();
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();

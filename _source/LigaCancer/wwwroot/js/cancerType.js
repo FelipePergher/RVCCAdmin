@@ -56,6 +56,7 @@ $(function () {
 
 function initPage() {
     $('#cancerTypeTable').attr('style', 'border-collapse: collapse !important');
+    setupValidation();
 
     $("#addCancerTypeButton").click(function () {
         openModal($(this).attr("href"), $(this).data("title"), initAddForm);

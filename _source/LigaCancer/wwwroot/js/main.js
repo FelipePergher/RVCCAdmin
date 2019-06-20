@@ -143,8 +143,7 @@ function dateFormat(dateOfBirth) {
     return dateString;
 }
 
-//Configure to add error class to input when have error
-$(function () {
+function setupValidation() {
     $.validator.setDefaults({
         highlight: function highlight(element) {
             $(element).addClass('is-invalid').removeClass('is-valid');
@@ -159,4 +158,4 @@ $(function () {
             element.prop('type') === 'checkbox' ? error.insertAfter(element.parent('label')) : error.insertAfter(element);
         }
     });
-});
+}

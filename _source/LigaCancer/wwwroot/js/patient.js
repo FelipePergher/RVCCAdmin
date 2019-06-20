@@ -24,6 +24,7 @@ $(function () {
 
 function initPage() {
     $("#Cpf").mask(masks.Cpf);
+    setupValidation();
 
     patientTable = $("#patientTable").DataTable({
         dom: "l<'export-buttons'B>frtip",

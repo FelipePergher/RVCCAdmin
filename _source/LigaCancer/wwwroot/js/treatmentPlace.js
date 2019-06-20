@@ -56,6 +56,7 @@ $(function () {
 
 function initPage() {
     $('#treatmentPlaceTable').attr('style', 'border-collapse: collapse !important');
+    setupValidation();
 
     $("#addTreatmentPlaceButton").click(function () {
         openModal($(this).attr("href"), $(this).data("title"), initAddForm);
