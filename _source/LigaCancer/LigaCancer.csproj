@@ -9,19 +9,15 @@
   <ItemGroup>
     <Compile Remove="lib\**" />
     <Compile Remove="Logs\**" />
-    <Compile Remove="wwwroot\dist\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="lib\**" />
     <Content Remove="Logs\**" />
-    <Content Remove="wwwroot\dist\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Logs\**" />
-    <EmbeddedResource Remove="wwwroot\dist\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="lib\**" />
     <None Remove="Logs\**" />
-    <None Remove="wwwroot\dist\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
@@ -30,6 +26,17 @@
     <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\dist\js\cancer-type.min.js" />
+    <None Include="wwwroot\dist\js\doctor.min.js" />
+    <None Include="wwwroot\dist\js\form.min.js" />
+    <None Include="wwwroot\dist\js\home.min.js" />
+    <None Include="wwwroot\dist\js\main.min.js" />
+    <None Include="wwwroot\dist\js\medicine.min.js" />
+    <None Include="wwwroot\dist\js\patient-details.min.js" />
+    <None Include="wwwroot\dist\js\patient.min.js" />
+    <None Include="wwwroot\dist\js\presence.min.js" />
+    <None Include="wwwroot\dist\js\treatment-place.min.js" />
+    <None Include="wwwroot\dist\js\user.min.js" />
     <None Include="wwwroot\js\coreui.min.js" />
     <None Include="wwwroot\js\custom-tooltips.min.js" />
     <None Include="wwwroot\css\custom.css" />

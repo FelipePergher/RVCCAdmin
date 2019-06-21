@@ -17,7 +17,7 @@
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
       "wwwroot/js/coreui.min.js",
-      "wwwroot/popper/umd/popper.min.js",
+      "wwwroot/lib/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
       "wwwroot/js/main.js"
@@ -41,6 +41,18 @@
       "renameLocals": true
     }
   },
+  /* Login */
+  {
+    "outputFileName": "wwwroot/dist/js/login.min.js",
+    "inputFiles": [
+      "wwwroot/js/login.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
   /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
@@ -49,8 +61,8 @@
       //"wwwroot/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css"
       "wwwroot/lib/select2/theme/select2-bootstrap.min.css",
       "wwwroot/lib/select2/css/select2.min.css",
-      "wwwroot/gijgo/combined/css/gijgo.min.css",
-      "wwwroot/dropzone/min/dropzone.min.css"
+      "wwwroot/lib/gijgo/combined/css/gijgo.min.css",
+      "wwwroot/lib/dropzone/min/dropzone.min.css"
     ],
     "minify": {
       "enabled": true,
@@ -75,6 +87,7 @@
       "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
       "wwwroot/lib/dropzone/min/dropzone.min.js",
       "wwwroot/lib/jeditable/jquery.jeditable.min.js",
+      "wwwroot/lib/jquery-mask/jquery.mask.min.js",
       "wwwroot/js/patient.js"
     ],
     "minify": {

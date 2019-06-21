@@ -155,5 +155,22 @@ namespace LigaCancer.Controllers
             _logger.LogError(result.Errors.FirstOrDefault().Description);
             return BadRequest();
         }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UnlockUser(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+
+            if (applicationUser == null) return NotFound();
+
+            IdentityResult result = await _userManager.SetLockoutEndDateAsync(applicationUser, null);
+
+            if (result.Succeeded) return Ok();
+            _logger.LogError(result.Errors.FirstOrDefault().Description);
+            return BadRequest();
+        }
     }
 }
