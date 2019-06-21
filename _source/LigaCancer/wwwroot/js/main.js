@@ -143,19 +143,21 @@ function dateFormat(dateOfBirth) {
     return dateString;
 }
 
-function setupValidation() {
-    $.validator.setDefaults({
-        highlight: function highlight(element) {
-            $(element).addClass('is-invalid').removeClass('is-valid');
-        },
-        // eslint-disable-next-line object-shorthand
-        unhighlight: function unhighlight(element) {
-            $(element).addClass('is-valid').removeClass('is-invalid');
-        },
-        errorElement: 'span',
-        errorPlacement: function errorPlacement(error, element) {
-            error.addClass('invalid-feedback');
-            element.prop('type') === 'checkbox' ? error.insertAfter(element.parent('label')) : error.insertAfter(element);
-        }
-    });
-}
+$(function () {
+    if (!!$.validator) {
+        $.validator.setDefaults({
+            highlight: function highlight(element) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            // eslint-disable-next-line object-shorthand
+            unhighlight: function unhighlight(element) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            errorElement: 'span',
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass('invalid-feedback');
+                element.prop('type') === 'checkbox' ? error.insertAfter(element.parent('label')) : error.insertAfter(element);
+            }
+        });
+    }
+});

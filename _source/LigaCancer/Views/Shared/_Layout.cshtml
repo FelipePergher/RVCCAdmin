@@ -1,17 +1,18 @@
 ﻿<!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
-    <title>@ViewData["Title"] - Rede Videirense de Combate ao Câncer</title>
     <base href="./">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"] - Rede Videirense de Combate ao Câncer</title>
 
     <environment names="Development">
         <link href="~/css/fontawesome.min.css" rel="stylesheet" />
-        <link href="~/css/style.css" rel="stylesheet"/>
-        <link href="~/css/custom.css" rel="stylesheet"/>
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="~/css/custom.css" rel="stylesheet" />
     </environment>
-    <environment  exclude="Development">
+    <environment exclude="Development">
         <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
@@ -57,16 +58,16 @@
                     </li>
 
                     @*<li class="nav-title">Benefícios</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-gift"></i> Benefícios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
-                        </a>
-                    </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-gift"></i> Benefícios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
+                            </a>
+                        </li>*@
                     <li class="nav-title">Informações Médicas</li>
                     <li class="nav-item">
                         <a asp-action="Index" asp-controller="Medicine" class="nav-link">
@@ -89,16 +90,16 @@
                         </a>
                     </li>
                     @*<li class="nav-title">Relatórios</li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="nav-icon fa fa-file-medical"></i> Relatórios
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
-            </a>
-        </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical"></i> Relatórios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
+                            </a>
+                        </li> *@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-title">Administrativo</li>
@@ -132,7 +133,7 @@
     <environment exclude="Development">
         <script src="~/dist/js/main.min.js" asp-append-version="true"></script>
     </environment>
-    
+
     @RenderSection("scripts", required: false)
 </body>
 

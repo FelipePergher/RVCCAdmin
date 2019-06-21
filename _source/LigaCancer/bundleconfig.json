@@ -41,6 +41,18 @@
       "renameLocals": true
     }
   },
+  /* Login */
+  {
+    "outputFileName": "wwwroot/dist/js/login.min.js",
+    "inputFiles": [
+      "wwwroot/js/login.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
   /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",

@@ -56,7 +56,6 @@ $(function () {
 
 function initPage() {
     $('#medicineTable').attr('style', 'border-collapse: collapse !important');
-    setupValidation();
 
     $("#addMedicineButton").click(function () {
         openModal($(this).attr("href"), $(this).data("title"), initAddForm);
