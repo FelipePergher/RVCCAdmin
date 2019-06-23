@@ -53,8 +53,7 @@ namespace LigaCancer.Models.FormModel
         public string Profession { get; set; }
 
         [Display(Name = "Renda mensal")]
-        [Range(0, 1000000.00, ErrorMessage = "Insira um valor de 0.00 até 1,000,000")]
-        public decimal MonthlyIncome { get; set; }
+        public string MonthlyIncome { get; set; }
 
     }
 }

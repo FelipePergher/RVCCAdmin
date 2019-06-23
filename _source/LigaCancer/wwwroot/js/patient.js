@@ -161,6 +161,8 @@ function initPage() {
 //Add Functions
 function initAddProfileForm() {
     $("#CPF").mask(masks.Cpf);
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
+
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#addPatientProfileForm");
@@ -231,6 +233,8 @@ function addPatientInformationSuccess(data, textStatus) {
 //Edit Functions
 function initEditProfileForm() {
     $("#CPF").mask(masks.Cpf);
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
+
     calendar("DateOfBirth");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#editPatientProfileForm");
@@ -615,6 +619,7 @@ function initFamilyMemberIndex() {
 }
 
 function initAddFamilyMemberForm() {
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#addFamilyMemberForm");
@@ -624,6 +629,7 @@ function addFamilyMemberSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         familyMemberTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Endereço adicionado com sucesso.", "success");
     }
     else {
@@ -633,6 +639,7 @@ function addFamilyMemberSuccess(data, textStatus) {
 }
 
 function initEditFamilyMemberForm() {
+    $("#MonthlyIncome").mask(masks.Price, { reverse: true });
     $(".familyMemberSelect2").select2();
     calendar("dateOfBirth");
     $.validator.unobtrusive.parse("#editFamilyMemberForm");
@@ -642,6 +649,7 @@ function editFamilyMemberSuccess(data, textStatus) {
     if (!data && textStatus === "success") {
         $("#modal-action-secondary").modal("hide");
         familyMemberTable.ajax.reload(null, false);
+        patientTable.ajax.reload(null, false);
         swalWithBootstrapButtons.fire("Sucesso", "Endereço atualizado com sucesso.", "success");
     }
     else {
