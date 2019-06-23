@@ -174,6 +174,7 @@ function addProfileSuccess(data, textStatus) {
             text: "Paciente registrado com sucesso.",
             type: 'success'
         }).then((result) => {
+            patientTable.ajax.reload(null, false);
             cleanModal();
             openModal(data.url, data.title, initAddNaturalityForm);
         });
@@ -218,9 +219,7 @@ function addPatientInformationSuccess(data, textStatus) {
             text: "Informação do paciente adicionada com sucesso.",
             type: 'success'
         }).then((result) => {
-            //Todo call Contact/address form
             $("#modal-action").modal("hide");
-            patientTable.ajax.reload(null, false);
         });
     }
     else {

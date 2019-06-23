@@ -198,7 +198,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
+                if (result.Succeeded) return Ok(new { ok = true });
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }

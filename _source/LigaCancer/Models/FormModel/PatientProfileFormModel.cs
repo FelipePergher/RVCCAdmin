@@ -31,6 +31,7 @@ namespace LigaCancer.Models.FormModel
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [Remote("IsCpfExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
+        [StringLength(14, MinimumLength = 14, ErrorMessage = "CPF inválido")]
         public string CPF { get; set; }
 
         [Display(Name = "Grupo de Convivência")]
