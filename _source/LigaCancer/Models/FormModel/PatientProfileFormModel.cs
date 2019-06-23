@@ -31,6 +31,7 @@ namespace LigaCancer.Models.FormModel
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [Remote("IsCpfExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "CPF já registrado!")]
+        [StringLength(14, MinimumLength = 14, ErrorMessage = "CPF inválido")]
         public string CPF { get; set; }
 
         [Display(Name = "Grupo de Convivência")]
@@ -52,8 +53,7 @@ namespace LigaCancer.Models.FormModel
         public string Profession { get; set; }
 
         [Display(Name = "Renda mensal")]
-        [Range(0, 1000000.00, ErrorMessage = "Insira um valor de 0.00 até 1,000,000")]
-        public decimal MonthlyIncome { get; set; }
+        public string MonthlyIncome { get; set; }
 
     }
 }

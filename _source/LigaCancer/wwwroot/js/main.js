@@ -46,7 +46,8 @@ var SPMaskBehavior = function (val) {
     };
 
 let masks = {
-    Cpf: '000.000.000-00'
+    Cpf: '000.000.000-00',
+    Price: '000.000.000.000.000,00'
 };
 
 function calendar(id) {

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,7 +64,8 @@ namespace LigaCancer.Controllers
                     PatientId = int.Parse(id),
                     DateOfBirth = familyMemberForm.DateOfBirth,
                     Kinship = familyMemberForm.Kinship,
-                    MonthlyIncome = (double) familyMemberForm.MonthlyIncome,
+                    MonthlyIncome =
+                        (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
                     UserCreated = await _userManager.GetUserAsync(User)
@@ -92,7 +94,7 @@ namespace LigaCancer.Controllers
             {
                 DateOfBirth = familyMember.DateOfBirth,
                 Kinship = familyMember.Kinship,
-                MonthlyIncome = (decimal) familyMember.MonthlyIncome,
+                MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
                 Name = familyMember.Name,
                 Sex = familyMember.Sex
             });
@@ -107,7 +109,8 @@ namespace LigaCancer.Controllers
             
                 familyMember.DateOfBirth = familyMemberForm.DateOfBirth;
                 familyMember.Kinship = familyMemberForm.Kinship;
-                familyMember.MonthlyIncome = (double)familyMemberForm.MonthlyIncome;
+                familyMember.MonthlyIncome = 
+                    (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
                 familyMember.UpdatedDate = DateTime.Now;

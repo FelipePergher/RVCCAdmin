@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -82,7 +83,8 @@ namespace LigaCancer.Controllers
                     DateOfBirth = patientProfileForm.DateOfBirth.Value,
                     Profession = patientProfileForm.Profession,
                     UserCreated = await _userManager.GetUserAsync(User),
-                    MonthlyIncome = (double) patientProfileForm.MonthlyIncome
+                    MonthlyIncome = 
+                        (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0)
                 };
 
                 TaskResult result = await _patientService.CreateAsync(patient);
@@ -198,7 +200,7 @@ namespace LigaCancer.Controllers
 
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientPhone", new { id = patientInformation.PatientId }), title = "Adicionar Telefone" });
+                if (result.Succeeded) return Ok(new { ok = true });
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -235,7 +237,7 @@ namespace LigaCancer.Controllers
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
                 DateOfBirth = patient.DateOfBirth,
-                MonthlyIncome = (decimal) patient.MonthlyIncome,
+                MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
                 Profession = patient.Profession
             };
 
@@ -259,7 +261,8 @@ namespace LigaCancer.Controllers
                 patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
                 patient.Profession = patientProfileForm.Profession;
                 patient.UserUpdated = await _userManager.GetUserAsync(User);
-                patient.MonthlyIncome = (double) patientProfileForm.MonthlyIncome;
+                patient.MonthlyIncome =
+                        (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
