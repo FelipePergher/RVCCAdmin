@@ -40,11 +40,7 @@
                                 </span>
                             </div>
                             <input asp-for="Login.Password" type="password" class="form-control" placeholder="Senha" id="password">
-                            <div class="input-group-append ">
-                                <span class="input-group-text">
-                                    <i class="fas fa-eye-slash" id="eyePassword" ></i>
-                                </span>
-                            </div>
+                            <i class="eye-password fas fa-eye-slash" id="eyePassword"></i>
                         </div>
                         <span asp-validation-for="Login.Password" class="text-danger ml-5"></span>
                     </div>

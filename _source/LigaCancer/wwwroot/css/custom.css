@@ -62,3 +62,13 @@
 .progressAddPatient {
     background-color: #20a8d8 !important;
 }
+
+.eye-password {
+    cursor: pointer;
+    margin-left: auto;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translate(-50%, -50%);
+    margin-right: auto;
+}
