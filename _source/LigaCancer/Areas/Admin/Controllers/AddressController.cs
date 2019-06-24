@@ -12,10 +12,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers
+namespace LigaCancer.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin, User")]
     [AutoValidateAntiforgeryToken]
+    [Area("Admin")]
     public class AddressController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -22,10 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Areas\Admin\Views\Home\Index.cshtml" />
     <None Include="wwwroot\dist\js\cancer-type.min.js" />
     <None Include="wwwroot\dist\js\doctor.min.js" />
     <None Include="wwwroot\dist\js\form.min.js" />
@@ -73,100 +70,100 @@
     <Content Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Address\Partials\_Index.cshtml">
+    <Content Update="Areas\Admin\Views\Address\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\Partials\_FormCancerType.cshtml">
+    <Content Update="Areas\Admin\Views\CancerType\Partials\_FormCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\FamilyMember\Partials\_Index.cshtml">
+    <Content Update="Areas\Admin\Views\FamilyMember\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\FamilyMember\Partials\_AddFamilyMember.cshtml">
+    <Content Update="Areas\Admin\Views\FamilyMember\Partials\_AddFamilyMember.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\FamilyMember\Partials\_EditFamilyMember.cshtml">
+    <Content Update="Areas\Admin\Views\FamilyMember\Partials\_EditFamilyMember.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\Partials\_FormMedicine.cshtml">
+    <Content Update="Areas\Admin\Views\Medicine\Partials\_FormMedicine.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Index.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_EditPatientInformation.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_EditPatientInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_EditPatientNaturality.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_EditPatientNaturality.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_EditPatientProfile.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_EditPatientProfile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_AddPatientInformation.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_AddPatientInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_PatientInformation.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_PatientInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_AddPatientNaturality.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_AddPatientNaturality.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_PatientNaturality.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_PatientNaturality.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_AddPatientProfile.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_AddPatientProfile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_PatientProfile.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_PatientProfile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Address\Partials\_AddAddress.cshtml">
+    <Content Update="Areas\Admin\Views\Address\Partials\_AddAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Address\Partials\_EditAddress.cshtml">
+    <Content Update="Areas\Admin\Views\Address\Partials\_EditAddress.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Phone\Partials\_Index.cshtml">
+    <Content Update="Areas\Admin\Views\Phone\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Phone\Partials\_AddPhone.cshtml">
+    <Content Update="Areas\Admin\Views\Phone\Partials\_AddPhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Phone\Partials\_EditPhone.cshtml">
+    <Content Update="Areas\Admin\Views\Phone\Partials\_EditPhone.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Patient\Partials\_ArchivePatient.cshtml">
+    <Content Update="Areas\Admin\Views\Patient\Partials\_ArchivePatient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\Index.cshtml">
+    <Content Update="Areas\Admin\Views\Medicine\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\Partials\_AddMedicine.cshtml">
+    <Content Update="Areas\Admin\Views\Medicine\Partials\_AddMedicine.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Medicine\Partials\_EditMedicine.cshtml">
+    <Content Update="Areas\Admin\Views\Medicine\Partials\_EditMedicine.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\Index.cshtml">
+    <Content Update="Areas\Admin\Views\CancerType\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\Partials\_AddCancerType.cshtml">
+    <Content Update="Areas\Admin\Views\CancerType\Partials\_AddCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\CancerType\Partials\_EditCancerType.cshtml">
+    <Content Update="Areas\Admin\Views\CancerType\Partials\_EditCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Doctor\Partials\_EditDoctor.cshtml">
+    <Content Update="Areas\Admin\Views\Doctor\Partials\_EditDoctor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\User\Index.cshtml">
+    <Content Update="Areas\Admin\Views\User\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\User\Partials\_AddUser.cshtml">
+    <Content Update="Areas\Admin\Views\User\Partials\_AddUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\User\Partials\_EditUser.cshtml">
+    <Content Update="Areas\Admin\Views\User\Partials\_EditUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

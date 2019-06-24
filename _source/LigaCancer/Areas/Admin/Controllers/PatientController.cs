@@ -14,10 +14,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers
+namespace LigaCancer.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin, User")]
     [AutoValidateAntiforgeryToken]
+    [Area("Admin")]
     public class PatientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

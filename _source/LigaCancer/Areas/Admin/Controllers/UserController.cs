@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers
+namespace LigaCancer.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
     [AutoValidateAntiforgeryToken]
+    [Area("Admin")]
     public class UserController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers
+namespace LigaCancer.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin, User")]
     [AutoValidateAntiforgeryToken]
+    [Area("Admin")]
     public class FamilyMemberController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
