@@ -53,6 +53,18 @@
       "renameLocals": true
     }
   },
+  /* Reset Password */
+  {
+    "outputFileName": "wwwroot/dist/js/reset-password.min.js",
+    "inputFiles": [
+      "wwwroot/admin/js/reset-password.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
   /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
