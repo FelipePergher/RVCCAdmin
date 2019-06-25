@@ -372,9 +372,9 @@
       "wwwroot/lib/jquery/jquery.min.js",
       "wwwroot/lib/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
-      "wwwroot/cms/js/jquery.nav.js",
-      "wwwroot/cms/js/jquery.slicknav.js",
-      "wwwroot/cms/js/main.js"
+      "wwwroot/js/cms/jquery.nav.js",
+      "wwwroot/js/cms/jquery.slicknav.js",
+      "wwwroot/js/cms/main.js"
     ],
     "minify": {
       "enabled": true,
