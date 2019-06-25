@@ -1,10 +1,11 @@
 [
+  /* Main */
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/admin/css/fontawesome.min.css",
-      "wwwroot/admin/css/style.css",
-      "wwwroot/admin/css/custom.css"
+      "wwwroot/css/admin/fontawesome.min.css",
+      "wwwroot/css/admin/style.css",
+      "wwwroot/css/admin/custom.css"
     ],
     "minify": {
       "enabled": true,
@@ -16,11 +17,11 @@
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/admin/js/coreui.min.js",
+      "wwwroot/js/admin/coreui.min.js",
       "wwwroot/lib/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
-      "wwwroot/admin/js/main.js"
+      "wwwroot/js/admin/main.js"
     ],
     "minify": {
       "enabled": true,
@@ -41,11 +42,27 @@
       "renameLocals": true
     }
   },
+  /* Main */
+
   /* Login */
   {
     "outputFileName": "wwwroot/dist/js/login.min.js",
     "inputFiles": [
-      "wwwroot/admin/js/login.js"
+      "wwwroot/js/admin/login.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Login */
+
+  /* Reset Password */
+  {
+    "outputFileName": "wwwroot/dist/js/reset-password.min.js",
+    "inputFiles": [
+      "wwwroot/js/admin/reset-password.js"
     ],
     "minify": {
       "enabled": true,
@@ -54,17 +71,7 @@
     }
   },
   /* Reset Password */
-  {
-    "outputFileName": "wwwroot/dist/js/reset-password.min.js",
-    "inputFiles": [
-      "wwwroot/admin/js/reset-password.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "outputMode": "singleLine",
-      "renameLocals": true
-    }
-  },
+
   /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",
@@ -100,7 +107,7 @@
       "wwwroot/lib/dropzone/min/dropzone.min.js",
       "wwwroot/lib/jeditable/jquery.jeditable.min.js",
       "wwwroot/lib/jquery-mask/jquery.mask.min.js",
-      "wwwroot/admin/js/patient.js"
+      "wwwroot/js/admin/patient.js"
     ],
     "minify": {
       "enabled": true,
@@ -134,7 +141,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/treatmentPlace.js"
+      "wwwroot/js/admin/treatmentPlace.js"
     ],
     "minify": {
       "enabled": true,
@@ -168,7 +175,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/cancerType.js"
+      "wwwroot/js/admin/cancerType.js"
     ],
     "minify": {
       "enabled": true,
@@ -202,7 +209,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/doctor.js"
+      "wwwroot/js/admin/doctor.js"
     ],
     "minify": {
       "enabled": true,
@@ -236,7 +243,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/medicine.js"
+      "wwwroot/js/admin/medicine.js"
     ],
     "minify": {
       "enabled": true,
@@ -274,7 +281,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/user.js"
+      "wwwroot/js/admin/user.js"
     ],
     "minify": {
       "enabled": true,
@@ -289,8 +296,8 @@
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
       "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/admin/js/custom-tooltips.min.js",
-      "wwwroot/admin/js/home.js"
+      "wwwroot/js/admin/custom-tooltips.min.js",
+      "wwwroot/js/admin/home.js"
     ],
     "minify": {
       "enabled": true,
@@ -331,7 +338,43 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/admin/js/presence.js"
+      "wwwroot/js/admin/presence.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Presence */
+
+  /* Homepage */
+  {
+    "outputFileName": "wwwroot/dist/css/homepage.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/css/bootstrap.min.css",
+      "wwwroot/css/fontawesome.min.css",
+      "wwwroot/css/cms/slicknav.css",
+      "wwwroot/css/cms/animate.css",
+      "wwwroot/css/cms/main.css",
+      "wwwroot/css/cms/extras.css",
+      "wwwroot/css/cms/responsive.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/js/homepage.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.min.js",
+      "wwwroot/lib/popper/umd/popper.min.js",
+      "wwwroot/lib/bootstrap/js/bootstrap.min.js",
+      "wwwroot/cms/js/jquery.nav.js",
+      "wwwroot/cms/js/jquery.slicknav.js",
+      "wwwroot/cms/js/main.js"
     ],
     "minify": {
       "enabled": true,
@@ -339,5 +382,5 @@
       "renameLocals": true
     }
   }
-  /* Presence */
+  /* Homepage */
 ]

@@ -74,3 +74,13 @@
     color:#5c6873;
     z-index: 10;
 }
+
+.no-decoration {
+    text-decoration: none;
+    color: inherit;
+}
+
+.no-decoration:hover {
+    text-decoration: none;
+    color: inherit;
+}

@@ -22,30 +22,40 @@
     <meta property="og:locale" content="pt-br" />
     <meta property="og:site_name" content="Rede Videirense de combate ao Câncer" />
 
-    <!-- Bootstrap CSS -->
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Font -->
-    <link href="~/css/fontawesome.min.css" rel="stylesheet" />
-    <!-- Slicknav -->
-    <link href="~/css/cms/slicknav.css" rel="stylesheet" />
-    <!-- Animate -->
-    <link href="~/css/cms/animate.css" rel="stylesheet" />
-    <!-- Main Style -->
-    <link href="~/css/cms/main.css" rel="stylesheet" />
-    <!-- Extras Style -->
-    <link href="~/css/cms/extras.css" rel="stylesheet" />
-    <!-- Responsive Style -->
-    <link href="~/css/cms/responsive.css" rel="stylesheet" />
+    <environment names="Development">
+        <!-- Bootstrap CSS -->
+        <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Font -->
+        <link href="~/css/fontawesome.min.css" rel="stylesheet" />
+        <!-- Slicknav -->
+        <link href="~/css/cms/slicknav.css" rel="stylesheet" />
+        <!-- Animate -->
+        <link href="~/css/cms/animate.css" rel="stylesheet" />
+        <!-- Main Style -->
+        <link href="~/css/cms/main.css" rel="stylesheet" />
+        <!-- Extras Style -->
+        <link href="~/css/cms/extras.css" rel="stylesheet" />
+        <!-- Responsive Style -->
+        <link href="~/css/cms/responsive.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/homepage.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
 
 </head>
 <body>
     @RenderBody()
 
-    <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/popper/umd/popper.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/cms/jquery.nav.js"></script>
-    <script src="~/js/cms/jquery.slicknav.js"></script>
-    <script src="~/js/cms/main.js"></script>
+    <environment names="Development">
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/popper/umd/popper.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/js/cms/jquery.nav.js"></script>
+        <script src="~/js/cms/jquery.slicknav.js"></script>
+        <script src="~/js/cms/main.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/homepage.min.js" asp-append-version="true"></script>
+    </environment>
 </body>
 </html>
