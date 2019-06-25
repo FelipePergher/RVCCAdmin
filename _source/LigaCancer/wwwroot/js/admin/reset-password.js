@@ -5,12 +5,13 @@ $(function () {
 function initPage() {
     $(".eyePassword").click(function () {
         let icon = $(this);
+        let inputPassword = icon.siblings("input");
         if (icon.hasClass("fa-eye")) {
             icon.removeClass("fa-eye").addClass("fa-eye-slash");
-            $("#password").attr("type", "password");
+            inputPassword.attr("type", "password");
         } else {
             icon.addClass("fa-eye").removeClass("fa-eye-slash");
-            $("#password").attr("type", "text");
+            inputPassword.attr("type", "text");
         }
     });
 }
