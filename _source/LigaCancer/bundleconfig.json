@@ -2,9 +2,9 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/css/fontawesome.min.css",
-      "wwwroot/css/style.css",
-      "wwwroot/css/custom.css"
+      "wwwroot/admin/css/fontawesome.min.css",
+      "wwwroot/admin/css/style.css",
+      "wwwroot/admin/css/custom.css"
     ],
     "minify": {
       "enabled": true,
@@ -16,11 +16,11 @@
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/js/coreui.min.js",
+      "wwwroot/admin/js/coreui.min.js",
       "wwwroot/lib/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
-      "wwwroot/js/main.js"
+      "wwwroot/admin/js/main.js"
     ],
     "minify": {
       "enabled": true,
@@ -45,7 +45,7 @@
   {
     "outputFileName": "wwwroot/dist/js/login.min.js",
     "inputFiles": [
-      "wwwroot/js/login.js"
+      "wwwroot/admin/js/login.js"
     ],
     "minify": {
       "enabled": true,
@@ -88,7 +88,7 @@
       "wwwroot/lib/dropzone/min/dropzone.min.js",
       "wwwroot/lib/jeditable/jquery.jeditable.min.js",
       "wwwroot/lib/jquery-mask/jquery.mask.min.js",
-      "wwwroot/js/patient.js"
+      "wwwroot/admin/js/patient.js"
     ],
     "minify": {
       "enabled": true,
@@ -122,7 +122,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/treatmentPlace.js"
+      "wwwroot/admin/js/treatmentPlace.js"
     ],
     "minify": {
       "enabled": true,
@@ -156,7 +156,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/cancerType.js"
+      "wwwroot/admin/js/cancerType.js"
     ],
     "minify": {
       "enabled": true,
@@ -190,7 +190,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/doctor.js"
+      "wwwroot/admin/js/doctor.js"
     ],
     "minify": {
       "enabled": true,
@@ -224,7 +224,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/medicine.js"
+      "wwwroot/admin/js/medicine.js"
     ],
     "minify": {
       "enabled": true,
@@ -262,7 +262,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/user.js"
+      "wwwroot/admin/js/user.js"
     ],
     "minify": {
       "enabled": true,
@@ -277,8 +277,8 @@
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
       "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/js/custom-tooltips.min.js",
-      "wwwroot/js/home.js"
+      "wwwroot/admin/js/custom-tooltips.min.js",
+      "wwwroot/admin/js/home.js"
     ],
     "minify": {
       "enabled": true,
@@ -319,7 +319,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/presence.js"
+      "wwwroot/admin/js/presence.js"
     ],
     "minify": {
       "enabled": true,

@@ -9,15 +9,35 @@
   <ItemGroup>
     <Compile Remove="lib\**" />
     <Compile Remove="Logs\**" />
+    <Compile Remove="wwwroot\img\clients\**" />
+    <Compile Remove="wwwroot\img\portfolio\**" />
+    <Compile Remove="wwwroot\img\slider\**" />
+    <Compile Remove="wwwroot\img\team\**" />
+    <Compile Remove="wwwroot\img\testimonial\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="lib\**" />
     <Content Remove="Logs\**" />
+    <Content Remove="wwwroot\img\clients\**" />
+    <Content Remove="wwwroot\img\portfolio\**" />
+    <Content Remove="wwwroot\img\slider\**" />
+    <Content Remove="wwwroot\img\team\**" />
+    <Content Remove="wwwroot\img\testimonial\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="wwwroot\img\clients\**" />
+    <EmbeddedResource Remove="wwwroot\img\portfolio\**" />
+    <EmbeddedResource Remove="wwwroot\img\slider\**" />
+    <EmbeddedResource Remove="wwwroot\img\team\**" />
+    <EmbeddedResource Remove="wwwroot\img\testimonial\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="lib\**" />
     <None Remove="Logs\**" />
+    <None Remove="wwwroot\img\clients\**" />
+    <None Remove="wwwroot\img\portfolio\**" />
+    <None Remove="wwwroot\img\slider\**" />
+    <None Remove="wwwroot\img\team\**" />
+    <None Remove="wwwroot\img\testimonial\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
@@ -34,24 +54,24 @@
     <None Include="wwwroot\dist\js\presence.min.js" />
     <None Include="wwwroot\dist\js\treatment-place.min.js" />
     <None Include="wwwroot\dist\js\user.min.js" />
-    <None Include="wwwroot\js\coreui.min.js" />
-    <None Include="wwwroot\js\custom-tooltips.min.js" />
-    <None Include="wwwroot\css\custom.css" />
-    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\js\admin\coreui.min.js" />
+    <None Include="wwwroot\js\admin\custom-tooltips.min.js" />
+    <None Include="wwwroot\css\admin\custom.css" />
+    <None Include="wwwroot\css\admin\style.css" />
     <None Include="wwwroot\webfonts\fa-brands-400.svg" />
     <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
     <None Include="wwwroot\webfonts\fa-regular-400.svg" />
     <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
     <None Include="wwwroot\webfonts\fa-solid-900.svg" />
     <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
-    <None Include="wwwroot\js\cancerType.js" />
-    <None Include="wwwroot\js\doctor.js" />
-    <None Include="wwwroot\js\home.js" />
-    <None Include="wwwroot\js\main.js" />
-    <None Include="wwwroot\js\medicine.js" />
-    <None Include="wwwroot\js\patient.js" />
-    <None Include="wwwroot\js\treatmentPlace.js" />
-    <None Include="wwwroot\js\user.js" />
+    <None Include="wwwroot\js\admin\cancerType.js" />
+    <None Include="wwwroot\js\admin\doctor.js" />
+    <None Include="wwwroot\js\admin\home.js" />
+    <None Include="wwwroot\js\admin\main.js" />
+    <None Include="wwwroot\js\admin\medicine.js" />
+    <None Include="wwwroot\js\admin\patient.js" />
+    <None Include="wwwroot\js\admin\treatmentPlace.js" />
+    <None Include="wwwroot\js\admin\user.js" />
   </ItemGroup>
 
   <ItemGroup>
