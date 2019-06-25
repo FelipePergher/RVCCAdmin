@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta NAME="robots" CONTENT="noindex,nofollow">
+    <title>@ViewData["Title"] - Rede Videirense de Combate ao Câncer</title>
+
+    <environment names="Development">
+        <link href="~/css/fontawesome.min.css" rel="stylesheet" />
+        <link href="~/css/admin/style.css" rel="stylesheet" />
+        <link href="~/css/admin/custom.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/main.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+
+    @RenderSection("styles", required: false)
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+
+    <header class="app-header navbar">
+        <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="navbar-toggler sidebar-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        @*
+            Todo Add the RVCC logo here
+            <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+                <img class="navbar-brand-full" src="~/img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
+                <img class="navbar-brand-minimized" src="~/img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+            </a>
+            *@
+
+        <partial name="_LoginPartial" />
+
+    </header>
+    <div class="app-body">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Home" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-title">Pacientes</li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Patient" class="nav-link">
+                            <i class="nav-icon fa fa-male"></i> Pacientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Presence" class="nav-link">
+                            <i class="nav-icon far fa-address-book"></i> Presenças
+                        </a>
+                    </li>
+
+                    @*<li class="nav-title">Benefícios</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-gift"></i> Benefícios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
+                            </a>
+                        </li>*@
+                    <li class="nav-title">Informações Médicas</li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Medicine" class="nav-link">
+                            <i class="nav-icon fa fa-capsules"></i> Remédios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="CancerType" class="nav-link">
+                            <i class="nav-icon fa fa-notes-medical"></i> Tipos de Câncer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="TreatmentPlace" class="nav-link">
+                            <i class="nav-icon fa fa-hospital-alt"></i> Locais de tratamento
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Doctor" class="nav-link">
+                            <i class="nav-icon fa fa-user-md"></i> Médicos
+                        </a>
+                    </li>
+                    @*<li class="nav-title">Relatórios</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical"></i> Relatórios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
+                            </a>
+                        </li> *@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-title">Administrativo</li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="User" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i> Usuários
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        @RenderBody()
+
+    </div>
+    <footer class="app-footer">
+        <div class="ml-auto">
+            <span>Desenvolvido por</span>
+            <a href="https://github.com/felipepergher" target="_blank">Felipe Pergher</a>
+        </div>
+    </footer>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/js/admin/coreui.min.js"></script>
+        <script src="~/lib/popper/umd/popper.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+        <script src="~/js/admin/main.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/main.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>
