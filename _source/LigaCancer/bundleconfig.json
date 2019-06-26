@@ -3,7 +3,7 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/css/admin/fontawesome.min.css",
+      "wwwroot/css/fontawesome.min.css",
       "wwwroot/css/admin/style.css",
       "wwwroot/css/admin/custom.css"
     ],
