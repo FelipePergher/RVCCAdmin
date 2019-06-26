@@ -78,10 +78,10 @@ namespace LigaCancer.Controllers.Api
         {
             if(user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM" ) return string.Empty;
 
-            string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
+            string editUser = $"<a href='/Admin/User/EditUser/{user.Id}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
+            string deleteUser = $"<a href='javascript:void(0);' data-url='/Admin/User/DeleteUser' data-id='{user.Id}' " +
                 $" class='dropdown-item deleteUserButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string unlockAccount = string.Empty;

@@ -747,7 +747,7 @@ function initFileUpload() {
             $('.editable').editable(function (value, settings) {
                 let fileAttachmentId = $(this).data("fileattachmentid");
 
-                $.post("/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
+                $.post("/Admin/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
                     .done(function (data, textStatus) {
                         attachmentsTable.ajax.reload(null, false);
                     }).fail(function (error) {

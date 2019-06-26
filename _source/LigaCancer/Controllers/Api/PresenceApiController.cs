@@ -60,9 +60,9 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Presence presence)
         {
-            string editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
+            string editPresence = $"<a href='/Admin/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
                $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
-            string deletePresence = $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
+            string deletePresence = $"<a href='javascript:void(0);' data-url='/Admin/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
                 $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             TimeSpan diff = DateTime.Now.Subtract(presence.RegisterDate);

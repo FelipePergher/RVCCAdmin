@@ -60,10 +60,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Phone phone)
         {
-            string editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
+            string editPhone = $"<a href='/Admin/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
                 $"data-target='#modal-action-secondary' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
+            string deletePhone = $"<a href='javascript:void(0);' data-url='/Admin/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

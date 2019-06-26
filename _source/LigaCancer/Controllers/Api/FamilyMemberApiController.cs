@@ -69,10 +69,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(FamilyMember familyMember)
         {
-            string editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
+            string editFamilyMember = $"<a href='/Admin/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
                 $"data-target='#modal-action-secondary' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
+            string deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/Admin/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

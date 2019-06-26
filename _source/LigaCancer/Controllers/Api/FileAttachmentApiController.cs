@@ -56,7 +56,7 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(FileAttachment fileAttachment)
         {
-            string deleteFileAttachment = $"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>" +
+            string deleteFileAttachment = $"<a href='javascript:void(0);' data-url='/Admin/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

@@ -14,7 +14,7 @@ namespace LigaCancer.Models.FormModel
             TreatmentPlaces = new List<string>();
         }
 
-        [Display(Name = "Tipos de Câncer")]
+        [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }
 
         [Display(Name = "Médicos")]
