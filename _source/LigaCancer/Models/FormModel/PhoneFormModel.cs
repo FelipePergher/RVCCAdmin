@@ -7,6 +7,7 @@ namespace LigaCancer.Models.FormModel
     {
         [Display(Name = "Número")]
         [Required(ErrorMessage = "Este campo é obrigatório")]
+        [StringLength(15, MinimumLength = 14, ErrorMessage = "Telefone inválido")]
         public string Number { get; set; }
 
         [Display(Name = "Tipo de telefone")]
