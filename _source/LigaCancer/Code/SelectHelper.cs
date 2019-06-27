@@ -13,7 +13,7 @@ namespace LigaCancer.Code
         {
             List<Doctor> doctors = await doctorService.GetAllAsync();
 
-            List<SelectListItem> selectListItems = doctors.Select(x => new SelectListItem
+            var selectListItems = doctors.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.DoctorId.ToString()
@@ -26,7 +26,7 @@ namespace LigaCancer.Code
         {
             List<TreatmentPlace> treatmentPlaces = await treatmentPlaceService.GetAllAsync();
 
-            List<SelectListItem> selectListItems = treatmentPlaces.Select(x => new SelectListItem
+            var selectListItems = treatmentPlaces.Select(x => new SelectListItem
             {
                 Text = x.City,
                 Value = x.TreatmentPlaceId.ToString()
@@ -39,7 +39,7 @@ namespace LigaCancer.Code
         {
             List<CancerType> cancerTypes = await cancerTypeService.GetAllAsync();
 
-            List<SelectListItem> selectListItems = cancerTypes.Select(x => new SelectListItem
+            var selectListItems = cancerTypes.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.CancerTypeId.ToString()
@@ -52,7 +52,7 @@ namespace LigaCancer.Code
         {
             List<Medicine> medicines = await medicineService.GetAllAsync();
 
-            List<SelectListItem> selectListItems = medicines.Select(x => new SelectListItem
+            var selectListItems = medicines.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.MedicineId.ToString()

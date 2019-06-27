@@ -71,14 +71,14 @@ namespace LigaCancer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Login.Email);
+                ApplicationUser user = await _userManager.FindByEmailAsync(Login.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     Login.ShowResend = true;
                     return Page();
                 }
 
-                var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, true);
+                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, true);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);

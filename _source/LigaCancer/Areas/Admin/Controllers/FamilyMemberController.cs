@@ -73,7 +73,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     return NotFound();
                 }
 
-                FamilyMember familyMember = new FamilyMember
+                var familyMember = new FamilyMember
                 {
                     PatientId = int.Parse(id),
                     DateOfBirth = familyMemberForm.DateOfBirth,

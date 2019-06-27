@@ -25,7 +25,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> CreateAsync(Naturality naturality)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.Naturalities.Add(naturality);
@@ -47,7 +47,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> DeleteAsync(Naturality naturality)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.Naturalities.Remove(naturality);
@@ -90,7 +90,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> UpdateAsync(Naturality model)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.SaveChanges();

@@ -62,21 +62,21 @@ namespace LigaCancer.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(ResetPassword.Email);
+            ApplicationUser user = await _userManager.FindByEmailAsync(ResetPassword.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, ResetPassword.Code, ResetPassword.Password);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, ResetPassword.Code, ResetPassword.Password);
             if (result.Succeeded)
             {
                 await _userManager.SetLockoutEndDateAsync(user, null);
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            foreach (var error in result.Errors)
+            foreach (IdentityError error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }

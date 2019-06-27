@@ -50,7 +50,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                TreatmentPlace treatmentPlace = new TreatmentPlace(treatmentPlaceForm.City, await _userManager.GetUserAsync(User));
+                var treatmentPlace = new TreatmentPlace(treatmentPlaceForm.City, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
                 if (result.Succeeded)
@@ -80,7 +80,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel(treatmentPlace.City, treatmentPlace.TreatmentPlaceId);
+            var treatmentPlaceForm = new TreatmentPlaceFormModel(treatmentPlace.City, treatmentPlace.TreatmentPlaceId);
 
             return PartialView("Partials/_EditTreatmentPlace", treatmentPlaceForm);
         }

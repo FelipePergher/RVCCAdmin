@@ -69,7 +69,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            FileAttachment fileAttachment = new FileAttachment
+            var fileAttachment = new FileAttachment
             {
                 PatientId = patient.PatientId,
                 FileName = Path.GetFileNameWithoutExtension(file.FileName),
@@ -88,7 +88,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 }
 
                 string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+                using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
                 }

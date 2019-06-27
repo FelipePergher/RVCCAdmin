@@ -42,12 +42,12 @@ namespace LigaCancer.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.FindByEmailAsync(ResetConfirmEmail.Email);
+            ApplicationUser user = await _userManager.FindByEmailAsync(ResetConfirmEmail.Email);
             if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
             {
                 //Resend email just when user exists and not is confirmed yet
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.Page(
+                string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string callbackUrl = Url.Page(
                    "/Account/ConfirmEmail",
                    pageHandler: null,
                    values: new { userId = user.Id, code },

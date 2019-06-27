@@ -26,7 +26,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> CreateAsync(FileAttachment fileAttachment)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.FileAttachments.Add(fileAttachment);
@@ -47,7 +47,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> DeleteAsync(FileAttachment fileAttachment)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 //Todo remove file of disk too
@@ -105,7 +105,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> UpdateAsync(FileAttachment model)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.SaveChanges();

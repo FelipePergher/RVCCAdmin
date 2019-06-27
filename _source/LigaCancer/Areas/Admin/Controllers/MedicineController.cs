@@ -48,7 +48,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Medicine medicine = new Medicine(medicineForm.Name, await _userManager.GetUserAsync(User));
+                var medicine = new Medicine(medicineForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);
                 if (result.Succeeded)
@@ -78,7 +78,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            MedicineFormModel medicineForm = new MedicineFormModel(medicine.Name, medicine.MedicineId);
+            var medicineForm = new MedicineFormModel(medicine.Name, medicine.MedicineId);
 
             return PartialView("Partials/_EditMedicine", medicineForm);
         }

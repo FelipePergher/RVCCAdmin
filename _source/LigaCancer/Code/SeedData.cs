@@ -58,7 +58,7 @@ namespace LigaCancer.Code
 
                 if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
                 {
-                    ApplicationUser user = new ApplicationUser
+                    var user = new ApplicationUser
                     {
                         Name = "Felipe Pergher",
                         EmailConfirmed = true,

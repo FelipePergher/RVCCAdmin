@@ -134,7 +134,7 @@ namespace LigaCancer
                 }
             });
 
-            var supportedCultures = new[]
+            CultureInfo[] supportedCultures = new[]
             {
                 new CultureInfo("pt-BR")
             };

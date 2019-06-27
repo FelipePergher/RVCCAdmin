@@ -26,7 +26,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> CreateAsync(TreatmentPlace treatmentPlace)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.TreatmentPlaces.Add(treatmentPlace);
@@ -48,7 +48,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> DeleteAsync(TreatmentPlace treatmentPlace)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.TreatmentPlaces.Remove(treatmentPlace);
@@ -108,7 +108,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> UpdateAsync(TreatmentPlace treatmentPlace)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.SaveChanges();

@@ -54,7 +54,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser
+                var user = new ApplicationUser
                 {
                     Name = userForm.Name,
                     UserName = userForm.Email,
@@ -72,8 +72,8 @@ namespace LigaCancer.Areas.Admin.Controllers
                         await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     }
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
+                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    string callbackUrl = Url.Page(
                        "/Account/ConfirmEmail",
                        pageHandler: null,
                        values: new { area = "Identity", userId = user.Id, code = code },
@@ -106,7 +106,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            EditUserFormModel userForm = new EditUserFormModel(user.Id, user.Name);
+            var userForm = new EditUserFormModel(user.Id, user.Name);
 
             //Todo change to use await
             IList<string> roles = await _userManager.GetRolesAsync(user);

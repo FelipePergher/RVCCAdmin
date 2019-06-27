@@ -49,7 +49,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Doctor doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
+                var doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
                 if (result.Succeeded)

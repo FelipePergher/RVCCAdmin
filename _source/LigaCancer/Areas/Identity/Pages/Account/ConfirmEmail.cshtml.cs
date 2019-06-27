@@ -25,13 +25,13 @@ namespace LigaCancer.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound($"Não foi possível carregar o usuário com o ID '{userId}'.");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Erro confirmando email para o usuário com ID '{userId}':");

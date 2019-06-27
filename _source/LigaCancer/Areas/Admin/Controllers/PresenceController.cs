@@ -48,7 +48,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         public async Task<IActionResult> AddPresence()
         {
             List<Patient> patients = await _patientService.GetAllAsync();
-            PresenceFormModel presenceForm = new PresenceFormModel
+            var presenceForm = new PresenceFormModel
             {
                 Patients = patients.Select(x => new SelectListItem($"{x.FirstName} {x.Surname}", x.PatientId.ToString())).ToList()
             };
@@ -63,7 +63,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             {
                 Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
 
-                Presence presence = new Presence
+                var presence = new Presence
                 {
                     PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
                     PatientId = patient.PatientId,
@@ -103,7 +103,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            PresenceFormModel presenceform = new PresenceFormModel
+            var presenceform = new PresenceFormModel
             {
                 PatientId = presence.Name,
                 Date = presence.PresenceDateTime,

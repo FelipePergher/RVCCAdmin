@@ -60,7 +60,7 @@ namespace LigaCancer.Controllers.Api
         public async Task<IActionResult> Select2GetDoctors(string term)
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(null, "Name", "asc", new DoctorSearchModel { Name = term });
-            Select2PagedResult select2PagedResult = new Select2PagedResult
+            var select2PagedResult = new Select2PagedResult
             {
                 Results = doctors.Select(x => new Result
                 {

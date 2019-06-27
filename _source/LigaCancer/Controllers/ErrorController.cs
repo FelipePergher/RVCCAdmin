@@ -18,7 +18,7 @@ namespace LigaCancer.Controllers
         [Route("500")]
         public IActionResult Error()
         {
-            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            IExceptionHandlerPathFeature exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             _telemetryClient.TrackException(exceptionHandlerPathFeature.Error);
             _telemetryClient.TrackEvent("Error.ServerError", new Dictionary<string, string>
             {

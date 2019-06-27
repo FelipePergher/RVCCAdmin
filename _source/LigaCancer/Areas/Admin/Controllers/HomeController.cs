@@ -35,7 +35,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            HomeViewModel homeView = new HomeViewModel
+            var homeView = new HomeViewModel
             {
                 CancerTypeCount = _cancerTypeService.Count(),
                 DoctorCount = _doctorService.Count(),

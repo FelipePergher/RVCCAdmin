@@ -49,7 +49,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                CancerType cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
+                var cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
                 if (result.Succeeded)
@@ -79,7 +79,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel(cancerType.Name, cancerType.CancerTypeId);
+            var cancerTypeForm = new CancerTypeFormModel(cancerType.Name, cancerType.CancerTypeId);
 
             return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }

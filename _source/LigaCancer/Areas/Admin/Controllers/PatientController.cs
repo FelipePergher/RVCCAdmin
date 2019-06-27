@@ -71,7 +71,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Patient patient = new Patient
+                var patient = new Patient
                 {
                     FirstName = patientProfileForm.FirstName,
                     Surname = patientProfileForm.Surname,
@@ -284,7 +284,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
+            var patientProfileForm = new PatientProfileFormModel
             {
                 PatientId = patient.PatientId,
                 FirstName = patient.FirstName,
@@ -351,7 +351,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            NaturalityFormModel naturalityForm = new NaturalityFormModel
+            var naturalityForm = new NaturalityFormModel
             {
                 City = naturality.City,
                 Country = naturality.Country,

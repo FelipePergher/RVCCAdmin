@@ -35,7 +35,7 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                List<ApplicationUser> users = _userManager.Users.ToList();
+                var users = _userManager.Users.ToList();
                 //Filter
                 if (!string.IsNullOrEmpty(name))
                 {

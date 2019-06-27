@@ -16,7 +16,7 @@ namespace LigaCancer.Code
                 return true;
             }
 
-            DateTime dateValue = (DateTime)value;
+            var dateValue = (DateTime)value;
             return DateTime.Now.Date > dateValue.Date;
         }
     }

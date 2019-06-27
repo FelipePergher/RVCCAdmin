@@ -73,7 +73,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     return NotFound();
                 }
 
-                Phone phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
+                var phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _phoneService.CreateAsync(phone);
 

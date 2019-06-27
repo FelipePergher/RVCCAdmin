@@ -60,7 +60,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Address address = new Address
+                var address = new Address
                 {
                     PatientId = id,
                     City = addressForm.City,
@@ -103,7 +103,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            AddressFormModel addressForm = new AddressFormModel
+            var addressForm = new AddressFormModel
             {
                 City = address.City,
                 Complement = address.Complement,

@@ -26,7 +26,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> CreateAsync(CancerType cancerType)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.CancerTypes.Add(cancerType);
@@ -48,7 +48,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> DeleteAsync(CancerType cancerType)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
 
@@ -111,7 +111,7 @@ namespace LigaCancer.Data.Store
 
         public Task<TaskResult> UpdateAsync(CancerType model)
         {
-            TaskResult result = new TaskResult();
+            var result = new TaskResult();
             try
             {
                 _context.SaveChanges();
