@@ -114,24 +114,24 @@
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CivilState"></label>
-                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control filterSelect" 
+                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control filterSelect"
                                                         data-theme="bootstrap"
-                                                        data-language="pt-BR" 
-                                                        data-placeholder="Estado Civil" 
-                                                        data-allow-clear="true" 
-                                                        data-minimum-results-for-search="Infinity" 
-                                                        data-container-css-class="select2NoSearch"> 
+                                                        data-language="pt-BR"
+                                                        data-placeholder="Estado Civil"
+                                                        data-allow-clear="true"
+                                                        data-minimum-results-for-search="Infinity"
+                                                        data-container-css-class="select2NoSearch">
                                                     <option value=""></option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Sex"></label>
-                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control filterSelect" 
+                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control filterSelect"
                                                         data-theme="bootstrap"
-                                                        data-language="pt-BR" 
-                                                        data-placeholder="Gênero" 
-                                                        data-allow-clear="true" 
-                                                        data-minimum-results-for-search="Infinity" 
+                                                        data-language="pt-BR"
+                                                        data-placeholder="Gênero"
+                                                        data-allow-clear="true"
+                                                        data-minimum-results-for-search="Infinity"
                                                         data-container-css-class="select2NoSearch">
                                                     <option value=""></option>
                                                 </select>
@@ -146,14 +146,21 @@
                                                         data-minimum-results-for-search="Infinity" 
                                                         data-container-css-class="select2NoSearch"></select>
                                             </div>
-                                            <div class="col-lg-3 mt-3">
-                                                <div>
-                                                    <input asp-for="Discharge" />
-                                                    <label asp-for="Discharge"></label>
+
+                                            <div class="form-group col-lg-3">
+                                                <div class="form-row">
+                                                    <label class="switch switch-label switch-pill switch-success ml-2">
+                                                        <input class="switch-input" asp-for="Discharge" />
+                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                                                    </label>
+                                                    <label class="ml-2" asp-for="Discharge">@Html.DisplayNameFor(model => model.Discharge)</label>
                                                 </div>
-                                                <div>
-                                                    <input asp-for="Death" />
-                                                    <label asp-for="Death"></label>
+                                                <div class="form-row">
+                                                    <label class="switch switch-label switch-pill switch-success ml-2">
+                                                        <input class="switch-input" asp-for="Death" />
+                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                                                    </label>
+                                                    <label asp-for="Death" class="ml-2">@Html.DisplayNameFor(model => model.Death)</label>
                                                 </div>
                                             </div>
                                         </div>
