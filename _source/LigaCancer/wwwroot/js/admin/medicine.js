@@ -1,5 +1,5 @@
 ﻿let medicineTable = $("#medicineTable").DataTable({
-    dom: "l<'export-buttons'B>frtip",
+    //dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
             extend: 'pdf',

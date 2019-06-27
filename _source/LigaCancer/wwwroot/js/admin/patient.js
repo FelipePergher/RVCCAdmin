@@ -26,7 +26,7 @@ function initPage() {
     $("#Cpf").mask(masks.Cpf);
 
     patientTable = $("#patientTable").DataTable({
-        dom: "l<'export-buttons'B>frtip",
+        //dom: "l<'export-buttons'B>frtip",
         buttons: [
             {
                 extend: 'pdf',
@@ -141,6 +141,20 @@ function initPage() {
                 $("#modal-dialog").addClass("modal-lg");
                 openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
             });
+
+            //Fix dropdown with scrool
+            $('.dropdown').on('shown.bs.dropdown', function () {
+                let $menu = $(this).children(".dropdown-menu");
+                offset = $menu.offset();
+                $('body').append($menu);
+                $menu.show().css('position', 'absolute').css('top', offset.top + 'px').css('left', offset.left + 'px');
+                $(this).data("myDropdownMenu", $menu);
+            });
+            $('.dropdown').on('hide.bs.dropdown', function () {
+                $(this).append($(this).data("myDropdownMenu"));
+                $(this).data("myDropdownMenu").removeAttr('style');
+            });
+
         }
     });
     $('#patientTable').attr('style', 'border-collapse: collapse !important');
@@ -288,7 +302,7 @@ function editPatientInformationSuccess(data, textStatus) {
 //Phone Functions
 function initPhoneIndex() {
     phoneTable = $("#phoneTable").DataTable({
-        dom: "l<'export-buttons'B>frtip",
+        //dom: "l<'export-buttons'B>frtip",
         buttons: [
             {
                 extend: 'pdf',
@@ -413,7 +427,7 @@ function initDeletePhone(url, id) {
 //Address Functions
 function initAddressIndex() {
     addressTable = $("#addressTable").DataTable({
-        dom: "l<'export-buttons'B>frtip",
+        //dom: "l<'export-buttons'B>frtip",
         buttons: [
             {
                 extend: 'pdf',
@@ -550,7 +564,7 @@ function initDeleteAddress(url, id) {
 //Family Member Functions
 function initFamilyMemberIndex() {
     familyMemberTable = $("#familyMemberTable").DataTable({
-        dom: "l<'export-buttons'B>frtip",
+        //dom: "l<'export-buttons'B>frtip",
         buttons: [
             {
                 extend: 'pdf',
@@ -685,7 +699,7 @@ function initFileUpload() {
     var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
 
     attachmentsTable = $("#attachmentsTable").DataTable({
-        dom: "l<'export-buttons'B>frtip",
+        //dom: "l<'export-buttons'B>frtip",
         buttons: [
             {
                 extend: 'pdf',

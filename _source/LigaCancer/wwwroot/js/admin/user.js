@@ -1,7 +1,5 @@
-﻿
-
-let userTable = $("#userTable").DataTable({
-    dom: "l<'export-buttons'B>frtip",
+﻿let userTable = $("#userTable").DataTable({
+    //dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
             extend: 'pdf',

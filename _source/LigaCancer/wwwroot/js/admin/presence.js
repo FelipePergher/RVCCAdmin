@@ -1,5 +1,5 @@
 ﻿let presenceTable = $("#presenceTable").DataTable({
-    dom: "l<'export-buttons'B>frtip",
+    //dom: "l<'export-buttons'B>frtip",
     buttons: [
         {
             extend: 'pdf',
