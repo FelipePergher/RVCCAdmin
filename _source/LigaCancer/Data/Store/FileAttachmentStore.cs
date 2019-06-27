@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
         }
@@ -86,10 +89,16 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             var fileAttachmentSearch = (FileAttachmentSearchModel)filter;
-            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
+            if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
+            }
 
             return Task.FromResult(query.ToList());
         }

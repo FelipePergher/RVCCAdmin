@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Patient> query = _context.Patients;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.PatientId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Patient> query = _context.Patients;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPatients(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredPatients(query, (PatientSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationPatients(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredPatients(query, (PatientSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -165,18 +178,53 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, PatientSearchModel patientSearch)
         {
-            if (!string.IsNullOrEmpty(patientSearch.Name)) query = query.Where(x => x.FirstName.Contains(patientSearch.Name));
-            if (!string.IsNullOrEmpty(patientSearch.Surname)) query = query.Where(x => x.Surname.Contains(patientSearch.Surname));
-            if (!string.IsNullOrEmpty(patientSearch.Rg)) query = query.Where(x => x.RG.Contains(patientSearch.Rg));
-            if (!string.IsNullOrEmpty(patientSearch.Cpf)) query = query.Where(x => x.CPF.Contains(patientSearch.Cpf));
+            if (!string.IsNullOrEmpty(patientSearch.Name))
+            {
+                query = query.Where(x => x.FirstName.Contains(patientSearch.Name));
+            }
 
-            if (!string.IsNullOrEmpty(patientSearch.CivilState)) query = query.Where(x => x.CivilState == (Globals.CivilState)int.Parse(patientSearch.CivilState));
-            if (!string.IsNullOrEmpty(patientSearch.Sex)) query = query.Where(x => x.Sex == (Globals.Sex)int.Parse(patientSearch.Sex));
-            if (!string.IsNullOrEmpty(patientSearch.FamiliarityGroup)) query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
+            if (!string.IsNullOrEmpty(patientSearch.Surname))
+            {
+                query = query.Where(x => x.Surname.Contains(patientSearch.Surname));
+            }
 
-            if (patientSearch.Death) query = query.Where(x => x.ActivePatient.Death);
-            else if (patientSearch.Discharge) query = query.Where(x => x.ActivePatient.Discharge);
-            else query = query.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death);
+            if (!string.IsNullOrEmpty(patientSearch.Rg))
+            {
+                query = query.Where(x => x.RG.Contains(patientSearch.Rg));
+            }
+
+            if (!string.IsNullOrEmpty(patientSearch.Cpf))
+            {
+                query = query.Where(x => x.CPF.Contains(patientSearch.Cpf));
+            }
+
+            if (!string.IsNullOrEmpty(patientSearch.CivilState))
+            {
+                query = query.Where(x => x.CivilState == (Globals.CivilState)int.Parse(patientSearch.CivilState));
+            }
+
+            if (!string.IsNullOrEmpty(patientSearch.Sex))
+            {
+                query = query.Where(x => x.Sex == (Globals.Sex)int.Parse(patientSearch.Sex));
+            }
+
+            if (!string.IsNullOrEmpty(patientSearch.FamiliarityGroup))
+            {
+                query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
+            }
+
+            if (patientSearch.Death)
+            {
+                query = query.Where(x => x.ActivePatient.Death);
+            }
+            else if (patientSearch.Discharge)
+            {
+                query = query.Where(x => x.ActivePatient.Discharge);
+            }
+            else
+            {
+                query = query.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death);
+            }
 
             foreach (string item in patientSearch.CancerTypes)
             {

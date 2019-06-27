@@ -52,7 +52,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 CancerType cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -63,11 +67,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditCancerType(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
 
-            if (cancerType == null) return NotFound();
+            if (cancerType == null)
+            {
+                return NotFound();
+            }
 
             CancerTypeFormModel cancerTypeForm = new CancerTypeFormModel(cancerType.Name, cancerType.CancerTypeId);
 
@@ -77,20 +87,30 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCancerType(string id, CancerTypeFormModel cancerTypeForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             if (ModelState.IsValid)
             {
                 CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
 
-                if (cancerType == null) return NotFound();
+                if (cancerType == null)
+                {
+                    return NotFound();
+                }
 
                 cancerType.Name = cancerTypeForm.Name;
                 cancerType.UpdatedDate = DateTime.Now;
                 cancerType.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -102,15 +122,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteCancerType([FromForm] string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             CancerType cancerType = await _cancerTypeService.FindByIdAsync(id);
 
-            if (cancerType == null) return NotFound();
+            if (cancerType == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
         }

@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Medicine> query = _context.Medicines;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
         }
@@ -86,10 +89,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Medicine> query = _context.Medicines;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationMedicine(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredMedicines(query, (MedicineSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationMedicine(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredMedicines(query, (MedicineSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -138,7 +151,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel doctorSearch)
         {
-            if (!string.IsNullOrEmpty(doctorSearch.Name)) query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+            if (!string.IsNullOrEmpty(doctorSearch.Name))
+            {
+                query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+            }
+
             return query;
         }
 

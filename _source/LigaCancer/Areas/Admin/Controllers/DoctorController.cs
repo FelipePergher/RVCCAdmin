@@ -52,7 +52,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 Doctor doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -63,11 +67,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditDoctor(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
 
-            if (doctor == null) return NotFound();
+            if (doctor == null)
+            {
+                return NotFound();
+            }
 
             return PartialView("Partials/_EditDoctor", new DoctorFormModel(doctor.Name, doctor.CRM, doctor.DoctorId));
         }
@@ -85,7 +95,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 doctor.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -97,15 +111,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
 
-            if (doctor == null) return NotFound();
+            if (doctor == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _doctorService.DeleteAsync(doctor);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }

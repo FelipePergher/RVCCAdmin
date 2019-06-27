@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Doctor> query = _context.Doctors;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.DoctorId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Doctor> query = _context.Doctors;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationDoctor(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredDoctors(query, (DoctorSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationDoctor(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredDoctors(query, (DoctorSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -146,8 +159,16 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Doctor> GetFilteredDoctors(IQueryable<Doctor> query, DoctorSearchModel doctorSearch)
         {
-            if (!string.IsNullOrEmpty(doctorSearch.Name)) query = query.Where(x => x.Name.Contains(doctorSearch.Name));
-            if (!string.IsNullOrEmpty(doctorSearch.CRM)) query = query.Where(x => x.CRM.Contains(doctorSearch.CRM));
+            if (!string.IsNullOrEmpty(doctorSearch.Name))
+            {
+                query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+            }
+
+            if (!string.IsNullOrEmpty(doctorSearch.CRM))
+            {
+                query = query.Where(x => x.CRM.Contains(doctorSearch.CRM));
+            }
+
             return query;
         }
 

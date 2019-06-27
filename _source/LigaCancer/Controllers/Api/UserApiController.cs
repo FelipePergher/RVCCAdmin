@@ -37,7 +37,10 @@ namespace LigaCancer.Controllers.Api
 
                 List<ApplicationUser> users = _userManager.Users.ToList();
                 //Filter
-                if (!string.IsNullOrEmpty(name)) users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
+                }
 
                 IEnumerable<UserViewModel> data = users.Select(x => new UserViewModel
                 {
@@ -51,7 +54,10 @@ namespace LigaCancer.Controllers.Api
                 });
 
                 //Sort
-                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) data = GetOrdenationUser(data, sortColumn, sortDirection);
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+                {
+                    data = GetOrdenationUser(data, sortColumn, sortDirection);
+                }
 
                 int recordsTotal = _userManager.Users.Count();
                 int recordsFiltered = data.Count();
@@ -76,7 +82,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(ApplicationUser user)
         {
-            if (user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM") return string.Empty;
+            if (user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM")
+            {
+                return string.Empty;
+            }
 
             string editUser = $"<a href='/Admin/User/EditUser/{user.Id}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";

@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Address> query = _context.Addresses;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.AddressId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Address> query = _context.Addresses;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationAddresses(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredAddresses(query, (AddressSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationAddresses(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredAddresses(query, (AddressSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -142,7 +155,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
         {
-            if (!string.IsNullOrEmpty(addressSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(addressSearch.PatientId));
+            if (!string.IsNullOrEmpty(addressSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(addressSearch.PatientId));
+            }
+
             return query;
         }
 

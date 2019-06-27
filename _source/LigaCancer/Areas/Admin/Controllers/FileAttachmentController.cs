@@ -46,18 +46,28 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult FileUpload(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_FileUpload", new FileAttachmentSearchModel(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> FileUpload(string id, IFormFile file)
         {
-            if (string.IsNullOrEmpty(id) || file == null || file.Length == 0) return BadRequest();
+            if (string.IsNullOrEmpty(id) || file == null || file.Length == 0)
+            {
+                return BadRequest();
+            }
 
             Patient patient = await _patientService.FindByIdAsync(id);
 
-            if (patient == null) return NotFound();
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             FileAttachment fileAttachment = new FileAttachment
             {
@@ -72,7 +82,10 @@ namespace LigaCancer.Areas.Admin.Controllers
             string uploads = Path.Combine(_hostingEnvironment.WebRootPath, path);
             try
             {
-                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+                if (!Directory.Exists(uploads))
+                {
+                    Directory.CreateDirectory(uploads);
+                }
 
                 string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
                 using (FileStream fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
@@ -90,7 +103,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             TaskResult result = await _fileAttachmentService.CreateAsync(fileAttachment);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
@@ -99,16 +116,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(id);
 
-            if (fileAttachment == null) return NotFound();
+            if (fileAttachment == null)
+            {
+                return NotFound();
+            }
 
             try
             {
                 string uploadFile = Path.Combine(_hostingEnvironment.WebRootPath, fileAttachment.FilePath);
-                if (System.IO.File.Exists(uploadFile)) System.IO.File.Delete(uploadFile);
+                if (System.IO.File.Exists(uploadFile))
+                {
+                    System.IO.File.Delete(uploadFile);
+                }
             }
             catch (IOException ioExp)
             {
@@ -117,7 +143,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
@@ -126,17 +156,27 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {
-            if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId)) return BadRequest();
+            if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId))
+            {
+                return BadRequest();
+            }
 
             FileAttachment fileAttachment = await _fileAttachmentService.FindByIdAsync(fileAttachmentModel.FileAttachmentId);
 
-            if (fileAttachment == null) return NotFound();
+            if (fileAttachment == null)
+            {
+                return NotFound();
+            }
 
             fileAttachment.FileName = fileAttachmentModel.Name;
 
             TaskResult result = await _fileAttachmentService.UpdateAsync(fileAttachment);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }

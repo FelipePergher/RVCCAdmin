@@ -66,7 +66,10 @@ namespace LigaCancer.Controllers.Api
                 $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             TimeSpan diff = DateTime.Now.Subtract(presence.RegisterDate);
-            if (diff.Days > 0) editPresence = string.Empty;
+            if (diff.Days > 0)
+            {
+                editPresence = string.Empty;
+            }
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

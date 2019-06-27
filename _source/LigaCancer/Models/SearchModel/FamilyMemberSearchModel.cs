@@ -6,7 +6,10 @@ namespace LigaCancer.Models.SearchModel
     {
         public FamilyMemberSearchModel() { }
 
-        public FamilyMemberSearchModel(string patientId) => PatientId = patientId;
+        public FamilyMemberSearchModel(string patientId)
+        {
+            PatientId = patientId;
+        }
 
         [HiddenInput]
         public string PatientId { get; set; }

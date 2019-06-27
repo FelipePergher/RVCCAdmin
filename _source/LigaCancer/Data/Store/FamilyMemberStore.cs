@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<FamilyMember> query = _context.FamilyMembers;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
         }
@@ -86,10 +89,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<FamilyMember> query = _context.FamilyMembers;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationFamilyMembers(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredFamilyMembers(query, (FamilyMemberSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationFamilyMembers(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredFamilyMembers(query, (FamilyMemberSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -137,7 +150,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<FamilyMember> GetFilteredFamilyMembers(IQueryable<FamilyMember> query, FamilyMemberSearchModel familyMemberSearch)
         {
-            if (!string.IsNullOrEmpty(familyMemberSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(familyMemberSearch.PatientId));
+            if (!string.IsNullOrEmpty(familyMemberSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(familyMemberSearch.PatientId));
+            }
+
             return query;
         }
 

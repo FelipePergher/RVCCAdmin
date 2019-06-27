@@ -175,7 +175,10 @@ namespace LigaCancer.Controllers.Api
         {
             string addressString = string.Empty;
 
-            if (address != null) addressString = $"{address.Street} {address.Neighborhood} {address.HouseNumber} {address.City}";
+            if (address != null)
+            {
+                addressString = $"{address.Street} {address.Neighborhood} {address.HouseNumber} {address.City}";
+            }
 
             return addressString;
         }

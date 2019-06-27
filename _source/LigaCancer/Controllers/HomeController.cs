@@ -9,6 +9,5 @@ namespace LigaCancer.Controllers
         {
             return View();
         }
-
     }
 }

@@ -39,25 +39,39 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_Index", new FamilyMemberSearchModel(id));
         }
 
         [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> AddFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             if (ModelState.IsValid)
             {
-                if (await _patientService.FindByIdAsync(id) == null) return NotFound();
+                if (await _patientService.FindByIdAsync(id) == null)
+                {
+                    return NotFound();
+                }
 
                 FamilyMember familyMember = new FamilyMember
                 {
@@ -73,7 +87,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -84,11 +102,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditFamilyMember(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
-            if (familyMember == null) return NotFound();
+            if (familyMember == null)
+            {
+                return NotFound();
+            }
 
             return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
@@ -118,7 +142,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -129,15 +157,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
-            if (familyMember == null) return NotFound();
+            if (familyMember == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _familyMemberService.DeleteAsync(familyMember);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }

@@ -67,7 +67,10 @@ namespace LigaCancer.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     IdentityRole applicationRole = await _roleManager.FindByNameAsync(userForm.Role);
-                    if (applicationRole != null) await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                    if (applicationRole != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, applicationRole.Name);
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
@@ -91,18 +94,27 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             ApplicationUser user = await _userManager.FindByIdAsync(id);
 
-            if (user == null) return NotFound();
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             EditUserFormModel userForm = new EditUserFormModel(user.Id, user.Name);
 
             //Todo change to use await
             IList<string> roles = await _userManager.GetRolesAsync(user);
             string userRole = roles.Any() ? roles.FirstOrDefault() : string.Empty;
-            if (!string.IsNullOrEmpty(userRole)) userForm.Role = userRole;
+            if (!string.IsNullOrEmpty(userRole))
+            {
+                userForm.Role = userRole;
+            }
 
             return PartialView("Partials/_EditUser", userForm);
         }
@@ -110,11 +122,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, EditUserFormModel userForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             ApplicationUser user = await _userManager.FindByIdAsync(id);
 
-            if (user == null) return NotFound();
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -131,7 +149,10 @@ namespace LigaCancer.Areas.Admin.Controllers
                     }
 
                     IdentityRole role = await _roleManager.FindByNameAsync(userForm.Role);
-                    if (role != null && role.Name != userRole) await _userManager.AddToRoleAsync(user, role.Name);
+                    if (role != null && role.Name != userRole)
+                    {
+                        await _userManager.AddToRoleAsync(user, role.Name);
+                    }
 
                     return Ok();
                 }
@@ -145,15 +166,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
 
-            if (applicationUser == null) return NotFound();
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
 
             IdentityResult result = await _userManager.DeleteAsync(applicationUser);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(result.Errors.FirstOrDefault().Description);
             return BadRequest();
         }
@@ -162,15 +193,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UnlockUser(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
 
-            if (applicationUser == null) return NotFound();
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
 
             IdentityResult result = await _userManager.SetLockoutEndDateAsync(applicationUser, null);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(result.Errors.FirstOrDefault().Description);
             return BadRequest();
         }

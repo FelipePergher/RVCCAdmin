@@ -53,7 +53,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 TreatmentPlace treatmentPlace = new TreatmentPlace(treatmentPlaceForm.City, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -64,11 +68,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditTreatmentPlace(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
 
-            if (treatmentPlace == null) return NotFound();
+            if (treatmentPlace == null)
+            {
+                return NotFound();
+            }
 
             TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel(treatmentPlace.City, treatmentPlace.TreatmentPlaceId);
 
@@ -78,20 +88,30 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTreatmentPlace(string id, TreatmentPlaceFormModel treatmentPlaceForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             if (ModelState.IsValid)
             {
                 TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
 
-                if (treatmentPlace == null) return NotFound();
+                if (treatmentPlace == null)
+                {
+                    return NotFound();
+                }
 
                 treatmentPlace.City = treatmentPlaceForm.City;
                 treatmentPlace.UpdatedDate = DateTime.Now;
                 treatmentPlace.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -103,15 +123,24 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteTreatmentPlace(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
 
-            if (treatmentPlace == null) return NotFound();
+            if (treatmentPlace == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _treatmentPlaceService.DeleteAsync(treatmentPlace);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);

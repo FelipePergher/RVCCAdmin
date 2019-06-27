@@ -77,7 +77,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<CancerType> query = _context.CancerTypes;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
         }
@@ -87,10 +90,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<CancerType> query = _context.CancerTypes;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationCancerType(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredCancerTypes(query, (CancerTypeSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationCancerType(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredCancerTypes(query, (CancerTypeSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
 
@@ -140,7 +153,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel CancerTypeSearch)
         {
-            if (!string.IsNullOrEmpty(CancerTypeSearch.Name)) query = query.Where(x => x.Name.Contains(CancerTypeSearch.Name));
+            if (!string.IsNullOrEmpty(CancerTypeSearch.Name))
+            {
+                query = query.Where(x => x.Name.Contains(CancerTypeSearch.Name));
+            }
+
             return query;
         }
 

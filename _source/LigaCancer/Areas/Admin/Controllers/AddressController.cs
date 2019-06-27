@@ -36,14 +36,22 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_Index", new AddressSearchModel(id));
         }
 
         [HttpGet]
         public IActionResult AddAddress(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_AddAddress", new AddressFormModel());
         }
 
@@ -68,7 +76,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _addressService.CreateAsync(address);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -79,11 +91,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditAddress(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Address address = await _addressService.FindByIdAsync(id);
 
-            if (address == null) return NotFound();
+            if (address == null)
+            {
+                return NotFound();
+            }
 
             AddressFormModel addressForm = new AddressFormModel
             {
@@ -119,7 +137,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 address.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _addressService.UpdateAsync(address);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -131,15 +153,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteAddress(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Address address = await _addressService.FindByIdAsync(id);
 
-            if (address == null) return NotFound();
+            if (address == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _addressService.DeleteAsync(address);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }

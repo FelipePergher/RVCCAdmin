@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Phone> query = _context.Phones;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.PhoneId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Phone> query = _context.Phones;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPhones(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredPhones(query, (PhoneSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationPhones(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredPhones(query, (PhoneSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
 
@@ -133,7 +146,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)
         {
-            if (!string.IsNullOrEmpty(phoneSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(phoneSearch.PatientId));
+            if (!string.IsNullOrEmpty(phoneSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(phoneSearch.PatientId));
+            }
+
             return query;
         }
 

@@ -73,7 +73,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _presenceService.CreateAsync(presence);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -87,11 +91,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPresence(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Presence presence = await _presenceService.FindByIdAsync(id);
 
-            if (presence == null) return NotFound();
+            if (presence == null)
+            {
+                return NotFound();
+            }
 
             PresenceFormModel presenceform = new PresenceFormModel
             {
@@ -106,7 +116,10 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             if (ModelState.IsValid)
             {
@@ -115,7 +128,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 presence.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -127,15 +144,24 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePresence(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Presence presence = await _presenceService.FindByIdAsync(id);
 
-            if (presence == null) return NotFound();
+            if (presence == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _presenceService.DeleteAsync(presence);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();

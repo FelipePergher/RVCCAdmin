@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.TreatmentPlaceId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<TreatmentPlace> query = _context.TreatmentPlaces;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationTreatmentPlace(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredTreatmentPlaces(query, (TreatmentPlaceSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationTreatmentPlace(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredTreatmentPlaces(query, (TreatmentPlaceSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -137,7 +150,11 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<TreatmentPlace> GetFilteredTreatmentPlaces(IQueryable<TreatmentPlace> query, TreatmentPlaceSearchModel treatmentPlaceSearch)
         {
-            if (!string.IsNullOrEmpty(treatmentPlaceSearch.City)) query = query.Where(x => x.City.Contains(treatmentPlaceSearch.City));
+            if (!string.IsNullOrEmpty(treatmentPlaceSearch.City))
+            {
+                query = query.Where(x => x.City.Contains(treatmentPlaceSearch.City));
+            }
+
             return query;
         }
 

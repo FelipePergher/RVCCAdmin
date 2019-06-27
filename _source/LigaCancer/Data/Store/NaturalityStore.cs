@@ -75,7 +75,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Naturality> query = _context.Naturalities;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.NaturalityId == int.Parse(id)));
         }

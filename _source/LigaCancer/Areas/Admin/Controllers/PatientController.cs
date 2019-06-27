@@ -89,7 +89,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _patientService.CreateAsync(patient);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
+                if (result.Succeeded)
+                {
+                    return Ok(new { ok = true, url = Url.Action("AddPatientNaturality", new { id = patient.Naturality.NaturalityId }), title = "Adicionar Naturalidade" });
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -100,7 +104,10 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddPatientNaturality(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel());
         }
@@ -119,13 +126,17 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
-                if (result.Succeeded) return Ok(new
+                if (result.Succeeded)
                 {
-                    ok = true,
-                    url = Url.Action("AddPatientInformation",
+                    return Ok(new
+                    {
+                        ok = true,
+                        url = Url.Action("AddPatientInformation",
                     new { id = naturality.Patient.PatientInformation.PatientInformationId }),
-                    title = "Adicionar Informação do Paciente"
-                });
+                        title = "Adicionar Informação do Paciente"
+                    });
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -136,7 +147,10 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddPatientInformation(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             var patientInformationForm = new PatientInformationFormModel()
             {
@@ -164,10 +178,20 @@ namespace LigaCancer.Areas.Admin.Controllers
                     bool isCancerTypeInt = int.TryParse(cancerTypeValue, out int num);
 
                     CancerType cancerType = null;
-                    if (isCancerTypeInt) cancerType = await _cancerTypeService.FindByIdAsync(cancerTypeValue);
-                    if (cancerType == null) await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(cancerTypeValue);
+                    if (isCancerTypeInt)
+                    {
+                        cancerType = await _cancerTypeService.FindByIdAsync(cancerTypeValue);
+                    }
 
-                    if (cancerType == null) cancerType = new CancerType(cancerTypeValue, user);
+                    if (cancerType == null)
+                    {
+                        await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(cancerTypeValue);
+                    }
+
+                    if (cancerType == null)
+                    {
+                        cancerType = new CancerType(cancerTypeValue, user);
+                    }
 
                     patientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
                 }
@@ -177,9 +201,20 @@ namespace LigaCancer.Areas.Admin.Controllers
                 {
                     Doctor doctor = null;
                     bool isDoctorTypeInt = int.TryParse(doctorValue, out int num);
-                    if (isDoctorTypeInt) doctor = await _doctorService.FindByIdAsync(doctorValue);
-                    if (doctor == null) doctor = await ((DoctorStore)_doctorService).FindByNameAsync(doctorValue);
-                    if (doctor == null) doctor = new Doctor(doctorValue, user);
+                    if (isDoctorTypeInt)
+                    {
+                        doctor = await _doctorService.FindByIdAsync(doctorValue);
+                    }
+
+                    if (doctor == null)
+                    {
+                        doctor = await ((DoctorStore)_doctorService).FindByNameAsync(doctorValue);
+                    }
+
+                    if (doctor == null)
+                    {
+                        doctor = new Doctor(doctorValue, user);
+                    }
 
                     patientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor(doctor));
                 }
@@ -189,7 +224,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 {
                     TreatmentPlace treatmentPlace = int.TryParse(treatmentPlaceValue, out int num) ?
                         await _treatmentPlaceService.FindByIdAsync(treatmentPlaceValue) : await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(treatmentPlaceValue);
-                    if (treatmentPlace == null) treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
+                    if (treatmentPlace == null)
+                    {
+                        treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
+                    }
+
                     patientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace(treatmentPlace));
                 }
 
@@ -199,13 +238,21 @@ namespace LigaCancer.Areas.Admin.Controllers
                     Medicine medicine = int.TryParse(item, out int num) ?
                         await _medicineService.FindByIdAsync(item) : await ((MedicineStore)_medicineService).FindByNameAsync(item);
 
-                    if (medicine == null) medicine = new Medicine(item, user);
+                    if (medicine == null)
+                    {
+                        medicine = new Medicine(item, user);
+                    }
+
                     patientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine(medicine));
                 }
 
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
-                if (result.Succeeded) return Ok(new { ok = true });
+                if (result.Succeeded)
+                {
+                    return Ok(new { ok = true });
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -225,11 +272,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPatientProfile(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Patient patient = await _patientService.FindByIdAsync(id);
 
-            if (patient == null) return NotFound();
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
             {
@@ -271,7 +324,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -282,11 +339,17 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPatientNaturality(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Naturality naturality = await _naturalityService.FindByIdAsync(id);
 
-            if (naturality == null) return NotFound();
+            if (naturality == null)
+            {
+                return NotFound();
+            }
 
             NaturalityFormModel naturalityForm = new NaturalityFormModel
             {
@@ -312,7 +375,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -323,12 +390,18 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPatientInformation(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                 new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-            if (patientInformation == null) return NotFound();
+            if (patientInformation == null)
+            {
+                return NotFound();
+            }
 
             var patientInformationForm = new PatientInformationFormModel
             {
@@ -355,7 +428,10 @@ namespace LigaCancer.Areas.Admin.Controllers
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
                 //Added Cancer Types to Patient Information
-                if (patientInformationForm.CancerTypes.Count == 0) patientInformation.PatientInformationCancerTypes.Clear();
+                if (patientInformationForm.CancerTypes.Count == 0)
+                {
+                    patientInformation.PatientInformationCancerTypes.Clear();
+                }
                 else
                 {
                     //Filter to stay only selecteds that already stay on db
@@ -371,16 +447,30 @@ namespace LigaCancer.Areas.Admin.Controllers
                     {
                         CancerType cancerType = null;
                         bool isCancerTypeInt = int.TryParse(cancerTypeValue, out int num);
-                        if (isCancerTypeInt) cancerType = await _cancerTypeService.FindByIdAsync(cancerTypeValue);
-                        if (cancerType == null) cancerType = await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(cancerTypeValue);
-                        if (cancerType == null) cancerType = new CancerType(cancerTypeValue, user);
+                        if (isCancerTypeInt)
+                        {
+                            cancerType = await _cancerTypeService.FindByIdAsync(cancerTypeValue);
+                        }
+
+                        if (cancerType == null)
+                        {
+                            cancerType = await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(cancerTypeValue);
+                        }
+
+                        if (cancerType == null)
+                        {
+                            cancerType = new CancerType(cancerTypeValue, user);
+                        }
 
                         patientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
                     }
                 }
 
                 //Added Doctor to Patient Information
-                if (patientInformationForm.Doctors.Count == 0) patientInformation.PatientInformationDoctors.Clear();
+                if (patientInformationForm.Doctors.Count == 0)
+                {
+                    patientInformation.PatientInformationDoctors.Clear();
+                }
                 else
                 {
                     //Filter to stay only selecteds that already stay on db
@@ -396,16 +486,30 @@ namespace LigaCancer.Areas.Admin.Controllers
                     {
                         Doctor doctor = null;
                         bool isDoctorTypeInt = int.TryParse(doctorValue, out int num);
-                        if (isDoctorTypeInt) doctor = await _doctorService.FindByIdAsync(doctorValue);
-                        if (doctor == null) doctor = await ((DoctorStore)_doctorService).FindByNameAsync(doctorValue);
-                        if (doctor == null) doctor = new Doctor(doctorValue, user);
+                        if (isDoctorTypeInt)
+                        {
+                            doctor = await _doctorService.FindByIdAsync(doctorValue);
+                        }
+
+                        if (doctor == null)
+                        {
+                            doctor = await ((DoctorStore)_doctorService).FindByNameAsync(doctorValue);
+                        }
+
+                        if (doctor == null)
+                        {
+                            doctor = new Doctor(doctorValue, user);
+                        }
 
                         patientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor(doctor));
                     }
                 }
 
                 //Added Treatment Places to Patient Information
-                if (patientInformationForm.TreatmentPlaces.Count == 0) patientInformation.PatientInformationTreatmentPlaces.Clear();
+                if (patientInformationForm.TreatmentPlaces.Count == 0)
+                {
+                    patientInformation.PatientInformationTreatmentPlaces.Clear();
+                }
                 else
                 {
                     //Filter to stay only selecteds that already stay on db
@@ -421,16 +525,30 @@ namespace LigaCancer.Areas.Admin.Controllers
                     {
                         TreatmentPlace treatmentPlace = null;
                         bool isTreatmentPlaceTypeInt = int.TryParse(treatmentPlaceValue, out int num);
-                        if (isTreatmentPlaceTypeInt) treatmentPlace = await _treatmentPlaceService.FindByIdAsync(treatmentPlaceValue);
-                        if (treatmentPlace == null) treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(treatmentPlaceValue);
-                        if (treatmentPlace == null) treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
+                        if (isTreatmentPlaceTypeInt)
+                        {
+                            treatmentPlace = await _treatmentPlaceService.FindByIdAsync(treatmentPlaceValue);
+                        }
+
+                        if (treatmentPlace == null)
+                        {
+                            treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(treatmentPlaceValue);
+                        }
+
+                        if (treatmentPlace == null)
+                        {
+                            treatmentPlace = new TreatmentPlace(treatmentPlaceValue, user);
+                        }
 
                         patientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace(treatmentPlace));
                     }
                 }
 
                 //Added Medicine to Patient Information
-                if (patientInformationForm.Medicines.Count == 0) patientInformation.PatientInformationMedicines.Clear();
+                if (patientInformationForm.Medicines.Count == 0)
+                {
+                    patientInformation.PatientInformationMedicines.Clear();
+                }
                 else
                 {
                     //Filter to stay only selecteds that already stay on db
@@ -446,9 +564,20 @@ namespace LigaCancer.Areas.Admin.Controllers
                     {
                         Medicine medicine = null;
                         bool isMedicineTypeInt = int.TryParse(medicineValue, out int num);
-                        if (isMedicineTypeInt) medicine = await _medicineService.FindByIdAsync(medicineValue);
-                        if (medicine == null) medicine = await ((MedicineStore)_medicineService).FindByNameAsync(medicineValue);
-                        if (medicine == null) medicine = new Medicine(medicineValue, user);
+                        if (isMedicineTypeInt)
+                        {
+                            medicine = await _medicineService.FindByIdAsync(medicineValue);
+                        }
+
+                        if (medicine == null)
+                        {
+                            medicine = await ((MedicineStore)_medicineService).FindByNameAsync(medicineValue);
+                        }
+
+                        if (medicine == null)
+                        {
+                            medicine = new Medicine(medicineValue, user);
+                        }
 
                         patientInformation.PatientInformationMedicines.Add(new PatientInformationMedicine(medicine));
                     }
@@ -456,7 +585,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _patientInformationService.UpdateAsync(patientInformation);
 
-                if (result.Succeeded) return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -476,18 +609,28 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult ArchivePatient(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
             return PartialView("Partials/_ArchivePatient", new ArchivePatientFormModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> ArchivePatient(string id, ArchivePatientFormModel archivePatientForm)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Patient patient = await _patientService.FindByIdAsync(id, new[] { "ActivePatient", "PatientInformation" });
 
-            if (patient == null) return NotFound();
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             switch (archivePatientForm.ArchivePatientType)
             {
@@ -503,7 +646,10 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             TaskResult result = await _patientService.UpdateAsync(patient);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
             return PartialView("Partials/_ArchivePatient", archivePatientForm);
         }
@@ -512,16 +658,25 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> ActivePatient(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Patient patient = await _patientService.FindByIdAsync(id, new[] { "PatientInformation", "ActivePatient" });
 
-            if (patient == null) return NotFound();
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             patient.ActivePatient.Discharge = false;
             TaskResult result = await _patientService.UpdateAsync(patient);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
@@ -531,15 +686,24 @@ namespace LigaCancer.Areas.Admin.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePatient(string id)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
 
             Patient patient = await _patientService.FindByIdAsync(id);
 
-            if (patient == null) return NotFound();
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             TaskResult result = await _patientService.DeleteAsync(patient);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();

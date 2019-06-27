@@ -76,7 +76,10 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Presence> query = _context.Presences;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
             return Task.FromResult(query.FirstOrDefault(x => x.PresenceId == int.Parse(id)));
         }
@@ -85,10 +88,20 @@ namespace LigaCancer.Data.Store
         {
             IQueryable<Presence> query = _context.Presences;
 
-            if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
 
-            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) query = GetOrdenationPresences(query, sortColumn, sortDirection);
-            if (filter != null) query = GetFilteredPresences(query, (PresenceSearchModel)filter);
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdenationPresences(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredPresences(query, (PresenceSearchModel)filter);
+            }
 
             return Task.FromResult(query.ToList());
         }
@@ -132,10 +145,20 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
-            if (!string.IsNullOrEmpty(presenceSearch.Name)) query = query.Where(x => x.Name.Contains(presenceSearch.Name));
+            if (!string.IsNullOrEmpty(presenceSearch.Name))
+            {
+                query = query.Where(x => x.Name.Contains(presenceSearch.Name));
+            }
 
-            if (presenceSearch.DateFrom != null) query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
-            if (presenceSearch.DateTo != null) query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);
+            if (presenceSearch.DateFrom != null)
+            {
+                query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
+            }
+
+            if (presenceSearch.DateTo != null)
+            {
+                query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);
+            }
 
             return query;
         }
