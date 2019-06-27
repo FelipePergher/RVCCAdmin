@@ -4,7 +4,7 @@ using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LigaCancer.Areas.Admin.Controllers 
+namespace LigaCancer.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin, User")]
     [AutoValidateAntiforgeryToken]
@@ -37,11 +37,11 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             HomeViewModel homeView = new HomeViewModel
             {
-              CancerTypeCount = _cancerTypeService.Count(),
-              DoctorCount = _doctorService.Count(),
-              MedicineCount = _medicineService.Count(),
-              PatientCount = _patientService.Count(),
-              TreatmentPlaceCount = _treatmentPlaceService.Count()
+                CancerTypeCount = _cancerTypeService.Count(),
+                DoctorCount = _doctorService.Count(),
+                MedicineCount = _medicineService.Count(),
+                PatientCount = _patientService.Count(),
+                TreatmentPlaceCount = _treatmentPlaceService.Count()
             };
 
             return View(homeView);

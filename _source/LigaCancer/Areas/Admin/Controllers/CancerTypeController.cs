@@ -24,8 +24,8 @@ namespace LigaCancer.Areas.Admin.Controllers
         private readonly ILogger<CancerTypeController> _logger;
 
         public CancerTypeController(
-            IDataStore<CancerType> cancerTypeService, 
-            ILogger<CancerTypeController> logger, 
+            IDataStore<CancerType> cancerTypeService,
+            ILogger<CancerTypeController> logger,
             UserManager<ApplicationUser> userManager)
         {
             _cancerTypeService = cancerTypeService;
@@ -97,7 +97,7 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             return PartialView("Partials/_EditCancerType", cancerTypeForm);
         }
-    
+
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteCancerType([FromForm] string id)
@@ -111,7 +111,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             TaskResult result = await _cancerTypeService.DeleteAsync(cancerType);
 
             if (result.Succeeded) return Ok();
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
         }
 

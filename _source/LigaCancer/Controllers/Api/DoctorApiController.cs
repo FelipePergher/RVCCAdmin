@@ -37,7 +37,8 @@ namespace LigaCancer.Controllers.Api
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
                 IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection, doctorSearch);
-                IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel {
+                IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel
+                {
                     Name = x.Name,
                     CRM = x.CRM,
                     Actions = GetActionsHtml(x)
@@ -87,7 +88,7 @@ namespace LigaCancer.Controllers.Api
             string deleteDoctor = $"<a href='javascript:void(0);' data-url='/Admin/Doctor/DeleteDoctor' data-id='{doctor.DoctorId}' " +
                 $"data-relation='{doctor.PatientInformationDoctors.Count > 0}' class='deleteDoctorButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
-            string actionsHtml = 
+            string actionsHtml =
                 $"<div class='dropdown'>" +
                 $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 $"  <div class='dropdown-menu'>" +

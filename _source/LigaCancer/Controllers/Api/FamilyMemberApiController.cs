@@ -16,7 +16,7 @@ namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin, User")]
     [ApiController]
-    public class FamilyMemberApiController : Controller 
+    public class FamilyMemberApiController : Controller
     {
         private readonly IDataStore<FamilyMember> _familyMemberService;
         private readonly IDataStore<Patient> _patientService;

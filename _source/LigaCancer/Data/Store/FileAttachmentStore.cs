@@ -88,7 +88,7 @@ namespace LigaCancer.Data.Store
 
             if (includes != null) query = includes.Aggregate(query, (current, inc) => current.Include(inc));
 
-            var fileAttachmentSearch = (FileAttachmentSearchModel) filter;
+            var fileAttachmentSearch = (FileAttachmentSearchModel)filter;
             if (!string.IsNullOrEmpty(fileAttachmentSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
 
             return Task.FromResult(query.ToList());

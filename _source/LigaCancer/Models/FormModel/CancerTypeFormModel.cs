@@ -5,7 +5,7 @@ namespace LigaCancer.Models.FormModel
 {
     public class CancerTypeFormModel
     {
-        public CancerTypeFormModel(){}
+        public CancerTypeFormModel() { }
 
         public CancerTypeFormModel(string name, int cancerTypeId)
         {

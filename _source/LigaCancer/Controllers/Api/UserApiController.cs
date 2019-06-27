@@ -53,7 +53,7 @@ namespace LigaCancer.Controllers.Api
                 //Sort
                 if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection)) data = GetOrdenationUser(data, sortColumn, sortDirection);
 
-                int recordsTotal =_userManager.Users.Count();
+                int recordsTotal = _userManager.Users.Count();
                 int recordsFiltered = data.Count();
 
                 return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
@@ -76,7 +76,7 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(ApplicationUser user)
         {
-            if(user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM" ) return string.Empty;
+            if (user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM") return string.Empty;
 
             string editUser = $"<a href='/Admin/User/EditUser/{user.Id}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";

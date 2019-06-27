@@ -56,7 +56,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
-                
+
             return PartialView("Partials/_AddDoctor", doctorForm);
         }
 
@@ -66,7 +66,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
             Doctor doctor = await _doctorService.FindByIdAsync(id);
-            
+
             if (doctor == null) return NotFound();
 
             return PartialView("Partials/_EditDoctor", new DoctorFormModel(doctor.Name, doctor.CRM, doctor.DoctorId));
@@ -89,7 +89,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
-            
+
             return PartialView("Partials/_EditDoctor", doctorForm);
         }
 

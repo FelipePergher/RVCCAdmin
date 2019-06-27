@@ -1,5 +1,4 @@
-﻿using LigaCancer.Code;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +10,7 @@ namespace LigaCancer.Models.FormModel
         public PresenceFormModel()
         {
             Date = DateTime.Now;
-            Time = new TimeSpan(DateTime.Now.Hour,DateTime.Now.Minute, 0);
+            Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
         }
 
         [Display(Name = "Paciente")]

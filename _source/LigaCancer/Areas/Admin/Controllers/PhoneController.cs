@@ -27,7 +27,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         public PhoneController(
             IDataStore<Phone> phoneService,
             IDataStore<Patient> patientService,
-            ILogger<PhoneController> logger, 
+            ILogger<PhoneController> logger,
             UserManager<ApplicationUser> userManager)
         {
             _phoneService = phoneService;

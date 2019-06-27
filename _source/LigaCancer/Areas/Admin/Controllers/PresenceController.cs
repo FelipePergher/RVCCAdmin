@@ -107,7 +107,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
-            
+
             if (ModelState.IsValid)
             {
                 Presence presence = await _presenceService.FindByIdAsync(id);

@@ -6,7 +6,7 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class Phone : RegisterData
     {
-        public Phone(){}
+        public Phone() { }
 
         public Phone(string patientId, string number, Globals.PhoneType? phoneType, string observationNote, ApplicationUser user)
         {

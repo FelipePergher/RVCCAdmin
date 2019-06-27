@@ -51,7 +51,7 @@ namespace LigaCancer.Data.Store
             TaskResult result = new TaskResult();
             try
             {
-                
+
                 _context.CancerTypes.Remove(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -115,7 +115,7 @@ namespace LigaCancer.Data.Store
 
             return Task.FromResult(result);
         }
-        
+
         #region Custom Methods
 
         public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)

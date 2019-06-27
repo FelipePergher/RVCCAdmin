@@ -1,5 +1,4 @@
-﻿using LigaCancer.Code;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.SearchModel

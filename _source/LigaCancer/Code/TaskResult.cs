@@ -10,9 +10,9 @@ namespace LigaCancer.Code
         }
 
         public static TaskResult Success { get; }
-        
+
         public bool Succeeded { get; set; }
-      
+
         public List<TaskError> Errors { get; }
 
     }

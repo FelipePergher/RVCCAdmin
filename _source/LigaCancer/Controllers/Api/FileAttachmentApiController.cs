@@ -14,7 +14,7 @@ namespace LigaCancer.Controllers.Api
 {
     [Authorize(Roles = "Admin, User")]
     [ApiController]
-    public class FileAttachmentApiController : Controller 
+    public class FileAttachmentApiController : Controller
     {
         private readonly IDataStore<FileAttachment> _fileAttachmentService;
         private readonly ILogger<FileAttachmentApiController> _logger;

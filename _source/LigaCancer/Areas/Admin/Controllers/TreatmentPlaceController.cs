@@ -67,7 +67,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
             TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-            
+
             if (treatmentPlace == null) return NotFound();
 
             TreatmentPlaceFormModel treatmentPlaceForm = new TreatmentPlaceFormModel(treatmentPlace.City, treatmentPlace.TreatmentPlaceId);
@@ -83,7 +83,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 TreatmentPlace treatmentPlace = await _treatmentPlaceService.FindByIdAsync(id);
-                
+
                 if (treatmentPlace == null) return NotFound();
 
                 treatmentPlace.City = treatmentPlaceForm.City;

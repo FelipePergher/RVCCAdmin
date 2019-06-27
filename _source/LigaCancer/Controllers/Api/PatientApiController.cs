@@ -40,7 +40,7 @@ namespace LigaCancer.Controllers.Api
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(
-                    new string[] { 
+                    new string[] {
                         "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
                         "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
                         "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
@@ -50,8 +50,8 @@ namespace LigaCancer.Controllers.Api
 
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
-                    Status = x.ActivePatient.Discharge 
-                        ? Globals.GetDisplayName(Globals.ArchivePatientType.discharge) 
+                    Status = x.ActivePatient.Discharge
+                        ? Globals.GetDisplayName(Globals.ArchivePatientType.discharge)
                         : x.ActivePatient.Death ? Globals.GetDisplayName(Globals.ArchivePatientType.death) : "Ativo",
                     FirstName = x.FirstName,
                     LastName = x.Surname,
@@ -74,10 +74,10 @@ namespace LigaCancer.Controllers.Api
                     Actions = GetActionsHtml(x)
                 });
 
-                if(sortColumn == "PerCapitaIncome")
+                if (sortColumn == "PerCapitaIncome")
                 {
-                    data = sortDirection == "asc" 
-                        ? data.OrderBy(x => x.PerCapitaIncomeToSort) 
+                    data = sortDirection == "asc"
+                        ? data.OrderBy(x => x.PerCapitaIncomeToSort)
                         : data.OrderByDescending(x => x.PerCapitaIncomeToSort);
                 }
 
@@ -138,7 +138,7 @@ namespace LigaCancer.Controllers.Api
                 string fileUploadPatient = $"<a href='/Admin/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient ;
+                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
             }
             else
             {

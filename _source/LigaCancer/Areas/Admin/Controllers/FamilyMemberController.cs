@@ -106,10 +106,10 @@ namespace LigaCancer.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
-            
+
                 familyMember.DateOfBirth = familyMemberForm.DateOfBirth;
                 familyMember.Kinship = familyMemberForm.Kinship;
-                familyMember.MonthlyIncome = 
+                familyMember.MonthlyIncome =
                     (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;

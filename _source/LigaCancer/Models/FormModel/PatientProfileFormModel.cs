@@ -7,7 +7,7 @@ namespace LigaCancer.Models.FormModel
 {
     public class PatientProfileFormModel
     {
-        public PatientProfileFormModel(){ }
+        public PatientProfileFormModel() { }
 
         public PatientProfileFormModel(int patientId)
         {
@@ -24,7 +24,7 @@ namespace LigaCancer.Models.FormModel
         [Display(Name = "Sobrenome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         public string Surname { get; set; }
-        
+
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [Remote("IsRgExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "RG já registrado!")]
         public string RG { get; set; }

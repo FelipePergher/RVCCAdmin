@@ -46,7 +46,8 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMedicine(MedicineFormModel medicineForm)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 Medicine medicine = new Medicine(medicineForm.Name, await _userManager.GetUserAsync(User));
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);

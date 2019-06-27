@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +6,8 @@ namespace LigaCancer.Models.FormModel
 {
     public class PatientInformationFormModel
     {
-        public PatientInformationFormModel() {
+        public PatientInformationFormModel()
+        {
             CancerTypes = new List<string>();
             Medicines = new List<string>();
             Doctors = new List<string>();

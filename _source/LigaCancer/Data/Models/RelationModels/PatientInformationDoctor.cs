@@ -4,7 +4,7 @@ namespace LigaCancer.Data.Models.RelationModels
 {
     public class PatientInformationDoctor
     {
-        public PatientInformationDoctor(){}
+        public PatientInformationDoctor() { }
 
         public PatientInformationDoctor(Doctor doctor)
         {

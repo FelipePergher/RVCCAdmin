@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -84,7 +83,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     DateOfBirth = patientProfileForm.DateOfBirth.Value,
                     Profession = patientProfileForm.Profession,
                     UserCreated = await _userManager.GetUserAsync(User),
-                    MonthlyIncome = 
+                    MonthlyIncome =
                         (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0)
                 };
 
@@ -111,7 +110,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Naturality naturality = await _naturalityService.FindByIdAsync(id, new [] { "Patient", "Patient.PatientInformation" });
+                Naturality naturality = await _naturalityService.FindByIdAsync(id, new[] { "Patient", "Patient.PatientInformation" });
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
@@ -120,8 +119,13 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
-                if (result.Succeeded) return Ok(new { ok = true, url = Url.Action("AddPatientInformation", 
-                    new { id = naturality.Patient.PatientInformation.PatientInformationId }), title = "Adicionar Informação do Paciente" });
+                if (result.Succeeded) return Ok(new
+                {
+                    ok = true,
+                    url = Url.Action("AddPatientInformation",
+                    new { id = naturality.Patient.PatientInformation.PatientInformationId }),
+                    title = "Adicionar Informação do Paciente"
+                });
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
@@ -151,8 +155,8 @@ namespace LigaCancer.Areas.Admin.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, 
-                    new [] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
+                    new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
                 //Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
@@ -225,7 +229,7 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             Patient patient = await _patientService.FindByIdAsync(id);
 
-            if(patient == null) return NotFound();
+            if (patient == null) return NotFound();
 
             PatientProfileFormModel patientProfileForm = new PatientProfileFormModel
             {
@@ -282,7 +286,7 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             Naturality naturality = await _naturalityService.FindByIdAsync(id);
 
-            if(naturality == null) return NotFound();
+            if (naturality == null) return NotFound();
 
             NaturalityFormModel naturalityForm = new NaturalityFormModel
             {
@@ -472,7 +476,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult ArchivePatient(string id)
         {
-            if(string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
             return PartialView("Partials/_ArchivePatient", new ArchivePatientFormModel());
         }
 
@@ -481,7 +485,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            Patient patient = await _patientService.FindByIdAsync(id, new [] { "ActivePatient", "PatientInformation" });
+            Patient patient = await _patientService.FindByIdAsync(id, new[] { "ActivePatient", "PatientInformation" });
 
             if (patient == null) return NotFound();
 
@@ -510,7 +514,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
 
-            Patient patient = await _patientService.FindByIdAsync(id, new [] { "PatientInformation", "ActivePatient" });
+            Patient patient = await _patientService.FindByIdAsync(id, new[] { "PatientInformation", "ActivePatient" });
 
             if (patient == null) return NotFound();
 

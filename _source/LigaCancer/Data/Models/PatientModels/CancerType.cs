@@ -6,7 +6,7 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class CancerType : RegisterData
     {
-        public CancerType(){}
+        public CancerType() { }
 
         public CancerType(string name, ApplicationUser user)
         {
@@ -23,7 +23,7 @@ namespace LigaCancer.Data.Models.PatientModels
         #region Relations
 
         public ICollection<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
-        
+
         #endregion
     }
 }

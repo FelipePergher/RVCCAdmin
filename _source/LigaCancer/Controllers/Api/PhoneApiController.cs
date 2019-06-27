@@ -35,7 +35,7 @@ namespace LigaCancer.Controllers.Api
                 string sortDirection = searchModel.Order[0].Dir;
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
-                
+
                 List<Phone> phones = await _phoneService.GetAllAsync(null, sortColumn, sortDirection, phoneSearch);
                 IEnumerable<PhoneViewModel> data = phones.Select(x => new PhoneViewModel
                 {

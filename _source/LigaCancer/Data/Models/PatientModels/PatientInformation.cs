@@ -29,13 +29,13 @@ namespace LigaCancer.Data.Models.PatientModels
         #region Relations
 
         public List<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
-        
+
         public List<PatientInformationDoctor> PatientInformationDoctors { get; set; }
-        
+
         public List<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
-        
+
         public List<PatientInformationMedicine> PatientInformationMedicines { get; set; }
-        
+
         #endregion
     }
 }

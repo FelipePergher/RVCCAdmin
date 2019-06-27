@@ -23,7 +23,7 @@ namespace LigaCancer.Data.Models.PatientModels
         #region Relations
 
         public ICollection<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
- 
+
         #endregion
     }
 }

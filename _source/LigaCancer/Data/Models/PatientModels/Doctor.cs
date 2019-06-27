@@ -6,7 +6,7 @@ namespace LigaCancer.Data.Models.PatientModels
 {
     public class Doctor : RegisterData
     {
-        public Doctor(){}
+        public Doctor() { }
 
         public Doctor(string name, ApplicationUser user)
         {

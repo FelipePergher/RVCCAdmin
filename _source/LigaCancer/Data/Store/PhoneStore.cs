@@ -133,7 +133,7 @@ namespace LigaCancer.Data.Store
 
         private IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)
         {
-            if(!string.IsNullOrEmpty(phoneSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(phoneSearch.PatientId));
+            if (!string.IsNullOrEmpty(phoneSearch.PatientId)) query = query.Where(x => x.PatientId == int.Parse(phoneSearch.PatientId));
             return query;
         }
 

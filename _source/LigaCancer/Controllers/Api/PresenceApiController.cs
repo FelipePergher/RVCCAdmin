@@ -26,7 +26,7 @@ namespace LigaCancer.Controllers.Api
         }
 
         [HttpPost("~/api/presence/search")]
-        public async Task<IActionResult> PresenceSearch([FromForm] SearchModel searchModel, [FromForm] PresenceSearchModel presenceSearchModel )
+        public async Task<IActionResult> PresenceSearch([FromForm] SearchModel searchModel, [FromForm] PresenceSearchModel presenceSearchModel)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace LigaCancer.Controllers.Api
                 {
                     Patient = x.Name,
                     Date = x.PresenceDateTime.ToString("dd/MM/yyyy"),
-                    Hour = x.PresenceDateTime.ToString("HH:mm"),    
+                    Hour = x.PresenceDateTime.ToString("HH:mm"),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
@@ -66,7 +66,7 @@ namespace LigaCancer.Controllers.Api
                 $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             TimeSpan diff = DateTime.Now.Subtract(presence.RegisterDate);
-            if(diff.Days > 0) editPresence = string.Empty;
+            if (diff.Days > 0) editPresence = string.Empty;
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

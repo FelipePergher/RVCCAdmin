@@ -57,14 +57,14 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             Patient patient = await _patientService.FindByIdAsync(id);
 
-            if(patient == null) return NotFound();
+            if (patient == null) return NotFound();
 
             FileAttachment fileAttachment = new FileAttachment
             {
                 PatientId = patient.PatientId,
                 FileName = Path.GetFileNameWithoutExtension(file.FileName),
                 FileExtension = Path.GetExtension(file.FileName),
-                FileSize = (double) file.Length / 1024 / 1024,
+                FileSize = (double)file.Length / 1024 / 1024,
                 UserCreated = await _userManager.GetUserAsync(User)
             };
 
@@ -89,7 +89,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             }
 
             TaskResult result = await _fileAttachmentService.CreateAsync(fileAttachment);
-            
+
             if (result.Succeeded) return Ok();
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();

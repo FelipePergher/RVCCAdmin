@@ -88,7 +88,7 @@ namespace LigaCancer
                ));
 
             services.AddLogging();
-            
+
             services.AddAntiforgery();
 
             //Application Services

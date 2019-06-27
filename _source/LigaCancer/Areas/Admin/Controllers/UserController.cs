@@ -24,10 +24,10 @@ namespace LigaCancer.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
 
         public UserController(
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            ILogger<UserController> logger, 
+            ILogger<UserController> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -92,9 +92,9 @@ namespace LigaCancer.Areas.Admin.Controllers
         public async Task<IActionResult> EditUser(string id)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest();
-            
+
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            
+
             if (user == null) return NotFound();
 
             EditUserFormModel userForm = new EditUserFormModel(user.Id, user.Name);
@@ -110,8 +110,8 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, EditUserFormModel userForm)
         {
-            if(string.IsNullOrEmpty(id)) return BadRequest();
-            
+            if (string.IsNullOrEmpty(id)) return BadRequest();
+
             ApplicationUser user = await _userManager.FindByIdAsync(id);
 
             if (user == null) return NotFound();
@@ -125,7 +125,8 @@ namespace LigaCancer.Areas.Admin.Controllers
                 {
                     IList<string> userRoles = await _userManager.GetRolesAsync(user);
                     string userRole = userRoles.FirstOrDefault();
-                    if (userRole != null && userRole != userForm.Role) { 
+                    if (userRole != null && userRole != userForm.Role)
+                    {
                         await _userManager.RemoveFromRoleAsync(user, userRole);
                     }
 

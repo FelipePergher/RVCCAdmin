@@ -24,9 +24,9 @@ namespace LigaCancer.Areas.Admin.Controllers
         private readonly ILogger<AddressController> _logger;
 
         public AddressController(
-            IDataStore<Address> addressService, 
-            ILogger<AddressController> logger, 
-            UserManager<ApplicationUser> userManager )
+            IDataStore<Address> addressService,
+            ILogger<AddressController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _addressService = addressService;
             _userManager = userManager;
@@ -62,7 +62,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double) addressForm.MonthlyAmmountResidence : 0,
+                    MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double)addressForm.MonthlyAmmountResidence : 0,
                     UserCreated = await _userManager.GetUserAsync(User)
                 };
 
@@ -94,7 +94,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 ObservationAddress = address.ObservationAddress,
                 Street = address.Street,
                 ResidenceType = address.ResidenceType,
-                MonthlyAmmountResidence = (decimal) address.MonthlyAmmountResidence
+                MonthlyAmmountResidence = (decimal)address.MonthlyAmmountResidence
             };
 
             return PartialView("Partials/_EditAddress", addressForm);
@@ -113,7 +113,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double) addressForm.MonthlyAmmountResidence : 0;
+                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? (double)addressForm.MonthlyAmmountResidence : 0;
                 address.Street = addressForm.Street;
                 address.UpdatedDate = DateTime.Now;
                 address.UserUpdated = await _userManager.GetUserAsync(User);
