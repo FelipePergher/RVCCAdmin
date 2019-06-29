@@ -57,7 +57,7 @@ namespace LigaCancer.Controllers.Api
                     LastName = x.Surname,
                     Rg = x.RG,
                     Cpf = x.CPF,
-                    DateOfBirth = x.DateOfBirth.ToString(),
+                    DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
                     Sex = Globals.GetDisplayName(x.Sex),
                     Phone = x.Phones.FirstOrDefault()?.Number,
                     Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
@@ -67,6 +67,7 @@ namespace LigaCancer.Controllers.Api
                     PerCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(
                         _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
+                    TreatmentbeginDate = x.PatientInformation.TreatmentbeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentbeginDate.ToString("dd/MM/yyyy"),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),

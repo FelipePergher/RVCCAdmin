@@ -82,7 +82,7 @@ function initPage() {
             { data: "lastName", title: "Sobrenome", name: "LastName" },
             { data: "rg", title: "RG", name: "RG" },
             { data: "cpf", title: "CPF", name: "CPF" },
-            { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return dateFormat(row.dateOfBirth); } },
+            { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth" },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "phone", title: "Telefone", name: "Phone" },
             { data: "address", title: "Endereço", name: "Address" },
@@ -90,6 +90,7 @@ function initPage() {
             { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
             { data: "profession", title: "Profissão", name: "Profession" },
             { data: "perCapitaIncome", title: "Renda Per Capita", name: "PerCapitaIncome" },
+            { data: "treatmentbeginDate", title: "Início Tratamento", name: "TreatmentbeginDate" },
             { data: "medicines", title: "Remédios", name: "Medicines", orderable: false },
             { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
             { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
@@ -224,6 +225,7 @@ function addNaturalitySuccess(data, textStatus) {
 
 function initAddPatientInformationForm() {
     $.validator.unobtrusive.parse("#addPatientInformationForm");
+    calendar("TreatmentbeginDate");
     $(".patientInformationSelect").select2();
 }
 
@@ -284,6 +286,7 @@ function editNaturalitySuccess(data, textStatus) {
 
 function initEditPatientInformationForm() {
     $.validator.unobtrusive.parse("#editPatientInformationForm");
+    calendar("TreatmentbeginDate");
     $(".patientInformationSelect").select2();
 }
 
@@ -612,7 +615,7 @@ function initFamilyMemberIndex() {
             { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
             { data: "name", title: "Nome", name: "Name" },
             { data: "kinship", title: "Parentesco", name: "Kinship" },
-            { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth", render: function (data, type, row, meta) { return dateFormat(row.dateOfBirth); } },
+            { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth" },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
         ],

@@ -44,7 +44,7 @@ namespace LigaCancer.Controllers.Api
                 {
                     Name = x.Name,
                     Kinship = x.Kinship,
-                    DateOfBirth = x.DateOfBirth.ToString(),
+                    DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd/MM/yyyy") : "",
                     Sex = Globals.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("C2"),
                     Actions = GetActionsHtml(x)

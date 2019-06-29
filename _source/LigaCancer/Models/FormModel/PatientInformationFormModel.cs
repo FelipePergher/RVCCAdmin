@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using LigaCancer.Code;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +15,11 @@ namespace LigaCancer.Models.FormModel
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
         }
+
+        [Display(Name = "Data de início do tratameto")]
+        [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [DateRange]
+        public DateTime? TreatmentbeginDate { get; set; }
 
         [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -171,6 +172,8 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+
+                patientInformation.TreatmentbeginDate = patientInformationForm.TreatmentbeginDate ?? DateTime.MinValue;
 
                 //Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
@@ -414,6 +417,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 Medicines = patientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
                 TreatmentPlaces = patientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
             };
+            if (patientInformation.TreatmentbeginDate != DateTime.MinValue)
+            {
+                patientInformationForm.TreatmentbeginDate = patientInformation.TreatmentbeginDate;
+            }
+
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
         }
 
@@ -426,6 +434,8 @@ namespace LigaCancer.Areas.Admin.Controllers
 
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+
+                patientInformation.TreatmentbeginDate = patientInformationForm.TreatmentbeginDate ?? DateTime.MinValue;
 
                 //Added Cancer Types to Patient Information
                 if (patientInformationForm.CancerTypes.Count == 0)

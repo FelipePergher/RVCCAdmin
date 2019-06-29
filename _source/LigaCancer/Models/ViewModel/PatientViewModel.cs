@@ -30,6 +30,8 @@
 
         public double PerCapitaIncomeToSort { get; set; }
 
+        public string TreatmentbeginDate { get; set; }
+
         public string Medicines { get; set; }
 
         public string Canceres { get; set; }

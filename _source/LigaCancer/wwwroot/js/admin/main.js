@@ -137,13 +137,6 @@ function hideSpinnerModalSecondary() {
     $("#modalSpinnerSecondary").hide();
 }
 
-function dateFormat(dateOfBirth) {
-    let date = new Date(dateOfBirth);
-    let dateString = date.toLocaleDateString("pt-BR");
-    if (dateString.toLowerCase().includes("invalid")) dateString = "";
-    return dateString;
-}
-
 $(function () {
     if (!!$.validator) {
         $.validator.setDefaults({
