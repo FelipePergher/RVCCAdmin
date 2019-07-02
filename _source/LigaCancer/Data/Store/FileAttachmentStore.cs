@@ -50,7 +50,6 @@ namespace LigaCancer.Data.Store
             var result = new TaskResult();
             try
             {
-                //Todo remove file of disk too
                 _context.FileAttachments.Remove(fileAttachment);
                 _context.SaveChanges();
                 result.Succeeded = true;

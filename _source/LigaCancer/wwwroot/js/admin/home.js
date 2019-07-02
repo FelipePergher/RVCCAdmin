@@ -1,67 +1,130 @@
-/* eslint-disable object-shorthand */
-/* eslint-disable no-magic-numbers */
-// Disable the on-canvas tooltip
-Chart.defaults.global.pointHitDetectionRadius = 1;
-Chart.defaults.global.tooltips.enabled = false;
-Chart.defaults.global.tooltips.mode = "index";
-Chart.defaults.global.tooltips.position = "nearest";
-Chart.defaults.global.tooltips.custom = CustomTooltips; // eslint-disable-next-line no-unused-vars
+let monthChart;
+let dayChart;
+let yearChart;
 
-var mainChart = new Chart($("#main-chart"), {
-    type: "line",
-    data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S", "M", "T", "W", "T", "F", "S", "S", "M", "T", "W", "T", "F", "S", "S", "M", "T", "W", "T", "F", "S", "S"],
-        datasets: [{
-            label: "Exemplo 1",
-            backgroundColor: hexToRgba(getStyle("--info"), 10),
-            borderColor: getStyle("--info"),
-            pointHoverBackgroundColor: "#fff",
-            borderWidth: 2,
-            data: [165, 180, 70, 69, 77, 57, 125, 165, 172, 91, 173, 138, 155, 89, 50, 161, 65, 163, 160, 103, 114, 185, 125, 196, 183, 64, 137, 95, 112, 175]
-        }, {
-            label: "Exemplo 2",
-            backgroundColor: "transparent",
-            borderColor: getStyle("--success"),
-            pointHoverBackgroundColor: "#fff",
-            borderWidth: 2,
-            data: [92, 97, 80, 100, 86, 97, 83, 98, 87, 98, 93, 83, 87, 98, 96, 84, 91, 97, 88, 86, 94, 86, 95, 91, 98, 91, 92, 80, 83, 82]
-        }, {
-            label: "Exemplo 3",
-            backgroundColor: "transparent",
-            borderColor: getStyle("--danger"),
-            pointHoverBackgroundColor: "#fff",
-            borderWidth: 1,
-            borderDash: [8, 5],
-            data: [65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65]
-        }]
-    },
-    options: {
-        maintainAspectRatio: false,
-        legend: {
-            display: false
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    drawOnChartArea: false
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    maxTicksLimit: 5,
-                    stepSize: Math.ceil(250 / 5),
-                    max: 250
-                }
+$(function () {
+    initPage();
+});
+
+function initPage() {
+    getChart();
+    calendar("ChartDate");
+
+    $("input[name='chartOptions']").change(function () {
+        $(".chart").hide();
+        $("#" + this.id + "Chart").show();
+    });
+
+    $("#ChartDate").change(function () {
+        getChart(true);
+    });
+}
+
+function getChart(update = false) {
+    $.post("/api/presence/getChartData", $("#searchForm").serialize())
+        .done(function (data) {
+            if (update) {
+                dayChart.data.datasets[0].data = data.dayChartDate;
+                dayChart.update();
+
+                monthChart.data.labels = Array.from(Array(data.daysInMonth).keys()).map(x => ++x);
+                monthChart.data.datasets[0].data = data.monthChartDate;
+                monthChart.update();
+
+                yearChart.data.datasets[0].data = data.yearChartDate;
+                yearChart.update();
+            }
+            else {
+                initDayChart(data.dayChartDate);
+                initMonthChart(data.monthChartDate, data.daysInMonth);
+                initYearChart(data.yearChartDate);
+            }
+        })
+        .fail(function () {
+            console.log("error");
+        });
+}
+
+function initMonthChart(data, daysInMonth) {
+    monthChart = new Chart($("#monthChart"), {
+        type: "line",
+        data: {
+            labels: Array.from(Array(daysInMonth).keys()).map(x => ++x),
+            datasets: [{
+                label: "Presen\u00E7as",
+                backgroundColor: hexToRgba(getStyle("--info"), 10),
+                borderColor: getStyle("--info"),
+                pointHoverBackgroundColor: "#fff",
+                borderWidth: 2,
+                data: data
             }]
         },
-        elements: {
-            point: {
-                radius: 0,
-                hitRadius: 10,
-                hoverRadius: 4,
-                hoverBorderWidth: 3
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0, // it is for ignoring negative step.
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
             }
         }
-    }
-});
+    });
+}
+
+function initDayChart(data) {
+    dayChart = new Chart($("#dayChart"), {
+        type: "line",
+        data: {
+            labels: ["0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"],
+            datasets: [{
+                label: "Presen\u00E7as",
+                backgroundColor: hexToRgba(getStyle("--info"), 10),
+                borderColor: getStyle("--info"),
+                pointHoverBackgroundColor: "#fff",
+                borderWidth: 2,
+                data: data
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0, // it is for ignoring negative step.
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function initYearChart(data) {
+    yearChart = new Chart($("#yearChart"), {
+        type: "line",
+        data: {
+            labels: ["Janeiro", "Fevereiro", "Mar\u00E7o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+            datasets: [{
+                label: "Presen\u00E7as",
+                backgroundColor: hexToRgba(getStyle("--info"), 10),
+                borderColor: getStyle("--info"),
+                pointHoverBackgroundColor: "#fff",
+                borderWidth: 2,
+                data: data
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0, // it is for ignoring negative step.
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
+            }
+        }
+    });
+}

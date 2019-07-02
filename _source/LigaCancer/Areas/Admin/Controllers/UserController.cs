@@ -108,7 +108,6 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             var userForm = new EditUserFormModel(user.Id, user.Name);
 
-            //Todo change to use await
             IList<string> roles = await _userManager.GetRolesAsync(user);
             string userRole = roles.Any() ? roles.FirstOrDefault() : string.Empty;
             if (!string.IsNullOrEmpty(userRole))

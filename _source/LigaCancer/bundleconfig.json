@@ -293,10 +293,22 @@
 
   /* Home */
   {
+    "outputFileName": "wwwroot/dist/css/home.min.css",
+    "inputFiles": [
+      "wwwroot/lib/gijgo/combined/css/gijgo.min.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  {
     "outputFileName": "wwwroot/dist/js/home.min.js",
     "inputFiles": [
       "wwwroot/lib/chart-js/Chart.min.js",
-      "wwwroot/js/admin/custom-tooltips.min.js",
+      "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
+      "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
       "wwwroot/js/admin/home.js"
     ],
     "minify": {
