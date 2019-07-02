@@ -1,5 +1,6 @@
 ﻿using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.SearchModel;
 using LigaCancer.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -54,6 +55,18 @@ namespace LigaCancer.Controllers.Api
                 _logger.LogError(e, "Presence Search Error", null);
                 return BadRequest();
             }
+        }
+
+        [HttpPost("~/api/presence/getChartData")]
+        public IActionResult GetChartData([FromForm] HomeViewModel home)
+        {
+            List<int> dayChartDate = ((PresenceStore)_presenceService).GetDayChartData(home.ChartDate);
+            List<int> monthChartDate = ((PresenceStore)_presenceService).GetMonthChartData(home.ChartDate);
+            List<int> yearChartDate = ((PresenceStore)_presenceService).GetYearChartData(home.ChartDate);
+
+            int daysInMonth = DateTime.DaysInMonth(home.ChartDate.Year, home.ChartDate.Month);
+
+            return Ok(new { dayChartDate, monthChartDate, yearChartDate, daysInMonth });
         }
 
         #region Private Methods

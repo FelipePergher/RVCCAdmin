@@ -126,6 +126,58 @@ namespace LigaCancer.Data.Store
             return Task.FromResult(result);
         }
 
+        #region Custom Methods
+
+        public List<int> GetDayChartData(DateTime chartDate)
+        {
+            var data = new List<int>();
+
+            IQueryable<Presence> todayPresences = _context.Presences
+                .Where(x => x.PresenceDateTime.Year == chartDate.Year && x.PresenceDateTime.Month == chartDate.Month && x.PresenceDateTime.Day == chartDate.Day);
+
+            for (int i = 0; i < 24; i++)
+            {
+                int hourCount = todayPresences.Where(x => x.PresenceDateTime.TimeOfDay.Hours == i).Count();
+                data.Add(hourCount);
+            }
+
+            return data;
+        }
+
+        public List<int> GetMonthChartData(DateTime chartDate)
+        {
+            var data = new List<int>();
+
+            IQueryable<Presence> monthPresences = _context.Presences
+                .Where(x => x.PresenceDateTime.Year == chartDate.Year && x.PresenceDateTime.Month == chartDate.Month);
+            
+            int daysInMonth = DateTime.DaysInMonth(chartDate.Year, chartDate.Month);
+            for (int i = 1; i <= daysInMonth; i++)
+            {
+                int dayCount = monthPresences.Where(x => x.PresenceDateTime.Day == i).Count();
+                data.Add(dayCount);
+            }
+
+            return data;
+        }
+
+        public List<int> GetYearChartData(DateTime chartDate)
+        {
+            var data = new List<int>();
+
+            IQueryable<Presence> yearPresences = _context.Presences.Where(x => x.PresenceDateTime.Year == chartDate.Year);
+
+            for (int i = 1; i < 13; i++)
+            {
+                int monthCount = yearPresences.Where(x => x.PresenceDateTime.Month == i).Count();
+                data.Add(monthCount);
+            }
+
+            return data;
+        }
+
+        #endregion
+
         #region Private Methods
 
         private IQueryable<Presence> GetOrdenationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)

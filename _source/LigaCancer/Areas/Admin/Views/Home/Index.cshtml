@@ -3,41 +3,52 @@
     ViewData["Title"] = "Admin Homepage";
 }
 
+@section styles{
+    <environment names="Development">
+        <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/home.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+}
+
 <main class="main">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            Dashboard
-        </li>
-    </ol>
     <div class="container-fluid">
         <div class="animated fadeIn">
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-5">
-                            <h4 class="card-title mb-0">Informação (Obs: Dados Aleátorios)</h4>
-                            <div class="small text-muted">Outubro 2018</div>
-                        </div>
                         <!-- /.col-->
-                        <div class="col-sm-7 d-none d-md-block">
-                            @* Todo *@
-                            @*<div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                        <div class="col-sm-3">
+                            <h4 class="card-title mb-0">Presenças</h4>
+                        </div>
+                        <form class="col-sm-6 form-group row" id="searchForm" method="post">
+                            <label class="col-md-3 mt-1" asp-for="ChartDate"></label>
+                            <div class="col-md-9">
+                                <input asp-for="ChartDate" readonly type="text" class="form-control dateField" />
+                                <span asp-validation-for="ChartDate" class="text-danger"></span>
+                            </div>
+                        </form>
+                        <div class="col-sm-3 d-none d-md-block">
+                            <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
                                 <label class="btn btn-outline-secondary">
-                                    <input id="option1" type="radio" name="options" autocomplete="off"> Dia
+                                    <input id="day" type="radio" name="chartOptions" autocomplete="off"> Dia
                                 </label>
                                 <label class="btn btn-outline-secondary active">
-                                    <input id="option2" type="radio" name="options" autocomplete="off" checked=""> Mês
+                                    <input id="month" type="radio" name="chartOptions" autocomplete="off" checked> Mês
                                 </label>
                                 <label class="btn btn-outline-secondary">
-                                    <input id="option3" type="radio" name="options" autocomplete="off"> Ano
+                                    <input id="year" type="radio" name="chartOptions" autocomplete="off"> Ano
                                 </label>
-                            </div>*@
+                            </div>
                         </div>
                         <!-- /.col-->
                     </div>
                     <!-- /.row-->
                     <div class="chart-wrapper">
-                        <canvas class="chart" id="main-chart" style="height: 60vh;"></canvas>
+                        <canvas class="chart" id="dayChart" style="display: none;"></canvas>
+                        <canvas class="chart" id="monthChart"></canvas>
+                        <canvas class="chart" id="yearChart" style="display: none;"></canvas>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -86,11 +97,11 @@
     </div>
 </main>
 
-
 @section scripts {
     <environment names="Development">
         <script src="~/lib/chart-js/Chart.min.js"></script>
-        <script src="~/js/admin/custom-tooltips.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
         <script src="~/js/admin/home.js"></script>
     </environment>
     <environment exclude="Development">
