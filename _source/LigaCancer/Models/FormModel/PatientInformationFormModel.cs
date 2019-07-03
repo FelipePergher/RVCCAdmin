@@ -1,6 +1,5 @@
 ﻿using LigaCancer.Code;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,8 +17,10 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Data de início do tratameto")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        [DataType(DataType.Date)]
         [DateRange]
-        public DateTime? TreatmentbeginDate { get; set; }
+        public string TreatmentbeginDate { get; set; }
 
         [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }

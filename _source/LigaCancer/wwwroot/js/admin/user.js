@@ -68,7 +68,6 @@ function initPage() {
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
-        console.log("aaa");
         userTable.search("").draw();
     });
 

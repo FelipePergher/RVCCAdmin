@@ -11,13 +11,12 @@ namespace LigaCancer.Code
 
         public override bool IsValid(object value)
         {
-            if (value == null || !(value is DateTime))
+            if (value == null || !DateTime.TryParse(value.ToString(), out DateTime dateTime))
             {
                 return true;
             }
 
-            var dateValue = (DateTime)value;
-            return DateTime.Now.Date > dateValue.Date;
+            return DateTime.Now.Date > dateTime.Date;
         }
     }
 }

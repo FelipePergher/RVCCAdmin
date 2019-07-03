@@ -62,10 +62,10 @@ namespace LigaCancer.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
-
+                var dateTime = DateTime.Parse(presenceForm.Date);
                 var presence = new Presence
                 {
-                    PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
+                    PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
                     PatientId = patient.PatientId,
                     Name = $"{patient.FirstName} {patient.Surname}",
                     UserCreated = await _userManager.GetUserAsync(User)
@@ -106,7 +106,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             var presenceform = new PresenceFormModel
             {
                 PatientId = presence.Name,
-                Date = presence.PresenceDateTime,
+                Date = presence.PresenceDateTime.ToString("dd/M/yyyy"),
                 Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0)
             };
 
@@ -123,8 +123,9 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                var dateTime = DateTime.Parse(presenceForm.Date);
                 Presence presence = await _presenceService.FindByIdAsync(id);
-                presence.PresenceDateTime = new DateTime(presenceForm.Date.Year, presenceForm.Date.Month, presenceForm.Date.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
+                presence.PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
                 presence.UserUpdated = await _userManager.GetUserAsync(User);
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);

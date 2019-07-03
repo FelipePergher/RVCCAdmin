@@ -309,6 +309,7 @@
       "wwwroot/lib/chart-js/Chart.min.js",
       "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
       "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
+      "wwwroot/lib/jquery-mask/jquery.mask.min.js",
       "wwwroot/js/admin/home.js"
     ],
     "minify": {
@@ -350,6 +351,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
+      "wwwroot/lib/jquery-mask/jquery.mask.min.js",
       "wwwroot/js/admin/presence.js"
     ],
     "minify": {

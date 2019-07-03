@@ -47,7 +47,8 @@ var SPMaskBehavior = function (val) {
 
 let masks = {
     Cpf: '000.000.000-00',
-    Price: '000.000.000.000.000,00'
+    Price: '000.000.000.000.000,00',
+    date: '99/99/9999'
 };
 
 function calendar(id) {
@@ -57,6 +58,7 @@ function calendar(id) {
         locale: "pt-br",
         uiLibrary: "bootstrap4"
     });
+    $('#' + id).mask(masks.date, { placeholder: "dd/mm/yyyy" });
 }
 
 function time(id) {

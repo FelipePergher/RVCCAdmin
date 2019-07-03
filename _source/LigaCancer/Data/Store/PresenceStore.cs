@@ -150,7 +150,7 @@ namespace LigaCancer.Data.Store
 
             IQueryable<Presence> monthPresences = _context.Presences
                 .Where(x => x.PresenceDateTime.Year == chartDate.Year && x.PresenceDateTime.Month == chartDate.Month);
-            
+
             int daysInMonth = DateTime.DaysInMonth(chartDate.Year, chartDate.Month);
             for (int i = 1; i <= daysInMonth; i++)
             {
@@ -204,12 +204,12 @@ namespace LigaCancer.Data.Store
 
             if (presenceSearch.DateFrom != null)
             {
-                query = query.Where(x => x.PresenceDateTime.Date >= presenceSearch.DateFrom.Value.Date);
+                query = query.Where(x => x.PresenceDateTime.Date >= DateTime.Parse(presenceSearch.DateFrom).Date);
             }
 
             if (presenceSearch.DateTo != null)
             {
-                query = query.Where(x => x.PresenceDateTime.Date <= presenceSearch.DateTo.Value.Date);
+                query = query.Where(x => x.PresenceDateTime.Date <= DateTime.Parse(presenceSearch.DateTo).Date);
             }
 
             return query;

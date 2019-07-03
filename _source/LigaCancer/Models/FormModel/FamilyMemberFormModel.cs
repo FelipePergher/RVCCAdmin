@@ -1,5 +1,4 @@
 ﻿using LigaCancer.Code;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LigaCancer.Models.FormModel
@@ -18,7 +17,8 @@ namespace LigaCancer.Models.FormModel
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         [DateRange]
-        public DateTime? DateOfBirth { get; set; }
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        public string DateOfBirth { get; set; }
 
         [Display(Name = "Gênero")]
         public Globals.Sex Sex { get; set; }

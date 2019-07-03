@@ -7,8 +7,8 @@ namespace LigaCancer.Models.SearchModel
     {
         public PresenceSearchModel()
         {
-            DateFrom = DateTime.Now.AddDays(-7);
-            DateTo = DateTime.Now;
+            DateFrom = DateTime.Now.AddDays(-7).ToString("dd/MM/yyyy");
+            DateTo = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
         [Display(Name = "Nome")]
@@ -16,10 +16,14 @@ namespace LigaCancer.Models.SearchModel
 
         [Display(Name = "Data Inicial")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? DateFrom { get; set; }
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        [DataType(DataType.Date)]
+        public string DateFrom { get; set; }
 
         [Display(Name = "Data Final")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? DateTo { get; set; }
+        [DataType(DataType.Date)]
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        public string DateTo { get; set; }
     }
 }

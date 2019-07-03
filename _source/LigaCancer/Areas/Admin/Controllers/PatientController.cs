@@ -81,7 +81,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     FamiliarityGroup = patientProfileForm.FamiliarityGroup,
                     Sex = patientProfileForm.Sex,
                     CivilState = patientProfileForm.CivilState,
-                    DateOfBirth = patientProfileForm.DateOfBirth.Value,
+                    DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth),
                     Profession = patientProfileForm.Profession,
                     UserCreated = await _userManager.GetUserAsync(User),
                     MonthlyIncome =
@@ -173,7 +173,9 @@ namespace LigaCancer.Areas.Admin.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = patientInformationForm.TreatmentbeginDate ?? DateTime.MinValue;
+                patientInformation.TreatmentbeginDate = string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
+                    ? DateTime.Parse(patientInformationForm.TreatmentbeginDate)
+                    : DateTime.MinValue;
 
                 //Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
@@ -297,7 +299,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 FamiliarityGroup = patient.FamiliarityGroup,
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
-                DateOfBirth = patient.DateOfBirth,
+                DateOfBirth = patient.DateOfBirth.ToString("dd/MM/yyyy"),
                 MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
                 Profession = patient.Profession
             };
@@ -319,7 +321,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 patient.FamiliarityGroup = patientProfileForm.FamiliarityGroup;
                 patient.Sex = patientProfileForm.Sex;
                 patient.CivilState = patientProfileForm.CivilState;
-                patient.DateOfBirth = patientProfileForm.DateOfBirth.Value;
+                patient.DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth);
                 patient.Profession = patientProfileForm.Profession;
                 patient.UserUpdated = await _userManager.GetUserAsync(User);
                 patient.MonthlyIncome =
@@ -419,7 +421,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             };
             if (patientInformation.TreatmentbeginDate != DateTime.MinValue)
             {
-                patientInformationForm.TreatmentbeginDate = patientInformation.TreatmentbeginDate;
+                patientInformationForm.TreatmentbeginDate = patientInformation.TreatmentbeginDate.ToString("dd/MM/yyyy");
             }
 
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
@@ -435,7 +437,9 @@ namespace LigaCancer.Areas.Admin.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = patientInformationForm.TreatmentbeginDate ?? DateTime.MinValue;
+                patientInformation.TreatmentbeginDate = string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
+                   ? DateTime.Parse(patientInformationForm.TreatmentbeginDate)
+                   : DateTime.MinValue;
 
                 //Added Cancer Types to Patient Information
                 if (patientInformationForm.CancerTypes.Count == 0)
@@ -642,15 +646,16 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var dateTime = DateTime.Parse(archivePatientForm.DateTime);
             switch (archivePatientForm.ArchivePatientType)
             {
                 case Globals.ArchivePatientType.death:
                     patient.ActivePatient.Death = true;
-                    patient.ActivePatient.DeathDate = archivePatientForm.DateTime;
+                    patient.ActivePatient.DeathDate = dateTime;
                     break;
                 case Globals.ArchivePatientType.discharge:
                     patient.ActivePatient.Discharge = true;
-                    patient.ActivePatient.DischargeDate = archivePatientForm.DateTime;
+                    patient.ActivePatient.DischargeDate = dateTime;
                     break;
             }
 

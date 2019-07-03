@@ -7,7 +7,7 @@ namespace LigaCancer.Models.ViewModel
     {
         public HomeViewModel()
         {
-            ChartDate = DateTime.Now;
+            ChartDate = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
         public int PatientCount { get; set; }
@@ -23,6 +23,8 @@ namespace LigaCancer.Models.ViewModel
         [Display(Name = "Data dos gráfico")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime ChartDate { get; set; }
+        [DataType(DataType.Date)]
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        public string ChartDate { get; set; }
     }
 }

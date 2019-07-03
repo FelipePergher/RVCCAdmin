@@ -60,11 +60,12 @@ namespace LigaCancer.Controllers.Api
         [HttpPost("~/api/presence/getChartData")]
         public IActionResult GetChartData([FromForm] HomeViewModel home)
         {
-            List<int> dayChartDate = ((PresenceStore)_presenceService).GetDayChartData(home.ChartDate);
-            List<int> monthChartDate = ((PresenceStore)_presenceService).GetMonthChartData(home.ChartDate);
-            List<int> yearChartDate = ((PresenceStore)_presenceService).GetYearChartData(home.ChartDate);
+            var dateTime = DateTime.Parse(home.ChartDate);
+            List<int> dayChartDate = ((PresenceStore)_presenceService).GetDayChartData(dateTime);
+            List<int> monthChartDate = ((PresenceStore)_presenceService).GetMonthChartData(dateTime);
+            List<int> yearChartDate = ((PresenceStore)_presenceService).GetYearChartData(dateTime);
 
-            int daysInMonth = DateTime.DaysInMonth(home.ChartDate.Year, home.ChartDate.Month);
+            int daysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
 
             return Ok(new { dayChartDate, monthChartDate, yearChartDate, daysInMonth });
         }

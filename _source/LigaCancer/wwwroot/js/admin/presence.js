@@ -33,7 +33,6 @@
         },
         datatype: "json",
         error: function (error) {
-            console.log(error);
             swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
         }
     },
@@ -73,7 +72,9 @@ function initPage() {
 
     $("#searchForm").submit(function (e) {
         e.preventDefault();
-        presenceTable.search("").draw("");
+        if ($(this).valid()) {
+            presenceTable.search("").draw("");
+        }
     });
 }
 

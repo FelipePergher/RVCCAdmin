@@ -9,7 +9,7 @@ namespace LigaCancer.Models.FormModel
     {
         public PresenceFormModel()
         {
-            Date = DateTime.Now;
+            Date = DateTime.Now.ToString("dd/MM/yyyy");
             Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
         }
 
@@ -19,7 +19,9 @@ namespace LigaCancer.Models.FormModel
 
         [Display(Name = "Data")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+        [DataType(DataType.Date)]
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
+        public string Date { get; set; }
 
         [Display(Name = "Hora")]
         [DisplayFormat(DataFormatString = @"{0:hh\:mm}", ApplyFormatInEditMode = true)]

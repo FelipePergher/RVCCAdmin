@@ -76,7 +76,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 var familyMember = new FamilyMember
                 {
                     PatientId = int.Parse(id),
-                    DateOfBirth = familyMemberForm.DateOfBirth,
+                    DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth),
                     Kinship = familyMemberForm.Kinship,
                     MonthlyIncome =
                         (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
@@ -116,7 +116,7 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
-                DateOfBirth = familyMember.DateOfBirth,
+                DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : "",
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
                 Name = familyMember.Name,
@@ -131,7 +131,7 @@ namespace LigaCancer.Areas.Admin.Controllers
             {
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
-                familyMember.DateOfBirth = familyMemberForm.DateOfBirth;
+                familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
                 familyMember.Kinship = familyMemberForm.Kinship;
                 familyMember.MonthlyIncome =
                     (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
