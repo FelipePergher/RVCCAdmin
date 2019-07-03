@@ -96,6 +96,9 @@ function cleanModal() {
     $("#modal-dialog").removeClass("modal-lg");
     $("#modal-dialog").removeClass("modal-elg");
     showSpinnerModal();
+    setTimeout(function () {
+        $(".swal2-confirm").focus();
+    }, 10);
 }
 
 function showSpinnerModal() {
@@ -129,6 +132,9 @@ function cleanModalSecondary() {
     $("#modalBodySecondary").html("");
     $("#modal-title-secondary").text("");
     showSpinnerModalSecondary();
+    setTimeout(function () {
+        $(".swal2-confirm").focus();
+    }, 10);
 }
 
 function showSpinnerModalSecondary() {
