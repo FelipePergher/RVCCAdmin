@@ -88,6 +88,10 @@ function openModal(url, title, callback = null) {
     $("#modal-action").on("hidden.bs.modal", function (e) {
         cleanModal();
     });
+
+    $('#modal-action').on('shown.bs.modal', function () {
+        $(this).find('input,select').filter(':visible:first').trigger('focus');
+    });
 }
 
 function cleanModal() {
