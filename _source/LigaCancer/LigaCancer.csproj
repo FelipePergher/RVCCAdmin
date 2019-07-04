@@ -58,12 +58,6 @@
     <None Include="wwwroot\js\admin\custom-tooltips.min.js" />
     <None Include="wwwroot\css\admin\custom.css" />
     <None Include="wwwroot\css\admin\style.css" />
-    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
-    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
-    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
-    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
-    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
-    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
     <None Include="wwwroot\js\admin\cancerType.js" />
     <None Include="wwwroot\js\admin\doctor.js" />
     <None Include="wwwroot\js\admin\home.js" />

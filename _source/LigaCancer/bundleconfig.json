@@ -3,7 +3,6 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/css/fontawesome.min.css",
       "wwwroot/css/admin/style.css",
       "wwwroot/css/admin/custom.css"
     ],
@@ -367,7 +366,6 @@
     "outputFileName": "wwwroot/dist/css/homepage.min.css",
     "inputFiles": [
       "wwwroot/lib/bootstrap/css/bootstrap.min.css",
-      "wwwroot/css/fontawesome.min.css",
       "wwwroot/css/cms/slicknav.css",
       "wwwroot/css/cms/animate.css",
       "wwwroot/css/cms/main.css",
