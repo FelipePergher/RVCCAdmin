@@ -5,12 +5,12 @@
 	http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 	<url>
-		<loc>://rvcc.com.br/</loc>
+		<loc>https://rvcc.com.br/</loc>
 		<changefreq>daily</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>://://rvcc.com.br/</loc>
+		<loc>https://rvcc.com.br/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.99</priority>
 	</url>
@@ -30,7 +30,7 @@
 		<priority>0.99</priority>
 	</url>
 	<url>
-		<loc>://:///Admin</loc>
+		<loc>https://rvcc.com.br/Admin</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.99</priority>
 	</url>
