@@ -162,6 +162,10 @@ function initPage() {
 
     $(".filterSelect").select2();
 
+    $('#searchForm').on('reset', function (e) {
+        $(".filterSelect").val("").trigger("change");
+    });
+
     $("#searchForm").submit(function (e) {
         e.preventDefault();
         patientTable.search("").draw("");
