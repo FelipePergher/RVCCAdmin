@@ -497,6 +497,7 @@ function initAddressIndex() {
 
 function initAddAddressForm() {
     $(".addressSelect2").select2();
+    $("#MonthlyAmmountResidence").mask(masks.Price, { reverse: true });
 
     $.validator.unobtrusive.parse("#addAddressForm");
 
@@ -520,6 +521,7 @@ function addAddressSuccess(data, textStatus) {
 
 function initEditAddressForm() {
     $(".addressSelect2").select2();
+    $("#MonthlyAmmountResidence").mask(masks.Price, { reverse: true });
 
     $.validator.unobtrusive.parse("#editAddressForm");
 

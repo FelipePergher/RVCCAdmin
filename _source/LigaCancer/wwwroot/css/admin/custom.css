@@ -84,3 +84,7 @@
     text-decoration: none;
     color: inherit;
 }
+
+.dropdown-menu.show {
+    z-index: 1100;
+}
