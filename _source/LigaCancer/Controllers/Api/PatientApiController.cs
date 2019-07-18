@@ -122,7 +122,7 @@ namespace LigaCancer.Controllers.Api
                     $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-globe-americas'></i> Naturalidade</a>";
 
                 string editPatientInformation = $"<a href='/Admin/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Informação do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-info'></i> Informação do Paciente</a>";
+                    $"data-title='Editar Informações do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-info'></i> Informação do Paciente</a>";
 
                 string phones = $"<a href='/Admin/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Telefones' class='dropdown-item phonesButton'><i class='fas fa-phone'></i> Telefones</a>";

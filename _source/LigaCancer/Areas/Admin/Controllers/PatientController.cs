@@ -173,7 +173,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
+                patientInformation.TreatmentbeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
                     ? DateTime.Parse(patientInformationForm.TreatmentbeginDate)
                     : DateTime.MinValue;
 
@@ -437,7 +437,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
+                patientInformation.TreatmentbeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentbeginDate)
                    ? DateTime.Parse(patientInformationForm.TreatmentbeginDate)
                    : DateTime.MinValue;
 
