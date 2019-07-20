@@ -74,7 +74,7 @@ namespace LigaCancer.Areas.Identity.Pages.Account
                 ApplicationUser user = await _userManager.FindByEmailAsync(Login.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    Login.ShowResend = true;
+                    Login.ShowResend = user != null;
                     return Page();
                 }
 
