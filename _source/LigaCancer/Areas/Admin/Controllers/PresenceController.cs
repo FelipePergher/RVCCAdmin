@@ -2,6 +2,7 @@
 using LigaCancer.Code.Interface;
 using LigaCancer.Data.Models;
 using LigaCancer.Data.Models.PatientModels;
+using LigaCancer.Data.Store;
 using LigaCancer.Models.FormModel;
 using LigaCancer.Models.SearchModel;
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +48,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
-            List<Patient> patients = await _patientService.GetAllAsync();
+            List<Patient> patients = await ((PatientStore)_patientService).GetActivePatients();
             var presenceForm = new PresenceFormModel
             {
                 Patients = patients.Select(x => new SelectListItem($"{x.FirstName} {x.Surname}", x.PatientId.ToString())).ToList()

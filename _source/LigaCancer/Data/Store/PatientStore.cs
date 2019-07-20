@@ -250,5 +250,10 @@ namespace LigaCancer.Data.Store
         }
 
         #endregion
+        public Task<List<Patient>> GetActivePatients()
+        {
+            var patients = _context.Patients.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death).ToList();
+            return Task.FromResult(patients);
+        }
     }
 }
