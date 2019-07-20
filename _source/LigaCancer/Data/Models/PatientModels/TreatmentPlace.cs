@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Models.PatientModels
         public TreatmentPlace(string city, ApplicationUser user)
         {
             City = city;
-            UserCreated = user;
+            CreatedBy = user.Name;
         }
 
         [Key]

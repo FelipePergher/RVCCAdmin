@@ -11,7 +11,7 @@ namespace LigaCancer.Data.Models.PatientModels
         public CancerType(string name, ApplicationUser user)
         {
             Name = name;
-            UserCreated = user;
+            CreatedBy = user.Name;
         }
 
         [Key]

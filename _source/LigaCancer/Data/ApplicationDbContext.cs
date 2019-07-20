@@ -1,11 +1,12 @@
-﻿using LigaCancer.Data.Models.PatientModels;
+﻿using LigaCancer.Data.Models;
+using LigaCancer.Data.Models.PatientModels;
 using LigaCancer.Data.Models.RelationModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LigaCancer.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions options)
             : base(options)

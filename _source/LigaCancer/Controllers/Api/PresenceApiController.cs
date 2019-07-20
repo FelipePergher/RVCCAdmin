@@ -79,7 +79,7 @@ namespace LigaCancer.Controllers.Api
             string deletePresence = $"<a href='javascript:void(0);' data-url='/Admin/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
                 $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
-            TimeSpan diff = DateTime.Now.Subtract(presence.RegisterDate);
+            TimeSpan diff = DateTime.Now.Subtract(presence.RegisterTime);
             if (diff.Days > 0)
             {
                 editPresence = string.Empty;

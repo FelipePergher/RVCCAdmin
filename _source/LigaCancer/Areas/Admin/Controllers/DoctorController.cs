@@ -87,12 +87,13 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
 
                 doctor.Name = doctorForm.Name;
                 doctor.CRM = doctorForm.CRM;
-                doctor.UpdatedDate = DateTime.Now;
-                doctor.UserUpdated = await _userManager.GetUserAsync(User);
+                doctor.UpdatedTime = DateTime.Now;
+                doctor.UpdatedBy = user.Name;
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
                 if (result.Succeeded)

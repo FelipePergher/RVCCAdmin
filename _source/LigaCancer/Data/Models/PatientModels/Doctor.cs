@@ -11,14 +11,14 @@ namespace LigaCancer.Data.Models.PatientModels
         public Doctor(string name, ApplicationUser user)
         {
             Name = name;
-            UserCreated = user;
+            CreatedBy = user.Name;
         }
 
         public Doctor(string name, string crm, ApplicationUser user)
         {
             Name = name;
             CRM = crm;
-            UserCreated = user;
+            CreatedBy = user.Name;
         }
 
         [Key]

@@ -72,6 +72,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 var patient = new Patient
                 {
                     FirstName = patientProfileForm.FirstName,
@@ -83,7 +84,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     CivilState = patientProfileForm.CivilState,
                     DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth),
                     Profession = patientProfileForm.Profession,
-                    UserCreated = await _userManager.GetUserAsync(User),
+                    CreatedBy = user.Name,
                     MonthlyIncome =
                         (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0)
                 };
@@ -118,12 +119,13 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Naturality naturality = await _naturalityService.FindByIdAsync(id, new[] { "Patient", "Patient.PatientInformation" });
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
                 naturality.Country = naturalityForm.Country;
-                naturality.UserUpdated = await _userManager.GetUserAsync(User);
+                naturality.UpdatedBy = user.Name;
 
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 
@@ -312,6 +314,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Patient patient = await _patientService.FindByIdAsync(id);
 
                 patient.FirstName = patientProfileForm.FirstName;
@@ -323,7 +326,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                 patient.CivilState = patientProfileForm.CivilState;
                 patient.DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth);
                 patient.Profession = patientProfileForm.Profession;
-                patient.UserUpdated = await _userManager.GetUserAsync(User);
+                patient.UpdatedBy = user.Name;
                 patient.MonthlyIncome =
                         (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
 
@@ -371,12 +374,13 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Naturality naturality = await _naturalityService.FindByIdAsync(id);
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
                 naturality.Country = naturalityForm.Country;
-                naturality.UserUpdated = await _userManager.GetUserAsync(User);
+                naturality.UpdatedBy = user.Name;
 
                 TaskResult result = await _naturalityService.UpdateAsync(naturality);
 

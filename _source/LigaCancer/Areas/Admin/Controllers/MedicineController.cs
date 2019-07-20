@@ -88,11 +88,12 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Medicine medicine = await _medicineService.FindByIdAsync(id);
 
                 medicine.Name = medicineForm.Name;
-                medicine.UpdatedDate = DateTime.Now;
-                medicine.UserUpdated = await _userManager.GetUserAsync(User);
+                medicine.UpdatedTime = DateTime.Now;
+                medicine.UpdatedBy = user.Name;
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);
                 if (result.Succeeded)

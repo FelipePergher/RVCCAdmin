@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LigaCancer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190610215027_FirstMigration")]
+    [Migration("20190720190651_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,11 +21,70 @@ namespace LigaCancer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("LigaCancer.Data.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<DateTime>("RegisterTime");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
                     b.Property<int>("ActivePatientId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
 
                     b.Property<bool>("Death");
 
@@ -37,22 +96,16 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("ActivePatientId");
 
                     b.HasIndex("PatientId")
                         .IsUnique();
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("ActivePatients");
                 });
@@ -67,6 +120,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Complement");
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("HouseNumber");
 
                     b.Property<double>("MonthlyAmmountResidence");
@@ -77,25 +132,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
                     b.Property<int?>("ResidenceType");
 
                     b.Property<string>("Street");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("AddressId");
 
                     b.HasIndex("PatientId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Addresses");
                 });
@@ -106,25 +155,21 @@ namespace LigaCancer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("Name");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("CancerTypeId");
 
                     b.HasIndex("Name")
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("CancerTypes");
                 });
@@ -137,25 +182,21 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("CRM");
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("Name");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("DoctorId");
 
                     b.HasIndex("CRM")
                         .IsUnique()
                         .HasFilter("[CRM] IS NOT NULL");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Doctors");
                 });
@@ -165,6 +206,8 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FamilyMemberId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime?>("DateOfBirth");
 
@@ -176,23 +219,17 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
                     b.Property<int>("Sex");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("FamilyMemberId");
 
                     b.HasIndex("PatientId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("FamilyMembers");
                 });
@@ -202,6 +239,8 @@ namespace LigaCancer.Migrations
                     b.Property<int>("FileAttachmentId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("FileExtension");
 
@@ -213,21 +252,15 @@ namespace LigaCancer.Migrations
 
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("FileAttachmentId");
 
                     b.HasIndex("PatientId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("FileAttachments");
                 });
@@ -238,25 +271,21 @@ namespace LigaCancer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("Name");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("MedicineId");
 
                     b.HasIndex("Name")
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Medicines");
                 });
@@ -271,26 +300,22 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("Country");
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
                     b.Property<string>("State");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("NaturalityId");
 
                     b.HasIndex("PatientId")
                         .IsUnique();
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Naturalities");
                 });
@@ -305,6 +330,8 @@ namespace LigaCancer.Migrations
 
                     b.Property<int?>("CivilState");
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<DateTime>("DateOfBirth");
 
                     b.Property<bool>("FamiliarityGroup");
@@ -317,17 +344,15 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("RG");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
                     b.Property<int>("Sex");
 
                     b.Property<string>("Surname");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("PatientId");
 
@@ -339,10 +364,6 @@ namespace LigaCancer.Migrations
                         .IsUnique()
                         .HasFilter("[RG] IS NOT NULL");
 
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
-
                     b.ToTable("Patients");
                 });
 
@@ -352,26 +373,22 @@ namespace LigaCancer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<int>("PatientId");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
                     b.Property<DateTime>("TreatmentbeginDate");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("PatientInformationId");
 
                     b.HasIndex("PatientId")
                         .IsUnique();
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("PatientInformation");
                 });
@@ -382,6 +399,8 @@ namespace LigaCancer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("Number");
 
                     b.Property<string>("ObservationNote");
@@ -390,21 +409,15 @@ namespace LigaCancer.Migrations
 
                     b.Property<int?>("PhoneType");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("PhoneId");
 
                     b.HasIndex("PatientId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Phones");
                 });
@@ -415,25 +428,21 @@ namespace LigaCancer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("PatientId");
 
                     b.Property<DateTime>("PresenceDateTime");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserCreatedId");
-
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("PresenceId");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("Presences");
                 });
@@ -446,23 +455,19 @@ namespace LigaCancer.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<DateTime>("RegisterDate");
+                    b.Property<string>("CreatedBy");
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<DateTime>("RegisterTime");
 
-                    b.Property<string>("UserCreatedId");
+                    b.Property<string>("UpdatedBy");
 
-                    b.Property<string>("UserUpdatedId");
+                    b.Property<DateTime>("UpdatedTime");
 
                     b.HasKey("TreatmentPlaceId");
 
                     b.HasIndex("City")
                         .IsUnique()
                         .HasFilter("[City] IS NOT NULL");
-
-                    b.HasIndex("UserCreatedId");
-
-                    b.HasIndex("UserUpdatedId");
 
                     b.ToTable("TreatmentPlaces");
                 });
@@ -563,62 +568,6 @@ namespace LigaCancer.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -685,33 +634,12 @@ namespace LigaCancer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LigaCancer.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<string>("Name");
-
-                    b.Property<DateTime>("RegisterDate");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.ActivePatient", b =>
                 {
                     b.HasOne("LigaCancer.Data.Models.PatientModels.Patient", "Patient")
                         .WithOne("ActivePatient")
                         .HasForeignKey("LigaCancer.Data.Models.PatientModels.ActivePatient", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Address", b =>
@@ -720,36 +648,6 @@ namespace LigaCancer.Migrations
                         .WithMany("Addresses")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.CancerType", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Doctor", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FamilyMember", b =>
@@ -758,14 +656,6 @@ namespace LigaCancer.Migrations
                         .WithMany("FamilyMembers")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.FileAttachment", b =>
@@ -774,25 +664,6 @@ namespace LigaCancer.Migrations
                         .WithMany("FileAttachments")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Medicine", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Naturality", b =>
@@ -801,25 +672,6 @@ namespace LigaCancer.Migrations
                         .WithOne("Naturality")
                         .HasForeignKey("LigaCancer.Data.Models.PatientModels.Naturality", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Patient", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.PatientInformation", b =>
@@ -828,14 +680,6 @@ namespace LigaCancer.Migrations
                         .WithOne("PatientInformation")
                         .HasForeignKey("LigaCancer.Data.Models.PatientModels.PatientInformation", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Phone", b =>
@@ -844,36 +688,6 @@ namespace LigaCancer.Migrations
                         .WithMany("Phones")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.Presence", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
-                });
-
-            modelBuilder.Entity("LigaCancer.Data.Models.PatientModels.TreatmentPlace", b =>
-                {
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserCreated")
-                        .WithMany()
-                        .HasForeignKey("UserCreatedId");
-
-                    b.HasOne("LigaCancer.Data.Models.ApplicationUser", "UserUpdated")
-                        .WithMany()
-                        .HasForeignKey("UserUpdatedId");
                 });
 
             modelBuilder.Entity("LigaCancer.Data.Models.RelationModels.PatientInformationCancerType", b =>
@@ -938,7 +752,7 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -946,7 +760,7 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -959,7 +773,7 @@ namespace LigaCancer.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -967,7 +781,7 @@ namespace LigaCancer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("LigaCancer.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

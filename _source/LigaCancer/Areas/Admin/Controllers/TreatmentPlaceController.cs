@@ -102,9 +102,10 @@ namespace LigaCancer.Areas.Admin.Controllers
                     return NotFound();
                 }
 
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 treatmentPlace.City = treatmentPlaceForm.City;
-                treatmentPlace.UpdatedDate = DateTime.Now;
-                treatmentPlace.UserUpdated = await _userManager.GetUserAsync(User);
+                treatmentPlace.UpdatedTime = DateTime.Now;
+                treatmentPlace.UpdatedBy = user.Name;
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
                 if (result.Succeeded)

@@ -69,13 +69,14 @@ namespace LigaCancer.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             var fileAttachment = new FileAttachment
             {
                 PatientId = patient.PatientId,
                 FileName = Path.GetFileNameWithoutExtension(file.FileName),
                 FileExtension = Path.GetExtension(file.FileName),
                 FileSize = (double)file.Length / 1024 / 1024,
-                UserCreated = await _userManager.GetUserAsync(User)
+                CreatedBy = user.Name
             };
 
             string path = $"uploads\\files\\{patient.PatientId}";

@@ -6,17 +6,16 @@ namespace LigaCancer.Data.Models
     {
         public RegisterData()
         {
-            RegisterDate = DateTime.Now;
+            RegisterTime = DateTime.Now;
         }
 
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterTime { get; set; }
 
-        public ApplicationUser UserCreated { get; set; }
+        public string CreatedBy { get; set; }
 
+        public DateTime UpdatedTime { get; set; }
 
-        public DateTime UpdatedDate { get; set; }
-
-        public ApplicationUser UserUpdated { get; set; }
+        public string UpdatedBy { get; set; }
 
     }
 }

@@ -61,6 +61,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
                 var dateTime = DateTime.Parse(presenceForm.Date);
                 var presence = new Presence
@@ -68,7 +69,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
                     PatientId = patient.PatientId,
                     Name = $"{patient.FirstName} {patient.Surname}",
-                    UserCreated = await _userManager.GetUserAsync(User)
+                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _presenceService.CreateAsync(presence);
@@ -123,10 +124,11 @@ namespace LigaCancer.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var dateTime = DateTime.Parse(presenceForm.Date);
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Presence presence = await _presenceService.FindByIdAsync(id);
+                var dateTime = DateTime.Parse(presenceForm.Date);
                 presence.PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
-                presence.UserUpdated = await _userManager.GetUserAsync(User);
+                presence.UpdatedBy = user.Name;
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
                 if (result.Succeeded)

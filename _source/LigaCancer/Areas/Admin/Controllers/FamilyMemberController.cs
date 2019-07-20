@@ -73,6 +73,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                     return NotFound();
                 }
 
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 var familyMember = new FamilyMember
                 {
                     PatientId = int.Parse(id),
@@ -82,7 +83,7 @@ namespace LigaCancer.Areas.Admin.Controllers
                         (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
-                    UserCreated = await _userManager.GetUserAsync(User)
+                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
@@ -129,6 +130,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
@@ -137,8 +139,8 @@ namespace LigaCancer.Areas.Admin.Controllers
                     (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
-                familyMember.UpdatedDate = DateTime.Now;
-                familyMember.UserUpdated = await _userManager.GetUserAsync(User);
+                familyMember.UpdatedTime = DateTime.Now;
+                familyMember.UpdatedBy = user.Name;
 
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 

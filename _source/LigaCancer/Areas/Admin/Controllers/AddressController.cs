@@ -60,6 +60,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 var address = new Address
                 {
                     PatientId = id,
@@ -70,10 +71,10 @@ namespace LigaCancer.Areas.Admin.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmmountResidence = addressForm.ResidenceType != null 
+                    MonthlyAmmountResidence = addressForm.ResidenceType != null
                         ? (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0,
-                        
-                    UserCreated = await _userManager.GetUserAsync(User)
+
+                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _addressService.CreateAsync(address);
@@ -125,6 +126,7 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Address address = await _addressService.FindByIdAsync(id);
 
                 address.Complement = addressForm.Complement;
@@ -133,11 +135,11 @@ namespace LigaCancer.Areas.Admin.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ? 
+                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ?
                     (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0;
                 address.Street = addressForm.Street;
-                address.UpdatedDate = DateTime.Now;
-                address.UserUpdated = await _userManager.GetUserAsync(User);
+                address.UpdatedTime = DateTime.Now;
+                address.UpdatedBy = user.Name;
 
                 TaskResult result = await _addressService.UpdateAsync(address);
                 if (result.Succeeded)

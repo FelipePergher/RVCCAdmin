@@ -14,7 +14,7 @@ namespace LigaCancer.Data.Models.PatientModels
             PhoneType = phoneType;
             ObservationNote = observationNote;
             PatientId = int.Parse(patientId);
-            UserCreated = user;
+            CreatedBy = user.Name;
         }
 
         [Key]

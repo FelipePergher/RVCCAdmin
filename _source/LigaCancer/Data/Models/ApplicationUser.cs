@@ -7,7 +7,7 @@ namespace LigaCancer.Data.Models
     {
         public string Name { get; set; }
 
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterTime { get; set; }
 
         public string CreatedBy { get; set; }
     }

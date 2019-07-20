@@ -171,7 +171,7 @@ namespace LigaCancer
 
             IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             SeedData.SeedRoles(scopeFactory).Wait();
-            SeedData.SeedAdminUser(scopeFactory).Wait();
+            SeedData.SeedAdminUser(scopeFactory, Configuration["Admin:Email"], Configuration["Admin:Password"]).Wait();
         }
     }
 

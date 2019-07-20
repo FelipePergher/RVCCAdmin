@@ -117,13 +117,14 @@ namespace LigaCancer.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Phone phone = await _phoneService.FindByIdAsync(id);
 
                 phone.Number = phoneForm.Number;
                 phone.PhoneType = phoneForm.PhoneType;
                 phone.ObservationNote = phoneForm.ObservationNote;
-                phone.UpdatedDate = DateTime.Now;
-                phone.UserUpdated = await _userManager.GetUserAsync(User);
+                phone.UpdatedTime = DateTime.Now;
+                phone.UpdatedBy = user.Name;
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);
                 if (result.Succeeded)

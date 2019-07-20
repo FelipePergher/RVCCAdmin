@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,7 +42,6 @@ namespace LigaCancer.Code
                             await roleManager.CreateAsync(new IdentityRole
                             {
                                 Name = role
-
                             });
                         }
                     }
@@ -49,26 +49,26 @@ namespace LigaCancer.Code
             }
         }
 
-        public static async Task SeedAdminUser(IServiceScopeFactory scopeFactory)
+        public static async Task SeedAdminUser(IServiceScopeFactory scopeFactory, string email, string password)
         {
             using (IServiceScope serviceScope = scopeFactory.CreateScope())
             {
                 UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                if (!userManager.GetUsersInRoleAsync("Admin").Result.Any())
+                IList<ApplicationUser> applicationUsers = await userManager.GetUsersInRoleAsync("Admin");
+                if (!applicationUsers.Any())
                 {
                     var user = new ApplicationUser
                     {
                         Name = "Felipe Pergher",
                         EmailConfirmed = true,
-                        UserName = "felipepergher_10@hotmail.com",
-                        Email = "felipepergher_10@hotmail.com",
-                        RegisterDate = DateTime.Now,
+                        UserName = email,
+                        Email = email,
+                        RegisterTime = DateTime.Now,
                         CreatedBy = "System"
                     };
 
-                    IdentityResult result = await userManager.CreateAsync(user, "Password123");
+                    IdentityResult result = await userManager.CreateAsync(user, password);
 
                     if (result.Succeeded)
                     {
