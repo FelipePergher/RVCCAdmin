@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 namespace LigaCancer.Areas.Identity.Pages.Account.Manage
 {
@@ -31,12 +32,12 @@ namespace LigaCancer.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
             [DataType(DataType.Password)]
             [Display(Name = "Senha atual")]
             public string OldPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
             [StringLength(100, ErrorMessage = "A {0} deve ter ao menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
@@ -71,17 +72,14 @@ namespace LigaCancer.Areas.Identity.Pages.Account.Manage
             IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
-                foreach (IdentityError error in changePasswordResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return Page();
+                _logger.LogError(string.Join(" || ", changePasswordResult.Errors.Select(x => x.ToString())));
+                return BadRequest(changePasswordResult.Errors?.FirstOrDefault()?.Description);
             }
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
 
-            return RedirectToPage();
+            return StatusCode(200);
         }
     }
 }
