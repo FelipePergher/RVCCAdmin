@@ -20,7 +20,7 @@ namespace LigaCancer.Models.ViewModel
 
         public int TreatmentPlaceCount { get; set; }
 
-        [Display(Name = "Data dos gráfico")]
+        [Display(Name = "Data do gráfico")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
