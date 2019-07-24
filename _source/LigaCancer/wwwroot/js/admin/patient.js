@@ -7,7 +7,7 @@ let attachmentsTable;
 let dropzoneConfiguration = {
     maxFilesize: 20,
     acceptedFiles: "image/*,application/pdf",
-    dictDefaultMessage: "Arraste seus arquivos aqui para upload.",
+    dictDefaultMessage: "Arraste seus arquivos aqui ou clique para upload.",
     dictFallbackMessage: "Seu navegador não tem suporte para arrastar e upload.",
     dictFileTooBig: "O arquivo é muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
     dictInvalidFileType: "Você não pode fazer upload de arquivos deste tipo.",

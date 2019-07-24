@@ -71,6 +71,23 @@
   },
   /* Reset Password */
 
+  /* Change Password */
+  {
+    "outputFileName": "wwwroot/dist/js/Change-password.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-validate/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
+      "wwwroot/js/admin/Change-password.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "singleLine",
+      "renameLocals": true
+    }
+  },
+  /* Change Password */
+
   /* Patient */
   {
     "outputFileName": "wwwroot/dist/css/patient.min.css",

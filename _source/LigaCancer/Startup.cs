@@ -73,9 +73,12 @@ namespace LigaCancer
                 options.SlidingExpiration = true;
             });
 
-            services.AddMvc().AddJsonOptions(
-                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddJsonOptions(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                )
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorPagesOptions(options => options.AllowAreas = true);
 
             services.AddTransient<IEmailSender, EmailSender>(i =>
                new EmailSender(
