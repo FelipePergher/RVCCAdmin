@@ -758,7 +758,7 @@ function initFileUpload() {
                 render: function (data, type, row, meta) {
                     let html =
                         '   <span class="editable" data-fileAttachmentId="' + row.fileAttachmentId + '">' + row.name + '</span>' +
-                        '   <a class="float-right fa fa-download mt-1 ml-2" class="fa fa-download" href=" / ' + row.filePath + '" download="' + row.name + row.extension + '"></a>';
+                        '   <a class="float-right fa fa-download mt-1 ml-2" class="fa fa-download" href="' + row.filePath + '" download="' + row.name + row.extension + '"></a>';
                     return html;
                 }}
         ],

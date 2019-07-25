@@ -37,7 +37,7 @@ namespace LigaCancer.Controllers.Api
                     Name = x.FileName,
                     Extension = x.FileExtension,
                     Size = x.FileSize.ToString("N"),
-                    FilePath = x.FilePath,
+                    FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}/{x.FilePath}",
                     Actions = GetActionsHtml(x)
                 });
 
