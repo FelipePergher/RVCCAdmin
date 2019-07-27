@@ -88,3 +88,8 @@
 .dropdown-menu.show {
     z-index: 1100;
 }
+
+.dropzone {
+    border-radius: 5px !important;
+    border: 2px dashed rgb(0, 135, 247) !important;
+}
