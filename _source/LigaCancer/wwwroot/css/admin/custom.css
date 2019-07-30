@@ -93,3 +93,16 @@
     border-radius: 5px !important;
     border: 2px dashed rgb(0, 135, 247) !important;
 }
+
+.img-logo {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.sidebar-minimized .sidebar .img-logo {
+    display: none !important;
+}
