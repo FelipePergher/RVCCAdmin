@@ -4659,3 +4659,9 @@ img {
   text-transform: uppercase;
   margin: 0 0 20px 0;
 }
+
+
+.navbar-brand{
+    margin-top: 10%;
+    width: 60%;
+}
