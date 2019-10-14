@@ -151,7 +151,10 @@ namespace LigaCancer
             });
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = context => context.Context.Response.Headers.Add("Cache-Control", "public, max-age=2592000")
+            });
             app.UseCookiePolicy();
 
             app.UseAuthentication();
