@@ -246,6 +246,16 @@ namespace LigaCancer.Data.Store
                 query = query.Where(x => x.PatientInformation.PatientInformationMedicines.FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
             }
 
+            if (patientSearch.BirthdayDateFrom != null)
+            {
+                query = query.Where(x => x.DateOfBirth.Date >= DateTime.Parse(patientSearch.BirthdayDateFrom).Date);
+            }
+
+            if (patientSearch.BirthdayDateTo != null)
+            {
+                query = query.Where(x => x.DateOfBirth.Date <= DateTime.Parse(patientSearch.BirthdayDateTo).Date);
+            }
+
             return query;
         }
 

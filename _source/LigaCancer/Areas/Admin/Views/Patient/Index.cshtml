@@ -6,14 +6,14 @@
 }
 
 @section styles{
-<environment names="Development">
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    @*<link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
-    <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
-    <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
-</environment>
+    <environment names="Development">
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        @*<link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
+        <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+        <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
+        <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+    </environment>
     <environment exclude="Development">
         <link href="~/dist/css/patient.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
@@ -52,15 +52,15 @@
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Surname"></label>
-                                                <input asp-for="Surname" class="form-control" placeholder="Sobrenome"  />
+                                                <input asp-for="Surname" class="form-control" placeholder="Sobrenome" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Rg"></label>
-                                                <input asp-for="Rg" class="form-control" placeholder="Rg"  />
+                                                <input asp-for="Rg" class="form-control" placeholder="Rg" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="Cpf"></label>
-                                                <input asp-for="Cpf" class="form-control" placeholder="Cpf"  />
+                                                <input asp-for="Cpf" class="form-control" placeholder="Cpf" />
                                             </div>
                                         </div>
 
@@ -70,7 +70,7 @@
                                                 <select asp-for="CancerTypes" class="form-control filterSelect"
                                                         data-theme="bootstrap"
                                                         data-language="pt-BR"
-                                                        data-ajax--url="/api/cancerType/select2Get" 
+                                                        data-ajax--url="/api/cancerType/select2Get"
                                                         data-ajax--data-type="json"
                                                         data-placeholder="Cânceres">
                                                     <option value=""></option>
@@ -92,7 +92,7 @@
                                                 <select asp-for="Doctors" class="form-control filterSelect"
                                                         data-theme="bootstrap"
                                                         data-language="pt-BR"
-                                                        data-ajax--url="/api/Doctor/select2Get" 
+                                                        data-ajax--url="/api/Doctor/select2Get"
                                                         data-ajax--data-type="json"
                                                         data-placeholder="Médicos">
                                                     <option value=""></option>
@@ -103,7 +103,7 @@
                                                 <select asp-for="TreatmentPlaces" class="form-control filterSelect"
                                                         data-theme="bootstrap"
                                                         data-language="pt-BR"
-                                                        data-ajax--url="/api/TreatmentPlace/select2Get" 
+                                                        data-ajax--url="/api/TreatmentPlace/select2Get"
                                                         data-ajax--data-type="json"
                                                         data-placeholder="Locais de Tratamento">
                                                     <option value=""></option>
@@ -138,12 +138,12 @@
                                             </div>
                                             <div class="col-lg-3">
                                                 <label asp-for="FamiliarityGroup"></label>
-                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control filterSelect" 
-                                                        data-theme="bootstrap" 
-                                                        data-language="pt-BR" 
-                                                        data-allow-clear="true" 
-                                                        data-placeholder="Grupo De Convivência" 
-                                                        data-minimum-results-for-search="Infinity" 
+                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control filterSelect"
+                                                        data-theme="bootstrap"
+                                                        data-language="pt-BR"
+                                                        data-allow-clear="true"
+                                                        data-placeholder="Grupo De Convivência"
+                                                        data-minimum-results-for-search="Infinity"
                                                         data-container-css-class="select2NoSearch"></select>
                                             </div>
 
@@ -163,8 +163,23 @@
                                                     <label asp-for="Death" class="ml-2">@Html.DisplayNameFor(model => model.Death)</label>
                                                 </div>
                                             </div>
+
                                         </div>
 
+                                        <div class="form-row form-group">
+
+                                                <div class="col-lg-3">
+                                                    <label asp-for="BirthdayDateFrom"></label>
+                                                    <input asp-for="BirthdayDateFrom" type="text" class="form-control" />
+                                                    <span asp-validation-for="BirthdayDateFrom" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label asp-for="BirthdayDateTo"></label>
+                                                    <input asp-for="BirthdayDateTo" type="text" class="form-control" />
+                                                    <span asp-validation-for="BirthdayDateTo" class="text-danger"></span>
+                                                </div>
+
+                                        </div>
                                         <button type="reset" class="btn btn-secondary">
                                             <i class="fas fa-eraser"></i> Limpar
                                         </button>
@@ -186,7 +201,7 @@
                                         <i class="fa fa-plus"></i> Adicionar Paciente
                                     </a>
                                 </div>
-                                
+
                                 <table class="table table-bordered table-striped table-condensed text-center" id="patientTable"></table>
                             </div>
                         </div>
@@ -213,11 +228,11 @@
         <script src="~/lib/select2/js/select2.full.min.js"></script>
         <script src="~/lib/select2/js/i18n/pt-BR.js"></script>
         @*<script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="~/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-        <script src="~/lib/jszip/jszip.min.js"></script>
-        <script src="~/lib/pdfmake/pdfmake.min.js"></script>
-        <script src="~/lib/pdfmake/vfs_fonts.js"></script>
-        <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>*@
+            <script src="~/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+            <script src="~/lib/jszip/jszip.min.js"></script>
+            <script src="~/lib/pdfmake/pdfmake.min.js"></script>
+            <script src="~/lib/pdfmake/vfs_fonts.js"></script>
+            <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>*@
         <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
         <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
         <script src="~/lib/dropzone/min/dropzone.min.js"></script>
