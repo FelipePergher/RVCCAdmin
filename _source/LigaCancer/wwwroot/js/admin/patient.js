@@ -25,6 +25,9 @@ $(function () {
 function initPage() {
     $("#Cpf").mask(masks.Cpf);
 
+    calendar("BirthdayDateFrom");
+    calendar("BirthdayDateTo");
+
     patientTable = $("#patientTable").DataTable({
         //dom: "l<'export-buttons'B>frtip",
         buttons: [
@@ -69,6 +72,8 @@ function initPage() {
                 d.familiarityGroup = $("#FamiliarityGroup").val();
                 d.death = $("#Death").is(":checked");
                 d.discharge = $("#Discharge").is(":checked");
+                d.BirthdayDateFrom = $("#BirthdayDateFrom").val();
+                d.BirthdayDateTo = $("#BirthdayDateTo").val();
             },
             datatype: "json",
             error: function () {
