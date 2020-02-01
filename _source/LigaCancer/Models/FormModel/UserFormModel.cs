@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RVCC.Business;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormModel
+namespace RVCC.Models.FormModel
 {
     public class UserFormModel
     {
@@ -41,8 +42,8 @@ namespace LigaCancer.Models.FormModel
 
         public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
             {
-                new SelectListItem("Administrador", "Admin"),
-                new SelectListItem("Usuário", "User")
+                new SelectListItem("Administrador", Roles.Admin),
+                new SelectListItem("Usuário", Roles.User)
             };
 
         [Display(Name = "Regra")]

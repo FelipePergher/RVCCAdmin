@@ -1,28 +1,28 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class FamilyMemberApiController : Controller
     {
-        private readonly IDataStore<FamilyMember> _familyMemberService;
-        private readonly IDataStore<Patient> _patientService;
+        private readonly IDataRepository<FamilyMember> _familyMemberService;
+        private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<FamilyMemberApiController> _logger;
 
-        public FamilyMemberApiController(IDataStore<FamilyMember> familyMemberService, IDataStore<Patient> patientService, ILogger<FamilyMemberApiController> logger)
+        public FamilyMemberApiController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberApiController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
@@ -52,7 +52,7 @@ namespace LigaCancer.Controllers.Api
 
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
                 string familyIncome = (familyMembers.Sum(x => x.MonthlyIncome) + patient.MonthlyIncome).ToString("C2");
-                string perCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(familyMembers, patient.MonthlyIncome);
+                string perCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(familyMembers, patient.MonthlyIncome);
 
                 int recordsTotal = familyMembers.Count;
 
@@ -69,10 +69,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(FamilyMember familyMember)
         {
-            string editFamilyMember = $"<a href='/Admin/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
+            string editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
                 $"data-target='#modal-action-secondary' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/Admin/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
+            string deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

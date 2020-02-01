@@ -1,12 +1,12 @@
-﻿using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RVCC.Data.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Areas.Identity.Pages.Account
+namespace RVCC.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel

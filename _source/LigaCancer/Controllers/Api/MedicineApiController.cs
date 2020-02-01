@@ -1,26 +1,27 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Business;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class MedicineApiController : Controller
     {
-        private readonly IDataStore<Medicine> _medicineService;
+        private readonly IDataRepository<Medicine> _medicineService;
         private readonly ILogger<MedicineApiController> _logger;
 
-        public MedicineApiController(IDataStore<Medicine> medicineService, ILogger<MedicineApiController> logger)
+        public MedicineApiController(IDataRepository<Medicine> medicineService, ILogger<MedicineApiController> logger)
         {
             _medicineService = medicineService;
             _logger = logger;
@@ -74,7 +75,7 @@ namespace LigaCancer.Controllers.Api
         [HttpGet("~/api/Medicine/IsNameExist")]
         public async Task<IActionResult> IsNameExist(string name, int medicineId)
         {
-            Medicine medicine = await ((MedicineStore)_medicineService).FindByNameAsync(name, medicineId);
+            Medicine medicine = await ((MedicineRepository)_medicineService).FindByNameAsync(name, medicineId);
 
             return Ok(medicine == null);
         }
@@ -83,10 +84,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Medicine medicine)
         {
-            string editMedicine = $"<a href='/Admin/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
+            string editMedicine = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteMedicine = $"<a href='javascript:void(0);' data-url='/Admin/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
+            string deleteMedicine = $"<a href='javascript:void(0);' data-url='/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
                 $"data-relation='{medicine.PatientInformationMedicines.Count > 0}' class='dropdown-item deleteMedicineButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 

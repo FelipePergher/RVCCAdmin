@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LigaCancer.Data.Models.PatientModels
+namespace RVCC.Data.Models.PatientModels
 {
     public class ActivePatient : RegisterData
     {

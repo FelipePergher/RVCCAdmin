@@ -1,8 +1,8 @@
-﻿using LigaCancer.Data.Models.RelationModels;
+﻿using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Data.Models.PatientModels
+namespace RVCC.Data.Models.PatientModels
 {
     public class Doctor : RegisterData
     {

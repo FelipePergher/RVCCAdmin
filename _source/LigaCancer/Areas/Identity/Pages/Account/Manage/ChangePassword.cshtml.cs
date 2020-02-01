@@ -1,12 +1,13 @@
-﻿using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RVCC.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-namespace LigaCancer.Areas.Identity.Pages.Account.Manage
+
+namespace RVCC.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {

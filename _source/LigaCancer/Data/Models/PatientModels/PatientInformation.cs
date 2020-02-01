@@ -1,10 +1,10 @@
-﻿using LigaCancer.Data.Models.RelationModels;
+﻿using RVCC.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LigaCancer.Data.Models.PatientModels
+namespace RVCC.Data.Models.PatientModels
 {
     public class PatientInformation : RegisterData
     {

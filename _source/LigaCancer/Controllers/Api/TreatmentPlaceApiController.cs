@@ -1,26 +1,27 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Business;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class TreatmentPlaceApiController : Controller
     {
-        private readonly IDataStore<TreatmentPlace> _treatmentPlaceService;
+        private readonly IDataRepository<TreatmentPlace> _treatmentPlaceService;
         private readonly ILogger<TreatmentPlaceApiController> _logger;
 
-        public TreatmentPlaceApiController(IDataStore<TreatmentPlace> treatmentPlaceService, ILogger<TreatmentPlaceApiController> logger)
+        public TreatmentPlaceApiController(IDataRepository<TreatmentPlace> treatmentPlaceService, ILogger<TreatmentPlaceApiController> logger)
         {
             _treatmentPlaceService = treatmentPlaceService;
             _logger = logger;
@@ -74,7 +75,7 @@ namespace LigaCancer.Controllers.Api
         [HttpGet("~/api/TreatmentPlace/IsCityExist")]
         public async Task<IActionResult> IsCityExist(string city, int treatmentPlaceId)
         {
-            TreatmentPlace treatmentPlace = await ((TreatmentPlaceStore)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
+            TreatmentPlace treatmentPlace = await ((TreatmentPlaceRepository)_treatmentPlaceService).FindByCityAsync(city, treatmentPlaceId);
             return Ok(treatmentPlace == null);
         }
 
@@ -82,10 +83,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
-            string editTreatmentPlace = $"<a href='/Admin/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
+            string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/Admin/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
+            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
                 $"data-relation='{treatmentPlace.PatientInformationTreatmentPlaces.Count > 0}' class='dropdown-item deleteTreatmentPlaceButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 

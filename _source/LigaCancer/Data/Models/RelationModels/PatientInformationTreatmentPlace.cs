@@ -1,6 +1,6 @@
-﻿using LigaCancer.Data.Models.PatientModels;
+﻿using RVCC.Data.Models.PatientModels;
 
-namespace LigaCancer.Data.Models.RelationModels
+namespace RVCC.Data.Models.RelationModels
 {
     public class PatientInformationTreatmentPlace
     {

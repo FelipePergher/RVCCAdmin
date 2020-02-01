@@ -1,25 +1,26 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Business;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class FileAttachmentApiController : Controller
     {
-        private readonly IDataStore<FileAttachment> _fileAttachmentService;
+        private readonly IDataRepository<FileAttachment> _fileAttachmentService;
         private readonly ILogger<FileAttachmentApiController> _logger;
 
-        public FileAttachmentApiController(IDataStore<FileAttachment> fileAttachmentService, ILogger<FileAttachmentApiController> logger)
+        public FileAttachmentApiController(IDataRepository<FileAttachment> fileAttachmentService, ILogger<FileAttachmentApiController> logger)
         {
             _fileAttachmentService = fileAttachmentService;
             _logger = logger;
@@ -56,7 +57,7 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(FileAttachment fileAttachment)
         {
-            string deleteFileAttachment = $"<a href='javascript:void(0);' data-url='/Admin/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>" +
+            string deleteFileAttachment = $"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

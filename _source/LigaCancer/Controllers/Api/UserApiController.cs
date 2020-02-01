@@ -1,28 +1,32 @@
-﻿using LigaCancer.Data.Models;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Data.Models;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Admin)]
     [ApiController]
     public class UserApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<UserApiController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public UserApiController(ILogger<UserApiController> logger, UserManager<ApplicationUser> userManager)
+        public UserApiController(ILogger<UserApiController> logger, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost("~/api/user/search")]
@@ -35,7 +39,10 @@ namespace LigaCancer.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                var users = _userManager.Users.ToList();
+                //Remove admin user
+                string adminEmail = _configuration["Admin:Email"];
+
+                var users = _userManager.Users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
                 //Filter
                 if (!string.IsNullOrEmpty(name))
                 {
@@ -49,14 +56,14 @@ namespace LigaCancer.Controllers.Api
                     Email = x.Email,
                     ConfirmedEmail = _userManager.IsEmailConfirmedAsync(x).Result ? "<span class='fa fa-check'></span>" : "",
                     Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : "",
-                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == "Admin" ? "Administrador" : "Usuário",
+                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == Roles.Admin ? "Administrador" : "Usuário",
                     Actions = GetActionsHtml(x)
                 });
 
                 //Sort
                 if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
                 {
-                    data = GetOrdenationUser(data, sortColumn, sortDirection);
+                    data = GetOrdinationUser(data, sortColumn, sortDirection);
                 }
 
                 int recordsTotal = _userManager.Users.Count();
@@ -82,15 +89,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(ApplicationUser user)
         {
-            if (user.NormalizedEmail == "FELIPEPERGHER_10@HOTMAIL.COM")
-            {
-                return string.Empty;
-            }
-
-            string editUser = $"<a href='/Admin/User/EditUser/{user.Id}' data-toggle='modal' " +
+            string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteUser = $"<a href='javascript:void(0);' data-url='/Admin/User/DeleteUser' data-id='{user.Id}' " +
+            string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
                 $" class='dropdown-item deleteUserButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string unlockAccount = string.Empty;
@@ -113,7 +115,7 @@ namespace LigaCancer.Controllers.Api
             return actionsHtml;
         }
 
-        private IEnumerable<UserViewModel> GetOrdenationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
+        private IEnumerable<UserViewModel> GetOrdinationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

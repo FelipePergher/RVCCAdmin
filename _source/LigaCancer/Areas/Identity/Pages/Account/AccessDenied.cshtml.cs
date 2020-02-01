@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace LigaCancer.Areas.Identity.Pages.Account
+namespace RVCC.Areas.Identity.Pages.Account
 {
     public class AccessDeniedModel : PageModel
     {

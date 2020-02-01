@@ -1,26 +1,26 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class AddressApiController : Controller
     {
-        private readonly IDataStore<Address> _addressService;
+        private readonly IDataRepository<Address> _addressService;
         private readonly ILogger<AddressApiController> _logger;
 
-        public AddressApiController(IDataStore<Address> addressService, ILogger<AddressApiController> logger)
+        public AddressApiController(IDataRepository<Address> addressService, ILogger<AddressApiController> logger)
         {
             _addressService = addressService;
             _logger = logger;
@@ -65,10 +65,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Address address)
         {
-            string editAddress = $"<a href='/Admin/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
+            string editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
                 $"data-target='#modal-action-secondary' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteAddress = $"<a href='javascript:void(0);' data-url='/Admin/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
+            string deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =

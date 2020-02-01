@@ -1,9 +1,9 @@
-﻿using LigaCancer.Code;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using RVCC.Business;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormModel
+namespace RVCC.Models.FormModel
 {
     public class PatientInformationFormModel
     {
@@ -20,7 +20,7 @@ namespace LigaCancer.Models.FormModel
         [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
         [DataType(DataType.Date)]
         [DateRange]
-        public string TreatmentbeginDate { get; set; }
+        public string TreatmentBeginDate { get; set; }
 
         [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }

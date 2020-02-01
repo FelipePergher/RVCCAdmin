@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormModel
+namespace RVCC.Models.FormModel
 {
     public class TreatmentPlaceFormModel
     {

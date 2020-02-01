@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Services
+namespace RVCC.Services
 {
     public class EmailSender : IEmailSender
     {

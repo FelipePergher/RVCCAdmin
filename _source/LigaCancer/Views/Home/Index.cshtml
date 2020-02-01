@@ -1,316 +1,112 @@
-﻿@{
+﻿@model RVCC.Models.ViewModel.HomeViewModel
+@{
     ViewData["Title"] = "Homepage";
 }
 
-<!-- Header Area wrapper Starts -->
-<header id="header-wrap">
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="icon-menu"></span>
-                    <span class="icon-menu"></span>
-                    <span class="icon-menu"></span>
-                </button>
-                @*<a href="/" class="navbar-brand" style="margin: 5% 0;">
-                        <img src="img/logo/logo-oficial.png" alt="">
-                    </a>*@
-            </div>
-            <div class="collapse navbar-collapse" id="main-navbar">
-                <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#sliders">
-                            Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">
-                            Sobre
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">
-                            Contato
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+@section styles{
+    <environment names="Development">
+        <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/home.min.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+}
 
-        <!-- Mobile Menu Start -->
-        <ul class="mobile-menu navbar-nav">
-            <li>
-                <a class="page-scroll" href="#sliders">
-                    Inicio
-                </a>
-            </li>
-            <li>
-                <a class="page-scroll" href="#about">
-                    Sobre
-                </a>
-            </li>
-            <li>
-                <a class="page-scroll" href="#contact">
-                    Contato
-                </a>
-            </li>
-        </ul>
-        <!-- Mobile Menu End -->
-
-    </nav>
-    <!-- Navbar End -->
-    <!-- sliders -->
-    <div id="sliders">
-        <div class="full-width">
-            <!-- light slider -->
-            <div id="light-slider" class="carousel slide">
-                <div id="carousel-area">
-                    <div id="carousel-slider" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" style="height: 100%" ; role="listbox">
-                            <div class="carousel-item active">
-                                <img src="~/img/indice.png" alt="" style="height: 100%;">
-                                <div class="carousel-caption">
-                                    <!--   <h3 class="slide-title animated fadeInDown"><span>RVCC</span> - Rede Videirense de Combate ao Câncer</h3> -->
-                                </div>
+<main class="main">
+    <div class="container-fluid">
+        <div class="animated fadeIn">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- /.col-->
+                        <div class="col-sm-3">
+                            <h4 class="card-title mb-0">Presenças</h4>
+                        </div>
+                        <form class="col-sm-6 form-group row" id="searchForm" method="post">
+                            <label class="col-md-3 mt-1" asp-for="ChartDate"></label>
+                            <div class="col-md-9">
+                                <input asp-for="ChartDate" type="text" class="form-control" />
+                                <span asp-validation-for="ChartDate" class="text-danger"></span>
+                            </div>
+                        </form>
+                        <div class="col-sm-3 d-none d-md-block">
+                            <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                                <label class="btn btn-outline-secondary">
+                                    <input id="day" type="radio" name="chartOptions" autocomplete="off"> Dia
+                                </label>
+                                <label class="btn btn-outline-secondary active">
+                                    <input id="month" type="radio" name="chartOptions" autocomplete="off" checked> Mês
+                                </label>
+                                <label class="btn btn-outline-secondary">
+                                    <input id="year" type="radio" name="chartOptions" autocomplete="off"> Ano
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col-->
+                    </div>
+                    <!-- /.row-->
+                    <div class="chart-wrapper">
+                        <canvas class="chart" id="dayChart" style="display: none;"></canvas>
+                        <canvas class="chart" id="monthChart"></canvas>
+                        <canvas class="chart" id="yearChart" style="display: none;"></canvas>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-center">
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <div class="text-muted">Pacientes</div>
+                            <a asp-action="Index" asp-controller="Patient" class="no-decoration"><strong>@Model.PatientCount</strong></a>
+                            <div class="progress progress-xs mt-2">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <div class="text-muted">Médicos</div>
+                            <a asp-action="Index" asp-controller="Doctor" class="no-decoration"><strong>@Model.DoctorCount</strong></a>
+                            <div class="progress progress-xs mt-2">
+                                <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <div class="text-muted">Remédios</div>
+                            <a asp-action="Index" asp-controller="Medicine" class="no-decoration"><strong>@Model.MedicineCount</strong></a>
+                            <div class="progress progress-xs mt-2">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <div class="text-muted">Cânceres</div>
+                            <a asp-action="Index" asp-controller="CancerType" class="no-decoration"><strong>@Model.CancerTypeCount</strong></a>
+                            <div class="progress progress-xs mt-2">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <div class="text-muted">Locais de tratamento</div>
+                            <a asp-action="Index" asp-controller="TreatmentPlace" class="no-decoration"><strong>@Model.TreatmentPlaceCount</strong></a>
+                            <div class="progress progress-xs mt-2">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- /.row-->
         </div>
     </div>
-    <!-- End sliders -->
+</main>
 
-</header>
-<!-- Header Area wrapper End -->
-<!-- About Section Start -->
-<div id="about" class="section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="about block text-center">
-                    <img src="~/img/setembro-dourado.jpg" alt="">
-                    <h5><a href="#">Setembro dourado</a></h5>
-                    <p>O setembro dourado foi criado para alertar profissionais da saúde, pais, educadores e sociedade em geral sobre a importância de se atentar aos sinais e sintomas sugestivos do câncer infantojuvenil, contribuindo com a sua detecção e tratamento precoces.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="about block text-center">
-                    <img src="img/outubro-rosa.jpg" alt="">
-                    <h5><a href="#">Outubro Rosa</a></h5>
-                    <p>
-                        Campanha de conscientização que tem como objetivo principal alertar as mulheres e a sociedade sobre a importância da prevenção e do diagnóstico precoce do câncer de mama
-                        e mais recentemente sobre o câncer de colo do útero.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="about block text-center">
-                    <img src="~/img/novembro-azul.jpg" alt="">
-                    <h5><a href="#">Novembro Azul</a></h5>
-                    <p>
-                        Campanha de conscientização que tem como objetivo alertar os homens e a sociedade sobre a importância da prevenção e do diagnóstico precoce do câncer de próstata.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- About Section End -->
-
-<section id="portfolio" class="section-padding" style="background: white !important">
-    <!-- Container Starts -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="section-title wow fadeInDown animated" data-wow-delay="0.3s">Camisetas</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <!-- Portfolio Controller/Buttons -->
-                <div class="controls text-center wow fadeInUpQuick" data-wow-delay=".6s">
-                    <p>A estampa da camiseta da RVCC deste ano, trás um ponto muito importante a ser comentado, que é importância do diagnóstico precoce do câncer infantojuvenil; intensificando a importância deste movimento representado pelo setembro dourado.</p>
-                    <p>Como mundialmente conhecido como símbolo de prevenção o laço dourado o azul e o rosa transmitem este sentido, juntos dentro de uma circunferência significando e dando jus a frase "unidos por essa causa".</p>
-                    <!-- Portfolio Controller/Buttons Ends-->
-                </div>
-
-                <!-- Portfolio Recent Projects -->
-                <div id="portfolio" class="row" data-wow-delay="0.8s" style="background: white !important">
-                    <div class="col-lg-12 col-md-12 col-xs-12 ">
-                        <div class="portfolio-item">
-                            <div class="portfolio-img">
-                                <img src="~/img/shirt.png" alt="" />
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Container Ends -->
-</section>
-<!-- Portfolio Section Ends -->
-
-<section id="portfolio" class="section-padding">
-    <!-- Container Starts -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="section-title wow fadeInDown animated" data-wow-delay="0.3s">Casa Própria</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <!-- Portfolio Controller/Buttons -->
-                <div class="controls text-center wow fadeInUpQuick" data-wow-delay=".6s">
-                    <p>Segue imagens sobre a construção da casa própria da rede videirense de combate ao cancêr</p>
-                    <!-- Portfolio Controller/Buttons Ends-->
-                </div>
-
-                <!-- Portfolio Recent Projects -->
-                <div id="portfolio" class="row wow fadeInUpQuick" data-wow-delay="0.8s">
-                    <div class="col-lg-4 col-md-6 col-xs-12 ">
-                        <div class="portfolio-item">
-                            <div class="portfolio-img">
-                                <img src="~/img/CASAAZULEROSA01.jpg" alt="" />
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-xs-12 ">
-                        <div class="portfolio-item">
-                            <div class="portfolio-img">
-                                <img src="~/img/CASAAZULEROSA03.jpg" alt="" />
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-xs-12 ">
-                        <div class="portfolio-item">
-                            <div class="portfolio-img">
-                                <img src="~/img/CASAAZULEROSA04.jpg" alt="" />
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Container Ends -->
-</section>
-<!-- Portfolio Section Ends -->
-
-
-<section id="contact" class="contact-form section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="section-title wow fadeInDown animated" data-wow-delay="0.3s">Contato</h2>
-            </div>
-        </div>
-        <div class="row">
-            @* Todo *@
-            @*<div class="col-lg-8 col-md-6 col-xs-12">
-                    <form class="contact-form" data-toggle="validator">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-12 col-xs-12">
-                                <div class="form-group">
-                                    <i class="contact-icon fa fa-user"></i>
-                                    <input type="text" class="form-control" id="name" placeholder="Nome Completo" required data-error="Please enter your name">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-12 col-xs-12">
-                                <div class="form-group">
-                                    <i class="contact-icon far fa-envelope"></i>
-                                    <input type="email" class="form-control" id="email" placeholder="Email" required data-error="Please enter your email">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-12 col-xs-12">
-                                <div class="form-group">
-                                    <i class="contact-icon far fa-edit"></i>
-                                    <input type="text" class="form-control" id="subject" placeholder="Assunto" required data-error="Please enter your Subject">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-xs-12">
-                                <i class="contact-icon far fa-comment-alt"></i>
-                                <textarea class="form-control" id="message" rows="4" placeholder="Mensagem" required data-error="Please enter your message"></textarea>
-                                <div class="help-block with-errors"></div>
-                                <button type="submit" id="form-submit" class="btn btn-common btn-form-submit">Enviar Mensagem</button>
-                                <div id="msgSubmit" class="h3 text-center hidden"></div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>*@
-            <div class="col-md-4 col-lg-4"></div>
-            <div class="col-lg-4 col-md-6 col-xs-12 text-center">
-                <h4 class="contact-info-title">Informações para Contato</h4>
-                <div class="contact-info">
-                    <address>
-                        <i class="lni-map-marker icons cyan-color contact-info-icon"></i>
-                        Rua Coronel Fagundes, 148 - Centro - Videira/SC
-                    </address>
-                    <div class="tel-info">
-                        <a href="tel:(49) 3533-8953"><i class="lni-mobile icons cyan-color contact-info-icon"></i>(49) 3533-8953</a>
-                        <a href="tel:(49) 99816-5281"><i class="lni-phone icons cyan-color contact-info-icon"></i>(49) 99816-5281</a>
-                    </div>
-                    <a href="mailto:rede_rvcc@hotmail.com"><i class="lni-envelope icons cyan-color contact-info-icon"></i>rede_rvcc@hotmail.com</a>
-
-                    <ul class="social-links ml-3">
-                        <li>
-                            <a href="https://www.facebook.com/redevideirensecombateaocancer" class="fab fa-facebook" target="_blank" style="font-size: 25px;"></a>
-                        </li>
-
-                        <li>
-                            <a href="https://www.instagram.com.br/rede_rvcc" class="fab fa-instagram" target="_blank" style="font-size: 25px;"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Contact Form Section End -->
-<!-- Footer Section -->
-<footer class="footer">
-    <!-- Copyright -->
-    <div id="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <p class="copyright-text">
-                        Todos os direitos reservados © 2019 - Desenvolvido por <a href="https://www.linkedin.com/in/felipe-pergher" target="_blank">Felipe Pergher</a>
-                    </p>
-                </div>
-                <div class="col-lg-6 col-md-6 col-xs-12">
-                    <ul class="nav nav-inline justify-content-end">
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Home" asp-area="Admin">Administrativo</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright  End-->
-
-</footer>
-<!-- Footer Section End-->
-<!-- Go to Top Link -->
-<a href="#" class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-</a>
-
-<!-- Preloader -->
-<div id="preloader">
-    <div class="loader" id="loader-1"></div>
-</div>
-<!-- End Preloader -->
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <environment names="Development">
+        <script src="~/lib/chart-js/Chart.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
+        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
+        <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
+        <script src="~/js/home.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/home.min.js" asp-append-version="true"></script>
+    </environment>
+}

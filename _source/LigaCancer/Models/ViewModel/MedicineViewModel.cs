@@ -1,4 +1,4 @@
-﻿namespace LigaCancer.Models.ViewModel
+﻿namespace RVCC.Models.ViewModel
 {
     public class MedicineViewModel
     {

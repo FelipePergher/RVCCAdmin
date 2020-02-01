@@ -1,26 +1,27 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Business;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class DoctorApiController : Controller
     {
-        private readonly IDataStore<Doctor> _doctorService;
+        private readonly IDataRepository<Doctor> _doctorService;
         private readonly ILogger<DoctorApiController> _logger;
 
-        public DoctorApiController(IDataStore<Doctor> doctorService, ILogger<DoctorApiController> logger)
+        public DoctorApiController(IDataRepository<Doctor> doctorService, ILogger<DoctorApiController> logger)
         {
             _doctorService = doctorService;
             _logger = logger;
@@ -75,7 +76,7 @@ namespace LigaCancer.Controllers.Api
         [HttpGet("~/api/doctor/IsCrmExist")]
         public async Task<IActionResult> IsCrmExist(string crm, int doctorId)
         {
-            Doctor doctor = await ((DoctorStore)_doctorService).FindByCrmAsync(crm, doctorId);
+            Doctor doctor = await ((DoctorRepository)_doctorService).FindByCrmAsync(crm, doctorId);
             return Ok(doctor == null);
         }
 
@@ -83,9 +84,9 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Doctor doctor)
         {
-            string editDoctor = $"<a href='/Admin/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
+            string editDoctor = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
                 $"data-title='Editar Médico' class='dropdown-item editDoctorButton'><i class='fas fa-edit'></i> Editar </a>";
-            string deleteDoctor = $"<a href='javascript:void(0);' data-url='/Admin/Doctor/DeleteDoctor' data-id='{doctor.DoctorId}' " +
+            string deleteDoctor = $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor' data-id='{doctor.DoctorId}' " +
                 $"data-relation='{doctor.PatientInformationDoctors.Count > 0}' class='deleteDoctorButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             string actionsHtml =
