@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.SearchModel
+namespace RVCC.Models.SearchModel
 {
     public class PatientSearchModel
     {

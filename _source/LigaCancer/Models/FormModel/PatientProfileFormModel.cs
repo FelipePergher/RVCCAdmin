@@ -1,8 +1,8 @@
-﻿using LigaCancer.Code;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RVCC.Business;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormModel
+namespace RVCC.Models.FormModel
 {
     public class PatientProfileFormModel
     {

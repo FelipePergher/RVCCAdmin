@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace LigaCancer.Migrations
+namespace RVCC.Data.Migrations
 {
     public partial class FirstMigration : Migration
     {

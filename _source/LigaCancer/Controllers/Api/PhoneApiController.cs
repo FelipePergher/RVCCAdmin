@@ -1,26 +1,26 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PhoneApiController : Controller
     {
-        private readonly IDataStore<Phone> _phoneService;
+        private readonly IDataRepository<Phone> _phoneService;
         private readonly ILogger<PhoneApiController> _logger;
 
-        public PhoneApiController(IDataStore<Phone> phoneService, ILogger<PhoneApiController> logger)
+        public PhoneApiController(IDataRepository<Phone> phoneService, ILogger<PhoneApiController> logger)
         {
             _phoneService = phoneService;
             _logger = logger;
@@ -60,11 +60,11 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Phone phone)
         {
-            string editPhone = $"<a href='/Admin/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
+            string editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
                 $"data-target='#modal-action-secondary' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deletePhone = $"<a href='javascript:void(0);' data-url='/Admin/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
-                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            string deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
+                $"c Excluir </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

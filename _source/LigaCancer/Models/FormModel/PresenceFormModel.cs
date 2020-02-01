@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.FormModel
+namespace RVCC.Models.FormModel
 {
     public class PresenceFormModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace LigaCancer.Models.SearchModel
+namespace RVCC.Models.SearchModel
 {
     public class PhoneSearchModel
     {

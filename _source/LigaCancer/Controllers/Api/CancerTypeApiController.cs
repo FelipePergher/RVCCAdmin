@@ -1,26 +1,27 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class CancerTypeApiController : Controller
     {
-        private readonly IDataStore<CancerType> _cancerTypeService;
+        private readonly IDataRepository<CancerType> _cancerTypeService;
         private readonly ILogger<CancerTypeApiController> _logger;
 
-        public CancerTypeApiController(IDataStore<CancerType> cancerTypeService, ILogger<CancerTypeApiController> logger)
+        public CancerTypeApiController(IDataRepository<CancerType> cancerTypeService, ILogger<CancerTypeApiController> logger)
         {
             _cancerTypeService = cancerTypeService;
             _logger = logger;
@@ -74,7 +75,7 @@ namespace LigaCancer.Controllers.Api
         [HttpGet("~/api/CancerType/IsNameExist")]
         public async Task<IActionResult> IsNameExist(string name, int cancerTypeId)
         {
-            CancerType cancerType = await ((CancerTypeStore)_cancerTypeService).FindByNameAsync(name, cancerTypeId);
+            CancerType cancerType = await ((CancerTypeRepository)_cancerTypeService).FindByNameAsync(name, cancerTypeId);
             return Ok(cancerType == null);
         }
 
@@ -82,10 +83,10 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(CancerType cancerType)
         {
-            string editCancerType = $"<a href='/Admin/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
+            string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 $"data-title='Editar Tipo de Câncer' class='dropdown-item editCancerTypeButton'><i class='fas fa-edit'></i> Editar </a>";
 
-            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/Admin/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
+            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
                 $"data-relation='{cancerType.PatientInformationCancerTypes.Count > 0}' class='dropdown-item deleteCancerTypeButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";
 

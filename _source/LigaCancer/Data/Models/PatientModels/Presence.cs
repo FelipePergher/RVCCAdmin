@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Data.Models.PatientModels
+namespace RVCC.Data.Models.PatientModels
 {
     public class Presence : RegisterData
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace LigaCancer.Data.Models
+namespace RVCC.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {

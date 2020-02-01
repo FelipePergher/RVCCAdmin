@@ -1,0 +1,17 @@
+﻿@model RVCC.Models.FormModel.NaturalityFormModel
+
+<form id="addPatientNaturalityForm" asp-action="AddPatientNaturality"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="addNaturalitySuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <div class="progress m-3 progressAddPatient">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    </div>
+
+    <partial name="Partials/_PatientNaturality" />
+
+</form>

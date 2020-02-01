@@ -1,0 +1,81 @@
+﻿@using RVCC.Business
+@model RVCC.Models.FormModel.PatientProfileFormModel
+
+<div class="modal-body">
+    <input asp-for="PatientId" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="FirstName" class="control-label label-required"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Surname" class="control-label label-required"></label>
+            <input asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="RG" class="control-label label-required"></label>
+            <input asp-for="RG" class="form-control" />
+            <span asp-validation-for="RG" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="CPF" class="control-label label-required"></label>
+            <input asp-for="CPF" class="form-control" />
+            <span asp-validation-for="CPF" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Profession" class="control-label"></label>
+            <input asp-for="Profession" class="form-control"/>
+            <span asp-validation-for="Profession" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="MonthlyIncome" class="control-label"></label>
+            <input asp-for="MonthlyIncome" class="form-control" />
+            <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Sex" class="control-label"></label>
+            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control patientProfileSelect2" style="width: 100%"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Gênero"
+                    data-width="resolve"
+                    data-minimum-results-for-search="Infinity"
+                    data-container-css-class="select2NoSearch">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="Sex" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="CivilState" class="control-label"></label>
+            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control patientProfileSelect2" style="width: 100%"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Estado Civil"
+                    data-width="resolve"
+                    data-allow-clear="true"
+                    data-minimum-results-for-search="Infinity"
+                    data-container-css-class="select2NoSearch">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="CivilState" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="DateOfBirth" class="control-label label-required"></label>
+            <input asp-for="DateOfBirth" type="text" class="form-control"/>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6 pt-4">
+            <div class="form-row mt-2">
+                <label class="switch switch-label switch-pill switch-success ml-2">
+                    <input class="switch-input" asp-for="FamiliarityGroup" />
+                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                </label>
+                <span class="ml-2">@Html.DisplayNameFor(model => model.FamiliarityGroup)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ModalFooter"  />

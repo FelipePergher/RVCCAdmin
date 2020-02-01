@@ -1,26 +1,27 @@
-﻿using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Business;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PresenceApiController : Controller
     {
-        private readonly IDataStore<Presence> _presenceService;
+        private readonly IDataRepository<Presence> _presenceService;
         private readonly ILogger<PresenceApiController> _logger;
 
-        public PresenceApiController(IDataStore<Presence> presenceService, ILogger<PresenceApiController> logger)
+        public PresenceApiController(IDataRepository<Presence> presenceService, ILogger<PresenceApiController> logger)
         {
             _presenceService = presenceService;
             _logger = logger;
@@ -61,9 +62,9 @@ namespace LigaCancer.Controllers.Api
         public IActionResult GetChartData([FromForm] HomeViewModel home)
         {
             var dateTime = DateTime.Parse(home.ChartDate);
-            List<int> dayChartDate = ((PresenceStore)_presenceService).GetDayChartData(dateTime);
-            List<int> monthChartDate = ((PresenceStore)_presenceService).GetMonthChartData(dateTime);
-            List<int> yearChartDate = ((PresenceStore)_presenceService).GetYearChartData(dateTime);
+            List<int> dayChartDate = ((PresenceRepository)_presenceService).GetDayChartData(dateTime);
+            List<int> monthChartDate = ((PresenceRepository)_presenceService).GetMonthChartData(dateTime);
+            List<int> yearChartDate = ((PresenceRepository)_presenceService).GetYearChartData(dateTime);
 
             int daysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
 
@@ -74,9 +75,9 @@ namespace LigaCancer.Controllers.Api
 
         private string GetActionsHtml(Presence presence)
         {
-            string editPresence = $"<a href='/Admin/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
+            string editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
                $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
-            string deletePresence = $"<a href='javascript:void(0);' data-url='/Admin/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
+            string deletePresence = $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
                 $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
             TimeSpan diff = DateTime.Now.Subtract(presence.RegisterTime);

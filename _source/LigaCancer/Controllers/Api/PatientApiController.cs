@@ -1,28 +1,28 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Code.Interface;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Models.SearchModel;
-using LigaCancer.Models.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Controllers.Api
+namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PatientApiController : Controller
     {
-        private readonly IDataStore<Patient> _patientService;
-        private readonly IDataStore<FamilyMember> _familyMemberService;
+        private readonly IDataRepository<Patient> _patientService;
+        private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly ILogger<PatientApiController> _logger;
 
-        public PatientApiController(IDataStore<Patient> patientService, IDataStore<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
+        public PatientApiController(IDataRepository<Patient> patientService, IDataRepository<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;
             _familyMemberService = familyMemberService;
@@ -64,7 +64,7 @@ namespace LigaCancer.Controllers.Api
                     CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
-                    PerCapitaIncome = ((PatientStore)_patientService).GetPerCapitaIncome(
+                    PerCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(
                         _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     TreatmentbeginDate = x.PatientInformation.TreatmentbeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentbeginDate.ToString("dd/MM/yyyy"),
@@ -97,14 +97,14 @@ namespace LigaCancer.Controllers.Api
         [HttpGet("~/api/patient/IsCpfExist")]
         public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
         {
-            Patient patient = await ((PatientStore)_patientService).FindByCpfAsync(cpf, patientId);
+            Patient patient = await ((PatientRepository)_patientService).FindByCpfAsync(cpf, patientId);
             return Ok(patient == null);
         }
 
         [HttpGet("~/api/patient/IsRgExist")]
         public async Task<IActionResult> IsRgExist(string rg, int patientId)
         {
-            Patient patient = await ((PatientStore)_patientService).FindByRgAsync(rg, patientId);
+            Patient patient = await ((PatientRepository)_patientService).FindByRgAsync(rg, patientId);
             return Ok(patient == null);
         }
 
@@ -115,37 +115,37 @@ namespace LigaCancer.Controllers.Api
             string options = string.Empty;
             if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
             {
-                string editPatient = $"<a href='/Admin/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string editPatient = $"<a href='/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-clipboard'></i> Perfil do Paciente</a>";
 
-                string editNaturality = $"<a href='/Admin/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
+                string editNaturality = $"<a href='/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-globe-americas'></i> Naturalidade</a>";
 
-                string editPatientInformation = $"<a href='/Admin/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
+                string editPatientInformation = $"<a href='/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Editar Informações do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-info'></i> Informação do Paciente</a>";
 
-                string phones = $"<a href='/Admin/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string phones = $"<a href='/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Telefones' class='dropdown-item phonesButton'><i class='fas fa-phone'></i> Telefones</a>";
 
-                string addressses = $"<a href='/Admin/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string addressses = $"<a href='/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Endereços' class='dropdown-item addressesButton'><i class='fas fa-address-book'></i> Endereços</a>";
 
-                string familyMembers = $"<a href='/Admin/FamilyMember/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string familyMembers = $"<a href='/FamilyMember/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Membros Familiares' class='dropdown-item familyMembersButton'><i class='fas fa-user-friends'></i> Membros Familiares</a>";
 
-                string archivePatient = $"<a href='/Admin/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
+                string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                string fileUploadPatient = $"<a href='/Admin/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
+                string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
 
                 options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
             }
             else
             {
-                string enablePatient = $"<a href='javascript:void(0);' data-url='/Admin/Patient/ActivePatient' data-id='{patient.PatientId}' " +
+                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
                     $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";
-                string deletePatient = $"<a href='javascript:void(0);' data-url='/Admin/Patient/DeletePatient' data-id='{patient.PatientId}' " +
+                string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
                 $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
 
                 if (!patient.ActivePatient.Death)

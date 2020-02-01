@@ -1,0 +1,13 @@
+﻿@model RVCC.Models.FormModel.NaturalityFormModel
+
+<form id="editPatientNaturalityForm" asp-action="EditPatientNaturality"
+      role="form"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-failure="error"
+      data-ajax-success="editNaturalitySuccess"
+      data-ajax-loading="#submitSpinner">
+
+    <partial name="Partials/_PatientNaturality" />
+
+</form>

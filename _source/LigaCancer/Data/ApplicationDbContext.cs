@@ -1,10 +1,10 @@
-﻿using LigaCancer.Data.Models;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Models.RelationModels;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RVCC.Data.Models;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models.RelationModels;
 
-namespace LigaCancer.Data
+namespace RVCC.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

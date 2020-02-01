@@ -1,25 +1,25 @@
-﻿using LigaCancer.Code;
-using LigaCancer.Code.Interface;
-using LigaCancer.Data;
-using LigaCancer.Data.Models;
-using LigaCancer.Data.Models.PatientModels;
-using LigaCancer.Data.Store;
-using LigaCancer.Services;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
+using RVCC.Business.Interface;
+using RVCC.Data;
+using RVCC.Data.Models;
+using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Repositories;
+using RVCC.Services;
 using System;
 using System.Globalization;
 
-namespace LigaCancer
+namespace RVCC
 {
     public class Startup
     {
@@ -73,12 +73,8 @@ namespace LigaCancer
                 options.SlidingExpiration = true;
             });
 
-            services.AddMvc()
-                .AddJsonOptions(
-                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                )
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddRazorPagesOptions(options => options.AllowAreas = true);
+            services.AddControllersWithViews();
+            services.AddRazorPages();
 
             services.AddTransient<IEmailSender, EmailSender>(i =>
                new EmailSender(
@@ -95,22 +91,22 @@ namespace LigaCancer
             services.AddAntiforgery();
 
             //Application Services
-            services.AddTransient<IDataStore<Doctor>, DoctorStore>();
-            services.AddTransient<IDataStore<TreatmentPlace>, TreatmentPlaceStore>();
-            services.AddTransient<IDataStore<CancerType>, CancerTypeStore>();
-            services.AddTransient<IDataStore<Medicine>, MedicineStore>();
-            services.AddTransient<IDataStore<Patient>, PatientStore>();
-            services.AddTransient<IDataStore<Phone>, PhoneStore>();
-            services.AddTransient<IDataStore<Address>, AddressStore>();
-            services.AddTransient<IDataStore<FamilyMember>, FamilyMemberStore>();
-            services.AddTransient<IDataStore<FileAttachment>, FileAttachmentStore>();
-            services.AddTransient<IDataStore<Presence>, PresenceStore>();
-            services.AddTransient<IDataStore<Naturality>, NaturalityStore>();
-            services.AddTransient<IDataStore<PatientInformation>, PatientInformationStore>();
+            services.AddTransient<IDataRepository<Doctor>, DoctorRepository>();
+            services.AddTransient<IDataRepository<TreatmentPlace>, TreatmentPlaceRepository>();
+            services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
+            services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
+            services.AddTransient<IDataRepository<Patient>, PatientRepository>();
+            services.AddTransient<IDataRepository<Phone>, PhoneRepository>();
+            services.AddTransient<IDataRepository<Address>, AddressRepository>();
+            services.AddTransient<IDataRepository<FamilyMember>, FamilyMemberRepository>();
+            services.AddTransient<IDataRepository<FileAttachment>, FileAttachmentRepository>();
+            services.AddTransient<IDataRepository<Presence>, PresenceRepository>();
+            services.AddTransient<IDataRepository<Naturality>, NaturalityRepository>();
+            services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -157,21 +153,21 @@ namespace LigaCancer
             });
             app.UseCookiePolicy();
 
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
             loggerFactory.AddLog4Net();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapAreaRoute(
-                    name: "Admin",
-                    areaName: "Admin",
-                    template: "Admin/{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+              {
+                  endpoints.MapControllerRoute(
+                      name: "default",
+                      pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                  endpoints.MapRazorPages();
+              });
 
             SeedData.ApplyMigrations(app.ApplicationServices);
 

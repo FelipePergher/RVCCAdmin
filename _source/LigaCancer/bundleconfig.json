@@ -3,8 +3,8 @@
   {
     "outputFileName": "wwwroot/dist/css/main.min.css",
     "inputFiles": [
-      "wwwroot/css/admin/style.css",
-      "wwwroot/css/admin/custom.css"
+      "wwwroot/css/style.css",
+      "wwwroot/css/custom.css"
     ],
     "minify": {
       "enabled": true,
@@ -16,11 +16,11 @@
     "outputFileName": "wwwroot/dist/js/main.min.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/js/admin/coreui.min.js",
+      "wwwroot/js/coreui.min.js",
       "wwwroot/lib/popper/umd/popper.min.js",
       "wwwroot/lib/bootstrap/js/bootstrap.min.js",
       "wwwroot/lib/sweetalert2/sweetalert2.all.min.js",
-      "wwwroot/js/admin/main.js"
+      "wwwroot/js/main.js"
     ],
     "minify": {
       "enabled": true,
@@ -47,7 +47,7 @@
   {
     "outputFileName": "wwwroot/dist/js/login.min.js",
     "inputFiles": [
-      "wwwroot/js/admin/login.js"
+      "wwwroot/js/login.js"
     ],
     "minify": {
       "enabled": true,
@@ -61,7 +61,7 @@
   {
     "outputFileName": "wwwroot/dist/js/reset-password.min.js",
     "inputFiles": [
-      "wwwroot/js/admin/reset-password.js"
+      "wwwroot/js/reset-password.js"
     ],
     "minify": {
       "enabled": true,
@@ -78,7 +78,7 @@
       "wwwroot/lib/jquery-validate/jquery.validate.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
-      "wwwroot/js/admin/Change-password.js"
+      "wwwroot/js/Change-password.js"
     ],
     "minify": {
       "enabled": true,
@@ -123,7 +123,7 @@
       "wwwroot/lib/dropzone/min/dropzone.min.js",
       "wwwroot/lib/jeditable/jquery.jeditable.min.js",
       "wwwroot/lib/jquery-mask/jquery.mask.min.js",
-      "wwwroot/js/admin/patient.js"
+      "wwwroot/js/patient.js"
     ],
     "minify": {
       "enabled": true,
@@ -157,7 +157,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/admin/treatmentPlace.js"
+      "wwwroot/js/treatmentPlace.js"
     ],
     "minify": {
       "enabled": true,
@@ -191,7 +191,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/admin/cancerType.js"
+      "wwwroot/js/cancerType.js"
     ],
     "minify": {
       "enabled": true,
@@ -225,7 +225,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/admin/doctor.js"
+      "wwwroot/js/doctor.js"
     ],
     "minify": {
       "enabled": true,
@@ -259,7 +259,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/admin/medicine.js"
+      "wwwroot/js/medicine.js"
     ],
     "minify": {
       "enabled": true,
@@ -297,7 +297,7 @@
       //"wwwroot/lib/pdfmake/pdfmake.min.js",
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
-      "wwwroot/js/admin/user.js"
+      "wwwroot/js/user.js"
     ],
     "minify": {
       "enabled": true,
@@ -326,7 +326,7 @@
       "wwwroot/lib/gijgo/combined/js/gijgo.min.js",
       "wwwroot/lib/gijgo/combined/js/messages/messages.pt-br.min.js",
       "wwwroot/lib/jquery-mask/jquery.mask.min.js",
-      "wwwroot/js/admin/home.js"
+      "wwwroot/js/home.js"
     ],
     "minify": {
       "enabled": true,
@@ -368,7 +368,7 @@
       //"wwwroot/lib/pdfmake/vfs_fonts.js",
       //"wwwroot/lib/datatables-buttons/js/buttons.html5.min.js",
       "wwwroot/lib/jquery-mask/jquery.mask.min.js",
-      "wwwroot/js/admin/presence.js"
+      "wwwroot/js/presence.js"
     ],
     "minify": {
       "enabled": true,

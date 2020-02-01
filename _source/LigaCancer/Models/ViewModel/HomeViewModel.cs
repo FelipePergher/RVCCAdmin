@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LigaCancer.Models.ViewModel
+namespace RVCC.Models.ViewModel
 {
     public class HomeViewModel
     {

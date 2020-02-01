@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using RVCC.Areas.Identity;
 
-[assembly: HostingStartup(typeof(LigaCancer.Areas.Identity.IdentityHostingStartup))]
-namespace LigaCancer.Areas.Identity
+[assembly: HostingStartup(typeof(IdentityHostingStartup))]
+namespace RVCC.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

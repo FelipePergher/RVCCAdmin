@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LigaCancer.Data.Models
+namespace RVCC.Data.Models
 {
     public abstract class RegisterData
     {

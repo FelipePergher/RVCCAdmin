@@ -1,9 +1,9 @@
-﻿using System;
+﻿using RVCC.Business;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static LigaCancer.Code.Globals;
 
-namespace LigaCancer.Data.Models.PatientModels
+namespace RVCC.Data.Models.PatientModels
 {
     public class Patient : RegisterData
     {
@@ -34,9 +34,9 @@ namespace LigaCancer.Data.Models.PatientModels
 
         public double MonthlyIncome { get; set; }
 
-        public Sex Sex { get; set; }
+        public Globals.Sex Sex { get; set; }
 
-        public CivilState? CivilState { get; set; }
+        public Globals.CivilState? CivilState { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

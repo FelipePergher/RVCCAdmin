@@ -1,14 +1,14 @@
-﻿using LigaCancer.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RVCC.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace LigaCancer.Areas.Identity.Pages.Account
+namespace RVCC.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResendConfirmEmailModel : PageModel

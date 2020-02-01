@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LigaCancer.Models.SearchModel
+namespace RVCC.Models.SearchModel
 {
     public class SearchModel
     {
