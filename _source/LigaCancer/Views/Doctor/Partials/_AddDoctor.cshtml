@@ -1,12 +1,6 @@
 ﻿@model RVCC.Models.FormModel.DoctorFormModel
 
-<form id="addDoctorForm" asp-action="AddDoctor"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="addSuccess"
-      data-ajax-loading="#submitSpinner">
+<form id="addDoctorForm" asp-action="AddDoctor" method="post">
 
     <div class="modal-body form-horizontal">
         <partial name="Partials/_FormDoctor" />

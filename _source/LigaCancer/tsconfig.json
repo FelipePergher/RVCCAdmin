@@ -1,0 +1,16 @@
+﻿{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "sourceMap": true
+  },
+  "include": [
+    "./src/scripts/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}

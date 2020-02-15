@@ -1,0 +1,108 @@
+﻿.modal-spinner {
+    text-align: center;
+    margin: 100px;
+    font-size: 50px;
+    color: #20a8d8;
+}
+
+
+.dt-buttons button {
+    margin-right: 5px;
+    border-radius: 0.25em !important;
+}
+
+.label-required:after {
+    content: "*";
+    color: red;
+}
+
+.export-buttons {
+    position: absolute;
+    left: 280px;
+    top: 67px;
+}
+
+.filter-button {
+    margin-top: 28px;
+}
+
+#modal-action-secondary {
+    z-index: 1060;
+}
+
+.modal-elg {
+    max-width: 80vw;
+}
+
+.datepicker {
+    z-index: 1070 !important;
+}
+
+.select2NoSearch {
+    height: 39px !important;
+}
+
+.select2-container--open {
+    z-index: 1070
+}
+
+#attachmentsTable_wrapper{
+    margin-top: 10px;
+}
+
+.select2-search__field{
+    width: 100% !important;
+}
+
+.dateField {
+    background-color: transparent !important;
+    border-color: #e4e7ea;
+}
+
+.progressAddPatient {
+    background-color: #20a8d8 !important;
+}
+
+.eye-password {
+    cursor: pointer;
+    margin-left: auto;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translate(-50%, -50%);
+    margin-right: auto;
+    color:#5c6873;
+    z-index: 10;
+}
+
+.no-decoration {
+    text-decoration: none;
+    color: inherit;
+}
+
+.no-decoration:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdown-menu.show {
+    z-index: 1100;
+}
+
+.dropzone {
+    border-radius: 5px !important;
+    border: 2px dashed rgb(0, 135, 247) !important;
+}
+
+.img-logo {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.sidebar-minimized .sidebar .img-logo {
+    display: none !important;
+}
