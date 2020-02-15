@@ -7,6 +7,8 @@ import "bootstrap/js/dist/modal";
 
 export default (function () {
 
+    global.setupValidator($.validator);
+
     $(function () {
         initPage();
     });

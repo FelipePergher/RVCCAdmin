@@ -120,8 +120,7 @@ export default (function () {
     global.cleanModal = function () {
         $("#modalBody").html("");
         $("#modal-title").text("");
-        $("#modal-dialog").removeClass("modal-lg");
-        $("#modal-dialog").removeClass("modal-elg");
+        $("#modal-dialog").removeClass("modal-lg").removeClass("modal-elg");
         showSpinnerModal();
     };
 
