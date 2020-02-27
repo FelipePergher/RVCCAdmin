@@ -21,7 +21,6 @@ namespace RVCC.Data.Models.PatientModels
         [Key]
         public int PatientId { get; set; }
 
-        [Display(Name = "Nome")]
         public string FirstName { get; set; }
 
         public string Surname { get; set; }
@@ -39,6 +38,8 @@ namespace RVCC.Data.Models.PatientModels
         public Globals.CivilState? CivilState { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+
+        public DateTime JoinDate { get; set; }
 
         public string Profession { get; set; }
 

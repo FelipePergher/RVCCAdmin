@@ -163,6 +163,8 @@ namespace RVCC.Data.Repositories
                     return sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF);
                 case "DateOfBirth":
                     return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
+                case "JoinDate":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.JoinDate) : query.OrderByDescending(x => x.JoinDate);
                 case "Sex":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
                 case "CivilState":
@@ -254,6 +256,16 @@ namespace RVCC.Data.Repositories
             if (patientSearch.BirthdayDateTo != null)
             {
                 query = query.Where(x => x.DateOfBirth.Date <= DateTime.Parse(patientSearch.BirthdayDateTo).Date);
+            }
+
+            if (patientSearch.JoinDateFrom != null)
+            {
+                query = query.Where(x => x.JoinDate.Date >= DateTime.Parse(patientSearch.JoinDateFrom).Date);
+            }
+
+            if (patientSearch.JoinDateTo != null)
+            {
+                query = query.Where(x => x.JoinDate.Date <= DateTime.Parse(patientSearch.JoinDateTo).Date);
             }
 
             return query;

@@ -226,10 +226,6 @@
     <PackageReference Update="Microsoft.NETCore.App" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2019</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>

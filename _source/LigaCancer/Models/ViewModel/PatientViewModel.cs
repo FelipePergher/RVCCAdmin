@@ -14,6 +14,8 @@
 
         public string DateOfBirth { get; set; }
 
+        public string JoinDate { get; set; }
+
         public string Phone { get; set; }
 
         public string Address { get; set; }
@@ -30,7 +32,7 @@
 
         public double PerCapitaIncomeToSort { get; set; }
 
-        public string TreatmentbeginDate { get; set; }
+        public string TreatmentBeginDate { get; set; }
 
         public string Medicines { get; set; }
 

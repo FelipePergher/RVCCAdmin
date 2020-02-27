@@ -88,6 +88,7 @@ function initPage() {
             { data: "rg", title: "RG", name: "RG" },
             { data: "cpf", title: "CPF", name: "CPF" },
             { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth" },
+            { data: "joinDate", title: "Data de ingresso", name: "JoinDate" },
             { data: "sex", title: "Gênero", name: "Sex" },
             { data: "phone", title: "Telefone", name: "Phone" },
             { data: "address", title: "Endereço", name: "Address" },
@@ -95,7 +96,7 @@ function initPage() {
             { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
             { data: "profession", title: "Profissão", name: "Profession" },
             { data: "perCapitaIncome", title: "Renda Per Capita", name: "PerCapitaIncome" },
-            { data: "treatmentbeginDate", title: "Início Tratamento", name: "TreatmentbeginDate" },
+            { data: "treatmentBeginDate", title: "Início Tratamento", name: "TreatmentBeginDate" },
             { data: "medicines", title: "Remédios", name: "Medicines", orderable: false },
             { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
             { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
@@ -188,6 +189,7 @@ function initAddProfileForm() {
     $("#MonthlyIncome").mask(masks.Price, { reverse: true });
 
     calendar("DateOfBirth");
+    calendar("JoinDate");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#addPatientProfileForm");
 }
@@ -234,7 +236,7 @@ function addNaturalitySuccess(data, textStatus) {
 
 function initAddPatientInformationForm() {
     $.validator.unobtrusive.parse("#addPatientInformationForm");
-    calendar("TreatmentbeginDate");
+    calendar("TreatmentBeginDate");
     $(".patientInformationSelect").select2();
 }
 
@@ -261,6 +263,7 @@ function initEditProfileForm() {
     $("#MonthlyIncome").mask(masks.Price, { reverse: true });
 
     calendar("DateOfBirth");
+    calendar("JoinDate");
     $(".patientProfileSelect2").select2();
     $.validator.unobtrusive.parse("#editPatientProfileForm");
 }
@@ -295,7 +298,7 @@ function editNaturalitySuccess(data, textStatus) {
 
 function initEditPatientInformationForm() {
     $.validator.unobtrusive.parse("#editPatientInformationForm");
-    calendar("TreatmentbeginDate");
+    calendar("TreatmentBeginDate");
     $(".patientInformationSelect").select2();
 }
 
