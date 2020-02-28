@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationAddresses(query, sortColumn, sortDirection);
+                query = GetOrdinationAddresses(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -128,7 +128,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Address> GetOrdenationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
+        private IQueryable<Address> GetOrdinationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

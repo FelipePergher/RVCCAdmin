@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationPatients(query, sortColumn, sortDirection);
+                query = GetOrdinationPatients(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -140,16 +140,16 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(patient);
         }
 
-        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double montlhyPatient)
+        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double monthlyPatient)
         {
-            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)).ToString("C2") : montlhyPatient.ToString("C2");
+            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + monthlyPatient) / (familyMembers.Count + 1)).ToString("C2") : monthlyPatient.ToString("C2");
         }
 
         #endregion
 
         #region Private Methods
 
-        private IQueryable<Patient> GetOrdenationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
+        private IQueryable<Patient> GetOrdinationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationDoctor(query, sortColumn, sortDirection);
+                query = GetOrdinationDoctor(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -144,7 +144,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Doctor> GetOrdenationDoctor(IQueryable<Doctor> query, string sortColumn, string sortDirection)
+        private IQueryable<Doctor> GetOrdinationDoctor(IQueryable<Doctor> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

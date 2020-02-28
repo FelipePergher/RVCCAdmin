@@ -96,7 +96,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationFamilyMembers(query, sortColumn, sortDirection);
+                query = GetOrdinationFamilyMembers(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -129,7 +129,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<FamilyMember> GetOrdenationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
+        private IQueryable<FamilyMember> GetOrdinationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

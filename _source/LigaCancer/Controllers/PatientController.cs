@@ -131,11 +131,13 @@ namespace RVCC.Controllers
 
                 if (result.Succeeded)
                 {
+                    Patient patient = await _patientService.FindByIdAsync(naturality.PatientId.ToString(), new[] { "PatientInformation" });
+
                     return Ok(new
                     {
                         ok = true,
                         url = Url.Action("AddPatientInformation",
-                    new { id = naturality.Patient.PatientInformation.PatientInformationId }),
+                    new { id = patient.PatientInformation.PatientInformationId }),
                         title = "Adicionar Informação do Paciente"
                     });
                 }

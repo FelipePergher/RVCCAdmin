@@ -21,7 +21,7 @@ namespace RVCC.Controllers.Api
         private readonly IDataRepository<Patient> _patientService;
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly ILogger<PatientApiController> _logger;
-
+            
         public PatientApiController(IDataRepository<Patient> patientService, IDataRepository<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;

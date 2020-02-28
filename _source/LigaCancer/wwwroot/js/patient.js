@@ -27,6 +27,8 @@ function initPage() {
 
     calendar("BirthdayDateFrom");
     calendar("BirthdayDateTo");
+    calendar("JoinDateFrom");
+    calendar("JoinDateTo");
 
     patientTable = $("#patientTable").DataTable({
         //dom: "l<'export-buttons'B>frtip",
@@ -74,6 +76,8 @@ function initPage() {
                 d.discharge = $("#Discharge").is(":checked");
                 d.BirthdayDateFrom = $("#BirthdayDateFrom").val();
                 d.BirthdayDateTo = $("#BirthdayDateTo").val();
+                d.joinDateFrom = $("#JoinDateFrom").val();
+                d.joinDateTo = $("#JoinDateTo").val();
             },
             datatype: "json",
             error: function () {
