@@ -19,17 +19,66 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+    <None Include="wwwroot\dist\js\cancer-type.min.js" />
+    <None Include="wwwroot\dist\js\doctor.min.js" />
+    <None Include="wwwroot\dist\js\form.min.js" />
+    <None Include="wwwroot\dist\js\home.min.js" />
+    <None Include="wwwroot\dist\js\main.min.js" />
+    <None Include="wwwroot\dist\js\medicine.min.js" />
+    <None Include="wwwroot\dist\js\patient.min.js" />
+    <None Include="wwwroot\dist\js\presence.min.js" />
+    <None Include="wwwroot\dist\js\treatment-place.min.js" />
+    <None Include="wwwroot\dist\js\user.min.js" />
+    <None Include="wwwroot\js\coreui.min.js" />
+    <None Include="wwwroot\js\custom-tooltips.min.js" />
+    <None Include="wwwroot\css\custom.css" />
+    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\js\cancerType.js" />
+    <None Include="wwwroot\js\doctor.js" />
+    <None Include="wwwroot\js\home.js" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\js\medicine.js" />
+    <None Include="wwwroot\js\patient.js" />
+    <None Include="wwwroot\js\treatmentPlace.js" />
+    <None Include="wwwroot\js\user.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\chart-js\Chart.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons-bs4\js\buttons.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.html5.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\dataTables.buttons.min.js" />
+    <None Include="wwwroot\lib\datatables\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\lib\dropzone\min\dropzone.min.js" />
+    <None Include="wwwroot\lib\gijgo\combined\js\gijgo.min.js" />
+    <None Include="wwwroot\lib\gijgo\combined\js\messages\messages.pt-br.min.js" />
+    <None Include="wwwroot\lib\jeditable\jquery.jeditable.min.js" />
+    <None Include="wwwroot\lib\jquery-ajax-unobtrusive\dist\jquery.unobtrusive-ajax.min.js" />
+    <None Include="wwwroot\lib\jquery-mask\jquery.mask.min.js" />
+    <None Include="wwwroot\lib\jquery-validate\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery\jquery.min.js" />
+    <None Include="wwwroot\lib\jszip\jszip.min.js" />
+    <None Include="wwwroot\lib\pdfmake\pdfmake.min.js" />
+    <None Include="wwwroot\lib\pdfmake\vfs_fonts.js" />
+    <None Include="wwwroot\lib\popper\umd\popper.min.js" />
+    <None Include="wwwroot\lib\select2\js\i18n\pt-BR.js" />
+    <None Include="wwwroot\lib\select2\js\select2.full.min.js" />
+    <None Include="wwwroot\lib\sweetalert2\sweetalert2.all.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" PrivateAssets="All" />
   </ItemGroup>
 
@@ -150,10 +199,6 @@
 
   <ItemGroup>
     <PackageReference Update="Microsoft.NETCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

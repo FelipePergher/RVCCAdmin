@@ -82,6 +82,7 @@ namespace RVCC.Controllers
                     Sex = patientProfileForm.Sex,
                     CivilState = patientProfileForm.CivilState,
                     DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth),
+                    JoinDate = DateTime.Parse(patientProfileForm.JoinDate),
                     Profession = patientProfileForm.Profession,
                     CreatedBy = user.Name,
                     MonthlyIncome =
@@ -130,11 +131,13 @@ namespace RVCC.Controllers
 
                 if (result.Succeeded)
                 {
+                    Patient patient = await _patientService.FindByIdAsync(naturality.PatientId.ToString(), new[] { "PatientInformation" });
+
                     return Ok(new
                     {
                         ok = true,
                         url = Url.Action("AddPatientInformation",
-                    new { id = naturality.Patient.PatientInformation.PatientInformationId }),
+                    new { id = patient.PatientInformation.PatientInformationId }),
                         title = "Adicionar Informação do Paciente"
                     });
                 }
@@ -174,7 +177,7 @@ namespace RVCC.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
+                patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                     ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)
                     : DateTime.MinValue;
 
@@ -301,6 +304,7 @@ namespace RVCC.Controllers
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
                 DateOfBirth = patient.DateOfBirth.ToString("dd/MM/yyyy"),
+                JoinDate = patient.JoinDate.ToString("dd/MM/yyyy"),
                 MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
                 Profession = patient.Profession
             };
@@ -324,6 +328,7 @@ namespace RVCC.Controllers
                 patient.Sex = patientProfileForm.Sex;
                 patient.CivilState = patientProfileForm.CivilState;
                 patient.DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth);
+                patient.JoinDate = DateTime.Parse(patientProfileForm.JoinDate);
                 patient.Profession = patientProfileForm.Profession;
                 patient.UpdatedBy = user.Name;
                 patient.MonthlyIncome =
@@ -422,9 +427,9 @@ namespace RVCC.Controllers
                 Medicines = patientInformation.PatientInformationMedicines.Select(x => x.Medicine.MedicineId.ToString()).ToList(),
                 TreatmentPlaces = patientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.TreatmentPlaceId.ToString()).ToList()
             };
-            if (patientInformation.TreatmentbeginDate != DateTime.MinValue)
+            if (patientInformation.TreatmentBeginDate != DateTime.MinValue)
             {
-                patientInformationForm.TreatmentBeginDate = patientInformation.TreatmentbeginDate.ToString("dd/MM/yyyy");
+                patientInformationForm.TreatmentBeginDate = patientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy");
             }
 
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
@@ -440,7 +445,7 @@ namespace RVCC.Controllers
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
                     new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
-                patientInformation.TreatmentbeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
+                patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                    ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)
                    : DateTime.MinValue;
 

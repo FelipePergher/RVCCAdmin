@@ -21,7 +21,7 @@ namespace RVCC.Controllers.Api
         private readonly IDataRepository<Patient> _patientService;
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly ILogger<PatientApiController> _logger;
-
+            
         public PatientApiController(IDataRepository<Patient> patientService, IDataRepository<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;
@@ -58,6 +58,7 @@ namespace RVCC.Controllers.Api
                     Rg = x.RG,
                     Cpf = x.CPF,
                     DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
+                    JoinDate = x.JoinDate.ToString("dd/MM/yyyy"),
                     Sex = Globals.GetDisplayName(x.Sex),
                     Phone = x.Phones.FirstOrDefault()?.Number,
                     Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
@@ -67,7 +68,7 @@ namespace RVCC.Controllers.Api
                     PerCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(
                         _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
-                    TreatmentbeginDate = x.PatientInformation.TreatmentbeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentbeginDate.ToString("dd/MM/yyyy"),
+                    TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy"),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),

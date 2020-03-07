@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationPresences(query, sortColumn, sortDirection);
+                query = GetOrdinationPresences(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -180,7 +180,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Presence> GetOrdenationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)
+        private IQueryable<Presence> GetOrdinationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

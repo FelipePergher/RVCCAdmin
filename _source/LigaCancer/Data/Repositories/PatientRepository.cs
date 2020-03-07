@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationPatients(query, sortColumn, sortDirection);
+                query = GetOrdinationPatients(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -140,16 +140,16 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(patient);
         }
 
-        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double montlhyPatient)
+        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double monthlyPatient)
         {
-            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)).ToString("C2") : montlhyPatient.ToString("C2");
+            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + monthlyPatient) / (familyMembers.Count + 1)).ToString("C2") : monthlyPatient.ToString("C2");
         }
 
         #endregion
 
         #region Private Methods
 
-        private IQueryable<Patient> GetOrdenationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
+        private IQueryable<Patient> GetOrdinationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {
@@ -163,6 +163,8 @@ namespace RVCC.Data.Repositories
                     return sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF);
                 case "DateOfBirth":
                     return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
+                case "JoinDate":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.JoinDate) : query.OrderByDescending(x => x.JoinDate);
                 case "Sex":
                     return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
                 case "CivilState":
@@ -254,6 +256,16 @@ namespace RVCC.Data.Repositories
             if (patientSearch.BirthdayDateTo != null)
             {
                 query = query.Where(x => x.DateOfBirth.Date <= DateTime.Parse(patientSearch.BirthdayDateTo).Date);
+            }
+
+            if (patientSearch.JoinDateFrom != null)
+            {
+                query = query.Where(x => x.JoinDate.Date >= DateTime.Parse(patientSearch.JoinDateFrom).Date);
+            }
+
+            if (patientSearch.JoinDateTo != null)
+            {
+                query = query.Where(x => x.JoinDate.Date <= DateTime.Parse(patientSearch.JoinDateTo).Date);
             }
 
             return query;

@@ -97,7 +97,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationCancerType(query, sortColumn, sortDirection);
+                query = GetOrdinationCancerType(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -140,7 +140,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<CancerType> GetOrdenationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
+        private IQueryable<CancerType> GetOrdinationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

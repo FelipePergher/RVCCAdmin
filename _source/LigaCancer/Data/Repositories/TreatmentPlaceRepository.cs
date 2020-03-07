@@ -95,7 +95,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationTreatmentPlace(query, sortColumn, sortDirection);
+                query = GetOrdinationTreatmentPlace(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -137,7 +137,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<TreatmentPlace> GetOrdenationTreatmentPlace(IQueryable<TreatmentPlace> query, string sortColumn, string sortDirection)
+        private IQueryable<TreatmentPlace> GetOrdinationTreatmentPlace(IQueryable<TreatmentPlace> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {

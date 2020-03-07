@@ -19,7 +19,7 @@ namespace RVCC.Data.Models.PatientModels
         [Key]
         public int PatientInformationId { get; set; }
 
-        public DateTime TreatmentbeginDate { get; set; }
+        public DateTime TreatmentBeginDate { get; set; }
 
         public int PatientId { get; set; }
 
