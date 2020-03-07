@@ -8,6 +8,7 @@ const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 module.exports = {
     entry: {
         'common': ['./src/sass/common/index.scss', './src/scripts/common/index.js'],
+        'home': ['./src/sass/home/index.scss', './src/scripts/home/index.js'],
         'doctor': ['./src/sass/doctor/index.scss', './src/scripts/doctor/index.js'],
         'treatment-place': ['./src/sass/treatment-place/index.scss', './src/scripts/treatment-place/index.js'],
         'medicine': ['./src/sass/medicine/index.scss', './src/scripts/medicine/index.js'],

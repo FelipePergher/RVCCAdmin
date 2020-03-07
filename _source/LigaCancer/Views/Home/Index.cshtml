@@ -3,12 +3,12 @@
     ViewData["Title"] = "Homepage";
 }
 
-@section styles{
+@section styles {
     <environment names="Development">
-        <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
+        <link href="~/dist/css/home.bundle.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="~/dist/css/home.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/dist/css/home.bundle.css" asp-append-version="true" rel="stylesheet" />
     </environment>
 }
 
@@ -25,20 +25,20 @@
                         <form class="col-sm-6 form-group row" id="searchForm" method="post">
                             <label class="col-md-3 mt-1" asp-for="ChartDate"></label>
                             <div class="col-md-9">
-                                <input asp-for="ChartDate" type="text" class="form-control" />
+                                <input asp-for="ChartDate" type="text" class="form-control" data-date-end-date="0d"/>
                                 <span asp-validation-for="ChartDate" class="text-danger"></span>
                             </div>
                         </form>
                         <div class="col-sm-3 d-none d-md-block">
                             <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
                                 <label class="btn btn-outline-secondary">
-                                    <input id="day" type="radio" name="chartOptions" autocomplete="off"> Dia
+                                    <input id="day" type="radio" name="chartOptions" class="chartOptions" autocomplete="off"> Dia
                                 </label>
                                 <label class="btn btn-outline-secondary active">
-                                    <input id="month" type="radio" name="chartOptions" autocomplete="off" checked> Mês
+                                    <input id="month" type="radio" name="chartOptions" class="chartOptions" autocomplete="off" checked> Mês
                                 </label>
                                 <label class="btn btn-outline-secondary">
-                                    <input id="year" type="radio" name="chartOptions" autocomplete="off"> Ano
+                                    <input id="year" type="radio" name="chartOptions" class="chartOptions" autocomplete="off"> Ano
                                 </label>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                     </div>
                     <!-- /.row-->
                     <div class="chart-wrapper">
-                        <canvas class="chart" id="dayChart" style="display: none;"></canvas>
+                        <canvas class="chart" id="dayChart"style="display: none;"></canvas>
                         <canvas class="chart" id="monthChart"></canvas>
                         <canvas class="chart" id="yearChart" style="display: none;"></canvas>
                     </div>
@@ -98,15 +98,10 @@
 </main>
 
 @section scripts {
-    
     <environment names="Development">
-        <script src="~/lib/chart-js/Chart.min.js"></script>
-        <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
-        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
-        <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
-        <script src="~/js/home.js"></script>
+        <script src="~/dist/js/home.bundle.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/dist/js/home.min.js" asp-append-version="true"></script>
+        <script src="~/dist/js/home.bundle.js" asp-append-version="true"></script>
     </environment>
 }

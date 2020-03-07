@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-RVCC-64C21C05-246D-44A3-913D-874313CD67E8</UserSecretsId>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
     <AssemblyName>RVCC</AssemblyName>
     <RootNamespace>RVCC</RootNamespace>
     <Authors>Felipe Pergher</Authors>
