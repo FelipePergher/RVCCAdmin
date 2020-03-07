@@ -33,11 +33,9 @@
     <None Include="wwwroot\dist\js\presence.min.js" />
     <None Include="wwwroot\dist\js\treatment-place.min.js" />
     <None Include="wwwroot\dist\js\user.min.js" />
-    <None Include="wwwroot\js\custom-tooltips.min.js" />
     <None Include="wwwroot\js\home.js" />
     <None Include="wwwroot\js\main.js" />
     <None Include="wwwroot\js\patient.js" />
-    <None Include="wwwroot\js\user.js" />
   </ItemGroup>
 
   <ItemGroup>

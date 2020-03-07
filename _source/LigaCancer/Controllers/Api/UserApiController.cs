@@ -39,10 +39,17 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                //Remove admin user
                 string adminEmail = _configuration["Admin:Email"];
 
                 var users = _userManager.Users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
+
+                //Remove admin user
+                var adminUserCount = _userManager.Users.Count(x => x.Email.ToLower() == adminEmail.ToLower());
+                if (adminUserCount > 0)
+                {
+                    users = users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
+                }
+
                 //Filter
                 if (!string.IsNullOrEmpty(name))
                 {
@@ -58,7 +65,7 @@ namespace RVCC.Controllers.Api
                     Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : "",
                     Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == Roles.Admin ? "Administrador" : "Usuário",
                     Actions = GetActionsHtml(x)
-                });
+                }).ToList();
 
                 //Sort
                 if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
@@ -66,7 +73,7 @@ namespace RVCC.Controllers.Api
                     data = GetOrdinationUser(data, sortColumn, sortDirection);
                 }
 
-                int recordsTotal = _userManager.Users.Count();
+                int recordsTotal = _userManager.Users.Count() - adminUserCount;
                 int recordsFiltered = data.Count();
 
                 return Ok(new { searchModel.Draw, data = data.Skip(skip).Take(take), recordsTotal, recordsFiltered });
@@ -79,10 +86,10 @@ namespace RVCC.Controllers.Api
         }
 
         [HttpGet("~/api/user/IsEmailUsed")]
-        public async Task<IActionResult> IsEmailUsed(string Email, string UserId)
+        public async Task<IActionResult> IsEmailUsed(string email, string userId)
         {
-            ApplicationUser user = await _userManager.FindByEmailAsync(Email);
-            return user != null ? Ok(user.Id == UserId) : Ok(true);
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
+            return user != null ? Ok(user.Id == userId) : Ok(true);
         }
 
         #region Private Methods

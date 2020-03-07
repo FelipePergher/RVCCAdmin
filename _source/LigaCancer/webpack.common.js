@@ -12,7 +12,12 @@ module.exports = {
         'treatment-place': ['./src/sass/treatment-place/index.scss', './src/scripts/treatment-place/index.js'],
         'medicine': ['./src/sass/medicine/index.scss', './src/scripts/medicine/index.js'],
         'cancer-type': ['./src/sass/cancer-type/index.scss', './src/scripts/cancer-type/index.js'],
-        'presence': ['./src/sass/presence/index.scss', './src/scripts/presence/index.js']
+        'presence': ['./src/sass/presence/index.scss', './src/scripts/presence/index.js'],
+        'user': ['./src/sass/user/index.scss', './src/scripts/user/index.js'],
+        'login': ['./src/sass/login/index.scss', './src/scripts/login/index.js'],
+        'reset-password': ['./src/sass/reset-password/index.scss', './src/scripts/reset-password/index.js'],
+        'forgot-password': ['./src/sass/forgot-password/index.scss', './src/scripts/forgot-password/index.js'],
+        'change-password': ['./src/sass/change-password/index.scss', './src/scripts/change-password/index.js'],
     },
     plugins: [
         new CleanWebpackPlugin(),

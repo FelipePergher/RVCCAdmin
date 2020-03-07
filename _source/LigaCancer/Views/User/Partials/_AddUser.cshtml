@@ -1,15 +1,8 @@
 ﻿@model RVCC.Models.FormModel.UserFormModel
 
-<form id="addUserForm" asp-action="AddUser"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="addSuccess"
-      data-ajax-loading="#submitSpinner">
+<form id="addUserForm" asp-action="AddUser" method="post">
 
     <div class="modal-body form-horizontal" id="">
-        <input asp-for="UserId" />
         <div class="form-group">
             <label asp-for="Name" class="control-label"></label>
             <input asp-for="Name" class="form-control" />
@@ -17,17 +10,11 @@
         </div>
         <div class="form-group">
             <label asp-for="Role" class="control-label"></label>
-            <select asp-for="Role" asp-items="Model.ApplicationRoles" class="form-control userSelect2" style="width: 100%"
-                    data-theme="bootstrap"
-                    data-language="pt-BR"
-                    data-placeholder="Regra"
-                    data-width="resolve"
-                    data-minimum-results-for-search="Infinity"
-                    data-container-css-class="select2NoSearch">
+            <select asp-for="Role" asp-items="Model.ApplicationRoles" class="form-control">
                 <option value=""></option>
             </select>
             <span asp-validation-for="Role" class="text-danger"></span>
-        </div>  
+        </div>
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>
             <input asp-for="Email" class="form-control" />
@@ -53,6 +40,6 @@
         </div>
     </div>
 
-    <partial name="_ModalFooter"  />
+    <partial name="_ModalFooter" />
 
 </form>
