@@ -14,17 +14,16 @@ export default (function () {
     });
 
     function initPage() {
-        let doctorTable = $("#doctorTable").DataTable({
+        let medicineTable = $("#medicineTable").DataTable({
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,
             filter: false,
             ajax: {
-                url: "/api/doctor/search",
+                url: "/api/Medicine/search",
                 type: "POST",
                 data: function (d) {
                     d.name = $("#Name").val();
-                    d.CRM = $("#CRM").val();
                 },
                 datatype: "json",
                 error: function () {
@@ -33,37 +32,36 @@ export default (function () {
             },
             order: [1, "asc"],
             columns: [
-                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
-                { data: "name", title: "Nome", name: "Name" },
-                { data: "crm", title: "CRM", name: "CRM" }
+                { data: "actions", title: "Ações", width: "20px", name: "Actions", orderable: false },
+                { data: "name", title: "Nome", name: "Name" }
             ],
             drawCallback: function (settings) {
-                $(".editDoctorButton").click(function () {
+                $(".editMedicineButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteDoctorButton").click(function (e) {
+                $(".deleteMedicineButton").click(function (e) {
                     initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $('#doctorTable').attr('style', 'border-collapse: collapse !important');
+        $('#medicineTable').attr('style', 'border-collapse: collapse !important');
 
         $("#searchForm").submit(function (e) {
             e.preventDefault();
-            doctorTable.search("").draw("");
+            medicineTable.search("").draw("");
         });
 
-        $("#addDoctorButton").click(function () { 
+        $("#addMedicineButton").click(function () { 
             global.openModal($(this).attr("href"), $(this).data("title"), initAddForm);
         });
     }
 
     function initAddForm() {
-        $.validator.unobtrusive.parse("#addDoctorForm");
+        $.validator.unobtrusive.parse("#addMedicineForm");
 
-        $("#addDoctorForm").submit(function (e) {
+        $("#addMedicineForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -77,8 +75,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#doctorTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Médico registrado com sucesso.", "success");
+                            $("#medicineTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Remédio registrado com sucesso.", "success");
                             global.cleanModal();
                         } else {
                             $("#modalBody").html(data);
@@ -96,9 +94,9 @@ export default (function () {
     }
 
     function initEditForm() {
-        $.validator.unobtrusive.parse("#editDoctorForm");
+        $.validator.unobtrusive.parse("#editMedicineForm");
 
-        $("#editDoctorForm").submit(function (e) {
+        $("#editMedicineForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -112,8 +110,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#doctorTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Médico atualizado com sucesso.", "success");
+                            $("#medicineTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Remédio atualizado com sucesso.", "success");
                             global.cleanModal();
                         } else {
                             $("#modalBody").html(data);
@@ -133,7 +131,7 @@ export default (function () {
     function initDelete(url, id, relation) {
         let message = "Você não poderá reverter isso!";
         if (relation) {
-            message = "Este médico está atribuído a pacientes, deseja prosseguir mesmo assim?";
+            message = "Este remédio está atribuído a pacientes, deseja prosseguir mesmo assim?";
         }
 
         global.swalWithBootstrapButtons.fire({
@@ -145,8 +143,8 @@ export default (function () {
             preConfirm: () => {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
-                        $("#doctorTable").DataTable().ajax.reload(null, false);
-                        global.swalWithBootstrapButtons.fire("Removido!", "O médico foi removido com sucesso.", "success");
+                        $("#medicineTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O remédio foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

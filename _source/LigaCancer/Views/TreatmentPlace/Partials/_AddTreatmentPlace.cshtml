@@ -1,12 +1,6 @@
 ﻿@model RVCC.Models.FormModel.TreatmentPlaceFormModel
 
-<form id="addTreatmentPlaceForm"  asp-action="AddTreatmentPlace"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="addSuccess"
-      data-ajax-loading="#submitSpinner">
+<form id="addTreatmentPlaceForm"  asp-action="AddTreatmentPlace" method="post">
 
     <div class="modal-body form-horizontal">
         <partial name="Partials/_FormTreatmentPlace" />

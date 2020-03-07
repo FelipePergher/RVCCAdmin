@@ -8,7 +8,11 @@ const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 module.exports = {
     entry: {
         'common': ['./src/sass/common/index.scss', './src/scripts/common/index.js'],
-        'doctor': ['./src/sass/doctor/index.scss', './src/scripts/doctor/index.js']
+        'doctor': ['./src/sass/doctor/index.scss', './src/scripts/doctor/index.js'],
+        'treatment-place': ['./src/sass/treatment-place/index.scss', './src/scripts/treatment-place/index.js'],
+        'medicine': ['./src/sass/medicine/index.scss', './src/scripts/medicine/index.js'],
+        'cancer-type': ['./src/sass/cancer-type/index.scss', './src/scripts/cancer-type/index.js'],
+        'presence': ['./src/sass/presence/index.scss', './src/scripts/presence/index.js']
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -17,6 +21,9 @@ module.exports = {
             jQuery: require.resolve('jquery'),
             "window.jQuery": "jquery"
             //Promise: ['es6-promise', 'Promise']
+        }),
+        new webpack.ProvidePlugin({
+            moment: require.resolve('moment')
         }),
         new FixStyleOnlyEntriesPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)

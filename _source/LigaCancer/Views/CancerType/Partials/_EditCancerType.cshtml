@@ -1,13 +1,7 @@
 ﻿@model RVCC.Models.FormModel.CancerTypeFormModel
 
-<form id="editCancerTypeForm" asp-action="EditCancerType"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="editSuccess"
-      data-ajax-loading="#submitSpinner">
-
+<form id="editCancerTypeForm" asp-action="EditCancerType" method="post" >
+    
     <div class="modal-body form-horizontal">
         <partial name="Partials/_FormCancerType" />
     </div>

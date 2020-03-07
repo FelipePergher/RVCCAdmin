@@ -47,7 +47,7 @@ namespace RVCC.Controllers
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
-            List<Patient> patients = await ((PatientRepository)_patientService).GetActivePatients();
+            List<Patient> patients = await ((PatientRepository)_patientService).GetAllAsync();
             var presenceForm = new PresenceFormModel
             {
                 Patients = patients.Select(x => new SelectListItem($"{x.FirstName} {x.Surname}", x.PatientId.ToString())).ToList()
@@ -104,14 +104,14 @@ namespace RVCC.Controllers
                 return NotFound();
             }
 
-            var presenceform = new PresenceFormModel
+            var presenceForm = new PresenceFormModel
             {
                 PatientId = presence.Name,
-                Date = presence.PresenceDateTime.ToString("dd/M/yyyy"),
+                Date = presence.PresenceDateTime.ToString("dd/MM/yyyy"),
                 Time = new TimeSpan(presence.PresenceDateTime.Hour, presence.PresenceDateTime.Minute, 0)
             };
 
-            return PartialView("Partials/_EditPresence", presenceform);
+            return PartialView("Partials/_EditPresence", presenceForm);
         }
 
         [HttpPost]

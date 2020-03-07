@@ -1,13 +1,7 @@
 ﻿@model RVCC.Models.FormModel.PresenceFormModel
 
-<form id="editPresenceForm" asp-action="EditPresence"
-      role="form"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-failure="error"
-      data-ajax-success="editSuccess"
-      data-ajax-loading="#submitSpinner">
-
+<form id="editPresenceForm" asp-action="EditPresence" method="post" > 
+    
     <div class="modal-body form-horizontal">
         <div class="form-group">
             <label asp-for="PatientId" class="control-label"></label>
@@ -16,12 +10,19 @@
         </div>
         <div class="form-group">
             <label asp-for="Date" class="control-label label-required"></label>
-            <input asp-for="Date" type="text" class="form-control"/>
+            <input asp-for="Date" type="text" class="form-control" data-date-end-date="0d" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Time" class="control-label label-required"></label>
-            <input asp-for="Time" readonly type="text" class="form-control"/>
+            <div class="input-group date" id="timePicker" data-target-input="nearest">
+                <input asp-for="Time" type="text" class="form-control datetimepicker-input" data-target="#timePicker" />
+                <div class="input-group-append" data-target="#timePicker" data-toggle="datetimepicker">
+                    <div class="input-group-text">
+                        <i class="far fa-clock"></i>
+                    </div>
+                </div>
+            </div>
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
 
