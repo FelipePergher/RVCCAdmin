@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class AddressController : Controller
     {
@@ -32,6 +31,7 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index(string id)
         {
@@ -43,6 +43,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_Index", new AddressSearchModel(id));
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult AddAddress(string id)
         {
@@ -54,6 +55,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddAddress", new AddressFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddAddress(int id, AddressFormModel addressForm)
         {
@@ -90,6 +92,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddAddress", addressForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditAddress(string id)
         {
@@ -120,6 +123,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditAddress", addressForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditAddress(string id, AddressFormModel addressForm)
         {
@@ -153,6 +157,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditAddress", addressForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteAddress(string id)

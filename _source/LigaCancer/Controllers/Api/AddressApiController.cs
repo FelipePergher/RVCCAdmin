@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class AddressApiController : Controller
     {
@@ -26,6 +25,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/address/search")]
         public async Task<IActionResult> AddressSearch([FromForm] SearchModel searchModel, [FromForm] AddressSearchModel addressSearch)
         {
@@ -65,11 +65,17 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(Address address)
         {
-            string editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
-                $"data-target='#modal-action-secondary' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
+            string editAddress = string.Empty;
+            string deleteAddress = string.Empty;
 
-            string deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
-                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            if (!User.IsInRole(Roles.SocialAssistance))
+            {
+                editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
+                    $"data-target='#modal-action-secondary' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
+
+                deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
+                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            }
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

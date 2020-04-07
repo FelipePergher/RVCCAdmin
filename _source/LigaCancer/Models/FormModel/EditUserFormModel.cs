@@ -26,7 +26,8 @@ namespace RVCC.Models.FormModel
         public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
                 {
                     new SelectListItem("Administrador", Roles.Admin),
-                    new SelectListItem("Usuário", Roles.User)
+                    new SelectListItem("Usuário", Roles.User),
+                    new SelectListItem("Assistente Social", Roles.SocialAssistance)
                 };
 
         [Display(Name = "Regra")]

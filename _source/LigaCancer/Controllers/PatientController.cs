@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class PatientController : Controller
     {
@@ -52,6 +51,7 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
@@ -60,12 +60,14 @@ namespace RVCC.Controllers
 
         #region Add Methods
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult AddPatientProfile()
         {
             return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientProfile(PatientProfileFormModel patientProfileForm)
         {
@@ -103,6 +105,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientProfile", patientProfileForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult AddPatientNaturality(string id)
         {
@@ -114,6 +117,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientNaturality(string id, NaturalityFormModel naturalityForm)
         {
@@ -149,6 +153,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientNaturality", naturalityForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddPatientInformation(string id)
         {
@@ -167,6 +172,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientInformation(string id, PatientInformationFormModel patientInformationForm)
         {
@@ -278,6 +284,7 @@ namespace RVCC.Controllers
 
         #region Edit Methods
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPatientProfile(string id)
         {
@@ -312,6 +319,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPatientProfile(string id, PatientProfileFormModel patientProfileForm)
         {
@@ -348,6 +356,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPatientNaturality(string id)
         {
@@ -373,6 +382,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientNaturality", naturalityForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPatientNaturality(string id, NaturalityFormModel naturalityForm)
         {
@@ -400,6 +410,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientNaturality", naturalityForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPatientInformation(string id)
         {
@@ -435,6 +446,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPatientInformation(string id, PatientInformationFormModel patientInformationForm)
         {
@@ -628,6 +640,7 @@ namespace RVCC.Controllers
 
         #region Control Enable/Disable Methods
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult ArchivePatient(string id)
         {
@@ -639,6 +652,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_ArchivePatient", new ArchivePatientFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> ArchivePatient(string id, ArchivePatientFormModel archivePatientForm)
         {
@@ -677,6 +691,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_ArchivePatient", archivePatientForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> ActivePatient(string id)
@@ -705,6 +720,7 @@ namespace RVCC.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePatient(string id)

@@ -14,14 +14,13 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PatientApiController : Controller
     {
         private readonly IDataRepository<Patient> _patientService;
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly ILogger<PatientApiController> _logger;
-            
+
         public PatientApiController(IDataRepository<Patient> patientService, IDataRepository<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;
@@ -29,6 +28,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/patient/search")]
         public async Task<IActionResult> PatientSearch([FromForm] SearchModel searchModel, [FromForm] PatientSearchModel patientSearchModel)
         {
@@ -65,6 +65,7 @@ namespace RVCC.Controllers.Api
                     CivilState = Globals.GetDisplayName(x.CivilState),
                     FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
                     Profession = x.Profession,
+                    Naturality = $"{x.Naturality.City} {x.Naturality.State} {x.Naturality.Country}",
                     PerCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(
                         _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
@@ -95,6 +96,7 @@ namespace RVCC.Controllers.Api
             }
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet("~/api/patient/IsCpfExist")]
         public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
         {
@@ -102,6 +104,7 @@ namespace RVCC.Controllers.Api
             return Ok(patient == null);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet("~/api/patient/IsRgExist")]
         public async Task<IActionResult> IsRgExist(string rg, int patientId)
         {
@@ -140,9 +143,16 @@ namespace RVCC.Controllers.Api
                 string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
+                if (!User.IsInRole(Roles.SocialAssistance))
+                {
+                    options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
+                }
+                else
+                {
+                    options = phones + addressses + familyMembers + fileUploadPatient;
+                }
             }
-            else
+            else if(!User.IsInRole(Roles.SocialAssistance))
             {
                 string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
                     $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";

@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
@@ -38,12 +37,14 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
             return View(new PresenceSearchModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
@@ -56,6 +57,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPresence", presenceForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPresence(PresenceFormModel presenceForm)
         {
@@ -89,6 +91,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPresence", presenceForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPresence(string id)
         {
@@ -114,6 +117,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPresence", presenceform);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
@@ -143,6 +147,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPresence", presenceForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePresence(string id)

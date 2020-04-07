@@ -98,6 +98,7 @@ function initPage() {
             { data: "address", title: "Endereço", name: "Address" },
             { data: "civilState", title: "Estado Civil", name: "CivilState" },
             { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
+            { data: "naturality", title: "Naturalidade", name: "Naturality" },
             { data: "profession", title: "Profissão", name: "Profession" },
             { data: "perCapitaIncome", title: "Renda Per Capita", name: "PerCapitaIncome" },
             { data: "treatmentBeginDate", title: "Início Tratamento", name: "TreatmentBeginDate" },
@@ -717,8 +718,7 @@ function initDeleteFamilyMember(url, id) {
 
 //Files
 function initFileUpload() {
-    var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
-
+    let isEditable = $("#dropzoneForm").length > 0;
     attachmentsTable = $("#attachmentsTable").DataTable({
         //dom: "l<'export-buttons'B>frtip",
         buttons: [
@@ -779,7 +779,9 @@ function initFileUpload() {
                 initDeleteFileAttachment($(this).data("url"), $(this).data("id"));
             });
 
-            $('.editable').editable(function (value, settings) {
+            if (isEditable) {
+
+                $('.editable').editable(function (value, settings) {
                 let fileAttachmentId = $(this).data("fileattachmentid");
 
                 $.post("/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
@@ -797,13 +799,18 @@ function initFileUpload() {
                     placeholder: "Clique para editar",
                     tooltip: "Clique para editar"
                 });
+            }
         }
     });
     $('#attachmentsTable').attr('style', 'border-collapse: collapse !important');
 
-    myDropzone.on("success", function (file) {
-        attachmentsTable.ajax.reload(null, false);
-    });
+    if (isEditable)
+    {
+        var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
+        myDropzone.on("success", function (file) {
+            attachmentsTable.ajax.reload(null, false);
+        });
+    }
 }
 
 function initDeleteFileAttachment(url, id) {

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class FamilyMemberApiController : Controller
     {
@@ -29,6 +28,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/familyMember/search")]
         public async Task<IActionResult> FamilyMemberSearch([FromForm] SearchModel searchModel, [FromForm] FamilyMemberSearchModel familyMemberSearch)
         {
@@ -69,11 +69,17 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(FamilyMember familyMember)
         {
-            string editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
-                $"data-target='#modal-action-secondary' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><i class='fas fa-edit'></i> Editar </a>";
+            string editFamilyMember = string.Empty;
+            string deleteFamilyMember = string.Empty;
 
-            string deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
-                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            if (!User.IsInRole(Roles.SocialAssistance))
+            {
+                editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
+                                   $"data-target='#modal-action-secondary' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><i class='fas fa-edit'></i> Editar </a>";
+
+                deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
+                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            }
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

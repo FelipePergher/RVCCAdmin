@@ -27,6 +27,8 @@
         public string FamiliarityGroup { get; set; }
 
         public string Profession { get; set; }
+        
+        public string Naturality { get; set; }
 
         public string PerCapitaIncome { get; set; }
 

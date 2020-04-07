@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
+    [Authorize(Roles = Roles.AdminUserAuthorize)]
     [ApiController]
     public class CancerTypeApiController : Controller
     {

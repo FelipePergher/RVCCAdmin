@@ -12,7 +12,7 @@ namespace RVCC.Business
 {
     public static class SeedData
     {
-        private static readonly string[] Roles = { Business.Roles.Admin, Business.Roles.User };
+        private static readonly string[] Roles = { Business.Roles.Admin, Business.Roles.User, Business.Roles.SocialAssistance };
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
@@ -31,19 +31,16 @@ namespace RVCC.Business
             {
                 ApplicationDbContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
 
-                if (!dbContext.UserRoles.Any())
-                {
-                    RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    foreach (string role in Roles)
+                foreach (string role in Roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
                     {
-                        if (!await roleManager.RoleExistsAsync(role))
+                        await roleManager.CreateAsync(new IdentityRole
                         {
-                            await roleManager.CreateAsync(new IdentityRole
-                            {
-                                Name = role
-                            });
-                        }
+                            Name = role
+                        });
                     }
                 }
             }

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class FamilyMemberController : Controller
     {
@@ -35,6 +34,7 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index(string id)
         {
@@ -46,6 +46,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_Index", new FamilyMemberSearchModel(id));
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
@@ -57,6 +58,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
@@ -99,6 +101,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddFamilyMember", familyMemberForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditFamilyMember(string id)
         {
@@ -124,6 +127,7 @@ namespace RVCC.Controllers
             });
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditFamilyMember(string id, FamilyMemberFormModel familyMemberForm)
         {
@@ -154,6 +158,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id)

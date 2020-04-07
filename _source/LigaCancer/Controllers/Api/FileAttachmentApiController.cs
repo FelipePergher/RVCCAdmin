@@ -13,7 +13,6 @@ using RVCC.Business;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class FileAttachmentApiController : Controller
     {
@@ -26,6 +25,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/FileAttachment/search")]
         public async Task<IActionResult> FileAttachmentSearch([FromForm] FileAttachmentSearchModel fileAttachmentSearch)
         {
@@ -57,8 +57,12 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(FileAttachment fileAttachment)
         {
-            string deleteFileAttachment = $"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>" +
-                $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+
+            string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance) 
+                ? string.Empty
+                : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
+                        <i class='fas fa-trash-alt'></i> Excluir 
+                    </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

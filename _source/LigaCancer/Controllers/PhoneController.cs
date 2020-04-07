@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {
@@ -35,6 +34,7 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index(string id)
         {
@@ -46,6 +46,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_Index", new PhoneSearchModel(id));
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public IActionResult AddPhone(string id)
         {
@@ -57,6 +58,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPhone", new PhoneFormModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPhone(string id, PhoneFormModel phoneForm)
         {
@@ -88,6 +90,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPhone", phoneForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPhone(string id)
         {
@@ -111,6 +114,7 @@ namespace RVCC.Controllers
             });
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPhone(string id, PhoneFormModel phoneForm)
         {
@@ -138,6 +142,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPhone", phoneForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePhone(string id)
