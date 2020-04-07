@@ -280,6 +280,50 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [HttpGet]
+        public async Task<IActionResult> AddSocialObservation(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            Patient patient = await _patientService.FindByIdAsync(id);
+            var socialObservationForm = new SocialObservationFormModel
+            {
+                Observations = patient.SocialObservation
+            };
+
+            return PartialView("Partials/_AddSocialObservation", socialObservationForm);
+        }
+
+        [Authorize(Roles = Roles.SocialAssistance)]
+        [HttpPost]
+        public async Task<IActionResult> AddSocialObservation(string id, SocialObservationFormModel socialObservationForm)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+                Patient patient = await _patientService.FindByIdAsync(id);
+
+                patient.SocialObservation = socialObservationForm.Observations;
+                patient.UpdatedBy = user.Name;
+
+                TaskResult result = await _patientService.UpdateAsync(patient);
+
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
+                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                return BadRequest();
+            }
+
+            return PartialView("Partials/_AddSocialObservation", socialObservationForm);
+        }
+
         #endregion
 
         #region Edit Methods

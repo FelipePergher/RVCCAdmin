@@ -137,6 +137,9 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="Views\Patient\Partials\_AddSocialObservation.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Patient\Partials\_EditPatientInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

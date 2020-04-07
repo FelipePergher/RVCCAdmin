@@ -131,7 +131,7 @@ namespace RVCC.Controllers.Api
                 string phones = $"<a href='/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Telefones' class='dropdown-item phonesButton'><i class='fas fa-phone'></i> Telefones</a>";
 
-                string addressses = $"<a href='/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                string addresses = $"<a href='/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Endereços' class='dropdown-item addressesButton'><i class='fas fa-address-book'></i> Endereços</a>";
 
                 string familyMembers = $"<a href='/FamilyMember/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
@@ -143,13 +143,16 @@ namespace RVCC.Controllers.Api
                 string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
 
+                string socialObservation = $"<a href='/Patient/AddSocialObservation/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
+                                    $"data-title='Observações' class='dropdown-item socialObservationButton'><i class='fas fa-clipboard'></i> Observações</a>";
+
                 if (!User.IsInRole(Roles.SocialAssistance))
                 {
-                    options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
+                    options = socialObservation + editPatient + editNaturality + editPatientInformation + phones + addresses + familyMembers + fileUploadPatient + archivePatient;
                 }
                 else
                 {
-                    options = phones + addressses + familyMembers + fileUploadPatient;
+                    options = socialObservation + phones + addresses + familyMembers + fileUploadPatient;
                 }
             }
             else if(!User.IsInRole(Roles.SocialAssistance))

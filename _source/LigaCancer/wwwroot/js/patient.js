@@ -154,6 +154,10 @@ function initPage() {
                 openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
             });
 
+            $(".socialObservationButton").click(function () {
+                openModal($(this).attr("href"), $(this).data("title"), initAddSocialObservationForm);
+            });
+
             //Fix dropdown with scrool
             $('.dropdown').on('shown.bs.dropdown', function () {
                 let $menu = $(this).children(".dropdown-menu");
@@ -259,6 +263,21 @@ function addPatientInformationSuccess(data, textStatus) {
     else {
         $("#modalBody").html(data);
         initAddPatientInformationForm();
+    }
+}
+
+function initAddSocialObservationForm() {
+    $.validator.unobtrusive.parse("#addSocialObservationForm");
+}
+
+function addSocialObservationSuccess(data, textStatus) {
+    if (!data && textStatus === "success") {
+        $("#modal-action").modal("hide");
+        swalWithBootstrapButtons.fire("Sucesso", "Observações salvas com sucesso.", "success");
+    }
+    else {
+        $("#modalBody").html(data);
+        initAddSocialObservationForm();
     }
 }
 
