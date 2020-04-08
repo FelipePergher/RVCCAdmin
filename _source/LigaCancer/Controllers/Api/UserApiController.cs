@@ -56,7 +56,7 @@ namespace RVCC.Controllers.Api
                     Email = x.Email,
                     ConfirmedEmail = _userManager.IsEmailConfirmedAsync(x).Result ? "<span class='fa fa-check'></span>" : "",
                     Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : "",
-                    Role = _userManager.GetRolesAsync(x).Result.FirstOrDefault() == Roles.Admin ? "Administrador" : "Usuário",
+                    Role = Roles.GetRoleName(_userManager.GetRolesAsync(x).Result.FirstOrDefault()),
                     Actions = GetActionsHtml(x)
                 });
 

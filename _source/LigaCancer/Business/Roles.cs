@@ -11,5 +11,18 @@
         public const string AdminUserAuthorize = "Admin, User";
         
         public const string AdminUserSocialAssistanceAuthorize = "Admin, User, SocialAssistance";
+
+        public static string GetRoleName(string role)
+        {
+            var userRoleName = role switch
+            {
+                Admin => "Administrador",
+                User => "Usuário",
+                SocialAssistance => "Assistente Social",
+                _ => string.Empty
+            };
+
+            return userRoleName;
+        }
     }
 }
