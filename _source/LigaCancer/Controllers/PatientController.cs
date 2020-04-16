@@ -259,7 +259,7 @@ namespace RVCC.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Ok(new { ok = true });
+                    return Ok();
                 }
 
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));

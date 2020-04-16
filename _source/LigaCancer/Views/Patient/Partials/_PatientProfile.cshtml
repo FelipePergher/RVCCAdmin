@@ -36,28 +36,13 @@
         </div>
         <div class="form-group col-md-6">
             <label asp-for="Sex" class="control-label"></label>
-            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control patientProfileSelect2" style="width: 100%"
-                    data-theme="bootstrap"
-                    data-language="pt-BR"
-                    data-placeholder="Gênero"
-                    data-width="resolve"
-                    data-minimum-results-for-search="Infinity"
-                    data-container-css-class="select2NoSearch">
-                <option value=""></option>
-            </select>
+            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control" ></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
         <div class="form-group col-md-6">
             <label asp-for="CivilState" class="control-label"></label>
-            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control patientProfileSelect2" style="width: 100%"
-                    data-theme="bootstrap"
-                    data-language="pt-BR"
-                    data-placeholder="Estado Civil"
-                    data-width="resolve"
-                    data-allow-clear="true"
-                    data-minimum-results-for-search="Infinity"
-                    data-container-css-class="select2NoSearch">
-                <option value=""></option>
+            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                <option value="" disabled selected></option>
             </select>
             <span asp-validation-for="CivilState" class="text-danger"></span>
         </div>

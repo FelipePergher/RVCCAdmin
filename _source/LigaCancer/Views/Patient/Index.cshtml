@@ -5,17 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section styles{
+@section styles {
     <environment names="Development">
-        <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-        @*<link href="~/lib/datatables-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
-        <link href="~/lib/select2/theme/select2-bootstrap.min.css" rel="stylesheet" />
-        <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-        <link href="~/lib/gijgo/combined/css/gijgo.min.css" rel="stylesheet" />
-        <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+        <link href="~/dist/css/patient.bundle.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="~/dist/css/patient.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/dist/css/patient.bundle.css" asp-append-version="true" rel="stylesheet" />
     </environment>
 }
 
@@ -70,8 +65,6 @@
                                                 <select asp-for="CancerTypes" class="form-control filterSelect"
                                                         data-theme="bootstrap"
                                                         data-language="pt-BR"
-                                                        data-ajax--url="/api/cancerType/select2Get"
-                                                        data-ajax--data-type="json"
                                                         data-placeholder="Cânceres">
                                                     <option value=""></option>
                                                 </select>
@@ -113,61 +106,6 @@
 
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
-                                                <label asp-for="CivilState"></label>
-                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control filterSelect"
-                                                        data-theme="bootstrap"
-                                                        data-language="pt-BR"
-                                                        data-placeholder="Estado Civil"
-                                                        data-allow-clear="true"
-                                                        data-minimum-results-for-search="Infinity"
-                                                        data-container-css-class="select2NoSearch">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label asp-for="Sex"></label>
-                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control filterSelect"
-                                                        data-theme="bootstrap"
-                                                        data-language="pt-BR"
-                                                        data-placeholder="Gênero"
-                                                        data-allow-clear="true"
-                                                        data-minimum-results-for-search="Infinity"
-                                                        data-container-css-class="select2NoSearch">
-                                                    <option value=""></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label asp-for="FamiliarityGroup"></label>
-                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control filterSelect"
-                                                        data-theme="bootstrap"
-                                                        data-language="pt-BR"
-                                                        data-allow-clear="true"
-                                                        data-placeholder="Grupo De Convivência"
-                                                        data-minimum-results-for-search="Infinity"
-                                                        data-container-css-class="select2NoSearch"></select>
-                                            </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <div class="form-row">
-                                                    <label class="switch switch-label switch-pill switch-success ml-2">
-                                                        <input class="switch-input" asp-for="Discharge" />
-                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                                                    </label>
-                                                    <label class="ml-2" asp-for="Discharge">@Html.DisplayNameFor(model => model.Discharge)</label>
-                                                </div>
-                                                <div class="form-row">
-                                                    <label class="switch switch-label switch-pill switch-success ml-2">
-                                                        <input class="switch-input" asp-for="Death" />
-                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                                                    </label>
-                                                    <label asp-for="Death" class="ml-2">@Html.DisplayNameFor(model => model.Death)</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-row form-group">
-                                            <div class="col-lg-3">
                                                 <label asp-for="BirthdayDateFrom"></label>
                                                 <input asp-for="BirthdayDateFrom" type="text" class="form-control" />
                                                 <span asp-validation-for="BirthdayDateFrom" class="text-danger"></span>
@@ -187,6 +125,43 @@
                                                 <input asp-for="JoinDateTo" type="text" class="form-control" />
                                                 <span asp-validation-for="JoinDateTo" class="text-danger"></span>
                                             </div>
+                                        </div>
+
+                                        <div class="form-row form-group">
+                                            <div class="col-lg-3">
+                                                <label asp-for="CivilState"></label>
+                                                <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="Sex"></label>
+                                                <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="FamiliarityGroup"></label>
+                                                <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
+                                            </div>
+
+                                            <div class="form-group col-lg-3">
+                                                <div class="form-row">
+                                                    <label class="switch switch-label switch-pill switch-success ml-2">
+                                                        <input class="switch-input" asp-for="Discharge" />
+                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                                                    </label>
+                                                    <label class="ml-2" asp-for="Discharge">@Html.DisplayNameFor(model => model.Discharge)</label>
+                                                </div>
+                                                <div class="form-row">
+                                                    <label class="switch switch-label switch-pill switch-success ml-2">
+                                                        <input class="switch-input" asp-for="Death" />
+                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                                                    </label>
+                                                    <label asp-for="Death" class="ml-2">@Html.DisplayNameFor(model => model.Death)</label>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <button type="reset" class="btn btn-secondary">
@@ -230,26 +205,10 @@
 <partial name="_ModalSecondary" />
 
 @section scripts {
-    <partial name="_ValidationScriptsPartial" />
     <environment names="Development">
-        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
-        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/lib/select2/js/select2.full.min.js"></script>
-        <script src="~/lib/select2/js/i18n/pt-BR.js"></script>
-        @*<script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
-            <script src="~/lib/datatables-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <script src="~/lib/jszip/jszip.min.js"></script>
-            <script src="~/lib/pdfmake/pdfmake.min.js"></script>
-            <script src="~/lib/pdfmake/vfs_fonts.js"></script>
-            <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>*@
-        <script src="~/lib/gijgo/combined/js/gijgo.min.js"></script>
-        <script src="~/lib/gijgo/combined/js/messages/messages.pt-br.min.js"></script>
-        <script src="~/lib/dropzone/min/dropzone.min.js"></script>
-        <script src="~/lib/jeditable/jquery.jeditable.min.js"></script>
-        <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
-        <script src="~/js/patient.js"></script>
+        <script src="dist/js/patient.bundle.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/dist/js/patient.min.js" asp-append-version="true"></script>
+        <script src="dist/js/patient.bundle.js" asp-append-version="true"></script>
     </environment>
 }

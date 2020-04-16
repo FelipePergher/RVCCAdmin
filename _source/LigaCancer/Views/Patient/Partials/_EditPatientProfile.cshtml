@@ -1,12 +1,6 @@
 ﻿@model RVCC.Models.FormModel.PatientProfileFormModel
 
-<form id="editPatientProfileForm" asp-action="EditPatientProfile"
-        role="form"
-        data-ajax="true"
-        data-ajax-method="POST"
-        data-ajax-failure="error"
-        data-ajax-success="editProfileSuccess"
-        data-ajax-loading="#submitSpinner">
+<form id="editPatientProfileForm" asp-action="EditPatientProfile" method="post" >
 
     <partial name="Partials/_PatientProfile" />
 

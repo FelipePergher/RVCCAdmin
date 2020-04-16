@@ -138,6 +138,12 @@ export default (function () {
         });
     };
 
+    global.masks = {
+        Cpf: '000.000.000-00',
+        Price: '000.000.000.000.000,00',
+        date: '99/99/9999'
+    };
+
     function showSpinnerModal() {
         $("#modalSpinner").show();
     }
