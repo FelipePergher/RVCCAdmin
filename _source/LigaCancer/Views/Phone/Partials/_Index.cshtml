@@ -1,19 +1,18 @@
 ﻿@model RVCC.Models.SearchModel.PhoneSearchModel
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <input asp-for="PatientId" id="phonePatientId" />
-                <div class="form-inline float-right">
-                    <a id="addPhoneButton" asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-title="Adicionar Telefone" class="btn btn-primary"
-                       data-toggle="modal" data-target="#modal-action-secondary">
-                        <i class="fa fa-plus"></i> Adicionar Telefone
-                    </a>
-                </div>
-
-                <table class="table table-bordered table-striped text-center" id="phoneTable"></table>
-            </div>
+<div class="card">
+    <div class="card-header">
+        <i class="fa fa-male"></i>Telefones
+    </div>
+    <div class="card-body">
+        <input asp-for="PatientId" id="phonePatientId" />
+        <div class="form-inline float-right">
+            <a id="addPhoneButton" asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-title="Adicionar Telefone" class="btn btn-primary"
+               data-toggle="modal" data-target="#modal-action-secondary">
+                <i class="fa fa-plus"></i> Adicionar Telefone
+            </a>
         </div>
+
+        <table class="table table-bordered table-striped text-center" id="phoneTable"></table>
     </div>
 </div>

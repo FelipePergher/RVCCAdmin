@@ -33,17 +33,6 @@ namespace RVCC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest();
-            }
-
-            return PartialView("Partials/_Index", new AddressSearchModel(id));
-        }
-
-        [HttpGet]
         public IActionResult AddAddress(string id)
         {
             if (string.IsNullOrEmpty(id))

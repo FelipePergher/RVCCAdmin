@@ -10,6 +10,7 @@ using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using RVCC.Models.SearchModel;
+using RVCC.Models.ViewModel;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,6 +57,55 @@ namespace RVCC.Controllers
         public IActionResult Index()
         {
             return View(new PatientSearchModel());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            Patient patient = await _patientService.FindByIdAsync(id, new[]
+            {
+                "PatientInformation", "Naturality",
+                "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType", 
+                "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor", 
+                "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine", 
+                "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace", 
+            });
+
+            var patientDetails = new PatientDetailsViewModel
+            {
+                PatientId = id,
+                NaturalityId = patient.Naturality.NaturalityId.ToString(),
+                PatientInformationId = patient.PatientInformation.PatientInformationId.ToString(),
+                PatientProfile = new PatientProfileFormModel
+                {
+                    FirstName = patient.FirstName,
+                    Surname = patient.Surname,
+                    RG = patient.RG,
+                    CPF = patient.CPF,
+                    Profession = patient.Profession,
+                    Sex = patient.Sex,
+                    CivilState = patient.CivilState,
+                    DateOfBirth = patient.DateOfBirth.ToShortDateString(),
+                    JoinDate = patient.JoinDate.ToShortDateString(),
+                    FamiliarityGroup = patient.FamiliarityGroup,
+                    MonthlyIncome = patient.MonthlyIncome.ToString()
+                },
+                PatientInformation = new PatientInformationFormModel
+                {
+                    CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
+                    Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
+                    Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.Name).ToList(),
+                    TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.City).ToList(),
+                    TreatmentBeginDate = patient.PatientInformation.TreatmentBeginDate.ToShortDateString()
+                },
+                Naturality = new NaturalityFormModel
+                {
+                    City = patient.Naturality.City,
+                    Country = patient.Naturality.Country,
+                    State = patient.Naturality.State
+                }
+            };
+            return View(patientDetails);
         }
 
         #region Add Methods
@@ -621,7 +671,7 @@ namespace RVCC.Controllers
             patientInformationForm.SelectMedicines = await SelectHelper.GetMedicinesSelectAsync(_medicineService);
             patientInformationForm.SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService);
 
-            return PartialView("Partials/_AddPatientInformation", patientInformationForm);
+            return PartialView("Partials/_EditPatientInformation", patientInformationForm);
         }
 
         #endregion

@@ -36,17 +36,6 @@ namespace RVCC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest();
-            }
-
-            return PartialView("Partials/_Index", new FamilyMemberSearchModel(id));
-        }
-
-        [HttpGet]
         public IActionResult AddFamilyMember(string id)
         {
             if (string.IsNullOrEmpty(id))

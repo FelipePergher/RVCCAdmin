@@ -116,31 +116,16 @@ namespace RVCC.Controllers.Api
             string options = string.Empty;
             if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
             {
-                string editPatient = $"<a href='/Patient/EditPatientProfile/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Paciente' class='dropdown-item editPatientButton'><i class='fas fa-clipboard'></i> Perfil do Paciente</a>";
-
-                string editNaturality = $"<a href='/Patient/EditPatientNaturality/{patient.Naturality.NaturalityId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Naturalidade' class='dropdown-item editNaturalityButton'><i class='fas fa-globe-americas'></i> Naturalidade</a>";
-
-                string editPatientInformation = $"<a href='/Patient/EditPatientInformation/{patient.PatientInformation.PatientInformationId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Editar Informações do Paciente' class='dropdown-item editPatientInformationButton'><i class='fas fa-info'></i> Informação do Paciente</a>";
-
-                string phones = $"<a href='/Phone/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Telefones' class='dropdown-item phonesButton'><i class='fas fa-phone'></i> Telefones</a>";
-
-                string addressses = $"<a href='/Address/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Endereços' class='dropdown-item addressesButton'><i class='fas fa-address-book'></i> Endereços</a>";
-
-                string familyMembers = $"<a href='/FamilyMember/Index/{patient.PatientId}' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Membros Familiares' class='dropdown-item familyMembersButton'><i class='fas fa-user-friends'></i> Membros Familiares</a>";
-
+                string patientDetails = $@"<a href='/Patient/Details/{patient.PatientId}' class='dropdown-item' target='_blank'>
+                                            <i class='fas fa-clipboard'></i> Detalhes do Paciente
+                                        </a>";
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
+                //string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
+                //    $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
 
-                options = editPatient + editNaturality + editPatientInformation + phones + addressses + familyMembers + fileUploadPatient + archivePatient;
+                options = patientDetails + archivePatient;
             }
             else
             {

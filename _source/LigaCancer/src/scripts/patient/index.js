@@ -87,27 +87,6 @@ export default (function () {
                 { data: "status", title: "Status", name: "status", orderable: false }
             ],
             drawCallback: function (settings) {
-                $(".editDoctorButton").click(function () {
-                    global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
-                });
-
-                $(".deleteDoctorButton").click(function (e) {
-                    initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
-                });
-
-                $(".editPatientButton").click(function () {
-                    $("#modal-dialog").addClass("modal-lg");
-                    global.openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm);
-                });
-
-                $(".editNaturalityButton").click(function () {
-                    global.openModal($(this).attr("href"), $(this).data("title"), initEditNaturalityForm);
-                });
-
-                $(".editPatientInformationButton").click(function () {
-                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientInformationForm);
-                });
-
                 //$(".archivePatientButton").click(function (e) {
                 //    openModal($(this).attr("href"), $(this).data("title"), initArchivePatient);
                 //});
@@ -120,37 +99,9 @@ export default (function () {
                 //    initActivePatient($(this).data("url"), $(this).data("id"));
                 //});
 
-                //$(".phonesButton").click(function () {
-                //    $("#modal-dialog").addClass("modal-lg");
-                //    openModal($(this).attr("href"), $(this).data("title"), initPhoneIndex);
-                //});
-
-                //$(".addressesButton").click(function () {
-                //    $("#modal-dialog").addClass("modal-elg");
-                //    openModal($(this).attr("href"), $(this).data("title"), initAddressIndex);
-                //});
-
-                //$(".familyMembersButton").click(function () {
-                //    $("#modal-dialog").addClass("modal-elg");
-                //    openModal($(this).attr("href"), $(this).data("title"), initFamilyMemberIndex);
-                //});
-
                 //$(".fileUploadPatientButton").click(function () {
                 //    $("#modal-dialog").addClass("modal-lg");
                 //    openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
-                //});
-
-                ////Fix dropdown with scrool
-                //$('.dropdown').on('shown.bs.dropdown', function () {
-                //    let $menu = $(this).children(".dropdown-menu");
-                //    offset = $menu.offset();
-                //    $('body').append($menu);
-                //    $menu.show().css('position', 'absolute').css('top', offset.top + 'px').css('left', offset.left + 'px');
-                //    $(this).data("myDropdownMenu", $menu);
-                //});
-                //$('.dropdown').on('hide.bs.dropdown', function () {
-                //    $(this).append($(this).data("myDropdownMenu"));
-                //    $(this).data("myDropdownMenu").removeAttr('style');
                 //});
             }
         });
@@ -315,164 +266,6 @@ export default (function () {
                     .always(function () {
                         $(submitButton).removeProp("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
-                    });
-            }
-        });
-    }
-
-    // Edit Functions
-    function initEditProfileForm() {
-        $.validator.unobtrusive.parse("#editPatientProfileForm");
-        $("#CPF").mask(global.masks.Cpf);
-        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
-
-        $('#DateOfBirth, #JoinDate').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
-            }
-        });
-        $(".patientProfileSelect2").select2();
-
-        $("#editPatientProfileForm").submit(function (e) {
-            e.preventDefault();
-
-            let form = $(this);
-            if (form.valid()) {
-                let submitButton = $(this).find("button[type='submit']");
-                $(submitButton).prop("disabled", "disabled").addClass("disabled");
-                $("#submitSpinner").show();
-
-                $.post($(form).attr("action"), form.serialize())
-                    .done(function (data, textStatus) {
-                        if (!data && textStatus === "success") {
-                            $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
-                            $("#patientTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Paciente atualizado com sucesso.", "success");
-                            global.cleanModal();
-                        } else {
-                            $("#modalBody").html(data);
-                            initEditProfileForm();
-                        }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
-                    })
-                    .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
-                        $("#submitSpinner").hide();
-                    });
-            }
-        });
-    }
-
-    function initEditNaturalityForm() {
-        $.validator.unobtrusive.parse("#editPatientNaturalityForm");
-
-        $("#editPatientNaturalityForm").submit(function (e) {
-            e.preventDefault();
-
-            let form = $(this);
-            if (form.valid()) {
-                let submitButton = $(this).find("button[type='submit']");
-                $(submitButton).prop("disabled", "disabled").addClass("disabled");
-                $("#submitSpinner").show();
-
-                $.post($(form).attr("action"), form.serialize())
-                    .done(function (data, textStatus) {
-                        if (!data && textStatus === "success") {
-                            $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
-                            $("#patientTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Naturalidade atualizada com sucesso.", "success");
-                            global.cleanModal();
-                        } else {
-                            $("#modalBody").html(data);
-                            initEditNaturalityForm();
-                        }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
-                    })
-                    .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
-                        $("#submitSpinner").hide();
-                    });
-            }
-        });
-    }
-
-    function initEditPatientInformationForm() {
-        $.validator.unobtrusive.parse("#editPatientInformationForm");
-
-        $('#TreatmentBeginDate').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
-            }
-        });
-        $(".patientInformationSelect").select2();
-
-        $("#editPatientInformationForm").submit(function (e) {
-            e.preventDefault();
-
-            let form = $(this);
-            if (form.valid()) {
-                let submitButton = $(this).find("button[type='submit']");
-                $(submitButton).prop("disabled", "disabled").addClass("disabled");
-                $("#submitSpinner").show();
-
-                $.post($(form).attr("action"), form.serialize())
-                    .done(function (data, textStatus) {
-                        if (!data && textStatus === "success") {
-                            $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
-                            $("#patientTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Informação do paciente atualizada com sucesso.", "success");
-                            global.cleanModal();
-                        } else {
-                            $("#modalBody").html(data);
-                            initEditPatientInformationForm();
-                        }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
-                    })
-                    .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
-                        $("#submitSpinner").hide();
-                    });
-            }
-        });
-    }
-    
-
-
-    // todo update
-
-    function initDelete(url, id, relation) {
-        let message = "Você não poderá reverter isso!";
-        if (relation) {
-            message = "Este médico está atribuído a pacientes, deseja prosseguir mesmo assim?";
-        }
-
-        global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
-            text: message,
-            type: 'warning',
-            showCancelButton: true,
-            showLoaderOnConfirm: true,
-            preConfirm: () => {
-                $.post(url, { id: id })
-                    .done(function (data, textStatus) {
-                        $("#patientTable").DataTable().ajax.reload(null, false);
-                        global.swalWithBootstrapButtons.fire("Removido!", "O médico foi removido com sucesso.", "success");
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
         });

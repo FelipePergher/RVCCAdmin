@@ -1,0 +1,291 @@
+﻿@using RVCC.Business
+@using RVCC.Models.SearchModel;
+@model RVCC.Models.ViewModel.PatientDetailsViewModel
+@{
+    ViewData["Title"] = $"{Model.PatientProfile.FirstName} {Model.PatientProfile.Surname}";
+}
+
+@section styles {
+    <environment names="Development">
+        <link href="~/dist/css/patient-details.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/patient-details.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Patient" asp-action="Index">Pacientes</a>
+        </li>
+    </ol>
+
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-clipboard"></i> Perfil
+                                
+                                <a id="editPatientButton" asp-action="EditPatientProfile" asp-controller="Patient" asp-route-id="@Model.PatientId" 
+                                   data-toggle='modal' data-target='#modal-action' data-title='Editar Paciente' class='btn btn-sm btn-primary float-right'>
+                                    <i class='fas fa-edit'></i> Editar Perfil
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Nome</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.FirstName</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Sobrenome</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.Surname</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">RG</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.RG</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">CPF</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.CPF</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Profissão</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.Profession</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Renda mensal</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.MonthlyIncome</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Gênero</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Globals.GetDisplayName(Model.PatientProfile.Sex)</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Estado civil</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Globals.GetDisplayName(Model.PatientProfile.CivilState)</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Data de nascimento</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.DateOfBirth</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Data de ingresso</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.PatientProfile.JoinDate</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Grupo de convivência</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@(Model.PatientProfile.FamiliarityGroup ? "Participa" : "Não participa")</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-7">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-info"></i>Informações do Paciente
+                                
+                                <a id="editPatientInformationButton" asp-action="EditPatientInformation" asp-controller="Patient" asp-route-id="@Model.PatientInformationId"
+                                   data-toggle='modal' data-target='#modal-action' data-title='Editar Informações' class='btn btn-sm btn-primary float-right'>
+                                    <i class='fas fa-edit'></i> Editar Informação
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="font-weight-bold">Inicio do tratamento</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <p>@Model.PatientInformation.TreatmentBeginDate</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="tab" href="#list-home"
+                                               role="tab" aria-controls="list-home" aria-selected="true">Cancêres</a>
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="tab" href="#list-profile"
+                                               role="tab" aria-controls="list-profile" aria-selected="false">Remédios</a>
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="tab" href="#list-messages"
+                                               role="tab" aria-controls="list-messages" aria-selected="false">Locais de tratamento</a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="tab" href="#list-settings"
+                                               role="tab" aria-controls="list-settings">Médicos</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="tab-content h-100" id="nav-tabContent">
+                                            <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                                                <ul>
+                                                    @foreach (var cancerType in Model.PatientInformation.CancerTypes)
+                                                    {
+                                                        <li>@cancerType</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                                                <ul>
+                                                    @foreach (var medicine in Model.PatientInformation.Medicines)
+                                                    {
+                                                        <li>@medicine</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                                                <ul>
+                                                    @foreach (var treatmentPlace in Model.PatientInformation.TreatmentPlaces)
+                                                    {
+                                                        <li>@treatmentPlace</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                                                <ul>
+                                                    @foreach (var doctor in Model.PatientInformation.Doctors)
+                                                    {
+                                                        <li>@doctor</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-globe-americas"></i>Naturalidade
+
+                                <a id="editNaturalityButton" asp-action="EditPatientNaturality" asp-controller="Patient" asp-route-id="@Model.NaturalityId"
+                                   data-toggle='modal' data-target='#modal-action' data-title='Editar Naturalidade' class='btn btn-sm btn-primary float-right'>
+                                    <i class='fas fa-edit'></i> Editar Naturalidade
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Cidade</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.Naturality.City</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Estado</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.Naturality.State</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">País</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@Model.Naturality.Country</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/Phone/Partials/_Index.cshtml" model="new PhoneSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/Address/Partials/_Index.cshtml" model="new AddressSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/FamilyMember/Partials/_Index.cshtml" model="new FamilyMemberSearchModel(Model.PatientId)" />
+                    </div>
+
+                </div>
+                <!--/col-->
+
+            </div>
+            <!--/row-->
+
+        </div>
+    </div>
+    <!-- /.conainer-fluid -->
+</main>
+
+<partial name="_Modal" />
+
+@section scripts {
+    <environment names="Development">
+        <script src="~/dist/js/patient-details.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/patient-details.bundle.js" asp-append-version="true"></script>
+    </environment>
+}
