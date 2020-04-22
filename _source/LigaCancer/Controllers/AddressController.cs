@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
+    [Authorize(Roles = Roles.AdminUserAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class AddressController : Controller
     {

@@ -14,7 +14,6 @@ using RVCC.Business;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PresenceApiController : Controller
     {
@@ -27,6 +26,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/presence/search")]
         public async Task<IActionResult> PresenceSearch([FromForm] SearchModel searchModel, [FromForm] PresenceSearchModel presenceSearchModel)
         {
@@ -58,6 +58,7 @@ namespace RVCC.Controllers.Api
             }
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/presence/getChartData")]
         public IActionResult GetChartData([FromForm] HomeViewModel home)
         {
@@ -75,25 +76,30 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(Presence presence)
         {
-            string editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
-               $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
-            string deletePresence = $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
-                $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
-
-            TimeSpan diff = DateTime.Now.Subtract(presence.RegisterTime);
-            if (diff.Days > 0)
+            string editPresence = string.Empty;
+            string deletePresence = string.Empty;
+            if (!User.IsInRole(Roles.SocialAssistance))
             {
-                editPresence = string.Empty;
+                editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
+                   $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
+                deletePresence = $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
+                    $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+
+                TimeSpan diff = DateTime.Now.Subtract(presence.RegisterTime);
+                if (diff.Days > 0)
+                {
+                    editPresence = string.Empty;
+                }
             }
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
-                $"      {editPresence}" +
-                $"      {deletePresence}" +
-                $"  </div>" +
-                $"</div>";
+                $@"<div class='dropdown'>
+                  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>
+                  <div class='dropdown-menu'>
+                      {editPresence}
+                      {deletePresence}
+                  </div>
+                </div>";
 
             return actionsHtml;
         }

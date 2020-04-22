@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminAndUserAuthorize)]
     [ApiController]
     public class PhoneApiController : Controller
     {
@@ -26,6 +25,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpPost("~/api/phone/search")]
         public async Task<IActionResult> PhoneSearch([FromForm] SearchModel searchModel, [FromForm] PhoneSearchModel phoneSearch)
         {
@@ -60,20 +60,26 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(Phone phone)
         {
-            string editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
-                $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
+            string editPhone = string.Empty;
+            string deletePhone = string.Empty;
 
-            string deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
-                $"<i class='fas fa-trash-alt'></i>  Excluir </a>";
+            if (!User.IsInRole(Roles.SocialAssistance))
+            {
+                editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
+                    $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
+
+                deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
+                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+            }
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
-                $"      {editPhone}" +
-                $"      {deletePhone}" +
-                $"  </div>" +
-                $"</div>";
+                $@"<div class='dropdown'>
+                  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>
+                  <div class='dropdown-menu'>
+                      {editPhone}
+                      {deletePhone}
+                  </div>
+                </div>";
 
             return actionsHtml;
         }

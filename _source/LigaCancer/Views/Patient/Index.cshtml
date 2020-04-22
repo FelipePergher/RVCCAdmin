@@ -180,11 +180,14 @@
                                 <i class="fa fa-male"></i> Pacientes
                             </div>
                             <div class="card-body">
-                                <div class="form-inline float-right">
-                                    <a id="addPatientButton" asp-action="AddPatientProfile" data-title="Adicionar Paciente" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                        <i class="fa fa-plus"></i> Adicionar Paciente
-                                    </a>
-                                </div>
+                                @if (!User.IsInRole(Roles.SocialAssistance))
+                                {
+                                    <div class="form-inline float-right">
+                                        <a id="addPatientButton" asp-action="AddPatientProfile" data-title="Adicionar Paciente" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Adicionar Paciente
+                                        </a>
+                                    </div>
+                                }
 
                                 <table class="table table-bordered table-striped text-center responsive" id="patientTable"></table>
                             </div>

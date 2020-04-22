@@ -101,6 +101,10 @@ export default (function () {
                     initActivePatient($(this).data("url"), $(this).data("id"));
                 });
 
+                $(".socialObservationButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initAddSocialObservationForm);
+                });
+
             }
         });
 
@@ -257,6 +261,46 @@ export default (function () {
                         else {
                             $("#modalBody").html(data);
                             initAddPatientInformationForm();
+                        }
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initAddSocialObservationForm() {
+        $.validator.unobtrusive.parse("#addSocialObservationForm");
+
+        $("#addSocialObservationForm").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#patientTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire({
+                                title: 'Sucesso',
+                                text: "Observações salvas com sucesso.",
+                                type: 'success'
+                            }).then((result) => {
+                                $("#modal-action").modal("hide");
+                                $('.modal-backdrop').remove();
+                            });
+                        }
+                        else {
+                            $("#modalBody").html(data);
+                            initAddSocialObservationForm();
                         }
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');

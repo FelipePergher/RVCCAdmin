@@ -43,6 +43,8 @@ namespace RVCC.Data.Models.PatientModels
 
         public string Profession { get; set; }
 
+        public string SocialObservation { get; set; }
+
         public virtual ActivePatient ActivePatient { get; set; }
 
         public virtual PatientInformation PatientInformation { get; set; }

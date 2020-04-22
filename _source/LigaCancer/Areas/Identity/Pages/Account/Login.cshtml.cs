@@ -48,8 +48,13 @@ namespace RVCC.Areas.Identity.Pages.Account
             public bool ShowResend { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -63,6 +68,7 @@ namespace RVCC.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
 
             Login = new LoginFormModel();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

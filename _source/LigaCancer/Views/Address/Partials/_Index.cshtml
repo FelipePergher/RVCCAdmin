@@ -1,4 +1,5 @@
-﻿@model RVCC.Models.SearchModel.AddressSearchModel
+﻿@using RVCC.Business
+@model RVCC.Models.SearchModel.AddressSearchModel
 
 <div class="card">
     <div class="card-header">
@@ -8,18 +9,23 @@
             <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#addressCollapse" aria-expanded="true">
                 <i class="fa fa-minus"></i>
             </a>
+
         </div>
 
     </div>
 
     <div class="card-body collapse" id="addressCollapse">
         <input asp-for="PatientId" id="addressPatientId" />
-        <div class="form-inline float-right">
-            <a id="addAddressButton" asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" data-title="Adicionar Endereço" class="btn btn-primary"
-               data-toggle="modal" data-target="#modal-action">
-                <i class="fa fa-plus"></i> Adicionar Endereço
-            </a>
-        </div>
+
+        @if (!User.IsInRole(Roles.SocialAssistance))
+        {
+            <div class="form-inline float-right">
+                <a id="addAddressButton" asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" data-title="Adicionar Endereço" class="btn btn-primary"
+                   data-toggle="modal" data-target="#modal-action">
+                    <i class="fa fa-plus"></i> Adicionar Endereço
+                </a>
+            </div>
+        }
 
         <table class="table table-bordered table-striped text-center" id="addressTable"></table>
     </div>
