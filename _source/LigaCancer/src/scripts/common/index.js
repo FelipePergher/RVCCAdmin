@@ -124,6 +124,12 @@ export default (function () {
         showSpinnerModal();
     };
 
+    global.cleanModalEvent = function () {
+        $('#modal-action').on('hidden.bs.modal', function (e) {
+            global.cleanModal();
+        });
+    };
+
     global.eyePassword = function () {
         $(".eyePassword").click(function () {
             let icon = $(this);
@@ -144,7 +150,7 @@ export default (function () {
         date: '99/99/9999'
     };
 
-    global.setupPhoneMaskOnField = function(selector) {
+    global.setupPhoneMaskOnField = function (selector) {
         var inputElement = $(selector);
 
         setCorrectPhoneMask(inputElement);
@@ -153,9 +159,10 @@ export default (function () {
         });
     }
 
-    global.SPMaskBehavior = function(val) {
+    global.SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
     };
+
     global.spOptions = {
         onKeyPress: function (val, e, field, options) {
             field.mask(SPMaskBehavior.apply({}, arguments), options);

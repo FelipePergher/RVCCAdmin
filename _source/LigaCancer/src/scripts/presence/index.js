@@ -15,6 +15,7 @@ export default (function () {
 
     $(function () {
         initPage();
+        global.cleanModalEvent();
     });
 
     function initPage() {
