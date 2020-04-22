@@ -2,7 +2,7 @@
 import "jquery-validation";
 import "jquery-validation-unobtrusive";
 import "datatables.net";
-import "datatables.net-responsive-bs4";
+//import "datatables.net-responsive-bs4";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
 import "select2";
@@ -33,8 +33,6 @@ export default (function () {
         });
 
         let patientTable = $("#patientTable").DataTable({
-            responsive: true,
-            scrollX: true,
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,
@@ -75,19 +73,12 @@ export default (function () {
                 { data: "cpf", title: "CPF", name: "CPF" },
                 { data: "dateOfBirth", title: "Data de nascimento", name: "DateOfBirth" },
                 { data: "joinDate", title: "Data de ingresso", name: "JoinDate" },
-                { data: "sex", title: "Gênero", name: "Sex" },
-                { data: "phone", title: "Telefone", name: "Phone" },
-                { data: "address", title: "Endereço", name: "Address" },
-                { data: "civilState", title: "Estado Civil", name: "CivilState" },
-                { data: "familiarityGroup", title: "Grupo de Convivência", name: "FamiliarityGroup" },
-                { data: "profession", title: "Profissão", name: "Profession" },
-                { data: "perCapitaIncome", title: "Renda Per Capita", name: "PerCapitaIncome" },
                 { data: "treatmentBeginDate", title: "Início Tratamento", name: "TreatmentBeginDate" },
+                { data: "phone", title: "Telefone", name: "Phone", orderable: false },
+                { data: "address", title: "Endereço", name: "Address", orderable: false },
                 { data: "medicines", title: "Remédios", name: "Medicines", orderable: false },
                 { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
-                { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
-                { data: "treatmentPlaces", title: "Locais de Tratamento", name: "TreatmentPlaces", orderable: false },
-                { data: "status", title: "Status", name: "status", orderable: false }
+                { data: "doctors", title: "Médicos", name: "Doctors", orderable: false }
             ],
             drawCallback: function (settings) {
                 $(".archivePatientButton").click(function (e) {

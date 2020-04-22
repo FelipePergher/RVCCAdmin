@@ -50,25 +50,14 @@ namespace RVCC.Controllers.Api
 
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
-                    Status = x.ActivePatient.Discharge
-                        ? Globals.GetDisplayName(Globals.ArchivePatientType.discharge)
-                        : x.ActivePatient.Death ? Globals.GetDisplayName(Globals.ArchivePatientType.death) : "Ativo",
                     FirstName = x.FirstName,
                     LastName = x.Surname,
                     Rg = x.RG,
                     Cpf = x.CPF,
                     DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
                     JoinDate = x.JoinDate.ToString("dd/MM/yyyy"),
-                    Sex = Globals.GetDisplayName(x.Sex),
                     Phone = x.Phones.FirstOrDefault()?.Number,
                     Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
-                    CivilState = Globals.GetDisplayName(x.CivilState),
-                    FamiliarityGroup = x.FamiliarityGroup ? "<span class='fa fa-check'></span>" : "",
-                    Profession = x.Profession,
-                    Naturality = $"{x.Naturality.City} {x.Naturality.State} {x.Naturality.Country}",
-                    PerCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(
-                        _familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
-                    PerCapitaIncomeToSort = GetPerCapitaIncomeToSort(_familyMemberService.GetAllAsync(filter: new FamilyMemberSearchModel(x.PatientId.ToString())).Result, x.MonthlyIncome),
                     TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy"),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
@@ -76,13 +65,6 @@ namespace RVCC.Controllers.Api
                     TreatmentPlaces = string.Join(", ", x.PatientInformation.PatientInformationTreatmentPlaces.Select(y => y.TreatmentPlace.City).ToList()),
                     Actions = GetActionsHtml(x)
                 });
-
-                if (sortColumn == "PerCapitaIncome")
-                {
-                    data = sortDirection == "asc"
-                        ? data.OrderBy(x => x.PerCapitaIncomeToSort)
-                        : data.OrderByDescending(x => x.PerCapitaIncomeToSort);
-                }
 
                 int recordsTotal = _patientService.Count();
                 int recordsFiltered = patients.Count();
@@ -163,11 +145,6 @@ namespace RVCC.Controllers.Api
                 $"</div>";
 
             return actionsHtml;
-        }
-
-        private double GetPerCapitaIncomeToSort(List<FamilyMember> familyMembers, double montlhyPatient)
-        {
-            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + montlhyPatient) / (familyMembers.Count + 1)) : montlhyPatient;
         }
 
         private string GetAddressToTable(Address address)

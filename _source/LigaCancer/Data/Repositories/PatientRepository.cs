@@ -165,14 +165,6 @@ namespace RVCC.Data.Repositories
                     return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
                 case "JoinDate":
                     return sortDirection == "asc" ? query.OrderBy(x => x.JoinDate) : query.OrderByDescending(x => x.JoinDate);
-                case "Sex":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
-                case "CivilState":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.CivilState) : query.OrderByDescending(x => x.CivilState);
-                case "FamiliarityGroup":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FamiliarityGroup) : query.OrderByDescending(x => x.FamiliarityGroup);
-                case "Profession":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Profession) : query.OrderByDescending(x => x.Profession);
                 default:
                     return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
             }
@@ -272,10 +264,6 @@ namespace RVCC.Data.Repositories
         }
 
         #endregion
-        public Task<List<Patient>> GetActivePatients()
-        {
-            var patients = _context.Patients.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death).ToList();
-            return Task.FromResult(patients);
-        }
+
     }
 }
