@@ -5,10 +5,19 @@
     ViewData["Title"] = "Reenviar Confirmação de e-mail";
 }
 
+@section styles {
+    <environment names="Development">
+        <link href="~/dist/css/resend-email.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/resend-email.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+}
+
 <div class="col-md-6">
     <div class="card-group">
         <div class="card p-4">
-            <form method="post">
+            <form id="resendEmailForm" method="post">
                 <div class="card-body">
                     <h1 class="mb-3">Reenviar confirmação de email?</h1>
                     <h4 class="mb-3">Digite seu email.</h4>
@@ -25,7 +34,10 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary float-right">Enviar</button>
+                            <button type="submit" class="btn btn-primary float-right">
+                                Enviar
+                                <span id="submitSpinner" class="fa fa-spinner fa-pulse" style="display: none;"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -34,6 +46,11 @@
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+@section scripts {
+    <environment names="Development">
+        <script src="~/dist/js/resend-email.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/resend-email.bundle.js" asp-append-version="true"></script>
+    </environment>
 }

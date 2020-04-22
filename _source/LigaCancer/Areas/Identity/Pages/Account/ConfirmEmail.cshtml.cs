@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RVCC.Data.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace RVCC.Areas.Identity.Pages.Account
@@ -34,7 +33,7 @@ namespace RVCC.Areas.Identity.Pages.Account
             IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Erro confirmando email para o usuário com ID '{userId}':");
+                return StatusCode(500, $"Erro confirmando email para o usuário com ID '{userId}':");
             }
 
             return Page();
