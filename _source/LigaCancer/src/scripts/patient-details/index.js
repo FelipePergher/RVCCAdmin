@@ -28,6 +28,10 @@ export default (function () {
 
     function initEvents() {
 
+        $("#modal-action").on("hidden.bs.modal", function() {
+                $("#modal-dialog").removeClass("modal-lg");
+            });
+
         $("#editPatientButton").click(function () {
             $("#modal-dialog").addClass("modal-lg");
             global.openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm);
