@@ -66,7 +66,7 @@ namespace RVCC.Controllers.Api
         private string GetActionsHtml(Address address)
         {
             string editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
-                $"data-target='#modal-action-secondary' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
+                $"data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
 
             string deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
                 $"<i class='fas fa-trash-alt'></i> Excluir </a>";

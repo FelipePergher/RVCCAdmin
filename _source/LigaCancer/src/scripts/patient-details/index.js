@@ -8,6 +8,7 @@ import "select2";
 import 'bootstrap-datepicker';
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
 import "jquery-mask-plugin";
+import Dropzone from 'dropzone';
 
 export default (function () {
 
@@ -22,10 +23,11 @@ export default (function () {
         initPhoneTable();
         initAddressTable();
         initFamilyMemberTable();
+        initFilesTable();
     }
-    
+
     function initEvents() {
-        
+
         $("#editPatientButton").click(function () {
             $("#modal-dialog").addClass("modal-lg");
             global.openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm);
@@ -212,85 +214,112 @@ export default (function () {
                 { data: "observationNote", title: "Observação", name: "ObservationNote" }
             ],
             drawCallback: function (settings) {
-                //$(".editPhoneButton").click(function () {
-                //    openModalSecondary($(this).attr("href"), $(this).data("title"), initEditPhoneForm);
-                //});
-                //$(".deletePhoneButton").click(function (e) {
-                //    initDeletePhone($(this).data("url"), $(this).data("id"));
-                //});
+                $(".editPhoneButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPhoneForm);
+                });
+
+                $(".deletePhoneButton").click(function (e) {
+                    initDeletePhone($(this).data("url"), $(this).data("id"));
+                });
             }
         });
         $('#phoneTable').attr('style', 'border-collapse: collapse !important');
 
-        //$("#addPhoneButton").click(function () {
-        //    openModalSecondary($(this).attr("href"), $(this).data("title"), initAddPhoneForm);
-        //});
+        $("#addPhoneButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPhoneForm);
+        });
     }
-
-    /*
 
     function initAddPhoneForm() {
-        $('#Number').mask(SPMaskBehavior, spOptions);
-        $(".phoneSelect2").select2();
+        $('#Number').mask(global.SPMaskBehavior, global.spOptions);
         $.validator.unobtrusive.parse("#addPhoneForm");
-    }
-    
-    function addPhoneSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            phoneTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Telefone adicionado com sucesso.", "success");
-        }
-        else {
-            $("#modalBodySecondary").html(data);
-            initAddPhoneForm();
-        }
-    }
 
-    function initEditPhoneForm() {
-        $('#Number').mask(SPMaskBehavior, spOptions);
-        $(".phoneSelect2").select2();
-        $.validator.unobtrusive.parse("#editPhoneForm");
-    }
+        $("#addPhoneForm").submit(function (e) {
+            e.preventDefault();
 
-    function editPhoneSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            phoneTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Telefone atualizado com sucesso.", "success");
-        }
-        else {
-            $('.phone').mask('(00) 9999-9999?9');
-            $("#modalBodySecondary").html(data);
-            initEditPhoneForm();
-        }
-    }
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
 
-    function initDeletePhone(url, id) {
-        swalWithBootstrapButtons({
-            title: 'Você têm certeza?',
-            text: "Você não poderá reverter isso!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showLoaderOnConfirm: true,
-            reverseButtons: true,
-            preConfirm: () => {
-                $.post(url, { id: id })
+                $.post($(form).attr("action"), form.serialize())
                     .done(function (data, textStatus) {
-                        phoneTable.ajax.reload(null, false);
-                        patientTable.ajax.reload(null, false);
-                        swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#phoneTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Telefone adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPhoneForm();
+                        }
                     }).fail(function (error) {
-                        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
                     });
             }
         });
     }
-    */
+
+    function initEditPhoneForm() {
+        $('#Number').mask(global.SPMaskBehavior, global.spOptions);
+        $.validator.unobtrusive.parse("#editPhoneForm");
+
+        $("#editPhoneForm").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#phoneTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Telefone atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPhoneForm();
+                        }
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePhone(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: 'Você têm certeza?',
+            text: "Você não poderá reverter isso!",
+            type: 'warning',
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id })
+                    .done(function (data, textStatus) {
+                        $("#phoneTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
 
     //Address Functions
     function initAddressTable() {
@@ -324,93 +353,121 @@ export default (function () {
                 { data: "observationAddress", title: "Observação", name: "ObservationAddress" }
             ],
             drawCallback: function (settings) {
-                //$(".editAddressButton").click(function () {
-                //    openModalSecondary($(this).attr("href"), $(this).data("title"), initEditAddressForm);
-                //});
-                //$(".deleteAddressButton").click(function (e) {
-                //    initDeleteAddress($(this).data("url"), $(this).data("id"));
-                //});
+                $(".editAddressButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditAddressForm);
+                });
+                $(".deleteAddressButton").click(function (e) {
+                    initDeleteAddress($(this).data("url"), $(this).data("id"));
+                });
             }
         });
         $('#addressTable').attr('style', 'border-collapse: collapse !important');
 
-        //$("#addAddressButton").click(function () {
-        //    openModalSecondary($(this).attr("href"), $(this).data("title"), initAddAddressForm);
-        //});
+        $("#addAddressButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddAddressForm);
+        });
     }
 
-    /*
     function initAddAddressForm() {
-        $(".addressSelect2").select2();
-        $("#MonthlyAmmountResidence").mask(masks.Price, { reverse: true });
+        $("#MonthlyAmmountResidence").mask(global.masks.Price, { reverse: true });
 
         $.validator.unobtrusive.parse("#addAddressForm");
 
         $("#ResidenceType").change(function (e) {
             !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
-    }
 
-    function addAddressSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            addressTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Endereço adicionado com sucesso.", "success");
-        }
-        else {
-            $("#modalBodySecondary").html(data);
-            initAddAddressForm();
-        }
+        $("#addAddressForm").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#addressTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Endereço adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddAddressForm();
+                        }
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
     }
 
     function initEditAddressForm() {
-        $(".addressSelect2").select2();
-        $("#MonthlyAmmountResidence").mask(masks.Price, { reverse: true });
+        $("#MonthlyAmmountResidence").mask(global.masks.Price, { reverse: true });
 
         $.validator.unobtrusive.parse("#editAddressForm");
 
         $("#ResidenceType").change(function (e) {
             !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
-    }
 
-    function editAddressSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            addressTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Endereço atualizado com sucesso.", "success");
-        }
-        else {
-            $("#modalBodySecondary").html(data);
-            initEditAddressForm();
-        }
-    }
+        $("#editAddressForm").submit(function (e) {
+            e.preventDefault();
 
-    function initDeleteAddress(url, id) {
-        swalWithBootstrapButtons({
-            title: 'Você têm certeza?',
-            text: "Você não poderá reverter isso!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showLoaderOnConfirm: true,
-            reverseButtons: true,
-            preConfirm: () => {
-                $.post(url, { id: id })
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
                     .done(function (data, textStatus) {
-                        addressTable.ajax.reload(null, false);
-                        patientTable.ajax.reload(null, false);
-                        swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#addressTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Endereço atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditAddressForm();
+                        }
                     }).fail(function (error) {
-                        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
                     });
             }
         });
     }
-    */
+
+    function initDeleteAddress(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: 'Você têm certeza?',
+            text: "Você não poderá reverter isso!",
+            type: 'warning',
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id })
+                    .done(function (data, textStatus) {
+                        $("#addressTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
 
     //Family Member Functions
     function initFamilyMemberTable() {
@@ -447,116 +504,140 @@ export default (function () {
                 { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
             ],
             drawCallback: function (settings) {
-                //$(".editFamilyMemberButton").click(function () {
-                //    openModalSecondary($(this).attr("href"), $(this).data("title"), initEditFamilyMemberForm);
-                //});
-                //$(".deleteFamilyMemberButton").click(function (e) {
-                //    initDeleteFamilyMember($(this).data("url"), $(this).data("id"));
-                //});
+                $(".editFamilyMemberButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditFamilyMemberForm);
+                });
+                $(".deleteFamilyMemberButton").click(function (e) {
+                    initDeleteFamilyMember($(this).data("url"), $(this).data("id"));
+                });
             }
         });
         $('#familyMemberTable').attr('style', 'border-collapse: collapse !important');
 
-        //$("#addFamilyMemberButton").click(function () {
-        //    openModalSecondary($(this).attr("href"), $(this).data("title"), initAddFamilyMemberForm);
-        //});
+        $("#addFamilyMemberButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddFamilyMemberForm);
+        });
     }
 
-    /*
     function initAddFamilyMemberForm() {
-        $("#MonthlyIncome").mask(masks.Price, { reverse: true });
-        $(".familyMemberSelect2").select2();
-        calendar("dateOfBirth");
+        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
+        $('#dateOfBirth').datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: '<i class="fas fa-chevron-left"></i>',
+                rightArrow: '<i class="fas fa-chevron-right"></i>'
+            }
+        });
         $.validator.unobtrusive.parse("#addFamilyMemberForm");
-    }
 
-    function addFamilyMemberSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            familyMemberTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Endereço adicionado com sucesso.", "success");
-        }
-        else {
-            $("#modalBodySecondary").html(data);
-            initAddFamilyMemberForm();
-        }
+        $("#addFamilyMemberForm").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddFamilyMemberForm();
+                        }
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
     }
 
     function initEditFamilyMemberForm() {
         $("#MonthlyIncome").mask(masks.Price, { reverse: true });
         $(".familyMemberSelect2").select2();
-        calendar("dateOfBirth");
+        $('#dateOfBirth').datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: '<i class="fas fa-chevron-left"></i>',
+                rightArrow: '<i class="fas fa-chevron-right"></i>'
+            }
+        });
         $.validator.unobtrusive.parse("#editFamilyMemberForm");
-    }
 
-    function editFamilyMemberSuccess(data, textStatus) {
-        if (!data && textStatus === "success") {
-            $("#modal-action-secondary").modal("hide");
-            familyMemberTable.ajax.reload(null, false);
-            patientTable.ajax.reload(null, false);
-            swalWithBootstrapButtons.fire("Sucesso", "Endereço atualizado com sucesso.", "success");
-        }
-        else {
-            $("#modalBodySecondary").html(data);
-            initEditFamilyMemberForm();
-        }
-    }
+        $("#editFamilyMemberForm").submit(function (e) {
+            e.preventDefault();
 
-    function initDeleteFamilyMember(url, id) {
-        swalWithBootstrapButtons({
-            title: 'Você têm certeza?',
-            text: "Você não poderá reverter isso!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            showLoaderOnConfirm: true,
-            reverseButtons: true,
-            preConfirm: () => {
-                $.post(url, { id: id })
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
                     .done(function (data, textStatus) {
-                        familyMemberTable.ajax.reload(null, false);
-                        swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $('.modal-backdrop').remove();
+
+                            $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditFamilyMemberForm();
+                        }
                     }).fail(function (error) {
-                        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    })
+                    .always(function () {
+                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
                     });
             }
         });
     }
-    */
+
+    function initDeleteFamilyMember(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: 'Você têm certeza?',
+            text: "Você não poderá reverter isso!",
+            type: 'warning',
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id })
+                    .done(function (data, textStatus) {
+                        $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar removido com sucesso.", "success");
+                    }).fail(function (error) {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
 
     //Files
 
-    function initFileUpload() {
-        var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
-
-        attachmentsTable = $("#attachmentsTable").DataTable({
-            //dom: "l<'export-buttons'B>frtip",
-            buttons: [
-                {
-                    extend: 'pdf',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    },
-                    customize: function (doc) {
-                        doc.defaultStyle.alignment = 'center';
-                        doc.styles.tableHeader.alignment = 'center';
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                }
-            ],
-            processing: true,
-            language: language,
-            filter: false,
+    function initFilesTable() {
+        let attachmentsTable = $("#attachmentsTable").DataTable({
             autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
             ajax: {
                 url: "/api/FileAttachment/search",
                 type: "POST",
@@ -565,7 +646,7 @@ export default (function () {
                 },
                 datatype: "json",
                 error: function () {
-                    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
             order: [1, "asc"],
@@ -592,53 +673,74 @@ export default (function () {
                     initDeleteFileAttachment($(this).data("url"), $(this).data("id"));
                 });
 
-                $('.editable').editable(function (value, settings) {
-                    let fileAttachmentId = $(this).data("fileattachmentid");
+                // Todo
+                //$('.editable').editable(function (value, settings) {
+                //    let fileAttachmentId = $(this).data("fileattachmentid");
 
-                    $.post("/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
-                        .done(function (data, textStatus) {
-                            attachmentsTable.ajax.reload(null, false);
-                        }).fail(function (error) {
-                            swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
-                        });
-                }, {
-                    indicator: 'salvando…',
-                    cssclass: "form-row",
-                    submit: 'Salvar',
-                    submitcssclass: 'btn btn-primary ml-2',
-                    inputcssclass: "form-control",
-                    placeholder: "Clique para editar",
-                    tooltip: "Clique para editar"
-                });
+                //    $.post("/FileAttachment/UpdateNameFile", { fileAttachmentId: fileAttachmentId, name: value })
+                //        .done(function (data, textStatus) {
+                //            attachmentsTable.ajax.reload(null, false);
+                //        }).fail(function (error) {
+                //            swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                //        });
+                //}, {
+                //    indicator: 'salvando…',
+                //    cssclass: "form-row",
+                //    submit: 'Salvar',
+                //    submitcssclass: 'btn btn-primary ml-2',
+                //    inputcssclass: "form-control",
+                //    placeholder: "Clique para editar",
+                //    tooltip: "Clique para editar"
+                //});
             }
         });
         $('#attachmentsTable').attr('style', 'border-collapse: collapse !important');
 
+        $("#addFileButton").click(function () {
+            $("#modal-dialog").addClass("modal-lg");
+            global.openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
+        });
+    }
+
+    function initFileUpload() {
+        let dropzoneConfiguration = {
+            maxFilesize: 20,
+            acceptedFiles: "image/*,application/pdf",
+            dictDefaultMessage: "Arraste seus arquivos aqui ou clique para upload.",
+            dictFallbackMessage: "Seu navegador não tem suporte para arrastar e upload.",
+            dictFileTooBig: "O arquivo é muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
+            dictInvalidFileType: "Você não pode fazer upload de arquivos deste tipo.",
+            dictResponseError: "Servidor respondeu com status de {{statusCode}}.",
+            dictCancelUpload: "Cancelar upload",
+            dictCancelUploadConfirmation: "Você têm certeza que quer cancelar este upload?",
+            dictRemoveFile: "Remover arquivo",
+            dictMaxFilesExceeded: "Você não pode fazer upload de mais arquivos."
+        };
+
+        var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
+
         myDropzone.on("success", function (file) {
-            attachmentsTable.ajax.reload(null, false);
+            $("#attachmentsTable").DataTable().ajax.reload(null, false);
         });
     }
 
     function initDeleteFileAttachment(url, id) {
-        swalWithBootstrapButtons({
+        global.swalWithBootstrapButtons.fire({
             title: 'Você têm certeza?',
             text: "Você não poderá reverter isso!",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
             showLoaderOnConfirm: true,
-            reverseButtons: true,
             preConfirm: () => {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
-                        attachmentsTable.ajax.reload(null, false);
-                        swalWithBootstrapButtons.fire("Removido!", "O arquivo foi removido com sucesso.", "success");
+                        $("#attachmentsTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O arquivo foi removido com sucesso.", "success");
                     }).fail(function (error) {
-                        swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                        globa.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
         });
     }
-    
+
 }());

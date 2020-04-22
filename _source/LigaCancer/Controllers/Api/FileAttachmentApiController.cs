@@ -27,11 +27,16 @@ namespace RVCC.Controllers.Api
         }
 
         [HttpPost("~/api/FileAttachment/search")]
-        public async Task<IActionResult> FileAttachmentSearch([FromForm] FileAttachmentSearchModel fileAttachmentSearch)
+        public async Task<IActionResult> FileAttachmentSearch([FromForm] SearchModel searchModel, [FromForm] FileAttachmentSearchModel fileAttachmentSearch)
         {
             try
             {
-                IEnumerable<FileAttachment> fileAttachments = await _fileAttachmentService.GetAllAsync(filter: fileAttachmentSearch);
+                string sortColumn = searchModel.Columns[searchModel.Order[0].Column].Name;
+                string sortDirection = searchModel.Order[0].Dir;
+                int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
+                int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
+
+                IEnumerable<FileAttachment> fileAttachments = await _fileAttachmentService.GetAllAsync(null, sortColumn, sortDirection, fileAttachmentSearch);
                 IEnumerable<FileAttachmentViewModel> data = fileAttachments.Select(x => new FileAttachmentViewModel
                 {
                     FileAttachmentId = x.FileAttachmentId.ToString(),
@@ -44,7 +49,7 @@ namespace RVCC.Controllers.Api
 
                 int recordsTotal = fileAttachments.Count();
 
-                return Ok(new { data });
+                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal});
             }
             catch (Exception e)
             {

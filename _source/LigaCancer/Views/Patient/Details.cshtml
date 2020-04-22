@@ -28,12 +28,12 @@
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
                 <div class="row">
-                    <div class="col-lg-5">
-                        <div class="card">
+                    <div class="col-lg-5 d-flex flex-column">
+                        <div class="card h-100">
                             <div class="card-header">
                                 <i class="fa fa-clipboard"></i> Perfil
-                                
-                                <a id="editPatientButton" asp-action="EditPatientProfile" asp-controller="Patient" asp-route-id="@Model.PatientId" 
+
+                                <a id="editPatientButton" asp-action="EditPatientProfile" asp-controller="Patient" asp-route-id="@Model.PatientId"
                                    data-toggle='modal' data-target='#modal-action' data-title='Editar Paciente' class='btn btn-sm btn-primary float-right'>
                                     <i class='fas fa-edit'></i> Editar Perfil
                                 </a>
@@ -147,7 +147,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-info"></i>Informações do Paciente
-                                
+
                                 <a id="editPatientInformationButton" asp-action="EditPatientInformation" asp-controller="Patient" asp-route-id="@Model.PatientInformationId"
                                    data-toggle='modal' data-target='#modal-action' data-title='Editar Informações' class='btn btn-sm btn-primary float-right'>
                                     <i class='fas fa-edit'></i> Editar Informação
@@ -266,6 +266,10 @@
 
                     <div class="col-12">
                         <partial name="~/Views/FamilyMember/Partials/_Index.cshtml" model="new FamilyMemberSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/FileAttachment/Partials/_Index.cshtml" model="new FileAttachmentSearchModel(Model.PatientId)" />
                     </div>
 
                 </div>

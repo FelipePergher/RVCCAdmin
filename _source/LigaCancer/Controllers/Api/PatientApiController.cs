@@ -122,9 +122,6 @@ namespace RVCC.Controllers.Api
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
 
-                //string fileUploadPatient = $"<a href='/FileAttachment/FileUpload/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
-                //    $"data-title='Arquivos' class='fileUploadPatientButton dropdown-item'><i class='fas fa-file-import'></i> Arquivos </a>";
-
                 options = patientDetails + archivePatient;
             }
             else

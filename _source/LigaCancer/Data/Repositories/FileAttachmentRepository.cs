@@ -99,6 +99,11 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.PatientId == int.Parse(fileAttachmentSearch.PatientId));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdinationFiles(query, sortColumn, sortDirection);
+            }
+
             return Task.FromResult(query.ToList());
         }
 
@@ -121,6 +126,23 @@ namespace RVCC.Data.Repositories
 
             return Task.FromResult(result);
         }
+
+        #region Private Methods
+
+        private IQueryable<FileAttachment> GetOrdinationFiles(IQueryable<FileAttachment> query, string sortColumn, string sortDirection)
+        {
+            switch (sortColumn)
+            {
+                case "Name":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FileName) : query.OrderByDescending(x => x.FileName);
+                case "Size":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FileSize) : query.OrderByDescending(x => x.FileSize);
+                default:
+                    return sortDirection == "asc" ? query.OrderBy(x => x.FileSize) : query.OrderByDescending(x => x.FileSize);
+            }
+        }
+
+        #endregion
 
     }
 }

@@ -3,12 +3,20 @@
 <div class="card">
     <div class="card-header">
         <i class="fa fa-male"></i>Telefones
+
+        <div class="card-header-actions">
+            <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#phoneCollapse" aria-expanded="true">
+                <i class="fa fa-minus"></i>
+            </a>
+        </div>
+
     </div>
-    <div class="card-body">
+
+    <div class="card-body collapse show" id="phoneCollapse">
         <input asp-for="PatientId" id="phonePatientId" />
         <div class="form-inline float-right">
             <a id="addPhoneButton" asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-title="Adicionar Telefone" class="btn btn-primary"
-               data-toggle="modal" data-target="#modal-action-secondary">
+               data-toggle="modal" data-target="#modal-action">
                 <i class="fa fa-plus"></i> Adicionar Telefone
             </a>
         </div>

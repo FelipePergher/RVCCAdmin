@@ -96,7 +96,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdenationMedicine(query, sortColumn, sortDirection);
+                query = GetOrdinationMedicine(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
@@ -129,16 +129,16 @@ namespace RVCC.Data.Repositories
 
         #region Custom Methods
 
-        public Task<Medicine> FindByNameAsync(string name, int MedicineId = -1)
+        public Task<Medicine> FindByNameAsync(string name, int medicineId = -1)
         {
-            return Task.FromResult(_context.Medicines.FirstOrDefault(x => x.Name == name && x.MedicineId != MedicineId));
+            return Task.FromResult(_context.Medicines.FirstOrDefault(x => x.Name == name && x.MedicineId != medicineId));
         }
 
         #endregion
 
         #region Private Methods
 
-        private IQueryable<Medicine> GetOrdenationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
+        private IQueryable<Medicine> GetOrdinationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {
@@ -149,11 +149,11 @@ namespace RVCC.Data.Repositories
             }
         }
 
-        private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel doctorSearch)
+        private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel medicineSearch)
         {
-            if (!string.IsNullOrEmpty(doctorSearch.Name))
+            if (!string.IsNullOrEmpty(medicineSearch.Name))
             {
-                query = query.Where(x => x.Name.Contains(doctorSearch.Name));
+                query = query.Where(x => x.Name.Contains(medicineSearch.Name));
             }
 
             return query;

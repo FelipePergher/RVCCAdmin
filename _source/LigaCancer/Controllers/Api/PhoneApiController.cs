@@ -61,10 +61,10 @@ namespace RVCC.Controllers.Api
         private string GetActionsHtml(Phone phone)
         {
             string editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
-                $"data-target='#modal-action-secondary' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
+                $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
 
             string deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
-                $"c Excluir </a>";
+                $"<i class='fas fa-trash-alt'></i>  Excluir </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

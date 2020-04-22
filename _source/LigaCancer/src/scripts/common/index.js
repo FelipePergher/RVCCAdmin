@@ -124,8 +124,8 @@ export default (function () {
         showSpinnerModal();
     };
 
-    global.eyePassword = function() {
-        $(".eyePassword").click(function() {
+    global.eyePassword = function () {
+        $(".eyePassword").click(function () {
             let icon = $(this);
             let inputPassword = icon.siblings("input");
             if (icon.hasClass("fa-eye")) {
@@ -142,6 +142,24 @@ export default (function () {
         Cpf: '000.000.000-00',
         Price: '000.000.000.000.000,00',
         date: '99/99/9999'
+    };
+
+    global.setupPhoneMaskOnField = function(selector) {
+        var inputElement = $(selector);
+
+        setCorrectPhoneMask(inputElement);
+        inputElement.on('input, keyup', function () {
+            setCorrectPhoneMask(inputElement);
+        });
+    }
+
+    global.SPMaskBehavior = function(val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+    };
+    global.spOptions = {
+        onKeyPress: function (val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
+        }
     };
 
     function showSpinnerModal() {
