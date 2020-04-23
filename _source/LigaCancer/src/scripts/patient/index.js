@@ -2,7 +2,6 @@
 import "jquery-validation";
 import "jquery-validation-unobtrusive";
 import "datatables.net";
-//import "datatables.net-responsive-bs4";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
 import "select2";
@@ -16,7 +15,6 @@ export default (function () {
 
     $(function () {
         initPage();
-        global.cleanModalEvent();
     });
 
     function initPage() {

@@ -118,16 +118,12 @@ export default (function () {
     });
 
     global.cleanModal = function () {
-        $("#modalBody").html("");
-        $("#modal-title").text("");
-        $("#modal-dialog").removeClass("modal-lg").removeClass("modal-elg");
-        showSpinnerModal();
-    };
-
-    global.cleanModalEvent = function () {
-        $('#modal-action').on('hidden.bs.modal', function (e) {
-            global.cleanModal();
-        });
+        setTimeout(function () {
+            $("#modalBody").html("");
+            $("#modal-title").text("");
+            $("#modal-dialog").removeClass("modal-lg").removeClass("modal-elg");
+            showSpinnerModal();
+        }, 100);
     };
 
     global.eyePassword = function () {

@@ -16,7 +16,6 @@ export default (function () {
 
     $(function () {
         initPage();
-        global.cleanModalEvent();
     });
 
     function initPage() {
@@ -255,7 +254,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Telefone adicionado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Telefone adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddPhoneForm();
@@ -291,7 +290,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Telefone atualizado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Telefone atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditPhoneForm();
@@ -398,7 +397,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Endereço adicionado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Endereço adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddAddressForm();
@@ -439,7 +438,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Endereço atualizado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Endereço atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditAddressForm();
@@ -553,7 +552,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar adicionado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Membro familiar adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddFamilyMemberForm();
@@ -599,7 +598,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar atualizado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Membro familiar atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditFamilyMemberForm();
