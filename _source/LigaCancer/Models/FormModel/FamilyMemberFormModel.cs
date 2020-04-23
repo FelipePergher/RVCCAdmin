@@ -7,10 +7,12 @@ namespace RVCC.Models.FormModel
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigátorio!")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Name { get; set; }
 
         [Display(Name = "Parentesco")]
         [Required(ErrorMessage = "Este campo é obrigátorio!")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Kinship { get; set; }
 
         [Display(Name = "Data de Nascimento")]

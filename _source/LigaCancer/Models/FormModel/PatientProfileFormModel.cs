@@ -18,14 +18,17 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string FirstName { get; set; }
 
         [Display(Name = "Sobrenome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [StringLength(150, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Surname { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [Remote("IsRgExist", "PatientApi", AdditionalFields = "PatientId", ErrorMessage = "RG já registrado!")]
+        [StringLength(20, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string RG { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
@@ -57,6 +60,7 @@ namespace RVCC.Models.FormModel
         public string JoinDate { get; set; }
 
         [Display(Name = "Profissão")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Profession { get; set; }
 
         [Display(Name = "Renda mensal")]

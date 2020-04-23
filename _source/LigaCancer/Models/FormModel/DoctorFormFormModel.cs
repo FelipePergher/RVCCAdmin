@@ -19,9 +19,11 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Name { get; set; }
 
         [Remote("IsCrmExist", "DoctorApi", AdditionalFields = "DoctorId", ErrorMessage = "CRM já registrado!")]
+        [StringLength(50, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string CRM { get; set; }
     }
 }

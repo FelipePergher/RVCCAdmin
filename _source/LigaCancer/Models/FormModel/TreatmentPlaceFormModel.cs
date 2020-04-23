@@ -19,6 +19,7 @@ namespace RVCC.Models.FormModel
         [Display(Name = "Cidade")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [Remote("IsCityExist", "TreatmentPlaceApi", AdditionalFields = "TreatmentPlaceId", ErrorMessage = "Cidade já registrada!")]
+        [StringLength(200, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string City { get; set; }
     }
 }

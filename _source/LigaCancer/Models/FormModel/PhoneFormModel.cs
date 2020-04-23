@@ -14,6 +14,7 @@ namespace RVCC.Models.FormModel
         public Globals.PhoneType? PhoneType { get; set; }
 
         [Display(Name = "Observações")]
+        [StringLength(1000, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string ObservationNote { get; set; }
     }
 }

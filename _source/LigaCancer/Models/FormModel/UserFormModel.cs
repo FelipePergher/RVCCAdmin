@@ -20,6 +20,7 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
+        [StringLength(100, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Name { get; set; }
 
         [EmailAddress(ErrorMessage = "Insira um email válido!")]
