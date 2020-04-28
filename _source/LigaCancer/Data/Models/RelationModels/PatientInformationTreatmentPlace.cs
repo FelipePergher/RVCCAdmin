@@ -1,6 +1,4 @@
-﻿using RVCC.Data.Models.PatientModels;
-
-namespace RVCC.Data.Models.RelationModels
+﻿namespace RVCC.Data.Models.RelationModels
 {
     public class PatientInformationTreatmentPlace
     {

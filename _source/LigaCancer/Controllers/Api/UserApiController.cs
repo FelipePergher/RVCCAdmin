@@ -44,7 +44,7 @@ namespace RVCC.Controllers.Api
                 var users = _userManager.Users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
 
                 //Remove admin user
-                var adminUserCount = _userManager.Users.Count(x => x.Email.ToLower() == adminEmail.ToLower());
+                int adminUserCount = _userManager.Users.Count(x => x.Email.ToLower() == adminEmail.ToLower());
                 if (adminUserCount > 0)
                 {
                     users = users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();

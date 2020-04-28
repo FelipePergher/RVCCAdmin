@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
-using RVCC.Data.Models.PatientModels;
 using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
@@ -59,16 +58,17 @@ namespace RVCC.Controllers
             return View(new PatientSearchModel());
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             Patient patient = await _patientService.FindByIdAsync(id, new[]
             {
                 "PatientInformation", "Naturality",
-                "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType", 
-                "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor", 
-                "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine", 
-                "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace", 
+                "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
+                "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
+                "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
+                "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace",
             });
 
             var patientDetails = new PatientDetailsViewModel

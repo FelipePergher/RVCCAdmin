@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models;
 using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;

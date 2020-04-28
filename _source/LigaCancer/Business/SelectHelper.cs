@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

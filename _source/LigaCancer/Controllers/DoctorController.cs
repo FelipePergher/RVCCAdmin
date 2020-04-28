@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
-using RVCC.Data.Models.PatientModels;
 using RVCC.Models.FormModel;
 using System;
 using System.Linq;

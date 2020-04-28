@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models.PatientModels
+namespace RVCC.Data.Models
 {
     public class FileAttachment : RegisterData
     {

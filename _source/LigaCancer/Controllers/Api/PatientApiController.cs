@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models;
 using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
@@ -120,7 +120,7 @@ namespace RVCC.Controllers.Api
                     options += archivePatient;
                 }
             }
-            else if(!User.IsInRole(Roles.SocialAssistance))
+            else if (!User.IsInRole(Roles.SocialAssistance))
             {
                 string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
                     $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";

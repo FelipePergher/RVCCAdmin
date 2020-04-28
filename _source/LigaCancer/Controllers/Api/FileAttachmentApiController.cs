@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RVCC.Business;
 
 namespace RVCC.Controllers.Api
 {
@@ -49,7 +49,7 @@ namespace RVCC.Controllers.Api
 
                 int recordsTotal = fileAttachments.Count();
 
-                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal});
+                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal });
             }
             catch (Exception e)
             {
@@ -63,7 +63,7 @@ namespace RVCC.Controllers.Api
         private string GetActionsHtml(FileAttachment fileAttachment)
         {
 
-            string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance) 
+            string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance)
                 ? string.Empty
                 : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
                         <i class='fas fa-trash-alt'></i> Excluir 

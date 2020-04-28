@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RVCC.Data.Models;
-using RVCC.Data.Models.PatientModels;
 using RVCC.Data.Models.RelationModels;
 
 namespace RVCC.Data

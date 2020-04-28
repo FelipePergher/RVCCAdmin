@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
@@ -13,7 +12,6 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data;
 using RVCC.Data.Models;
-using RVCC.Data.Models.PatientModels;
 using RVCC.Data.Repositories;
 using RVCC.Services;
 using System;

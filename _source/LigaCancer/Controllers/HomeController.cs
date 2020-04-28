@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.PatientModels;
+using RVCC.Data.Models;
 using RVCC.Models.ViewModel;
 
 namespace RVCC.Controllers
