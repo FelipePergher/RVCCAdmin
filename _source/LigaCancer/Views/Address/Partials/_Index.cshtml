@@ -15,8 +15,6 @@
     </div>
 
     <div class="card-body collapse" id="addressCollapse">
-        <input asp-for="PatientId" id="addressPatientId" />
-
         @if (!User.IsInRole(Roles.SocialAssistance))
         {
             <div class="form-inline float-right">

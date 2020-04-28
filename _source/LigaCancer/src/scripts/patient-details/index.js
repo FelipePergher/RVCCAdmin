@@ -203,7 +203,7 @@ export default (function () {
                 url: "/api/phone/search",
                 type: "POST",
                 data: function (d) {
-                    d.patientId = $("#phonePatientId").val();
+                    d.patientId = $("#patientId").val();
                 },
                 datatype: "json",
                 error: function () {
@@ -337,7 +337,7 @@ export default (function () {
                 url: "/api/address/search",
                 type: "POST",
                 data: function (d) {
-                    d.patientId = $("#addressPatientId").val();
+                    d.patientId = $("#patientId").val();
                 },
                 datatype: "json",
                 error: function () {
@@ -485,7 +485,7 @@ export default (function () {
                 url: "/api/familyMember/search",
                 type: "POST",
                 data: function (d) {
-                    d.patientId = $("#familyMemberPatientId").val();
+                    d.patientId = $("#patientId").val();
                 },
                 dataSrc: function (data) {
                     $("#familyIncome").text(data.familyIncome);
@@ -646,7 +646,7 @@ export default (function () {
                 url: "/api/FileAttachment/search",
                 type: "POST",
                 data: function (d) {
-                    d.patientId = $("#PatientId").val();
+                    d.patientId = $("#patientId").val();
                 },
                 datatype: "json",
                 error: function () {

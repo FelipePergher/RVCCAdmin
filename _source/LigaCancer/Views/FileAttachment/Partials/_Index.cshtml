@@ -13,8 +13,6 @@
     </div>
 
     <div class="card-body collapse" id="filesCollapse">
-        <input asp-for="PatientId" id="archivePatientId" />
-
         <div class="form-inline float-right">
             <a id="addFileButton" asp-action="FileUpload" asp-controller="FileAttachment" asp-route-id="@Model.PatientId" data-title="Adicionar Arquivos" class="btn btn-primary"
                data-toggle="modal" data-target="#modal-action">
