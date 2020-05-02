@@ -59,7 +59,7 @@ export default (function () {
                 },
                 datatype: "json",
                 error: function () {
-                    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
             order: [1, "asc"],
@@ -112,8 +112,7 @@ export default (function () {
         });
 
         $("#addPatientButton").click(function () {
-            $("#modal-dialog").addClass("modal-lg");
-            global.openModal($(this).attr("href"), $(this).data("title"), initAddProfileForm);
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddProfileForm, true);
         });
     }
 
@@ -153,7 +152,6 @@ export default (function () {
                                 text: "Paciente registrado com sucesso.",
                                 type: 'success'
                             }).then((result) => {
-                                global.cleanModal();
                                 global.openModal(data.url, data.title, initAddNaturalityForm);
                             });
                         }
@@ -165,7 +163,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -194,7 +192,6 @@ export default (function () {
                                 text: "Naturalidade registrado com sucesso.",
                                 type: 'success'
                             }).then((result) => {
-                                global.cleanModal();
                                 global.openModal(data.url, data.title, initAddPatientInformationForm);
                             });
                         }
@@ -206,7 +203,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -256,7 +253,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -296,7 +293,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -346,7 +343,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }

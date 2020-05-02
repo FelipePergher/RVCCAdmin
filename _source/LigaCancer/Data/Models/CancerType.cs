@@ -17,7 +17,6 @@ namespace RVCC.Data.Models
         [Key]
         public int CancerTypeId { get; set; }
 
-        [Display(Name = "Tipo do Câncer")]
         public string Name { get; set; }
 
         #region Relations

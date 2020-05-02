@@ -17,7 +17,6 @@ namespace RVCC.Data.Models
         [Key]
         public int TreatmentPlaceId { get; set; }
 
-        [Display(Name = "Cidade")]
         public string City { get; set; }
 
         #region Relations

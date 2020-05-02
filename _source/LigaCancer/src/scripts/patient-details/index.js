@@ -24,17 +24,13 @@ export default (function () {
         initAddressTable();
         initFamilyMemberTable();
         initFilesTable();
+        initPatientBenefitTable();
     }
 
     function initEvents() {
 
-        $("#modal-action").on("hidden.bs.modal", function() {
-                $("#modal-dialog").removeClass("modal-lg");
-            });
-
         $("#editPatientButton").click(function () {
-            $("#modal-dialog").addClass("modal-lg");
-            global.openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm);
+            global.openModal($(this).attr("href"), $(this).data("title"), initEditProfileForm, true);
         });
 
         $("#editPatientInformationButton").click(function () {
@@ -94,7 +90,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -134,7 +130,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -184,7 +180,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -207,7 +203,7 @@ export default (function () {
                 },
                 datatype: "json",
                 error: function () {
-                    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
             order: [1, "asc"],
@@ -263,7 +259,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -299,7 +295,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -406,7 +402,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -447,7 +443,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -473,6 +469,35 @@ export default (function () {
         });
     }
 
+    //Patient Benefits Functions
+    function initPatientBenefitTable() {
+        let patientBenefitTable = $("#patientBenefitTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientBenefit/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "benefit", title: "Benefício", name: "Benefit" },
+                { data: "date", title: "Data do benefício", name: "Date" },
+                { data: "quantity", title: "Quantidade", name: "Quantity" }
+            ],
+        });
+        $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
+    }
+
     //Family Member Functions
     function initFamilyMemberTable() {
         let familyMemberTable = $("#familyMemberTable").DataTable({
@@ -495,7 +520,7 @@ export default (function () {
                 },
                 datatype: "json",
                 error: function () {
-                    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
             order: [1, "asc"],
@@ -561,7 +586,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -607,7 +632,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -685,7 +710,7 @@ export default (function () {
                 //        .done(function (data, textStatus) {
                 //            attachmentsTable.ajax.reload(null, false);
                 //        }).fail(function (error) {
-                //            swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                //            global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                 //        });
                 //}, {
                 //    indicator: 'salvando…',
@@ -701,8 +726,7 @@ export default (function () {
         $('#attachmentsTable').attr('style', 'border-collapse: collapse !important');
 
         $("#addFileButton").click(function () {
-            $("#modal-dialog").addClass("modal-lg");
-            global.openModal($(this).attr("href"), $(this).data("title"), initFileUpload);
+            global.openModal($(this).attr("href"), $(this).data("title"), initFileUpload, true);
         });
     }
 

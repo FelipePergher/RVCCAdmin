@@ -93,7 +93,10 @@ export default (function () {
         });
     };
 
-    global.openModal = function (url, title, callback = null) {
+    global.openModal = function (url, title, callback = null, largeModal = false) {
+        global.cleanModal();
+        largeModal ? $("#modal-dialog").addClass("modal-lg") : $("#modal-dialog").removeClass("modal-lg");
+
         $("#modal-title").text(title);
 
         $("#modalBody").load(url, function () {
@@ -118,12 +121,9 @@ export default (function () {
     });
 
     global.cleanModal = function () {
-        setTimeout(function () {
-            $("#modalBody").html("");
-            $("#modal-title").text("");
-            $("#modal-dialog").removeClass("modal-lg").removeClass("modal-elg");
-            showSpinnerModal();
-        }, 100);
+        $("#modalBody").html("");
+        $("#modal-title").text("");
+        showSpinnerModal();
     };
 
     global.eyePassword = function () {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using RVCC.Data.Models.RelationModels;
 
 namespace RVCC.Data.Models
 {
@@ -16,6 +17,7 @@ namespace RVCC.Data.Models
             PatientInformation = new PatientInformation();
             Naturality = new Naturality();
             ActivePatient = new ActivePatient();
+            PatientBenefits = new HashSet<PatientBenefit>();
         }
 
         [Key]
@@ -45,19 +47,21 @@ namespace RVCC.Data.Models
 
         public string SocialObservation { get; set; }
 
-        public virtual ActivePatient ActivePatient { get; set; }
+        public ActivePatient ActivePatient { get; set; }
 
-        public virtual PatientInformation PatientInformation { get; set; }
+        public PatientInformation PatientInformation { get; set; }
 
-        public virtual Naturality Naturality { get; set; }
+        public Naturality Naturality { get; set; }
 
-        public virtual ICollection<Phone> Phones { get; set; }
+        public ICollection<Phone> Phones { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        public ICollection<Address> Addresses { get; set; }
 
-        public virtual ICollection<FamilyMember> FamilyMembers { get; set; }
+        public ICollection<FamilyMember> FamilyMembers { get; set; }
 
-        public virtual ICollection<FileAttachment> FileAttachments { get; set; }
+        public ICollection<FileAttachment> FileAttachments { get; set; }
+
+        public ICollection<PatientBenefit> PatientBenefits { get; set; }
 
     }
 }

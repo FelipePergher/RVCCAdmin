@@ -22,6 +22,8 @@ module.exports = {
         'forgot-password': ['./src/sass/forgot-password/index.scss', './src/scripts/forgot-password/index.js'],
         'change-password': ['./src/sass/change-password/index.scss', './src/scripts/change-password/index.js'],
         'resend-email': ['./src/sass/resend-email/index.scss', './src/scripts/resend-email/index.js'],
+        'benefit': ['./src/sass/benefit/index.scss', './src/scripts/benefit/index.js'],
+        'patient-benefit': ['./src/sass/patient-benefit/index.scss', './src/scripts/patient-benefit/index.js'],
     },
     plugins: [
         new CleanWebpackPlugin(),

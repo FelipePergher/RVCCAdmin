@@ -7,7 +7,6 @@ import "bootstrap/js/dist/modal";
 import 'bootstrap-datepicker';
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
 import 'select2';
-import 'tempusdominus-bootstrap-4';
 
 export default (function () {
 
@@ -18,16 +17,17 @@ export default (function () {
     });
 
     function initPage() {
-        let presenceTable = $("#presenceTable").DataTable({
+        let patientBenefitTable = $("#patientBenefitTable").DataTable({
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,
             filter: false,
             ajax: {
-                url: "/api/presence/search",
+                url: "/api/patientBenefit/search",
                 type: "POST",
                 data: function (d) {
                     d.name = $("#Name").val();
+                    d.benefit = $("#Benefit").val();
                     d.dateFrom = $("#DateFrom").val();
                     d.dateTo = $("#DateTo").val();
                 },
@@ -40,21 +40,22 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "Actions", orderable: false },
                 { data: "patient", title: "Nome do Paciente", name: "Patient" },
-                { data: "date", title: "Data da presença", name: "Date" },
-                { data: "hour", title: "Hora da presença", name: "Hour" }
+                { data: "benefit", title: "Benefício", name: "Benefit" },
+                { data: "date", title: "Data do benefício", name: "Date" },
+                { data: "quantity", title: "Quantidade", name: "Quantity" }
             ],
             drawCallback: function (settings) {
-                $(".editPresenceButton").click(function () {
+                $(".editPatientBenefitButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deletePresenceButton").click(function (e) {
-                    initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
+                $(".deletePatientBenefitButton").click(function (e) {
+                    initDelete($(this).data("url"), $(this).data("patientid"), $(this).data("benefitid"));
                 });
             }
         });
 
-        $('#presenceTable').attr('style', 'border-collapse: collapse !important');
+        $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
 
         $('#DateTo, #DateFrom').datepicker({
             clearBtn: true,
@@ -68,22 +69,18 @@ export default (function () {
 
         $("#searchForm").submit(function (e) {
             e.preventDefault();
-            presenceTable.search("").draw("");
+            patientBenefitTable.search("").draw("");
         });
 
-        $("#addPresenceButton").click(function () { 
+        $("#addPatientBenefitButton").click(function () { 
             global.openModal($(this).attr("href"), $(this).data("title"), initAddForm);
         });
     }
 
     function initAddForm() {
-        $.validator.unobtrusive.parse("#addPresenceForm");
+        $.validator.unobtrusive.parse("#addPatientBenefitForm");
 
         $(".select2").select2();
-
-        $('#timePicker').datetimepicker({
-            format: 'H:mm'
-        });
 
         $('#Date').datepicker({
             clearBtn: true,
@@ -95,7 +92,7 @@ export default (function () {
             }
         });
 
-        $("#addPresenceForm").submit(function (e) {
+        $("#addPatientBenefitForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -109,8 +106,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#presenceTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Presença registrado com sucesso.", "success");
+                            $("#patientBenefitTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Benefício de paciente registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
@@ -127,11 +124,7 @@ export default (function () {
     }
 
     function initEditForm() {
-        $.validator.unobtrusive.parse("#editPresenceForm");
-
-        $('#timePicker').datetimepicker({
-            format: 'H:mm'
-        });
+        $.validator.unobtrusive.parse("#editPatientBenefitForm");
 
         $('#Date').datepicker({
             clearBtn: true,
@@ -143,7 +136,7 @@ export default (function () {
             }
         });
 
-        $("#editPresenceForm").submit(function (e) {
+        $("#editPatientBenefitForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -157,8 +150,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#presenceTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Presença atualizado com sucesso.", "success");
+                            $("#patientBenefitTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Benefício de paciente atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
@@ -174,7 +167,7 @@ export default (function () {
         });
     }
 
-    function initDelete(url, id, relation) {
+    function initDelete(url, patientId, benefitId) {
         global.swalWithBootstrapButtons.fire({
             title: 'Você têm certeza?',
             text: "Você não poderá reverter isso!",
@@ -182,10 +175,10 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { patientId: patientId, benefitId: benefitId })
                     .done(function (data, textStatus) {
-                        $("#presenceTable").DataTable().ajax.reload(null, false);
-                        global.swalWithBootstrapButtons.fire("Removido!", "A presença foi removida com sucesso.", "success");
+                        $("#patientBenefitTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O benefício de paciente foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

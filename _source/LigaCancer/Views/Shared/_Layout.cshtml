@@ -40,11 +40,7 @@
                             <img class="img-logo" src="~/img/logo/logo-oficial.png" alt="RVCC Logo">
                         </a>
                     </li>
-                    <!--<li class="nav-item">
-                        <a asp-action="Index" asp-controller="Home" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i> Home
-                        </a>
-                    </li>-->
+
                     <li class="nav-title">Pacientes</li>
                     <li class="nav-item">
                         <a asp-action="Index" asp-controller="Patient" class="nav-link">
@@ -57,19 +53,22 @@
                         </a>
                     </li>
 
-                    @*<li class="nav-title">Benefícios</li>
+                    @if (!User.IsInRole(Roles.SocialAssistance))
+                    {
+
+                        <li class="nav-title">Benefícios</li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a asp-action="Index" asp-controller="PatientBenefit" class="nav-link">
                                 <i class="nav-icon fa fa-gift"></i> Benefícios
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a asp-action="Index" asp-controller="Benefit" class="nav-link">
                                 <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
                             </a>
-                        </li>*@
-                    @if (!User.IsInRole(Roles.SocialAssistance))
-                    {
+                        </li>
 
                         <li class="nav-title">Informações Médicas</li>
                         <li class="nav-item">
@@ -92,6 +91,11 @@
                                 <i class="nav-icon fa fa-user-md"></i> Médicos
                             </a>
                         </li>
+
+                    }
+
+                    @if (User.IsInRole(Roles.Admin))
+                    {
                         @*<li class="nav-title">Relatórios</li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
@@ -103,10 +107,7 @@
                                     <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
                                 </a>
                             </li> *@
-                    }
 
-                    @if (User.IsInRole(Roles.Admin))
-                    {
                         <li class="nav-title">Administrativo</li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="User" class="nav-link">

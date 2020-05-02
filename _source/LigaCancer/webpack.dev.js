@@ -11,9 +11,9 @@ module.exports = merge(common, {
         hot: true
     },
     plugins: [
-        //new webpack.SourceMapDevToolPlugin({
-        //    filename: 'js/[name].js.map'
-        //})
+        new webpack.SourceMapDevToolPlugin({
+            filename: 'js/[name].js.map'
+        })
     ], module: {
         rules: [{
             test: /\.scss$/,

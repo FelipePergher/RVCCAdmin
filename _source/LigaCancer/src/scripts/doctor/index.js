@@ -28,7 +28,7 @@ export default (function () {
                 },
                 datatype: "json",
                 error: function () {
-                    swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
             order: [1, "asc"],
@@ -79,7 +79,6 @@ export default (function () {
                             $('.modal-backdrop').remove();
                             $("#doctorTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Médico registrado com sucesso.", "success");
-                            global.cleanModal();
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
@@ -88,7 +87,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }
@@ -114,7 +113,6 @@ export default (function () {
                             $('.modal-backdrop').remove();
                             $("#doctorTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Médico atualizado com sucesso.", "success");
-                            global.cleanModal();
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
@@ -123,7 +121,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }

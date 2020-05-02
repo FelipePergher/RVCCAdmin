@@ -1,0 +1,45 @@
+﻿@model RVCC.Models.FormModel.PatientBenefitFormModel
+
+<form id="addPatientBenefitForm" asp-action="AddPatientBenefit" method="post">
+
+    <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label asp-for="PatientId" class="control-label label-required"></label>
+            <select asp-for="PatientId" asp-items="Model.Patients" class="select2 form-control"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Paciente"
+                    data-allow-clear="true">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Date" class="control-label label-required"></label>
+            <input asp-for="Date" type="text" class="form-control" data-date-end-date="0d" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Benefit" class="control-label label-required"></label>
+            <select asp-for="Benefit" asp-items="Model.BenefitsList" class="select2 form-control"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Benefícios"
+                    data-allow-clear="true">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="Benefit" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Quantity" class="control-label label-required"></label>
+            <input asp-for="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+    </div>
+
+    <partial name="_ModalFooter" />
+
+</form>

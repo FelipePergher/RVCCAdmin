@@ -34,7 +34,7 @@ export default (function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     })
                     .always(function () {
-                        $(submitButton).removeProp("disabled").removeClass("disabled");
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
                         $("#submitSpinner").hide();
                     });
             }

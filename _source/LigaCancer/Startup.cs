@@ -16,6 +16,7 @@ using RVCC.Data.Repositories;
 using RVCC.Services;
 using System;
 using System.Globalization;
+using RVCC.Data.Models.RelationModels;
 
 namespace RVCC
 {
@@ -94,6 +95,8 @@ namespace RVCC
             services.AddTransient<IDataRepository<Presence>, PresenceRepository>();
             services.AddTransient<IDataRepository<Naturality>, NaturalityRepository>();
             services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
+            services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
+            services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

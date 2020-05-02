@@ -17,7 +17,6 @@ namespace RVCC.Data.Models
         [Key]
         public int MedicineId { get; set; }
 
-        [Display(Name = "Remédio")]
         public string Name { get; set; }
 
         #region Relations

@@ -4,10 +4,6 @@ import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
-import 'select2';
-import 'tempusdominus-bootstrap-4';
 
 export default (function () {
 
@@ -18,84 +14,55 @@ export default (function () {
     });
 
     function initPage() {
-        let presenceTable = $("#presenceTable").DataTable({
+        let benefitTable = $("#benefitTable").DataTable({
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,
             filter: false,
             ajax: {
-                url: "/api/presence/search",
+                url: "/api/Benefit/search",
                 type: "POST",
                 data: function (d) {
                     d.name = $("#Name").val();
-                    d.dateFrom = $("#DateFrom").val();
-                    d.dateTo = $("#DateTo").val();
                 },
                 datatype: "json",
-                error: function () {
+                error: function (e) {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
-            order: [2, "desc"],
+            order: [1, "asc"],
             columns: [
-                { data: "actions", title: "Ações", name: "Actions", orderable: false },
-                { data: "patient", title: "Nome do Paciente", name: "Patient" },
-                { data: "date", title: "Data da presença", name: "Date" },
-                { data: "hour", title: "Hora da presença", name: "Hour" }
+                { data: "actions", title: "Ações", width: "20px", name: "Actions", orderable: false },
+                { data: "name", title: "Nome", name: "Name" },
+                { data: "note", title: "Nota", name: "Note" },
             ],
             drawCallback: function (settings) {
-                $(".editPresenceButton").click(function () {
+                $(".editBenefitButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deletePresenceButton").click(function (e) {
+                $(".deleteBenefitButton").click(function (e) {
                     initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $('#presenceTable').attr('style', 'border-collapse: collapse !important');
-
-        $('#DateTo, #DateFrom').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
-            }
-        });
+        $('#benefitTable').attr('style', 'border-collapse: collapse !important');
 
         $("#searchForm").submit(function (e) {
             e.preventDefault();
-            presenceTable.search("").draw("");
+            benefitTable.search("").draw("");
         });
 
-        $("#addPresenceButton").click(function () { 
+        $("#addBenefitButton").click(function () { 
             global.openModal($(this).attr("href"), $(this).data("title"), initAddForm);
         });
     }
 
     function initAddForm() {
-        $.validator.unobtrusive.parse("#addPresenceForm");
+        $.validator.unobtrusive.parse("#addBenefitForm");
 
-        $(".select2").select2();
-
-        $('#timePicker').datetimepicker({
-            format: 'H:mm'
-        });
-
-        $('#Date').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
-            }
-        });
-
-        $("#addPresenceForm").submit(function (e) {
+        $("#addBenefitForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -109,8 +76,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#presenceTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Presença registrado com sucesso.", "success");
+                            $("#benefitTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Benefício registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
@@ -127,23 +94,9 @@ export default (function () {
     }
 
     function initEditForm() {
-        $.validator.unobtrusive.parse("#editPresenceForm");
+        $.validator.unobtrusive.parse("#editBenefitForm");
 
-        $('#timePicker').datetimepicker({
-            format: 'H:mm'
-        });
-
-        $('#Date').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
-            }
-        });
-
-        $("#editPresenceForm").submit(function (e) {
+        $("#editBenefitForm").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -157,8 +110,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $('.modal-backdrop').remove();
-                            $("#presenceTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Presença atualizado com sucesso.", "success");
+                            $("#benefitTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Benefício atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
@@ -175,17 +128,22 @@ export default (function () {
     }
 
     function initDelete(url, id, relation) {
+        let message = "Você não poderá reverter isso!";
+        if (relation) {
+            message = "Este benefício está atribuído a pacientes, deseja prosseguir mesmo assim?";
+        }
+
         global.swalWithBootstrapButtons.fire({
             title: 'Você têm certeza?',
-            text: "Você não poderá reverter isso!",
+            text: message,
             type: 'warning',
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
-                        $("#presenceTable").DataTable().ajax.reload(null, false);
-                        global.swalWithBootstrapButtons.fire("Removido!", "A presença foi removida com sucesso.", "success");
+                        $("#benefitTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O benefício foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

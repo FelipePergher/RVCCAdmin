@@ -57,7 +57,7 @@ namespace RVCC.Controllers.Api
         }
 
         [HttpGet("~/api/Medicine/select2Get")]
-        public async Task<IActionResult> Select2GetCancerTypes(string term)
+        public async Task<IActionResult> Select2GetMedicines(string term)
         {
             IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(null, "Name", "asc", new MedicineSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
