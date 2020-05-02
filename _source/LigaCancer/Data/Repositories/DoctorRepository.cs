@@ -106,11 +106,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Doctor model)
+        public Task<TaskResult> UpdateAsync(Doctor doctor)
         {
             var result = new TaskResult();
             try
             {
+                doctor.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

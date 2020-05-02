@@ -109,7 +109,6 @@ namespace RVCC.Controllers
                 phone.Number = phoneForm.Number;
                 phone.PhoneType = phoneForm.PhoneType;
                 phone.ObservationNote = phoneForm.ObservationNote;
-                phone.UpdatedTime = DateTime.Now;
                 phone.UpdatedBy = user.Name;
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);

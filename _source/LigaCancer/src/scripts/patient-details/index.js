@@ -25,6 +25,8 @@ export default (function () {
         initFamilyMemberTable();
         initFilesTable();
         initPatientBenefitTable();
+        initPresenceTable();
+        initStayTable();
     }
 
     function initEvents() {
@@ -496,6 +498,65 @@ export default (function () {
             ],
         });
         $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
+    }
+
+    //Presence Functions
+    function initPresenceTable() {
+        let presenceTable = $("#presenceTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/presence/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "patient", title: "Nome do Paciente", name: "Patient" },
+                { data: "date", title: "Data da presença", name: "Date" },
+                { data: "hour", title: "Hora da presença", name: "Hour" }
+            ],
+        });
+        $('#presenceTable').attr('style', 'border-collapse: collapse !important');
+    }
+
+    //Stay Functions
+    function initStayTable() {
+        let stayTable = $("#stayTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/stay/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "patient", title: "Nome do Paciente", name: "Patient" },
+                { data: "date", title: "Data da presença", name: "Date" },
+                { data: "city", title: "Cidade", name: "City" },
+                { data: "note", title: "Notas", name: "Note" }
+            ],
+        });
+        $('#stayTable').attr('style', 'border-collapse: collapse !important');
     }
 
     //Family Member Functions

@@ -1,0 +1,113 @@
+﻿@model RVCC.Models.SearchModel.StaySearchModel
+@{
+    ViewData["Title"] = "Estadias";
+}
+
+@section styles {
+    <environment names="Development">
+        <link href="~/dist/css/stay.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/stay.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            Estadias
+        </li>
+    </ol>
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-filter"></i> Pesquisar
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="true">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="filterCollapse">
+                                <form id="searchForm">
+                                    <div class="form-row form-group">
+                                        <div class="col-lg-3">
+                                            <label asp-for="Name"></label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label asp-for="City"></label>
+                                            <input asp-for="City" class="form-control" />
+                                            <span asp-validation-for="City" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label asp-for="DateFrom"></label>
+                                            <input asp-for="DateFrom" type="text" class="form-control" />
+                                            <span asp-validation-for="DateFrom" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label asp-for="DateTo"></label>
+                                            <input asp-for="DateTo" type="text" class="form-control" />
+                                            <span asp-validation-for="DateTo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row form-group justify-content-end">
+                                        <div class="col-lg-3 d-flex justify-content-end">
+                                            <button type="reset" class="btn btn-secondary">
+                                                <i class="fas fa-eraser"></i> Limpar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary ml-1">
+                                                <i class="fas fa-filter"></i> Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-address-book"></i> Estadias
+                            </div>
+                            <div class="card-body">
+                                <div class="form-inline float-right">
+                                    <a id="addStayButton" asp-action="AddStay" data-title="Adicionar Estadia" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i> Adicionar Estadia
+                                    </a>
+                                </div>
+
+                                <table width="100%" class="table table-bordered table-striped text-center" id="stayTable"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--/col-->
+
+            </div>
+            <!--/row-->
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</main>
+
+<partial name="_Modal" />
+
+@section scripts {
+    <environment names="Development">
+        <script src="~/dist/js/stay.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/stay.bundle.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -107,11 +107,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Benefit model)
+        public Task<TaskResult> UpdateAsync(Benefit benefit)
         {
             var result = new TaskResult();
             try
             {
+                benefit.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

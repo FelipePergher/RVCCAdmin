@@ -124,7 +124,6 @@ namespace RVCC.Controllers
                 address.MonthlyAmmountResidence = addressForm.ResidenceType != null ?
                     (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0;
                 address.Street = addressForm.Street;
-                address.UpdatedTime = DateTime.Now;
                 address.UpdatedBy = user.Name;
 
                 TaskResult result = await _addressService.UpdateAsync(address);

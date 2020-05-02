@@ -24,6 +24,11 @@ namespace RVCC.Data.Repositories
             return _context.PatientBenefits.Count();
         }
 
+        public int CountByPatient(int patientId)
+        {
+            return _context.PatientBenefits.Count(x => x.PatientId == patientId);
+        }
+
         public Task<PatientBenefit> FindByIdAsync(string id, string[] includes = null)
         {
             throw new NotImplementedException();
@@ -111,12 +116,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(PatientBenefit model)
+        public Task<TaskResult> UpdateAsync(PatientBenefit patientBenefit)
         {
             var result = new TaskResult();
             try
             {
-                model.UpdatedTime = DateTime.Now;
+                patientBenefit.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -153,6 +158,11 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<PatientBenefit> GetFilteredPatientBenefits(IQueryable<PatientBenefit> query, PatientBenefitSearchModel patientBenefitSearch)
         {
+            if (!string.IsNullOrEmpty(patientBenefitSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(patientBenefitSearch.PatientId));
+            }
+
             if (!string.IsNullOrEmpty(patientBenefitSearch.Name))
             {
                 query = query.Where(x => x.Patient.FirstName.Contains(patientBenefitSearch.Name) || x.Patient.Surname.Contains(patientBenefitSearch.Name));

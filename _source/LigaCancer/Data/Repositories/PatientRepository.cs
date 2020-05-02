@@ -111,6 +111,7 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
+                patient.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

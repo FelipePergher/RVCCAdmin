@@ -18,6 +18,7 @@ namespace RVCC.Data.Models
             Naturality = new Naturality();
             ActivePatient = new ActivePatient();
             PatientBenefits = new HashSet<PatientBenefit>();
+            Stays = new HashSet<Stay>();
         }
 
         [Key]
@@ -62,6 +63,8 @@ namespace RVCC.Data.Models
         public ICollection<FileAttachment> FileAttachments { get; set; }
 
         public ICollection<PatientBenefit> PatientBenefits { get; set; }
+        
+        public ICollection<Stay> Stays { get; set; }
 
     }
 }

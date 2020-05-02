@@ -97,7 +97,6 @@ namespace RVCC.Controllers
 
                 benefit.Name = benefitForm.Name;
                 benefit.Note = benefitForm.Note;
-                benefit.UpdatedTime = DateTime.Now;
                 benefit.UpdatedBy = user.Name;
 
                 TaskResult result = await _benefitService.UpdateAsync(benefit);

@@ -107,11 +107,12 @@ namespace RVCC.Data.Repositories
 
         }
 
-        public Task<TaskResult> UpdateAsync(Phone model)
+        public Task<TaskResult> UpdateAsync(Phone phone)
         {
             var result = new TaskResult();
             try
             {
+                phone.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

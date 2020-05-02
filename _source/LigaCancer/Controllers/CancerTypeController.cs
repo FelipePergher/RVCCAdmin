@@ -101,7 +101,6 @@ namespace RVCC.Controllers
 
                 ApplicationUser user = await _userManager.GetUserAsync(User);
                 cancerType.Name = cancerTypeForm.Name;
-                cancerType.UpdatedTime = DateTime.Now;
                 cancerType.UpdatedBy = user.Name;
 
                 TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);

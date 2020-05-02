@@ -1,0 +1,40 @@
+﻿@model RVCC.Models.FormModel.StayFormModel
+
+<form id="addStayForm" asp-action="AddStay" method="post">
+
+    <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label asp-for="PatientId" class="control-label label-required"></label>
+            <select asp-for="PatientId" asp-items="Model.Patients" class="select2 form-control"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Paciente"
+                    data-allow-clear="true">
+                <option value=""></option>
+            </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Date" class="control-label label-required"></label>
+            <input asp-for="Date" type="text" class="form-control" data-date-end-date="0d" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="City" class="control-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Note" class="control-label"></label>
+            <textarea asp-for="Note" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Note" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <partial name="_ModalFooter" />
+
+</form>

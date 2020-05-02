@@ -102,7 +102,6 @@ namespace RVCC.Controllers
 
                 ApplicationUser user = await _userManager.GetUserAsync(User);
                 treatmentPlace.City = treatmentPlaceForm.City;
-                treatmentPlace.UpdatedTime = DateTime.Now;
                 treatmentPlace.UpdatedBy = user.Name;
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);

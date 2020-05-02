@@ -88,11 +88,12 @@ namespace RVCC.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TaskResult> UpdateAsync(Naturality model)
+        public Task<TaskResult> UpdateAsync(Naturality naturality)
         {
             var result = new TaskResult();
             try
             {
+                naturality.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

@@ -11,6 +11,8 @@ namespace RVCC.Models.SearchModel
             DateTo = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
+        public string PatientId { get; set; }
+
         [Display(Name = "Nome")]
         public string Name { get; set; }
 

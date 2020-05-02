@@ -107,11 +107,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(FileAttachment model)
+        public Task<TaskResult> UpdateAsync(FileAttachment fileAttachment)
         {
             var result = new TaskResult();
             try
             {
+                fileAttachment.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

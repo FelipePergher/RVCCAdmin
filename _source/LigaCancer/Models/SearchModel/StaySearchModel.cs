@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.SearchModel
 {
-    public class PatientBenefitSearchModel
+    public class StaySearchModel
     {
-        public PatientBenefitSearchModel()
+        public StaySearchModel()
         {
             DateFrom = DateTime.Now.AddDays(-7).ToString("dd/MM/yyyy");
             DateTo = DateTime.Now.ToString("dd/MM/yyyy");
@@ -16,8 +16,8 @@ namespace RVCC.Models.SearchModel
         [Display(Name = "Nome")]
         public string Name { get; set; }
 
-        [Display(Name = "Benefício")]
-        public string Benefit { get; set; }
+        [Display(Name = "Cidade")]
+        public string City { get; set; }
 
         [Display(Name = "Data Inicial")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]

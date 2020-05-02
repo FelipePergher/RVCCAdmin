@@ -125,7 +125,6 @@ namespace RVCC.Controllers
                     (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
-                familyMember.UpdatedTime = DateTime.Now;
                 familyMember.UpdatedBy = user.Name;
 
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);

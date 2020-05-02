@@ -109,11 +109,12 @@ namespace RVCC.Data.Repositories
 
         }
 
-        public Task<TaskResult> UpdateAsync(CancerType model)
+        public Task<TaskResult> UpdateAsync(CancerType cancerType)
         {
             var result = new TaskResult();
             try
             {
+                cancerType.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

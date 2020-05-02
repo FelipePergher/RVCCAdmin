@@ -140,6 +140,8 @@ namespace RVCC.Data
         public DbSet<Benefit> Benefits { get; set; }
         
         public DbSet<PatientBenefit> PatientBenefits { get; set; }
+        
+        public DbSet<Stay> Stays { get; set; }
 
     }
 }

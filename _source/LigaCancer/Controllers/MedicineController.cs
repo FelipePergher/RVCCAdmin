@@ -90,7 +90,6 @@ namespace RVCC.Controllers
                 Medicine medicine = await _medicineService.FindByIdAsync(id);
 
                 medicine.Name = medicineForm.Name;
-                medicine.UpdatedTime = DateTime.Now;
                 medicine.UpdatedBy = user.Name;
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);

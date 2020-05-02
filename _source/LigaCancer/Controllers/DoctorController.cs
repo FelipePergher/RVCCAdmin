@@ -90,7 +90,6 @@ namespace RVCC.Controllers
 
                 doctor.Name = doctorForm.Name;
                 doctor.CRM = doctorForm.CRM;
-                doctor.UpdatedTime = DateTime.Now;
                 doctor.UpdatedBy = user.Name;
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);

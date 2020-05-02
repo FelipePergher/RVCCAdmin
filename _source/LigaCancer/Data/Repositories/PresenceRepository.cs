@@ -24,6 +24,11 @@ namespace RVCC.Data.Repositories
             return _context.Presences.Count();
         }
 
+        public int CountByPatient(int patientId)
+        {
+            return _context.Presences.Count(x => x.PatientId == patientId);
+        }
+
         public Task<TaskResult> CreateAsync(Presence presence)
         {
             var result = new TaskResult();
@@ -106,11 +111,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Presence model)
+        public Task<TaskResult> UpdateAsync(Presence presence)
         {
             var result = new TaskResult();
             try
             {
+                presence.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -197,6 +203,11 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
+            if (!string.IsNullOrEmpty(presenceSearch.PatientId))
+            {
+                query = query.Where(x => x.PatientId == int.Parse(presenceSearch.PatientId));
+            }
+
             if (!string.IsNullOrEmpty(presenceSearch.Name))
             {
                 query = query.Where(x => x.Name.Contains(presenceSearch.Name));

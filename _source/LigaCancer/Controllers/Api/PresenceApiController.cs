@@ -46,7 +46,10 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = _presenceService.Count();
+                int recordsTotal = string.IsNullOrEmpty(presenceSearchModel.PatientId) 
+                    ? _presenceService.Count() 
+                    : ((PresenceRepository)_presenceService).CountByPatient(int.Parse(presenceSearchModel.PatientId));
+
                 int recordsFiltered = presences.Count();
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });

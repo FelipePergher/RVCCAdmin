@@ -10,26 +10,31 @@ using System.Threading.Tasks;
 
 namespace RVCC.Data.Repositories
 {
-    public class AddressRepository : IDataRepository<Address>
+    public class StayRepository : IDataRepository<Stay>
     {
         private readonly ApplicationDbContext _context;
 
-        public AddressRepository(ApplicationDbContext context)
+        public StayRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.Addresses.Count();
+            return _context.Stays.Count();
         }
 
-        public Task<TaskResult> CreateAsync(Address address)
+        public int CountByPatient(int patientId)
+        {
+            return _context.Stays.Count(x => x.PatientId == patientId);
+        }
+
+        public Task<TaskResult> CreateAsync(Stay stay)
         {
             var result = new TaskResult();
             try
             {
-                _context.Addresses.Add(address);
+                _context.Stays.Add(stay);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -40,18 +45,18 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
+
         }
 
-        public Task<TaskResult> DeleteAsync(Address address)
+        public Task<TaskResult> DeleteAsync(Stay stay)
         {
             var result = new TaskResult();
             try
             {
-                _context.Addresses.Remove(address);
+                _context.Stays.Remove(stay);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -61,7 +66,7 @@ namespace RVCC.Data.Repositories
                 {
                     Code = e.HResult.ToString(),
                     Description = e.Message
-                });
+                }); ;
             }
 
             return Task.FromResult(result);
@@ -72,21 +77,21 @@ namespace RVCC.Data.Repositories
             _context?.Dispose();
         }
 
-        public Task<Address> FindByIdAsync(string id, string[] includes = null)
+        public Task<Stay> FindByIdAsync(string id, string[] includes = null)
         {
-            IQueryable<Address> query = _context.Addresses;
+            IQueryable<Stay> query = _context.Stays;
 
             if (includes != null)
             {
                 query = includes.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
-            return Task.FromResult(query.FirstOrDefault(x => x.AddressId == int.Parse(id)));
+            return Task.FromResult(query.FirstOrDefault(x => x.StayId == int.Parse(id)));
         }
 
-        public Task<List<Address>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Stay>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
-            IQueryable<Address> query = _context.Addresses;
+            IQueryable<Stay> query = _context.Stays;
 
             if (includes != null)
             {
@@ -95,23 +100,23 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdinationAddresses(query, sortColumn, sortDirection);
+                query = GetOrdinationStays(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
             {
-                query = GetFilteredAddresses(query, (AddressSearchModel)filter);
+                query = GetFilteredStays(query, (StaySearchModel)filter);
             }
 
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(Address address)
+        public Task<TaskResult> UpdateAsync(Stay stay)
         {
             var result = new TaskResult();
             try
             {
-                address.UpdatedTime = DateTime.Now;
+                stay.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -129,36 +134,46 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Address> GetOrdinationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
+        private IQueryable<Stay> GetOrdinationStays(IQueryable<Stay> query, string sortColumn, string sortDirection)
         {
             switch (sortColumn)
             {
-                case "Street":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
-                case "Neighborhood":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Neighborhood) : query.OrderByDescending(x => x.Neighborhood);
+                case "Date":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.StayDateTime.Date) : query.OrderByDescending(x => x.StayDateTime.Date);
                 case "City":
                     return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
-                case "HouseNumber":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.HouseNumber) : query.OrderByDescending(x => x.HouseNumber);
-                case "Complement":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Complement) : query.OrderByDescending(x => x.Complement);
-                case "ResidenceType":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ResidenceType) : query.OrderByDescending(x => x.ResidenceType);
-                case "MonthlyAmmountResidence":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyAmmountResidence) : query.OrderByDescending(x => x.MonthlyAmmountResidence);
-                case "ObservationAddress":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationAddress) : query.OrderByDescending(x => x.ObservationAddress);
+                case "Note":
+                    return sortDirection == "asc" ? query.OrderBy(x => x.Note) : query.OrderByDescending(x => x.Note);
                 default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
+                    return sortDirection == "asc" ? query.OrderBy(x => x.PatientName) : query.OrderByDescending(x => x.PatientName);
             }
         }
 
-        private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
+        private IQueryable<Stay> GetFilteredStays(IQueryable<Stay> query, StaySearchModel staySearch)
         {
-            if (!string.IsNullOrEmpty(addressSearch.PatientId))
+            if (!string.IsNullOrEmpty(staySearch.PatientId))
             {
-                query = query.Where(x => x.PatientId == int.Parse(addressSearch.PatientId));
+                query = query.Where(x => x.PatientId == int.Parse(staySearch.PatientId));
+            }
+
+            if (!string.IsNullOrEmpty(staySearch.Name))
+            {
+                query = query.Where(x => x.PatientName.Contains(staySearch.Name));
+            }
+
+            if (!string.IsNullOrEmpty(staySearch.City))
+            {
+                query = query.Where(x => x.City.Contains(staySearch.City));
+            }
+
+            if (staySearch.DateFrom != null)
+            {
+                query = query.Where(x => x.StayDateTime.Date >= DateTime.Parse(staySearch.DateFrom).Date);
+            }
+
+            if (staySearch.DateTo != null)
+            {
+                query = query.Where(x => x.StayDateTime.Date <= DateTime.Parse(staySearch.DateTo).Date);
             }
 
             return query;

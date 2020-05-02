@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Data.Repositories;
 
 namespace RVCC.Controllers.Api
 {
@@ -46,7 +47,9 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = _patientBenefitService.Count();
+                int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId) 
+                    ? _patientBenefitService.Count() 
+                    : ((PatientBenefitRepository)_patientBenefitService).CountByPatient(int.Parse(patientBenefitSearchModel.PatientId));
                 int recordsFiltered = patientBenefits.Count();
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });

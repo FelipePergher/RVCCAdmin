@@ -88,11 +88,12 @@ namespace RVCC.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TaskResult> UpdateAsync(PatientInformation model)
+        public Task<TaskResult> UpdateAsync(PatientInformation patientInformation)
         {
             var result = new TaskResult();
             try
             {
+                patientInformation.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

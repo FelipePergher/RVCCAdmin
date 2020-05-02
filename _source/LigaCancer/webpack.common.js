@@ -24,6 +24,7 @@ module.exports = {
         'resend-email': ['./src/sass/resend-email/index.scss', './src/scripts/resend-email/index.js'],
         'benefit': ['./src/sass/benefit/index.scss', './src/scripts/benefit/index.js'],
         'patient-benefit': ['./src/sass/patient-benefit/index.scss', './src/scripts/patient-benefit/index.js'],
+        'stay': ['./src/sass/stay/index.scss', './src/scripts/stay/index.js'],
     },
     plugins: [
         new CleanWebpackPlugin(),

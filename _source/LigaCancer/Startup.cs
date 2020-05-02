@@ -97,6 +97,7 @@ namespace RVCC
             services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
+            services.AddTransient<IDataRepository<Stay>, StayRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
