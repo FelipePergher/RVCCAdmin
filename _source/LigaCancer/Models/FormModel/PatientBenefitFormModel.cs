@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿// <copyright file="PatientBenefitFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 
 namespace RVCC.Models.FormModel
 {
@@ -37,8 +41,7 @@ namespace RVCC.Models.FormModel
         public int Quantity { get; set; }
 
         public List<SelectListItem> Patients { get; set; }
-        
-        public List<SelectListItem> BenefitsList { get; set; }
 
+        public List<SelectListItem> BenefitsList { get; set; }
     }
 }

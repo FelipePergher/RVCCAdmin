@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="CancerTypeRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -51,7 +54,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-
                 _context.CancerTypes.Remove(cancerType);
                 _context.SaveChanges();
                 result.Succeeded = true;
@@ -85,8 +87,7 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.CancerTypeId == int.Parse(id)));
         }
 
-        public Task<List<CancerType>> GetAllAsync(string[] includes = null,
-            string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<CancerType>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<CancerType> query = _context.CancerTypes;
 
@@ -106,7 +107,6 @@ namespace RVCC.Data.Repositories
             }
 
             return Task.FromResult(query.ToList());
-
         }
 
         public Task<TaskResult> UpdateAsync(CancerType cancerType)
@@ -132,9 +132,9 @@ namespace RVCC.Data.Repositories
 
         #region Custom Methods
 
-        public Task<CancerType> FindByNameAsync(string name, int CancerTypeId = -1)
+        public Task<CancerType> FindByNameAsync(string name, int cancerTypeId = -1)
         {
-            return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.Name == name && x.CancerTypeId != CancerTypeId));
+            return Task.FromResult(_context.CancerTypes.FirstOrDefault(x => x.Name == name && x.CancerTypeId != cancerTypeId));
         }
 
         #endregion
@@ -143,20 +143,17 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<CancerType> GetOrdinationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-            }
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
+            };
         }
 
-        private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel CancerTypeSearch)
+        private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel cancerTypeSearch)
         {
-            if (!string.IsNullOrEmpty(CancerTypeSearch.Name))
+            if (!string.IsNullOrEmpty(cancerTypeSearch.Name))
             {
-                query = query.Where(x => x.Name.Contains(CancerTypeSearch.Name));
+                query = query.Where(x => x.Name.Contains(cancerTypeSearch.Name));
             }
 
             return query;

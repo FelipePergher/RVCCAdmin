@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿// <copyright file="Startup.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -12,11 +16,11 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data;
 using RVCC.Data.Models;
+using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Services;
 using System;
 using System.Globalization;
-using RVCC.Data.Models.RelationModels;
 
 namespace RVCC
 {
@@ -75,14 +79,13 @@ namespace RVCC
                    Configuration.GetValue<bool>("EmailSender:EnableSSL"),
                    Configuration["EmailSender:UserName"],
                    Configuration["EmailSender:Password"],
-                   Configuration["EmailSender:EmailFrom"]
-               ));
+                   Configuration["EmailSender:EmailFrom"]));
 
             services.AddLogging();
 
             services.AddAntiforgery();
 
-            //Application Services
+            // Application Services
             services.AddTransient<IDataRepository<Doctor>, DoctorRepository>();
             services.AddTransient<IDataRepository<TreatmentPlace>, TreatmentPlaceRepository>();
             services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
@@ -120,7 +123,7 @@ namespace RVCC
 
                 if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
                 {
-                    //Re-execute the request so the user gets the error page
+                    // Re-execute the request so the user gets the error page
                     string originalPath = ctx.Request.Path.Value;
                     ctx.Items["originalPath"] = originalPath;
                     ctx.Request.Path = "/error/404";
@@ -135,9 +138,7 @@ namespace RVCC
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("pt-BR"),
-                // Formatting numbers, dates, etc.
                 SupportedCultures = supportedCultures,
-                // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
 
@@ -171,5 +172,4 @@ namespace RVCC
             SeedData.SeedAdminUser(scopeFactory, Configuration["Admin:Email"], Configuration["Admin:Password"]).Wait();
         }
     }
-
 }

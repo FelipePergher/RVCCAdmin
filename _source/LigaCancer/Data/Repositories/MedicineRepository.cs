@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="MedicineRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -84,8 +87,7 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.MedicineId == int.Parse(id)));
         }
 
-        public Task<List<Medicine>> GetAllAsync(string[] includes = null,
-            string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Medicine>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Medicine> query = _context.Medicines;
 
@@ -141,13 +143,10 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Medicine> GetOrdinationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-            }
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
+            };
         }
 
         private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel medicineSearch)

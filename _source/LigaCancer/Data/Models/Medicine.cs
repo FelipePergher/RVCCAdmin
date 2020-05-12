@@ -1,4 +1,8 @@
-﻿using RVCC.Data.Models.RelationModels;
+﻿// <copyright file="Medicine.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +10,9 @@ namespace RVCC.Data.Models
 {
     public class Medicine : RegisterData
     {
-        public Medicine() { }
+        public Medicine()
+        {
+        }
 
         public Medicine(string name, ApplicationUser user)
         {

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="UserFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RVCC.Business;
 using System.Collections.Generic;
@@ -8,7 +12,9 @@ namespace RVCC.Models.FormModel
 {
     public class UserFormModel
     {
-        public UserFormModel() { }
+        public UserFormModel()
+        {
+        }
 
         public UserFormModel(string userId)
         {

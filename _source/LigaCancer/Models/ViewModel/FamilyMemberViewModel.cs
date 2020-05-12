@@ -1,4 +1,8 @@
-﻿namespace RVCC.Models.ViewModel
+﻿// <copyright file="FamilyMemberViewModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+namespace RVCC.Models.ViewModel
 {
     public class FamilyMemberViewModel
     {

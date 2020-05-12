@@ -1,4 +1,8 @@
-﻿namespace RVCC.Business
+﻿// <copyright file="Roles.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+namespace RVCC.Business
 {
     public static class Roles
     {

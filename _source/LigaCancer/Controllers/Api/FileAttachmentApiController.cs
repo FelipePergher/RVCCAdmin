@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="FileAttachmentApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -43,7 +47,7 @@ namespace RVCC.Controllers.Api
                     Name = x.FileName,
                     Extension = x.FileExtension,
                     Size = x.FileSize.ToString("N"),
-                    FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToString()}/{x.FilePath}",
+                    FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{x.FilePath}",
                     Actions = GetActionsHtml(x)
                 });
 
@@ -62,7 +66,6 @@ namespace RVCC.Controllers.Api
 
         private string GetActionsHtml(FileAttachment fileAttachment)
         {
-
             string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance)
                 ? string.Empty
                 : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>

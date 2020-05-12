@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="FamilyMemberRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -84,8 +87,7 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.FamilyMemberId == int.Parse(id)));
         }
 
-        public Task<List<FamilyMember>> GetAllAsync(string[] includes = null,
-            string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<FamilyMember>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<FamilyMember> query = _context.FamilyMembers;
 
@@ -132,21 +134,20 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<FamilyMember> GetOrdinationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-                case "Kinship":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Kinship) : query.OrderByDescending(x => x.Kinship);
-                case "DateOfBirth":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
-                case "Sex":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex);
-                case "MonthlyIncome":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyIncome) : query.OrderByDescending(x => x.MonthlyIncome);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-            }
+                "Kinship" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Kinship)
+                    : query.OrderByDescending(x => x.Kinship),
+                "DateOfBirth" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.DateOfBirth)
+                    : query.OrderByDescending(x => x.DateOfBirth),
+                "Sex" => sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex),
+                "MonthlyIncome" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.MonthlyIncome)
+                    : query.OrderByDescending(x => x.MonthlyIncome),
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
+            };
         }
 
         private IQueryable<FamilyMember> GetFilteredFamilyMembers(IQueryable<FamilyMember> query, FamilyMemberSearchModel familyMemberSearch)

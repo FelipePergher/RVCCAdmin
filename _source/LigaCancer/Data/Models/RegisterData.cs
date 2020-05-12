@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RegisterData.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System;
 
 namespace RVCC.Data.Models
 {
@@ -16,6 +20,5 @@ namespace RVCC.Data.Models
         public DateTime UpdatedTime { get; set; }
 
         public string UpdatedBy { get; set; }
-
     }
 }

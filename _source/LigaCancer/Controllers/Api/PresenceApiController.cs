@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PresenceApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -46,8 +50,8 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = string.IsNullOrEmpty(presenceSearchModel.PatientId) 
-                    ? _presenceService.Count() 
+                int recordsTotal = string.IsNullOrEmpty(presenceSearchModel.PatientId)
+                    ? _presenceService.Count()
                     : ((PresenceRepository)_presenceService).CountByPatient(int.Parse(presenceSearchModel.PatientId));
 
                 int recordsFiltered = presences.Count();

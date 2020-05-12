@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="DoctorFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.FormModel
 {
     public class DoctorFormModel
     {
-        public DoctorFormModel() { }
+        public DoctorFormModel()
+        {
+        }
 
         public DoctorFormModel(string name, string crm, int doctorId)
         {

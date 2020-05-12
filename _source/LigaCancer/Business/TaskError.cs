@@ -1,6 +1,9 @@
-﻿namespace RVCC.Business
-{
+﻿// <copyright file="TaskError.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
 
+namespace RVCC.Business
+{
     public class TaskError
     {
         public string Code { get; set; }

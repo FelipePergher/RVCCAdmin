@@ -1,4 +1,8 @@
-﻿using RVCC.Business;
+﻿// <copyright file="FamilyMember.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Business;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

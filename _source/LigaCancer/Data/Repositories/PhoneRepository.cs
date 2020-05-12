@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="PhoneRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -104,7 +107,6 @@ namespace RVCC.Data.Repositories
             }
 
             return Task.FromResult(query.ToList());
-
         }
 
         public Task<TaskResult> UpdateAsync(Phone phone)
@@ -132,17 +134,16 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Phone> GetOrdinationPhones(IQueryable<Phone> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Number":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Number) : query.OrderByDescending(x => x.Number);
-                case "PhoneType":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.PhoneType) : query.OrderByDescending(x => x.PhoneType);
-                case "ObservationNote":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationNote) : query.OrderByDescending(x => x.ObservationNote);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Number) : query.OrderByDescending(x => x.Number);
-            }
+                "PhoneType" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.PhoneType)
+                    : query.OrderByDescending(x => x.PhoneType),
+                "ObservationNote" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ObservationNote)
+                    : query.OrderByDescending(x => x.ObservationNote),
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Number) : query.OrderByDescending(x => x.Number)
+            };
         }
 
         private IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)

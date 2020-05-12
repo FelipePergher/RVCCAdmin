@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿// <copyright file="ApplicationUser.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace RVCC.Data.Models

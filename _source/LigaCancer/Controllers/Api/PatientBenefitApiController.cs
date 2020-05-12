@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PatientBenefitApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.RelationModels;
+using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RVCC.Data.Repositories;
 
 namespace RVCC.Controllers.Api
 {
@@ -47,8 +51,8 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId) 
-                    ? _patientBenefitService.Count() 
+                int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId)
+                    ? _patientBenefitService.Count()
                     : ((PatientBenefitRepository)_patientBenefitService).CountByPatient(int.Parse(patientBenefitSearchModel.PatientId));
                 int recordsFiltered = patientBenefits.Count();
 

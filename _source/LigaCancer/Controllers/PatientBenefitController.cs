@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PatientBenefitController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
+using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using RVCC.Models.SearchModel;
@@ -13,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RVCC.Data.Models.RelationModels;
 
 namespace RVCC.Controllers
 {
@@ -189,6 +193,5 @@ namespace RVCC.Controllers
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
-
     }
 }

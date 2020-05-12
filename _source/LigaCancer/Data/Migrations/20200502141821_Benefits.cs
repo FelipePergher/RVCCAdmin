@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="20200502141821_Benefits.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RVCC.Data.Migrations

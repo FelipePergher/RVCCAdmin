@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="TaskResult.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System.Collections.Generic;
 
 namespace RVCC.Business
 {
@@ -14,6 +18,5 @@ namespace RVCC.Business
         public bool Succeeded { get; set; }
 
         public List<TaskError> Errors { get; }
-
     }
 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="ResendConfirmEmail.cshtml.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +49,7 @@ namespace RVCC.Areas.Identity.Pages.Account
             ApplicationUser user = await _userManager.FindByEmailAsync(ResetConfirmEmail.Email);
             if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
             {
-                //Resend email just when user exists and not is confirmed yet
+                // Resend email just when user exists and not is confirmed yet
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 string callbackUrl = Url.Page(
                    "/Account/ConfirmEmail",
@@ -53,12 +57,10 @@ namespace RVCC.Areas.Identity.Pages.Account
                    values: new { userId = user.Id, code },
                    protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(user.Email, "Confirme seu email",
-                    $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                await _emailSender.SendEmailAsync(user.Email, "Confirme seu email", $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
             }
 
             return RedirectToPage("./ResendConfirmEmailConfirmation");
         }
-
     }
 }

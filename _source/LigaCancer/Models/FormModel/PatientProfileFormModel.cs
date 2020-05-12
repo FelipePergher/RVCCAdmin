@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="PatientProfileFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
 using RVCC.Business;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +10,9 @@ namespace RVCC.Models.FormModel
 {
     public class PatientProfileFormModel
     {
-        public PatientProfileFormModel() { }
+        public PatientProfileFormModel()
+        {
+        }
 
         public PatientProfileFormModel(int patientId)
         {
@@ -65,6 +71,5 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Renda mensal")]
         public string MonthlyIncome { get; set; }
-
     }
 }

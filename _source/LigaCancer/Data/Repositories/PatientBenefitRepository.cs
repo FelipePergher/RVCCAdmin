@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="PatientBenefitRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.RelationModels;
@@ -53,7 +57,6 @@ namespace RVCC.Data.Repositories
             }
 
             return Task.FromResult(result);
-
         }
 
         public Task<TaskResult> DeleteAsync(PatientBenefit patientBenefit)
@@ -71,7 +74,7 @@ namespace RVCC.Data.Repositories
                 {
                     Code = e.HResult.ToString(),
                     Description = e.Message
-                }); ;
+                });
             }
 
             return Task.FromResult(result);
@@ -141,19 +144,21 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<PatientBenefit> GetOrdinationPatientBenefits(IQueryable<PatientBenefit> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Benefit":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Benefit.Name) : query.OrderByDescending(x => x.Benefit.Name);
-                case "Date":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.BenefitDate) : query.OrderByDescending(x => x.BenefitDate);
-                case "Quantity":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Quantity) : query.OrderByDescending(x => x.Quantity);
-                default:
-                    return sortDirection == "asc"
-                        ? query.OrderBy(x => x.Patient.FirstName + x.Patient.Surname)
-                        : query.OrderByDescending(x => x.Patient.FirstName + x.Patient.Surname);
-            }
+                "Benefit" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Benefit.Name)
+                    : query.OrderByDescending(x => x.Benefit.Name),
+                "Date" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.BenefitDate)
+                    : query.OrderByDescending(x => x.BenefitDate),
+                "Quantity" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Quantity)
+                    : query.OrderByDescending(x => x.Quantity),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Patient.FirstName + x.Patient.Surname)
+                    : query.OrderByDescending(x => x.Patient.FirstName + x.Patient.Surname)
+            };
         }
 
         private IQueryable<PatientBenefit> GetFilteredPatientBenefits(IQueryable<PatientBenefit> query, PatientBenefitSearchModel patientBenefitSearch)

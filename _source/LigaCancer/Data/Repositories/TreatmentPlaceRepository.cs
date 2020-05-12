@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="TreatmentPlaceRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -140,13 +143,10 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<TreatmentPlace> GetOrdinationTreatmentPlace(IQueryable<TreatmentPlace> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "City":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
-            }
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City)
+            };
         }
 
         private IQueryable<TreatmentPlace> GetFilteredTreatmentPlaces(IQueryable<TreatmentPlace> query, TreatmentPlaceSearchModel treatmentPlaceSearch)
