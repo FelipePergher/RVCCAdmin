@@ -149,9 +149,9 @@ namespace RVCC.Data.Repositories
                 "ResidenceType" => sortDirection == "asc"
                     ? query.OrderBy(x => x.ResidenceType)
                     : query.OrderByDescending(x => x.ResidenceType),
-                "MonthlyAmmountResidence" => sortDirection == "asc"
-                    ? query.OrderBy(x => x.MonthlyAmmountResidence)
-                    : query.OrderByDescending(x => x.MonthlyAmmountResidence),
+                "MonthlyAmountResidence" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.MonthlyAmountResidence)
+                    : query.OrderByDescending(x => x.MonthlyAmountResidence),
                 "ObservationAddress" => sortDirection == "asc"
                     ? query.OrderBy(x => x.ObservationAddress)
                     : query.OrderByDescending(x => x.ObservationAddress),

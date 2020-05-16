@@ -23,7 +23,7 @@ namespace RVCC.Data.Models
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
     }
 }

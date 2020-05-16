@@ -104,15 +104,15 @@ namespace RVCC.Controllers
         }
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
-        [HttpGet("PatientBenefit/EditPatientBenefit/{patientId}/{benefitId}")]
-        public async Task<IActionResult> EditPatientBenefit(int patientId, int benefitId)
+        [HttpGet]
+        public async Task<IActionResult> EditPatientBenefit(string id)
         {
-            if (patientId == 0 || benefitId == 0)
+            if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
 
-            PatientBenefit patientBenefit = await ((PatientBenefitRepository)_patientBenefitService).FindByIdsAsync(patientId, benefitId, new[] { "Patient", "Benefit" });
+            PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id, new[] { "Patient", "Benefit" });
 
             if (patientBenefit == null)
             {
@@ -133,18 +133,13 @@ namespace RVCC.Controllers
         }
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
-        [HttpPost("PatientBenefit/EditPatientBenefit/{patientId}/{benefitId}")]
-        public async Task<IActionResult> EditPatientBenefit(PatientBenefitFormModel patientBenefitForm)
+        [HttpPost]
+        public async Task<IActionResult> EditPatientBenefit(string id, PatientBenefitFormModel patientBenefitForm)
         {
-            if (patientBenefitForm.PatientIdHidden == 0 || patientBenefitForm.BenefitIdHidden == 0)
-            {
-                return BadRequest();
-            }
-
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
-                PatientBenefit patientBenefit = await ((PatientBenefitRepository)_patientBenefitService).FindByIdsAsync(patientBenefitForm.PatientIdHidden, patientBenefitForm.BenefitIdHidden);
+                PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id);
                 var dateTime = DateTime.Parse(patientBenefitForm.Date);
                 patientBenefit.BenefitDate = dateTime;
                 patientBenefit.Quantity = patientBenefitForm.Quantity;
@@ -169,14 +164,14 @@ namespace RVCC.Controllers
         [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> DeletePatientBenefit(int patientId, int benefitId)
+        public async Task<IActionResult> DeletePatientBenefit(string id)
         {
-            if (patientId == 0 || benefitId == 0)
+            if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
 
-            PatientBenefit patientBenefit = await ((PatientBenefitRepository)_patientBenefitService).FindByIdsAsync(patientId, benefitId);
+            PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id);
 
             if (patientBenefit == null)
             {

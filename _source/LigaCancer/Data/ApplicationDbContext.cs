@@ -86,22 +86,6 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.MedicineId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Patient and Benefit
-            builder.Entity<PatientBenefit>()
-                .HasKey(bc => new { bc.PatientId, bc.BenefitId });
-
-            builder.Entity<PatientBenefit>()
-                .HasOne(bc => bc.Patient)
-                .WithMany(b => b.PatientBenefits)
-                .HasForeignKey(bc => bc.PatientId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<PatientBenefit>()
-                .HasOne(bc => bc.Benefit)
-                .WithMany(c => c.PatientBenefits)
-                .HasForeignKey(bc => bc.BenefitId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             #endregion
 
             #region Unique

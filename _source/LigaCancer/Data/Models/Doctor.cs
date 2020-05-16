@@ -35,7 +35,9 @@ namespace RVCC.Data.Models
         public string CRM { get; set; }
 
         #region Relations
+
         public ICollection<PatientInformationDoctor> PatientInformationDoctors { get; set; }
+
         #endregion
     }
 }

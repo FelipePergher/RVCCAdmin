@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models.RelationModels
 {
@@ -17,12 +19,17 @@ namespace RVCC.Data.Models.RelationModels
             Benefit = benefit;
         }
 
+        [Key]
+        public int PatientBenefitId { get; set; }
+
         public int PatientId { get; set; }
 
+        [ForeignKey(nameof(PatientId))]
         public Patient Patient { get; set; }
 
         public int BenefitId { get; set; }
 
+        [ForeignKey(nameof(BenefitId))]
         public Benefit Benefit { get; set; }
 
         public DateTime BenefitDate { get; set; }

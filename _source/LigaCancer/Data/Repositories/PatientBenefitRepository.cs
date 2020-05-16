@@ -35,7 +35,14 @@ namespace RVCC.Data.Repositories
 
         public Task<PatientBenefit> FindByIdAsync(string id, string[] includes = null)
         {
-            throw new NotImplementedException();
+            IQueryable<PatientBenefit> query = _context.PatientBenefits;
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
+
+            return Task.FromResult(query.FirstOrDefault(x => x.PatientBenefitId == int.Parse(id)));
         }
 
         public Task<TaskResult> CreateAsync(PatientBenefit patientBenefit)
@@ -83,18 +90,6 @@ namespace RVCC.Data.Repositories
         public void Dispose()
         {
             _context?.Dispose();
-        }
-
-        public Task<PatientBenefit> FindByIdsAsync(int patientId, int benefitId, string[] includes = null)
-        {
-            IQueryable<PatientBenefit> query = _context.PatientBenefits;
-
-            if (includes != null)
-            {
-                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
-            }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == patientId && x.BenefitId == benefitId));
         }
 
         public Task<List<PatientBenefit>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)

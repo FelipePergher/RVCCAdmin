@@ -27,11 +27,11 @@ namespace RVCC.Data.Models
 
         public Globals.ResidenceType? ResidenceType { get; set; }
 
-        public double MonthlyAmmountResidence { get; set; }
+        public double MonthlyAmountResidence { get; set; }
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
     }
 }

@@ -50,7 +50,7 @@ export default (function () {
                 });
 
                 $(".deletePatientBenefitButton").click(function (e) {
-                    initDelete($(this).data("url"), $(this).data("patientid"), $(this).data("benefitid"));
+                    initDelete($(this).data("url"), $(this).data("patientbenefitid"));
                 });
             }
         });
@@ -72,7 +72,7 @@ export default (function () {
             patientBenefitTable.search("").draw("");
         });
 
-        $("#addPatientBenefitButton").click(function () { 
+        $("#addPatientBenefitButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initAddForm);
         });
     }
@@ -167,7 +167,7 @@ export default (function () {
         });
     }
 
-    function initDelete(url, patientId, benefitId) {
+    function initDelete(url, patientBenefitId) {
         global.swalWithBootstrapButtons.fire({
             title: 'Você têm certeza?',
             text: "Você não poderá reverter isso!",
@@ -175,7 +175,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { patientId: patientId, benefitId: benefitId })
+                $.post(url, { id: patientBenefitId })
                     .done(function (data, textStatus) {
                         $("#patientBenefitTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O benefício de paciente foi removido com sucesso.", "success");

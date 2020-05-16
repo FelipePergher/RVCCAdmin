@@ -73,11 +73,11 @@ namespace RVCC.Controllers.Api
             string deletePatientBenefit = string.Empty;
             if (!User.IsInRole(Roles.SocialAssistance))
             {
-                editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientId}/{patientBenefit.BenefitId}' data-toggle='modal' data-target='#modal-action' " +
+                editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
                    "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><i class='fas fa-edit'></i> Editar </a>";
 
-                deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientId='{patientBenefit.PatientId}' 
-                    data-benefitId='{patientBenefit.BenefitId}' class='deletePatientBenefitButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
+                    class='deletePatientBenefitButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
             }
 
             string actionsHtml =
