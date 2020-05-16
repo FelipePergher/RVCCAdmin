@@ -730,6 +730,11 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
         }
 
+        public IActionResult PrintPatient()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Control Enable/Disable Methods

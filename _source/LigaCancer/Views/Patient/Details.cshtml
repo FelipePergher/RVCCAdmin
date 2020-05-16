@@ -27,6 +27,17 @@
     </ol>
 
     <div class="container-fluid">
+        <div class="card h-100">
+            <div class="card-header">
+                <iframe src="/Patient/PrintPatient" style="display:none;" name="frame"></iframe>
+                <button class="btn btn-sm btn-primary float-left" onclick="frames['frame'].print()">
+                    <span class='fas fa-print'></span> Imprimir Paciente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
                 <div class="row">
@@ -34,7 +45,6 @@
                         <div class="card h-100">
                             <div class="card-header">
                                 <i class="fa fa-clipboard"></i> Perfil
-
                                 <a id="editPatientButton" asp-action="EditPatientProfile" asp-controller="Patient" asp-route-id="@Model.PatientId"
                                    data-toggle='modal' data-target='#modal-action' data-title='Editar Paciente' class='btn btn-sm btn-primary float-right'>
                                     <i class='fas fa-edit'></i> Editar Perfil
@@ -301,7 +311,8 @@
 
 @section scripts {
     <environment names="Development">
-        <script src="~/dist/js/patient-details.bundle.js"></script>
+        <script src="http://www.position-absolute.com/creation/print/jquery.min.js" type="text/javascript"></script>
+        <script src="http://www.position-absolute.com/creation/print/jquery.printPage.js" type="text/javascript"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/dist/js/patient-details.bundle.js" asp-append-version="true"></script>
