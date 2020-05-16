@@ -117,6 +117,29 @@ namespace RVCC.Controllers
             return View(patientDetails);
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [HttpGet]
+        public async Task<IActionResult> Print(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            // Todo get patient from database
+            Patient patient = await _patientService.FindByIdAsync(id);
+
+            var patientPrintViewModel = new PatientPrintViewModel
+            {
+                PatientProfile = new PatientProfileFormModel
+                {
+                    FirstName = patient.FirstName,
+                }
+            };
+
+            return View(patientPrintViewModel);
+        }
+
         #region Add Methods
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
@@ -747,11 +770,6 @@ namespace RVCC.Controllers
             patientInformationForm.SelectTreatmentPlaces = await SelectHelper.GetTreatmentPlaceSelectAsync(_treatmentPlaceService);
 
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
-        }
-
-        public IActionResult PrintPatient()
-        {
-            return View();
         }
 
         #endregion
