@@ -1,4 +1,8 @@
-﻿using RVCC.Business;
+﻿// <copyright file="Patient.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -63,8 +67,7 @@ namespace RVCC.Data.Models
         public ICollection<FileAttachment> FileAttachments { get; set; }
 
         public ICollection<PatientBenefit> PatientBenefits { get; set; }
-        
-        public ICollection<Stay> Stays { get; set; }
 
+        public ICollection<Stay> Stays { get; set; }
     }
 }

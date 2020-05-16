@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="FileAttachmentController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +42,6 @@ namespace RVCC.Controllers
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
         }
-
 
         [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
@@ -92,6 +95,7 @@ namespace RVCC.Controllers
                 {
                     await file.CopyToAsync(fileStream);
                 }
+
                 string imageUrl = Path.Combine(path + "\\" + fileName);
                 fileAttachment.FilePath = imageUrl;
             }

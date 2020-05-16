@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="HomeController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RVCC.Business;
 using RVCC.Business.Interface;
@@ -22,8 +26,7 @@ namespace RVCC.Controllers
             IDataRepository<Doctor> doctorService,
             IDataRepository<TreatmentPlace> treatmentPlaceService,
             IDataRepository<Medicine> medicineService,
-            IDataRepository<CancerType> cancerTypeService
-            )
+            IDataRepository<CancerType> cancerTypeService)
         {
             _patientService = patientService;
             _doctorService = doctorService;
@@ -46,6 +49,5 @@ namespace RVCC.Controllers
 
             return View(homeView);
         }
-
     }
 }

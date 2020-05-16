@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="CancerTypeFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.FormModel
 {
     public class CancerTypeFormModel
     {
-        public CancerTypeFormModel() { }
+        public CancerTypeFormModel()
+        {
+        }
 
         public CancerTypeFormModel(string name, int cancerTypeId)
         {

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="AddressController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -57,7 +61,7 @@ namespace RVCC.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmmountResidence = addressForm.ResidenceType != null
+                    MonthlyAmountResidence = addressForm.ResidenceType != null
                         ? (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0,
 
                     CreatedBy = user.Name
@@ -101,7 +105,7 @@ namespace RVCC.Controllers
                 ObservationAddress = address.ObservationAddress,
                 Street = address.Street,
                 ResidenceType = address.ResidenceType,
-                MonthlyAmmountResidence = address.MonthlyAmmountResidence.ToString("C2")
+                MonthlyAmmountResidence = address.MonthlyAmountResidence.ToString("C2")
             };
 
             return PartialView("Partials/_EditAddress", addressForm);
@@ -121,7 +125,7 @@ namespace RVCC.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                address.MonthlyAmmountResidence = addressForm.ResidenceType != null ?
+                address.MonthlyAmountResidence = addressForm.ResidenceType != null ?
                     (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0;
                 address.Street = addressForm.Street;
                 address.UpdatedBy = user.Name;
@@ -165,6 +169,5 @@ namespace RVCC.Controllers
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
-
     }
 }

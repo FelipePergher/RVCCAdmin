@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ActivePatient.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +23,7 @@ namespace RVCC.Data.Models
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
     }
 }

@@ -1,4 +1,8 @@
-﻿using RVCC.Data.Models.RelationModels;
+﻿// <copyright file="PatientInformation.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +27,7 @@ namespace RVCC.Data.Models
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
 
         #region Relations

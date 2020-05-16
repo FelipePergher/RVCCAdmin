@@ -1,4 +1,8 @@
-﻿namespace RVCC.Models.ViewModel
+﻿// <copyright file="FileAttachmentViewModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+namespace RVCC.Models.ViewModel
 {
     public class FileAttachmentViewModel
     {

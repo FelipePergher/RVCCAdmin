@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PatientApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -18,13 +22,11 @@ namespace RVCC.Controllers.Api
     public class PatientApiController : Controller
     {
         private readonly IDataRepository<Patient> _patientService;
-        private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly ILogger<PatientApiController> _logger;
 
-        public PatientApiController(IDataRepository<Patient> patientService, IDataRepository<FamilyMember> familyMemberService, ILogger<PatientApiController> logger)
+        public PatientApiController(IDataRepository<Patient> patientService, ILogger<PatientApiController> logger)
         {
             _patientService = patientService;
-            _familyMemberService = familyMemberService;
             _logger = logger;
         }
 
@@ -39,14 +41,20 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Patient> patients = await _patientService.GetAllAsync(
-                    new string[] {
-                        "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
-                        "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
-                        "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationMedicines",
-                        "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationMedicines.Medicine",
-                        "PatientInformation.PatientInformationCancerTypes.CancerType", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
-                    }, sortColumn, sortDirection, patientSearchModel);
+                string[] includes =
+                {
+                    "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
+                    "PatientInformation.PatientInformationDoctors",
+                    "PatientInformation.PatientInformationDoctors.Doctor",
+                    "PatientInformation.PatientInformationCancerTypes",
+                    "PatientInformation.PatientInformationMedicines",
+                    "PatientInformation.PatientInformationTreatmentPlaces",
+                    "PatientInformation.PatientInformationMedicines.Medicine",
+                    "PatientInformation.PatientInformationCancerTypes.CancerType",
+                    "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
+                };
+
+                IEnumerable<Patient> patients = await _patientService.GetAllAsync(includes, sortColumn, sortDirection, patientSearchModel);
 
                 IEnumerable<PatientViewModel> data = patients.Select(x => new PatientViewModel
                 {
@@ -58,7 +66,7 @@ namespace RVCC.Controllers.Api
                     JoinDate = x.JoinDate.ToString("dd/MM/yyyy"),
                     Phone = x.Phones.FirstOrDefault()?.Number,
                     Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
-                    TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? "" : x.PatientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy"),
+                    TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? string.Empty : x.PatientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy"),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
@@ -102,7 +110,6 @@ namespace RVCC.Controllers.Api
 
             if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
             {
-
                 string patientDetails = $@"<a href='/Patient/Details/{patient.PatientId}' class='dropdown-item' target='_blank'>
                                             <i class='fas fa-clipboard'></i> Detalhes do Paciente
                                         </a>";

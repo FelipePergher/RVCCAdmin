@@ -1,4 +1,8 @@
-﻿using RVCC.Business;
+﻿// <copyright file="Address.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Business;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,11 +27,11 @@ namespace RVCC.Data.Models
 
         public Globals.ResidenceType? ResidenceType { get; set; }
 
-        public double MonthlyAmmountResidence { get; set; }
+        public double MonthlyAmountResidence { get; set; }
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
     }
 }

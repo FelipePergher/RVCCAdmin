@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿// <copyright file="SelectHelper.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using System.Collections.Generic;

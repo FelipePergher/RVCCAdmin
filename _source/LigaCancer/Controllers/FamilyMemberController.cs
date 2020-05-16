@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="FamilyMemberController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -103,7 +107,7 @@ namespace RVCC.Controllers
 
             return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
-                DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : "",
+                DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
                 Name = familyMember.Name,
@@ -137,6 +141,7 @@ namespace RVCC.Controllers
                 _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
                 return BadRequest();
             }
+
             return PartialView("Partials/_EditFamilyMember", familyMemberForm);
         }
 
@@ -166,6 +171,5 @@ namespace RVCC.Controllers
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest();
         }
-
     }
 }

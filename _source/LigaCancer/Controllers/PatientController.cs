@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PatientController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -62,14 +66,19 @@ namespace RVCC.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            Patient patient = await _patientService.FindByIdAsync(id, new[]
+            string[] includes =
             {
-                "PatientInformation", "Naturality",
-                "PatientInformation.PatientInformationCancerTypes", "PatientInformation.PatientInformationCancerTypes.CancerType",
-                "PatientInformation.PatientInformationDoctors", "PatientInformation.PatientInformationDoctors.Doctor",
-                "PatientInformation.PatientInformationMedicines", "PatientInformation.PatientInformationMedicines.Medicine",
-                "PatientInformation.PatientInformationTreatmentPlaces", "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace",
-            });
+                "PatientInformation", "Naturality", "PatientInformation.PatientInformationCancerTypes",
+                "PatientInformation.PatientInformationCancerTypes.CancerType",
+                "PatientInformation.PatientInformationDoctors",
+                "PatientInformation.PatientInformationDoctors.Doctor",
+                "PatientInformation.PatientInformationMedicines",
+                "PatientInformation.PatientInformationMedicines.Medicine",
+                "PatientInformation.PatientInformationTreatmentPlaces",
+                "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace",
+            };
+
+            Patient patient = await _patientService.FindByIdAsync(id, includes);
 
             var patientDetails = new PatientDetailsViewModel
             {
@@ -190,8 +199,7 @@ namespace RVCC.Controllers
                     return Ok(new
                     {
                         ok = true,
-                        url = Url.Action("AddPatientInformation",
-                    new { id = patient.PatientInformation.PatientInformationId }),
+                        url = Url.Action("AddPatientInformation", new { id = patient.PatientInformation.PatientInformationId }),
                         title = "Adicionar Informação do Paciente"
                     });
                 }
@@ -230,14 +238,21 @@ namespace RVCC.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
-                    new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+                string[] includes =
+                {
+                    "PatientInformationCancerTypes",
+                    "PatientInformationDoctors",
+                    "PatientInformationMedicines",
+                    "PatientInformationTreatmentPlaces"
+                };
+
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, includes);
 
                 patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                     ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)
                     : DateTime.MinValue;
 
-                //Added Cancer Types to Patient Information
+                // Added Cancer Types to Patient Information
                 foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
                 {
                     bool isCancerTypeInt = int.TryParse(cancerTypeValue, out int num);
@@ -261,7 +276,7 @@ namespace RVCC.Controllers
                     patientInformation.PatientInformationCancerTypes.Add(new PatientInformationCancerType(cancerType));
                 }
 
-                //Added Doctor to Patient Information
+                // Added Doctor to Patient Information
                 foreach (string doctorValue in patientInformationForm.Doctors)
                 {
                     Doctor doctor = null;
@@ -284,7 +299,7 @@ namespace RVCC.Controllers
                     patientInformation.PatientInformationDoctors.Add(new PatientInformationDoctor(doctor));
                 }
 
-                //Added Treatment Place to Patient Information
+                // Added Treatment Place to Patient Information
                 foreach (string treatmentPlaceValue in patientInformationForm.TreatmentPlaces)
                 {
                     TreatmentPlace treatmentPlace = int.TryParse(treatmentPlaceValue, out int num) ?
@@ -297,7 +312,7 @@ namespace RVCC.Controllers
                     patientInformation.PatientInformationTreatmentPlaces.Add(new PatientInformationTreatmentPlace(treatmentPlace));
                 }
 
-                //Added Medicine to Patient Information
+                // Added Medicine to Patient Information
                 foreach (string item in patientInformationForm.Medicines)
                 {
                     Medicine medicine = int.TryParse(item, out int num) ?
@@ -513,8 +528,8 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
-                new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+            PatientInformation patientInformation =
+                await _patientInformationService.FindByIdAsync(id, new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
 
             if (patientInformation == null)
             {
@@ -548,29 +563,33 @@ namespace RVCC.Controllers
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
 
-                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id,
-                    new[] { "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces" });
+                string[] includes =
+                {
+                    "PatientInformationCancerTypes", "PatientInformationDoctors", "PatientInformationMedicines", "PatientInformationTreatmentPlaces"
+                };
+
+                PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, includes);
 
                 patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                    ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)
                    : DateTime.MinValue;
 
-                //Added Cancer Types to Patient Information
+                // Added Cancer Types to Patient Information
                 if (patientInformationForm.CancerTypes.Count == 0)
                 {
                     patientInformation.PatientInformationCancerTypes.Clear();
                 }
                 else
                 {
-                    //Filter to stay only selecteds that already stay on db
+                    // Filter to stay only selecteds that already stay on db
                     patientInformation.PatientInformationCancerTypes =
                         patientInformation.PatientInformationCancerTypes.Where(x => patientInformationForm.CancerTypes.Contains(x.CancerTypeId.ToString())).ToList();
 
-                    //Filter to stay on selected only that no stay on db yet
+                    // Filter to stay on selected only that no stay on db yet
                     patientInformationForm.CancerTypes =
                         patientInformationForm.CancerTypes.Where(x => !patientInformation.PatientInformationCancerTypes.Any(y => y.CancerTypeId.ToString() == x)).ToList();
 
-                    //Add news cancer types
+                    // Add news cancer types
                     foreach (string cancerTypeValue in patientInformationForm.CancerTypes)
                     {
                         CancerType cancerType = null;
@@ -594,22 +613,22 @@ namespace RVCC.Controllers
                     }
                 }
 
-                //Added Doctor to Patient Information
+                // Added Doctor to Patient Information
                 if (patientInformationForm.Doctors.Count == 0)
                 {
                     patientInformation.PatientInformationDoctors.Clear();
                 }
                 else
                 {
-                    //Filter to stay only selecteds that already stay on db
+                    // Filter to stay only selecteds that already stay on db
                     patientInformation.PatientInformationDoctors =
                         patientInformation.PatientInformationDoctors.Where(x => patientInformationForm.Doctors.Contains(x.DoctorId.ToString())).ToList();
 
-                    //Filter to stay on selected only that no stay on db yet
+                    // Filter to stay on selected only that no stay on db yet
                     patientInformationForm.Doctors =
                         patientInformationForm.Doctors.Where(x => !patientInformation.PatientInformationDoctors.Any(y => y.DoctorId.ToString() == x)).ToList();
 
-                    //Add news Doctors
+                    // Add news Doctors
                     foreach (string doctorValue in patientInformationForm.Doctors)
                     {
                         Doctor doctor = null;
@@ -633,22 +652,22 @@ namespace RVCC.Controllers
                     }
                 }
 
-                //Added Treatment Places to Patient Information
+                // Added Treatment Places to Patient Information
                 if (patientInformationForm.TreatmentPlaces.Count == 0)
                 {
                     patientInformation.PatientInformationTreatmentPlaces.Clear();
                 }
                 else
                 {
-                    //Filter to stay only selecteds that already stay on db
+                    // Filter to stay only selecteds that already stay on db
                     patientInformation.PatientInformationTreatmentPlaces =
                         patientInformation.PatientInformationTreatmentPlaces.Where(x => patientInformationForm.TreatmentPlaces.Contains(x.TreatmentPlaceId.ToString())).ToList();
 
-                    //Filter to stay on selected only that no stay on db yet
+                    // Filter to stay on selected only that no stay on db yet
                     patientInformationForm.TreatmentPlaces =
                         patientInformationForm.TreatmentPlaces.Where(x => !patientInformation.PatientInformationTreatmentPlaces.Any(y => y.TreatmentPlaceId.ToString() == x)).ToList();
 
-                    //Add news TreatmentPlaces
+                    // Add news TreatmentPlaces
                     foreach (string treatmentPlaceValue in patientInformationForm.TreatmentPlaces)
                     {
                         TreatmentPlace treatmentPlace = null;
@@ -672,22 +691,22 @@ namespace RVCC.Controllers
                     }
                 }
 
-                //Added Medicine to Patient Information
+                // Added Medicine to Patient Information
                 if (patientInformationForm.Medicines.Count == 0)
                 {
                     patientInformation.PatientInformationMedicines.Clear();
                 }
                 else
                 {
-                    //Filter to stay only selecteds that already stay on db
+                    // Filter to stay only selecteds that already stay on db
                     patientInformation.PatientInformationMedicines =
                         patientInformation.PatientInformationMedicines.Where(x => patientInformationForm.Medicines.Contains(x.MedicineId.ToString())).ToList();
 
-                    //Filter to stay on selected only that no stay on db yet
+                    // Filter to stay on selected only that no stay on db yet
                     patientInformationForm.Medicines =
                         patientInformationForm.Medicines.Where(x => !patientInformation.PatientInformationMedicines.Any(y => y.MedicineId.ToString() == x)).ToList();
 
-                    //Add news Doctors
+                    // Add news Doctors
                     foreach (string medicineValue in patientInformationForm.Medicines)
                     {
                         Medicine medicine = null;
@@ -770,11 +789,11 @@ namespace RVCC.Controllers
             var dateTime = DateTime.Parse(archivePatientForm.DateTime);
             switch (archivePatientForm.ArchivePatientType)
             {
-                case Globals.ArchivePatientType.death:
+                case Globals.ArchivePatientType.Death:
                     patient.ActivePatient.Death = true;
                     patient.ActivePatient.DeathDate = dateTime;
                     break;
-                case Globals.ArchivePatientType.discharge:
+                case Globals.ArchivePatientType.Discharge:
                     patient.ActivePatient.Discharge = true;
                     patient.ActivePatient.DischargeDate = dateTime;
                     break;

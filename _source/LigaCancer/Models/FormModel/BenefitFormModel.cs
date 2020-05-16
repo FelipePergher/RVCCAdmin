@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="BenefitFormModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.FormModel
 {
     public class BenefitFormModel
     {
-        public BenefitFormModel() { }
+        public BenefitFormModel()
+        {
+        }
 
         public BenefitFormModel(string name, int benefitId)
         {

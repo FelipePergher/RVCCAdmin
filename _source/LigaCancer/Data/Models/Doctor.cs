@@ -1,4 +1,8 @@
-﻿using RVCC.Data.Models.RelationModels;
+﻿// <copyright file="Doctor.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +10,9 @@ namespace RVCC.Data.Models
 {
     public class Doctor : RegisterData
     {
-        public Doctor() { }
+        public Doctor()
+        {
+        }
 
         public Doctor(string name, ApplicationUser user)
         {
@@ -29,7 +35,9 @@ namespace RVCC.Data.Models
         public string CRM { get; set; }
 
         #region Relations
+
         public ICollection<PatientInformationDoctor> PatientInformationDoctors { get; set; }
+
         #endregion
     }
 }

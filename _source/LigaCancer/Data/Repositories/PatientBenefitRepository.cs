@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="PatientBenefitRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.RelationModels;
@@ -31,7 +35,14 @@ namespace RVCC.Data.Repositories
 
         public Task<PatientBenefit> FindByIdAsync(string id, string[] includes = null)
         {
-            throw new NotImplementedException();
+            IQueryable<PatientBenefit> query = _context.PatientBenefits;
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
+
+            return Task.FromResult(query.FirstOrDefault(x => x.PatientBenefitId == int.Parse(id)));
         }
 
         public Task<TaskResult> CreateAsync(PatientBenefit patientBenefit)
@@ -53,7 +64,6 @@ namespace RVCC.Data.Repositories
             }
 
             return Task.FromResult(result);
-
         }
 
         public Task<TaskResult> DeleteAsync(PatientBenefit patientBenefit)
@@ -71,7 +81,7 @@ namespace RVCC.Data.Repositories
                 {
                     Code = e.HResult.ToString(),
                     Description = e.Message
-                }); ;
+                });
             }
 
             return Task.FromResult(result);
@@ -80,18 +90,6 @@ namespace RVCC.Data.Repositories
         public void Dispose()
         {
             _context?.Dispose();
-        }
-
-        public Task<PatientBenefit> FindByIdsAsync(int patientId, int benefitId, string[] includes = null)
-        {
-            IQueryable<PatientBenefit> query = _context.PatientBenefits;
-
-            if (includes != null)
-            {
-                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
-            }
-
-            return Task.FromResult(query.FirstOrDefault(x => x.PatientId == patientId && x.BenefitId == benefitId));
         }
 
         public Task<List<PatientBenefit>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
@@ -141,19 +139,21 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<PatientBenefit> GetOrdinationPatientBenefits(IQueryable<PatientBenefit> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Benefit":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Benefit.Name) : query.OrderByDescending(x => x.Benefit.Name);
-                case "Date":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.BenefitDate) : query.OrderByDescending(x => x.BenefitDate);
-                case "Quantity":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Quantity) : query.OrderByDescending(x => x.Quantity);
-                default:
-                    return sortDirection == "asc"
-                        ? query.OrderBy(x => x.Patient.FirstName + x.Patient.Surname)
-                        : query.OrderByDescending(x => x.Patient.FirstName + x.Patient.Surname);
-            }
+                "Benefit" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Benefit.Name)
+                    : query.OrderByDescending(x => x.Benefit.Name),
+                "Date" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.BenefitDate)
+                    : query.OrderByDescending(x => x.BenefitDate),
+                "Quantity" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Quantity)
+                    : query.OrderByDescending(x => x.Quantity),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Patient.FirstName + x.Patient.Surname)
+                    : query.OrderByDescending(x => x.Patient.FirstName + x.Patient.Surname)
+            };
         }
 
         private IQueryable<PatientBenefit> GetFilteredPatientBenefits(IQueryable<PatientBenefit> query, PatientBenefitSearchModel patientBenefitSearch)

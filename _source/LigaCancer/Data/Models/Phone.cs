@@ -1,4 +1,8 @@
-﻿using RVCC.Business;
+﻿// <copyright file="Phone.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Business;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,7 +10,9 @@ namespace RVCC.Data.Models
 {
     public class Phone : RegisterData
     {
-        public Phone() { }
+        public Phone()
+        {
+        }
 
         public Phone(string patientId, string number, Globals.PhoneType? phoneType, string observationNote, ApplicationUser user)
         {
@@ -28,7 +34,7 @@ namespace RVCC.Data.Models
 
         public int PatientId { get; set; }
 
-        [ForeignKey("PatientId")]
+        [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
     }
 }

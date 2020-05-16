@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="UserController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +21,6 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class UserController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<UserController> _logger;
@@ -25,13 +28,11 @@ namespace RVCC.Controllers
 
         public UserController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<UserController> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
@@ -76,14 +77,14 @@ namespace RVCC.Controllers
                     string callbackUrl = Url.Page(
                        "/Account/ConfirmEmail",
                        pageHandler: null,
-                       values: new { area = "Identity", userId = user.Id, code = code },
+                       values: new { area = "Identity", userId = user.Id, code },
                        protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirme seu email",
-                        $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                    await _emailSender.SendEmailAsync(user.Email, "Confirme seu email", $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
 
                     return Ok();
                 }
+
                 _logger.LogError(result.Errors.FirstOrDefault().Description);
                 return BadRequest();
             }
@@ -155,6 +156,7 @@ namespace RVCC.Controllers
 
                     return Ok();
                 }
+
                 _logger.LogError(result.Errors.FirstOrDefault().Description);
             }
 

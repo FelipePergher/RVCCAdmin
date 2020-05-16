@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="StayRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -48,7 +52,6 @@ namespace RVCC.Data.Repositories
             }
 
             return Task.FromResult(result);
-
         }
 
         public Task<TaskResult> DeleteAsync(Stay stay)
@@ -66,7 +69,7 @@ namespace RVCC.Data.Repositories
                 {
                     Code = e.HResult.ToString(),
                     Description = e.Message
-                }); ;
+                });
             }
 
             return Task.FromResult(result);
@@ -136,17 +139,17 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Stay> GetOrdinationStays(IQueryable<Stay> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Date":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.StayDateTime.Date) : query.OrderByDescending(x => x.StayDateTime.Date);
-                case "City":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
-                case "Note":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Note) : query.OrderByDescending(x => x.Note);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.PatientName) : query.OrderByDescending(x => x.PatientName);
-            }
+                "Date" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.StayDateTime.Date)
+                    : query.OrderByDescending(x => x.StayDateTime.Date),
+                "City" => sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City),
+                "Note" => sortDirection == "asc" ? query.OrderBy(x => x.Note) : query.OrderByDescending(x => x.Note),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.PatientName)
+                    : query.OrderByDescending(x => x.PatientName)
+            };
         }
 
         private IQueryable<Stay> GetFilteredStays(IQueryable<Stay> query, StaySearchModel staySearch)

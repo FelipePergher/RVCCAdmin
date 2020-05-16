@@ -1,4 +1,8 @@
-﻿using RVCC.Data.Models.RelationModels;
+﻿// <copyright file="CancerType.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +10,9 @@ namespace RVCC.Data.Models
 {
     public class CancerType : RegisterData
     {
-        public CancerType() { }
+        public CancerType()
+        {
+        }
 
         public CancerType(string name, ApplicationUser user)
         {

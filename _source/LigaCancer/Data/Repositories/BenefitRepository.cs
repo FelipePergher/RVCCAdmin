@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="BenefitRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -84,8 +87,7 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.BenefitId == int.Parse(id)));
         }
 
-        public Task<List<Benefit>> GetAllAsync(string[] includes = null,
-            string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<Benefit>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<Benefit> query = _context.Benefits;
 
@@ -141,15 +143,11 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Benefit> GetOrdinationBenefit(IQueryable<Benefit> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-                case "Note":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Note) : query.OrderByDescending(x => x.Note);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name);
-            }
+                "Note" => sortDirection == "asc" ? query.OrderBy(x => x.Note) : query.OrderByDescending(x => x.Note),
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
+            };
         }
 
         private IQueryable<Benefit> GetFilteredBenefits(IQueryable<Benefit> query, BenefitSearchModel benefitSearch)

@@ -1,4 +1,8 @@
-﻿using RVCC.Models.FormModel;
+﻿// <copyright file="PatientDetailsViewModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using RVCC.Models.FormModel;
 
 namespace RVCC.Models.ViewModel
 {
@@ -15,6 +19,5 @@ namespace RVCC.Models.ViewModel
         public PatientInformationFormModel PatientInformation { get; set; }
 
         public NaturalityFormModel Naturality { get; set; }
-
     }
 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿// <copyright file="EmailSender.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -34,9 +38,7 @@ namespace RVCC.Services
                 EnableSsl = enableSSL
             };
             return client.SendMailAsync(
-                new MailMessage(emailFrom, email, subject, htmlMessage) { IsBodyHtml = true }
-            );
+                new MailMessage(emailFrom, email, subject, htmlMessage) { IsBodyHtml = true });
         }
-
     }
 }

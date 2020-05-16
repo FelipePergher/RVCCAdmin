@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="AddressRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -131,27 +134,29 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Address> GetOrdinationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Street":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
-                case "Neighborhood":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Neighborhood) : query.OrderByDescending(x => x.Neighborhood);
-                case "City":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City);
-                case "HouseNumber":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.HouseNumber) : query.OrderByDescending(x => x.HouseNumber);
-                case "Complement":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Complement) : query.OrderByDescending(x => x.Complement);
-                case "ResidenceType":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ResidenceType) : query.OrderByDescending(x => x.ResidenceType);
-                case "MonthlyAmmountResidence":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.MonthlyAmmountResidence) : query.OrderByDescending(x => x.MonthlyAmmountResidence);
-                case "ObservationAddress":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ObservationAddress) : query.OrderByDescending(x => x.ObservationAddress);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street);
-            }
+                "Neighborhood" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Neighborhood)
+                    : query.OrderByDescending(x => x.Neighborhood),
+                "City" => sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City),
+                "HouseNumber" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.HouseNumber)
+                    : query.OrderByDescending(x => x.HouseNumber),
+                "Complement" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Complement)
+                    : query.OrderByDescending(x => x.Complement),
+                "ResidenceType" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ResidenceType)
+                    : query.OrderByDescending(x => x.ResidenceType),
+                "MonthlyAmountResidence" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.MonthlyAmountResidence)
+                    : query.OrderByDescending(x => x.MonthlyAmountResidence),
+                "ObservationAddress" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ObservationAddress)
+                    : query.OrderByDescending(x => x.ObservationAddress),
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Street) : query.OrderByDescending(x => x.Street)
+            };
         }
 
         private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)

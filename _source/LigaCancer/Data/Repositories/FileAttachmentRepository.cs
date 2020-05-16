@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="FileAttachmentRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -83,8 +87,7 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.FileAttachmentId == int.Parse(id)));
         }
 
-        public Task<List<FileAttachment>> GetAllAsync(string[] includes = null,
-            string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<FileAttachment>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<FileAttachment> query = _context.FileAttachments;
 
@@ -132,15 +135,15 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<FileAttachment> GetOrdinationFiles(IQueryable<FileAttachment> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FileName) : query.OrderByDescending(x => x.FileName);
-                case "Size":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FileSize) : query.OrderByDescending(x => x.FileSize);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FileSize) : query.OrderByDescending(x => x.FileSize);
-            }
+                "Name" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.FileName)
+                    : query.OrderByDescending(x => x.FileName),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.FileSize)
+                    : query.OrderByDescending(x => x.FileSize)
+            };
         }
 
         #endregion

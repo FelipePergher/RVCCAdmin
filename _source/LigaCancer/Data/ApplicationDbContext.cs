@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿// <copyright file="ApplicationDbContext.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RVCC.Data.Models;
 using RVCC.Data.Models.RelationModels;
@@ -17,7 +21,8 @@ namespace RVCC.Data
             base.OnModelCreating(builder);
 
             #region Many to Many Relations
-            //Patient Information and Cancer Type
+
+            // Patient Information and Cancer Type
             builder.Entity<PatientInformationCancerType>()
                 .HasKey(bc => new { bc.PatientInformationId, bc.CancerTypeId });
 
@@ -33,7 +38,7 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.CancerTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //Patient Information and Doctor
+            // Patient Information and Doctor
             builder.Entity<PatientInformationDoctor>()
                .HasKey(bc => new { bc.PatientInformationId, bc.DoctorId });
 
@@ -49,7 +54,7 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //Patient Information and Treatment Place
+            // Patient Information and Treatment Place
             builder.Entity<PatientInformationTreatmentPlace>()
                .HasKey(bc => new { bc.PatientInformationId, bc.TreatmentPlaceId });
 
@@ -65,7 +70,7 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.TreatmentPlaceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //Patient Information and Medicine
+            // Patient Information and Medicine
             builder.Entity<PatientInformationMedicine>()
               .HasKey(bc => new { bc.PatientInformationId, bc.MedicineId });
 
@@ -79,22 +84,6 @@ namespace RVCC.Data
                 .HasOne(bc => bc.Medicine)
                 .WithMany(c => c.PatientInformationMedicines)
                 .HasForeignKey(bc => bc.MedicineId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            //Patient and Benefit
-            builder.Entity<PatientBenefit>()
-                .HasKey(bc => new { bc.PatientId, bc.BenefitId });
-
-            builder.Entity<PatientBenefit>()
-                .HasOne(bc => bc.Patient)
-                .WithMany(b => b.PatientBenefits)
-                .HasForeignKey(bc => bc.PatientId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<PatientBenefit>()
-                .HasOne(bc => bc.Benefit)
-                .WithMany(c => c.PatientBenefits)
-                .HasForeignKey(bc => bc.BenefitId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
@@ -136,12 +125,11 @@ namespace RVCC.Data
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 
         public DbSet<Presence> Presences { get; set; }
-        
-        public DbSet<Benefit> Benefits { get; set; }
-        
-        public DbSet<PatientBenefit> PatientBenefits { get; set; }
-        
-        public DbSet<Stay> Stays { get; set; }
 
+        public DbSet<Benefit> Benefits { get; set; }
+
+        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+
+        public DbSet<Stay> Stays { get; set; }
     }
 }

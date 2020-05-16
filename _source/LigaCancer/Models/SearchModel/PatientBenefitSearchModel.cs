@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="PatientBenefitSearchModel.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.SearchModel

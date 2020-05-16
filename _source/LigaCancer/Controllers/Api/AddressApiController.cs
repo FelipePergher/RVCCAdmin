@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="AddressApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -45,7 +49,7 @@ namespace RVCC.Controllers.Api
                     HouseNumber = x.HouseNumber != null ? x.HouseNumber.ToString() : string.Empty,
                     Complement = x.Complement,
                     ResidenceType = Globals.GetDisplayName(x.ResidenceType),
-                    MonthlyAmmountResidence = x.MonthlyAmmountResidence == 0 ? string.Empty : x.MonthlyAmmountResidence.ToString("C2"),
+                    MonthlyAmmountResidence = x.MonthlyAmountResidence == 0 ? string.Empty : x.MonthlyAmountResidence.ToString("C2"),
                     ObservationAddress = x.ObservationAddress,
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
@@ -67,7 +71,6 @@ namespace RVCC.Controllers.Api
         {
             string editAddress = string.Empty;
             string deleteAddress = string.Empty;
-
 
             if (!User.IsInRole(Roles.SocialAssistance))
             {

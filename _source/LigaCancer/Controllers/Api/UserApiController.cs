@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="UserApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -43,14 +47,14 @@ namespace RVCC.Controllers.Api
 
                 var users = _userManager.Users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
 
-                //Remove admin user
+                // Remove admin user
                 int adminUserCount = _userManager.Users.Count(x => x.Email.ToLower() == adminEmail.ToLower());
                 if (adminUserCount > 0)
                 {
                     users = users.Where(x => x.Email.ToLower() != adminEmail.ToLower()).ToList();
                 }
 
-                //Filter
+                // Filter
                 if (!string.IsNullOrEmpty(name))
                 {
                     users = users.Where(x => x.Name.ToLower().Contains(name)).ToList();
@@ -61,13 +65,13 @@ namespace RVCC.Controllers.Api
                     UserId = x.Id,
                     Name = x.Name,
                     Email = x.Email,
-                    ConfirmedEmail = _userManager.IsEmailConfirmedAsync(x).Result ? "<span class='fa fa-check'></span>" : "",
-                    Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : "",
+                    ConfirmedEmail = _userManager.IsEmailConfirmedAsync(x).Result ? "<span class='fa fa-check'></span>" : string.Empty,
+                    Lockout = x.LockoutEnd != null ? "<span class='fa fa-check'></span>" : string.Empty,
                     Role = Roles.GetRoleName(_userManager.GetRolesAsync(x).Result.FirstOrDefault()),
                     Actions = GetActionsHtml(x)
                 }).ToList();
 
-                //Sort
+                // Sort
                 if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
                 {
                     data = GetOrdinationUser(data, sortColumn, sortDirection);
@@ -124,21 +128,27 @@ namespace RVCC.Controllers.Api
 
         private IEnumerable<UserViewModel> GetOrdinationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "Name":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name).ToList() : query.OrderByDescending(x => x.Name).ToList();
-                case "Email":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Email).ToList() : query.OrderByDescending(x => x.Email).ToList();
-                case "ConfirmedEmail":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.ConfirmedEmail).ToList() : query.OrderByDescending(x => x.ConfirmedEmail).ToList();
-                case "Lockout":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Lockout).ToList() : query.OrderByDescending(x => x.Lockout).ToList();
-                case "Role":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Role).ToList() : query.OrderByDescending(x => x.Role).ToList();
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Name).ToList() : query.OrderByDescending(x => x.Name).ToList();
-            }
+                "Name" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Name).ToList()
+                    : query.OrderByDescending(x => x.Name).ToList(),
+                "Email" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Email).ToList()
+                    : query.OrderByDescending(x => x.Email).ToList(),
+                "ConfirmedEmail" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ConfirmedEmail).ToList()
+                    : query.OrderByDescending(x => x.ConfirmedEmail).ToList(),
+                "Lockout" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Lockout).ToList()
+                    : query.OrderByDescending(x => x.Lockout).ToList(),
+                "Role" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Role).ToList()
+                    : query.OrderByDescending(x => x.Role).ToList(),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Name).ToList()
+                    : query.OrderByDescending(x => x.Name).ToList()
+            };
         }
 
         #endregion

@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="PatientRepository.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
@@ -40,7 +44,6 @@ namespace RVCC.Data.Repositories
                     Code = e.HResult.ToString(),
                     Description = e.Message
                 });
-
             }
 
             return Task.FromResult(result);
@@ -152,23 +155,23 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<Patient> GetOrdinationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
         {
-            switch (sortColumn)
+            return sortColumn switch
             {
-                case "FirstName":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
-                case "LastName":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.Surname) : query.OrderByDescending(x => x.Surname);
-                case "RG":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.RG) : query.OrderByDescending(x => x.RG);
-                case "CPF":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF);
-                case "DateOfBirth":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.DateOfBirth) : query.OrderByDescending(x => x.DateOfBirth);
-                case "JoinDate":
-                    return sortDirection == "asc" ? query.OrderBy(x => x.JoinDate) : query.OrderByDescending(x => x.JoinDate);
-                default:
-                    return sortDirection == "asc" ? query.OrderBy(x => x.FirstName) : query.OrderByDescending(x => x.FirstName);
-            }
+                "LastName" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Surname)
+                    : query.OrderByDescending(x => x.Surname),
+                "RG" => sortDirection == "asc" ? query.OrderBy(x => x.RG) : query.OrderByDescending(x => x.RG),
+                "CPF" => sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF),
+                "DateOfBirth" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.DateOfBirth)
+                    : query.OrderByDescending(x => x.DateOfBirth),
+                "JoinDate" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.JoinDate)
+                    : query.OrderByDescending(x => x.JoinDate),
+                _ => sortDirection == "asc"
+                    ? query.OrderBy(x => x.FirstName)
+                    : query.OrderByDescending(x => x.FirstName)
+            };
         }
 
         private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, PatientSearchModel patientSearch)

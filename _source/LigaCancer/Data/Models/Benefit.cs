@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="Benefit.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using RVCC.Data.Models.RelationModels;
 
@@ -6,7 +10,9 @@ namespace RVCC.Data.Models
 {
     public class Benefit : RegisterData
     {
-        public Benefit() { }
+        public Benefit()
+        {
+        }
 
         public Benefit(string name, ApplicationUser user)
         {

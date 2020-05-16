@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="PatientBenefitApiController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.RelationModels;
+using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RVCC.Data.Repositories;
 
 namespace RVCC.Controllers.Api
 {
@@ -47,8 +51,8 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId) 
-                    ? _patientBenefitService.Count() 
+                int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId)
+                    ? _patientBenefitService.Count()
                     : ((PatientBenefitRepository)_patientBenefitService).CountByPatient(int.Parse(patientBenefitSearchModel.PatientId));
                 int recordsFiltered = patientBenefits.Count();
 
@@ -69,11 +73,11 @@ namespace RVCC.Controllers.Api
             string deletePatientBenefit = string.Empty;
             if (!User.IsInRole(Roles.SocialAssistance))
             {
-                editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientId}/{patientBenefit.BenefitId}' data-toggle='modal' data-target='#modal-action' " +
+                editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
                    "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><i class='fas fa-edit'></i> Editar </a>";
 
-                deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientId='{patientBenefit.PatientId}' 
-                    data-benefitId='{patientBenefit.BenefitId}' class='deletePatientBenefitButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
+                    class='deletePatientBenefitButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
             }
 
             string actionsHtml =

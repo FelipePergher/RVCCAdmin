@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="BenefitController.cs" company="Felipe Pergher">
+// Copyright (c) Felipe Pergher. All Rights Reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,7 +10,6 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -138,6 +141,5 @@ namespace RVCC.Controllers
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
         }
-
     }
 }
