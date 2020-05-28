@@ -173,12 +173,12 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.Benefit.Name.Contains(patientBenefitSearch.Benefit) || x.Benefit.Name.Contains(patientBenefitSearch.Benefit));
             }
 
-            if (patientBenefitSearch.DateFrom != null)
+            if (patientBenefitSearch.DateFrom != null && string.IsNullOrEmpty(patientBenefitSearch.PatientId))
             {
                 query = query.Where(x => x.BenefitDate.Date >= DateTime.Parse(patientBenefitSearch.DateFrom).Date);
             }
 
-            if (patientBenefitSearch.DateTo != null)
+            if (patientBenefitSearch.DateTo != null && string.IsNullOrEmpty(patientBenefitSearch.PatientId))
             {
                 query = query.Where(x => x.BenefitDate.Date <= DateTime.Parse(patientBenefitSearch.DateTo).Date);
             }
