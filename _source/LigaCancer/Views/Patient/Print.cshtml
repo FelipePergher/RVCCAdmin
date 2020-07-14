@@ -1,0 +1,437 @@
+﻿@using RVCC.Business
+@model RVCC.Models.ViewModel.PatientPrintViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta NAME="robots" CONTENT="noindex,nofollow">
+
+    <environment names="Development">
+        <link href="~/dist/css/common.bundle.css" rel="stylesheet" />
+        <link href="~/dist/css/patient-print.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/common.bundle.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/dist/css/patient-print.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+</head>
+<body class="app flex-row align-items-center bg-white">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <img class="logo" src="~/img/logo/logo-oficial.png" width="150" />
+            </div>
+
+            <div class="col-9 text-center">
+                <p class="h1">Rede Videirense de Combate ao Câncer</p>
+                <p class="h3">Rua Lauro Muller, 288</p>
+                <p class="h3">Videira-SC</p>
+                <p class="h6">@DateTime.Now</p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Perfil do paciente
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Nome Completo:</label>
+                <span class="d-flex align-items-end">@Model.FullName</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Rg:</label>
+                <span class="d-flex align-items-end">@Model.RG</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Cpf:</label>
+                <span class="d-flex align-items-end">@Model.CPF</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Profissão:</label>
+                <span class="d-flex align-items-end">@Model.Profession</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Genêro:</label>
+                <span class="d-flex align-items-end">@Globals.GetDisplayName(Model.Sex)</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Estado Civil:</label>
+                <span class="d-flex align-items-end">@Globals.GetDisplayName(Model.CivilState)</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Data de Nascimento:</label>
+                <span class="d-flex align-items-end">@Model.DateOfBirth.ToShortDateString()</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Data de ingresso:</label>
+                <span class="d-flex align-items-end">@Model.JoinDate.ToShortDateString()</span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Renda Mensal:</label>
+                <span class="d-flex align-items-end">@(Model.MonthlyIncome > 0 ? $"R$ {Model.MonthlyIncome.ToString("N")}" : string.Empty) </span>
+            </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Grupo de Convivência:</label>
+                <span class="d-flex align-items-end">@(Model.FamiliarityGroup ? "Participa": "Não participa")</span>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Informações do paciente
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+            </div>
+
+            <div class="col-12 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Inicio do tratamento:</label>
+                <span class="d-flex align-items-end">@(Model.TreatmentBeginDate == DateTime.MinValue ? string.Empty : Model.TreatmentBeginDate.ToShortDateString())</span>
+            </div>
+
+            <div class="col-12 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Cancêres:</label>
+                <span class="d-flex align-items-end">@string.Join(", ", Model.CancerTypes)</span>
+            </div>
+
+            <div class="col-12 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Remédios:</label>
+                <span class="d-flex align-items-end">@string.Join(", ", Model.Medicines)</span>
+            </div>
+
+            <div class="col-12 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Locais de tratamento:</label>
+                <span class="d-flex align-items-end">@string.Join(", ", Model.TreatmentPlaces)</span>
+            </div>
+
+            <div class="col-12 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Médicos:</label>
+                <span class="d-flex align-items-end">@string.Join(", ", Model.Doctors)</span>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Naturalidade
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+            </div>
+
+            <div class="col-4 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Cidade:</label>
+                <span class="d-flex align-items-end">@Model.City</span>
+            </div>
+
+            <div class="col-4 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Estado:</label>
+                <span class="d-flex align-items-end">@Model.State</span>
+            </div>
+
+            <div class="col-4 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Páis:</label>
+                <span class="d-flex align-items-end">@Model.Country</span>
+            </div>
+
+
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Telefones
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Numero</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var phone in Model.Phones)
+                        {
+                            <tr>
+                                <td>@phone.Number</td>
+                                <td>@phone.PhoneType</td>
+                                <td>@phone.ObservationNote</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Endereços
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rua</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Cidade</th>
+                            <th scope="col">Nº</th>
+                            <th scope="col">Complemento</th>
+                            <th scope="col">Residência</th>
+                            <th scope="col">Valor Mensal</th>
+                            <th scope="col">Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var address in Model.Addresses)
+                        {
+                            <tr>
+                                <td>@address.Street</td>
+                                <td>@address.Neighborhood</td>
+                                <td>@address.City</td>
+                                <td>@address.HouseNumber</td>
+                                <td>@address.Complement</td>
+                                <td>@address.ResidenceType</td>
+                                <td>R$ @address.MonthlyAmmountResidence</td>
+                                <td>@address.ObservationAddress</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <p class="h2">
+                    Membros Familiares
+                </p>
+            </div>
+
+            <div class="col-12">
+                <hr class="w-100" />
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Parentesco</th>
+                            <th scope="col">Data de Nascimento</th>
+                            <th scope="col">Genêro</th>
+                            <th scope="col">Renda</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var familyMember in Model.FamilyMembers)
+                        {
+                            <tr>
+                                <td>@familyMember.Name</td>
+                                <td>@familyMember.Kinship</td>
+                                <td>@familyMember.DateOfBirth</td>
+                                <td>@familyMember.Sex</td>
+                                <td>R$ @familyMember.MonthlyIncome</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @if (Model.Presences.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Presenças Na Rede
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data</th>
+                                <th scope="col">Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var presence in Model.Presences)
+                            {
+                                <tr>
+                                    <td>@presence.Date</td>
+                                    <td>@presence.Hour</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if (Model.Benefits.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Benefícios Recebidos
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Beneficio</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var benefit in Model.Benefits)
+                            {
+                                <tr>
+                                    <td>@benefit.Benefit</td>
+                                    <td>@benefit.Date</td>
+                                    <td>@benefit.Quantity</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if (Model.Stays.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Estadias Recebidas
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Data</th>
+                                <th scope="col">Cidade</th>
+                                <th scope="col">Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stays in Model.Stays)
+                            {
+                                <tr>
+                                    <td>@stays.Date</td>
+                                    <td>@stays.City</td>
+                                    <td>@stays.Note</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if (Model.Files.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Arquivos Salvos
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Tamanho</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var file in Model.Files)
+                            {
+                                <tr>
+                                    <td>@file.Name</td>
+                                    <td>@file.Size</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-5 pt-5 justify-content-end text-center">
+            <div class="col-6">
+                <p class="border_bottom--dashed"></p>
+                <span>Assinatura: Responsável RVCC</span>
+            </div>
+            <div class="col-6">
+                <p class="border_bottom--dashed"></p>
+                <span>Assinatura: @Model.FullName</span>
+            </div>
+        </div>
+
+    </div>
+
+    <environment names="Development">
+        <script src="~/dist/js/vendors.bundle.js"></script>
+        <script src="~/dist/js/common.bundle.js"></script>
+        <script src="~/dist/js/patient-print.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/vendors.bundle.js" asp-append-version="true"></script>
+        <script src="~/dist/js/common.bundle.js" asp-append-version="true"></script>
+        <script src="~/dist/js/patient-print.bundle.js" asp-append-version="true"></script>
+    </environment>
+</body>
+</html>

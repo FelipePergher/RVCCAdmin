@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models
 {
@@ -13,6 +14,9 @@ namespace RVCC.Data.Models
         public int PresenceId { get; set; }
 
         public int PatientId { get; set; }
+
+        [ForeignKey(nameof(PatientId))]
+        public Patient Patient { get; set; }
 
         public string Name { get; set; }
 

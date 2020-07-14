@@ -252,6 +252,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Telefone adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -288,6 +289,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Telefone atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -315,6 +317,7 @@ export default (function () {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
                         $("#phoneTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
@@ -395,6 +398,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Endereço adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -436,6 +440,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Endereço atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -463,6 +468,7 @@ export default (function () {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
                         $("#addressTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
@@ -495,7 +501,7 @@ export default (function () {
                 { data: "benefit", title: "Benefício", name: "Benefit" },
                 { data: "date", title: "Data do benefício", name: "Date" },
                 { data: "quantity", title: "Quantidade", name: "Quantity" }
-            ],
+            ]
         });
         $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
     }
@@ -519,9 +525,7 @@ export default (function () {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
-            order: [1, "asc"],
             columns: [
-                { data: "patient", title: "Nome do Paciente", name: "Patient" },
                 { data: "date", title: "Data da presença", name: "Date" },
                 { data: "hour", title: "Hora da presença", name: "Hour" }
             ],
@@ -550,8 +554,7 @@ export default (function () {
             },
             order: [1, "asc"],
             columns: [
-                { data: "patient", title: "Nome do Paciente", name: "Patient" },
-                { data: "date", title: "Data da presença", name: "Date" },
+                { data: "date", title: "Data da estadia", name: "Date" },
                 { data: "city", title: "Cidade", name: "City" },
                 { data: "note", title: "Notas", name: "Note" }
             ],
@@ -638,6 +641,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Membro familiar adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -684,6 +688,7 @@ export default (function () {
                             $('.modal-backdrop').remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
                             global.swalWithBootstrapButtons.fire("Sucesso!", "Membro familiar atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
@@ -711,6 +716,7 @@ export default (function () {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
                         $("#familyMemberTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar removido com sucesso.", "success");
                     }).fail(function (error) {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
@@ -743,10 +749,10 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
                 {
-                    data: "size", title: "Tamanho", name: "Size",
                     render: function (data, type, row, meta) {
                         return row.size + " Mb";
-                    }
+                    },
+                    data: "size", title: "Tamanho", name: "Size"
                 },
                 {
                     data: "name", title: "Arquivo", name: "Name",
@@ -810,6 +816,7 @@ export default (function () {
 
         myDropzone.on("success", function (file) {
             $("#attachmentsTable").DataTable().ajax.reload(null, false);
+            reloadIframe();
         });
     }
 
@@ -824,6 +831,7 @@ export default (function () {
                 $.post(url, { id: id })
                     .done(function (data, textStatus) {
                         $("#attachmentsTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O arquivo foi removido com sucesso.", "success");
                     }).fail(function (error) {
                         globa.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
@@ -832,4 +840,8 @@ export default (function () {
         });
     }
 
+    // Reload Iframe
+    function reloadIframe() {
+        document.getElementById('printPatient').contentDocument.location.reload(true);
+    }
 }());

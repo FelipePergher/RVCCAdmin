@@ -117,6 +117,104 @@ namespace RVCC.Controllers
             return View(patientDetails);
         }
 
+        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [HttpGet]
+        public async Task<IActionResult> Print(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            string[] includes =
+            {
+                "Phones", "Addresses", "FamilyMembers", "Presences", "Stays", "FileAttachments",
+                "PatientBenefits", "PatientBenefits.Benefit",
+                "PatientInformation", "Naturality",
+                "PatientInformation.PatientInformationCancerTypes",
+                "PatientInformation.PatientInformationCancerTypes.CancerType",
+                "PatientInformation.PatientInformationDoctors",
+                "PatientInformation.PatientInformationDoctors.Doctor",
+                "PatientInformation.PatientInformationMedicines",
+                "PatientInformation.PatientInformationMedicines.Medicine",
+                "PatientInformation.PatientInformationTreatmentPlaces",
+                "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace",
+            };
+
+            Patient patient = await _patientService.FindByIdAsync(id, includes);
+
+            var patientPrintViewModel = new PatientPrintViewModel
+            {
+                FullName = $"{patient.FirstName} {patient.Surname}",
+                RG = patient.RG,
+                CPF = patient.CPF,
+                CivilState = patient.CivilState,
+                DateOfBirth = patient.DateOfBirth,
+                FamiliarityGroup = patient.FamiliarityGroup,
+                JoinDate = patient.JoinDate,
+                MonthlyIncome = patient.MonthlyIncome,
+                Profession = patient.Profession,
+                Sex = patient.Sex,
+                CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
+                Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
+                Medicines = patient.PatientInformation.PatientInformationMedicines.Select(x => x.Medicine.Name).ToList(),
+                TreatmentPlaces = patient.PatientInformation.PatientInformationTreatmentPlaces.Select(x => x.TreatmentPlace.City).ToList(),
+                TreatmentBeginDate = patient.PatientInformation.TreatmentBeginDate,
+                City = patient.Naturality.City,
+                Country = patient.Naturality.Country,
+                State = patient.Naturality.State,
+                Phones = patient.Phones.Select(x => new PhoneViewModel
+                {
+                    Number = x.Number,
+                    PhoneType = Globals.GetDisplayName(x.PhoneType),
+                    ObservationNote = x.ObservationNote
+                }),
+                Addresses = patient.Addresses.Select(x => new AddressViewModel
+                {
+                    Street = x.Street,
+                    Neighborhood = x.Neighborhood,
+                    City = x.City,
+                    HouseNumber = x.HouseNumber,
+                    Complement = x.Complement,
+                    ResidenceType = Globals.GetDisplayName(x.ResidenceType),
+                    MonthlyAmmountResidence = x.MonthlyAmountResidence.ToString("N"),
+                    ObservationAddress = x.ObservationAddress,
+                }),
+                FamilyMembers = patient.FamilyMembers.Select(x => new FamilyMemberViewModel
+                {
+                    Name = x.Name,
+                    Kinship = x.Kinship,
+                    DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToShortDateString() : string.Empty,
+                    Sex = Globals.GetDisplayName(x.Sex),
+                    MonthlyIncome = x.MonthlyIncome.ToString("N")
+                }),
+                Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
+                {
+                    Benefit = x.Benefit.Name,
+                    Date = x.BenefitDate.ToShortDateString(),
+                    Quantity = x.Quantity.ToString()
+                }),
+                Presences = patient.Presences.Select(x => new PresenceViewModel
+                {
+                    Date = x.PresenceDateTime.ToShortDateString(),
+                    Hour = x.PresenceDateTime.ToShortTimeString()
+                }),
+                Stays = patient.Stays.Select(x => new StayViewModel
+                {
+                    Date = x.StayDateTime.ToShortDateString(),
+                    City = x.City,
+                    Note = x.Note,
+                }),
+                Files = patient.FileAttachments.Select(x => new FileAttachmentViewModel
+                {
+                    Name = x.FileName,
+                    Size = x.FileSize.ToString()
+                }),
+            };
+
+            return View(patientPrintViewModel);
+        }
+
         #region Add Methods
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]

@@ -68,6 +68,8 @@ namespace RVCC.Data.Models
 
         public ICollection<PatientBenefit> PatientBenefits { get; set; }
 
+        public ICollection<Presence> Presences { get; set; }
+
         public ICollection<Stay> Stays { get; set; }
     }
 }

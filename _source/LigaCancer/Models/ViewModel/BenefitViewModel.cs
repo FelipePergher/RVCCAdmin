@@ -10,6 +10,8 @@ namespace RVCC.Models.ViewModel
 
         public string Name { get; set; }
 
+        public string Date { get; set; }
+
         public string Note { get; set; }
     }
 }
