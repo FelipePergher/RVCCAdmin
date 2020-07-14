@@ -2,22 +2,74 @@
 // Copyright (c) Felipe Pergher. All Rights Reserved.
 // </copyright>
 
-using RVCC.Models.FormModel;
+using System;
+using System.Collections.Generic;
+using RVCC.Business;
 
 namespace RVCC.Models.ViewModel
 {
     public class PatientPrintViewModel
     {
-        public string PatientId { get; set; }
+        #region Profile
 
-        public string PatientInformationId { get; set; }
+        public string FullName { get; set; }
 
-        public string NaturalityId { get; set; }
+        public string RG { get; set; }
 
-        public PatientProfileFormModel PatientProfile { get; set; }
+        public string CPF { get; set; }
 
-        public PatientInformationFormModel PatientInformation { get; set; }
+        public bool FamiliarityGroup { get; set; }
 
-        public NaturalityFormModel Naturality { get; set; }
+        public Globals.Sex Sex { get; set; }
+
+        public Globals.CivilState? CivilState { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
+
+        public DateTime JoinDate { get; set; }
+
+        public string Profession { get; set; }
+
+        public double MonthlyIncome { get; set; }
+
+        #endregion
+
+        #region Patient Information
+
+        public DateTime TreatmentBeginDate { get; set; }
+
+        public List<string> CancerTypes { get; set; }
+
+        public List<string> Doctors { get; set; }
+
+        public List<string> TreatmentPlaces { get; set; }
+
+        public List<string> Medicines { get; set; }
+
+        #endregion
+
+        #region Naturality
+
+        public string City { get; set; }
+
+        public string State { get; set; }
+
+        public string Country { get; set; }
+
+        #endregion
+
+        public IEnumerable<PhoneViewModel> Phones { get; set; }
+
+        public IEnumerable<AddressViewModel> Addresses { get; set; }
+
+        public IEnumerable<FamilyMemberViewModel> FamilyMembers { get; set; }
+
+        public IEnumerable<PatientBenefitViewModel> Benefits { get; set; }
+
+        public IEnumerable<PresenceViewModel> Presences { get; set; }
+
+        public IEnumerable<StayViewModel> Stays { get; set; }
+
+        public IEnumerable<FileAttachmentViewModel> Files { get; set; }
     }
 }

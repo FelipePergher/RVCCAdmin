@@ -15,6 +15,7 @@
 }
 
 <input asp-for="PatientId" id="patientId" hidden="hidden" />
+<iframe src="@Url.Action("Print", "Patient", new { id = Model.PatientId })" name="printPatient" id="printPatient" class="d-none"></iframe>
 
 <main class="main">
     <ol class="breadcrumb">
@@ -24,18 +25,12 @@
         <li class="breadcrumb-item">
             <a asp-controller="Patient" asp-action="Index">Pacientes</a>
         </li>
+        <li class="ml-auto">
+            <button class="btn btn-sm btn-primary float-left" onclick="frames['printPatient'].print()">
+                <span class='fas fa-print'></span> Imprimir Ficha do Paciente
+            </button>
+        </li>
     </ol>
-
-    <div class="container-fluid">
-        <div class="card h-100">
-            <div class="card-header">
-                <iframe src="/Patient/Print/@Model.PatientId" style="display:none;" name="frame"></iframe>
-                <button class="btn btn-sm btn-primary float-left" onclick="frames['frame'].print()">
-                    <span class='fas fa-print'></span> Imprimir Paciente
-                </button>
-            </div>
-        </div>
-    </div>
 
     <div class="container-fluid">
         <div id="ui-view" style="opacity: 1;">
@@ -277,6 +272,10 @@
                     </div>
 
                     <div class="col-12">
+                        <partial name="~/Views/FamilyMember/Partials/_Index.cshtml" model="new FamilyMemberSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
                         <partial name="~/Views/PatientBenefit/Partials/_Index.cshtml" />
                     </div>
 
@@ -286,10 +285,6 @@
 
                     <div class="col-12">
                         <partial name="~/Views/Stay/Partials/_Index.cshtml" />
-                    </div>
-
-                    <div class="col-12">
-                        <partial name="~/Views/FamilyMember/Partials/_Index.cshtml" model="new FamilyMemberSearchModel(Model.PatientId)" />
                     </div>
 
                     <div class="col-12">

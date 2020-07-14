@@ -197,8 +197,8 @@ namespace RVCC.Data.Repositories
                     ? query.OrderBy(x => x.PresenceDateTime.Date)
                     : query.OrderByDescending(x => x.PresenceDateTime.Date),
                 "Hour" => sortDirection == "asc"
-                    ? query.OrderBy(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}")
-                    : query.OrderByDescending(x => $"{x.PresenceDateTime.Hour}{x.PresenceDateTime.Minute}"),
+                    ? query.OrderBy(x => x.PresenceDateTime.Hour + x.PresenceDateTime.Minute)
+                    : query.OrderByDescending(x => x.PresenceDateTime.Hour + x.PresenceDateTime.Minute),
                 _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
             };
         }
