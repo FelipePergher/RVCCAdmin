@@ -97,7 +97,7 @@ export default (function () {
         global.cleanModal();
         largeModal ? $("#modal-dialog").addClass("modal-lg") : $("#modal-dialog").removeClass("modal-lg");
 
-        $("#modal-title").text(title);
+        $("#modal-title").html(title);
 
         $("#modalBody").load(url, function () {
             if (callback !== null) {

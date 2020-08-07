@@ -14,6 +14,12 @@ namespace RVCC.Models.FormModel
         [StringLength(200, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string BuyerName { get; set; }
 
+        [Display(Name = "Código")]
+        public string Code { get; set; }
+
+        [Display(Name = "Estado")]
+        public string Status { get; set; }
+
         [Display(Name = "Telefone")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [StringLength(20, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]

@@ -45,51 +45,24 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddSaleShirt2020", new SaleShirt2020FormModel());
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(id);
 
-            var salesShirtModel = new SaleShirt2020FormModel
-            {
-                DateOrdered = saleShirt2020.DateOrdered.ToShortDateString(),
-                BuyerName = saleShirt2020.BuyerName,
-                BuyerPhone = saleShirt2020.BuyerPhone,
-                MaskQuantity = saleShirt2020.MaskQuantity,
+            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
 
-                // Normal Shirts
-                SizePBabyLookQuantity = saleShirt2020.SizePBabyLookQuantity,
-                SizeMBabyLookQuantity = saleShirt2020.SizeMBabyLookQuantity,
-                SizeGBabyLookQuantity = saleShirt2020.SizeGBabyLookQuantity,
-                SizeGGBabyLookQuantity = saleShirt2020.SizeGGBabyLookQuantity,
+            return PartialView("Partials/_DetailsSaleShirt2020", salesShirtModel);
+        }
 
-                // baby look shirts
-                Size4NormalQuantity = saleShirt2020.Size4NormalQuantity,
-                Size8NormalQuantity = saleShirt2020.Size8NormalQuantity,
-                Size12NormalQuantity = saleShirt2020.Size12NormalQuantity,
-                Size14NormalQuantity = saleShirt2020.Size14NormalQuantity,
-                Size16NormalQuantity = saleShirt2020.Size16NormalQuantity,
-                SizePNormalQuantity = saleShirt2020.SizePNormalQuantity,
-                SizeMNormalQuantity = saleShirt2020.SizeMNormalQuantity,
-                SizeGNormalQuantity = saleShirt2020.SizeGNormalQuantity,
-                SizeGGNormalQuantity = saleShirt2020.SizeGGNormalQuantity,
+        [AllowAnonymous]
+        [HttpGet("DetalhesPedido/{code}")]
+        public async Task<IActionResult> PublicDetails(string code)
+        {
+            code = code.ToLower().Replace("rvcc", string.Empty);
+            SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(code);
 
-                PriceTotal = saleShirt2020.PriceTotal,
-                ShirtQuantityTotal = saleShirt2020.ShirtQuantityTotal,
-
-                // Dates
-                DatePayment = saleShirt2020.DatePayment == DateTime.MinValue ? string.Empty : saleShirt2020.DatePayment.ToShortDateString(),
-                DateConfection = saleShirt2020.DateConfection == DateTime.MinValue ? string.Empty : saleShirt2020.DateConfection.ToShortDateString(),
-                DateProduced = saleShirt2020.DateProduced == DateTime.MinValue ? string.Empty : saleShirt2020.DateProduced.ToShortDateString(),
-                DateCollected = saleShirt2020.DateCollected == DateTime.MinValue ? string.Empty : saleShirt2020.DateCollected.ToShortDateString(),
-                DateCanceled = saleShirt2020.DateCanceled == DateTime.MinValue ? string.Empty : saleShirt2020.DateCanceled.ToShortDateString(),
-            };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                return PartialView("Partials/_DetailsSaleShirt2020", salesShirtModel);
-            }
+            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
 
             return View("PublicDetailsSaleShirt2020", salesShirtModel);
         }
@@ -203,6 +176,46 @@ namespace RVCC.Controllers
 
             _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
             return BadRequest(result);
+        }
+
+        private SaleShirt2020FormModel GetShirtViewModel(SaleShirt2020 saleShirt2020)
+        {
+            return new SaleShirt2020FormModel
+            {
+                Code = $"rvcc{saleShirt2020.ShirtSaleId}",
+                Status = Enums.GetDisplayName(saleShirt2020.Status),
+                DateOrdered = saleShirt2020.DateOrdered.ToShortDateString(),
+                BuyerName = saleShirt2020.BuyerName,
+                BuyerPhone = saleShirt2020.BuyerPhone,
+                MaskQuantity = saleShirt2020.MaskQuantity,
+
+                // Normal Shirts
+                SizePBabyLookQuantity = saleShirt2020.SizePBabyLookQuantity,
+                SizeMBabyLookQuantity = saleShirt2020.SizeMBabyLookQuantity,
+                SizeGBabyLookQuantity = saleShirt2020.SizeGBabyLookQuantity,
+                SizeGGBabyLookQuantity = saleShirt2020.SizeGGBabyLookQuantity,
+
+                // baby look shirts
+                Size4NormalQuantity = saleShirt2020.Size4NormalQuantity,
+                Size8NormalQuantity = saleShirt2020.Size8NormalQuantity,
+                Size12NormalQuantity = saleShirt2020.Size12NormalQuantity,
+                Size14NormalQuantity = saleShirt2020.Size14NormalQuantity,
+                Size16NormalQuantity = saleShirt2020.Size16NormalQuantity,
+                SizePNormalQuantity = saleShirt2020.SizePNormalQuantity,
+                SizeMNormalQuantity = saleShirt2020.SizeMNormalQuantity,
+                SizeGNormalQuantity = saleShirt2020.SizeGNormalQuantity,
+                SizeGGNormalQuantity = saleShirt2020.SizeGGNormalQuantity,
+
+                PriceTotal = saleShirt2020.PriceTotal,
+                ShirtQuantityTotal = saleShirt2020.ShirtQuantityTotal,
+
+                // Dates
+                DatePayment = saleShirt2020.DatePayment == DateTime.MinValue ? string.Empty : saleShirt2020.DatePayment.ToShortDateString(),
+                DateConfection = saleShirt2020.DateConfection == DateTime.MinValue ? string.Empty : saleShirt2020.DateConfection.ToShortDateString(),
+                DateProduced = saleShirt2020.DateProduced == DateTime.MinValue ? string.Empty : saleShirt2020.DateProduced.ToShortDateString(),
+                DateCollected = saleShirt2020.DateCollected == DateTime.MinValue ? string.Empty : saleShirt2020.DateCollected.ToShortDateString(),
+                DateCanceled = saleShirt2020.DateCanceled == DateTime.MinValue ? string.Empty : saleShirt2020.DateCanceled.ToShortDateString(),
+            };
         }
     }
 }

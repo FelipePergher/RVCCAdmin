@@ -2,19 +2,26 @@
 
 <div class="modal-body">
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input disabled asp-for="Code" class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-3">
             <div class="form-group">
                 <label asp-for="BuyerName" class="control-label"></label>
                 <input disabled asp-for="BuyerName" class="form-control" />
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="form-group">
                 <label asp-for="BuyerPhone" class="control-label"></label>
                 <input disabled asp-for="BuyerPhone" class="form-control" />
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="form-group">
                 <label asp-for="DateOrdered" class="control-label"></label>
                 <input disabled asp-for="DateOrdered" type="text" class="form-control" />

@@ -111,7 +111,7 @@ namespace RVCC.Controllers.Api
                 </a>";
 
             string detailsSaleShirt2020 = $"<a href='{Url.Action("Details", "SaleShirt2020", new { id = saleShirt2020.ShirtSaleId })}' data-toggle='modal' " +
-                                          $"data-target='#modal-action' data-title='Detalhes' class='dropdown-item detailsSaleShirt2020Button'><i class='fas fa-info'></i> Detalhes </a>";
+                                          $"data-target='#modal-action' data-title='Detalhes <strong>({Enums.GetDisplayName(saleShirt2020.Status)})</strong>' class='dropdown-item detailsSaleShirt2020Button'><i class='fas fa-info'></i> Detalhes </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +

@@ -13,25 +13,32 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <i class="fas fa-info"></i> Detalhes
+                                <i class="fas fa-info"></i> Detalhes <strong>(@Model.Status)</strong>
                             </div>
                             <div class="card-body">
 
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label asp-for="Code" class="control-label"></label>
+                                                <input disabled asp-for="Code" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label asp-for="BuyerName" class="control-label"></label>
                                                 <input disabled asp-for="BuyerName" class="form-control" />
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label asp-for="BuyerPhone" class="control-label"></label>
                                                 <input disabled asp-for="BuyerPhone" class="form-control" />
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label asp-for="DateOrdered" class="control-label"></label>
                                                 <input disabled asp-for="DateOrdered" type="text" class="form-control" />
@@ -136,8 +143,7 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label asp-for="Size14NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size14NormalQuantity" class="form-control shirtQuant
-                           ity" min="0" />
+                                                <input disabled asp-for="Size14NormalQuantity" class="form-control shirtQuantity" min="0" />
                                             </div>
                                         </div>
 
