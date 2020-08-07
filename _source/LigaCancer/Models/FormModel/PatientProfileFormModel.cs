@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientProfileFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientProfileFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Mvc;
@@ -46,10 +46,10 @@ namespace RVCC.Models.FormModel
         public bool FamiliarityGroup { get; set; }
 
         [Display(Name = "Gênero")]
-        public Globals.Sex Sex { get; set; }
+        public Enums.Sex Sex { get; set; }
 
         [Display(Name = "Estado Civil")]
-        public Globals.CivilState? CivilState { get; set; }
+        public Enums.CivilState? CivilState { get; set; }
 
         [Display(Name = "Data de Nascimento")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]

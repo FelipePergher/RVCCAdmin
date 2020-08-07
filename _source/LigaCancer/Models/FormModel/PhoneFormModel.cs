@@ -1,5 +1,5 @@
-﻿// <copyright file="PhoneFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PhoneFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -15,7 +15,7 @@ namespace RVCC.Models.FormModel
         public string Number { get; set; }
 
         [Display(Name = "Tipo de telefone")]
-        public Globals.PhoneType? PhoneType { get; set; }
+        public Enums.PhoneType? PhoneType { get; set; }
 
         [Display(Name = "Observações")]
         [StringLength(1000, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]

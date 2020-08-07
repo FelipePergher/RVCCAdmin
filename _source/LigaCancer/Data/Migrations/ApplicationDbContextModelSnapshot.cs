@@ -843,6 +843,105 @@ namespace RVCC.Data.Migrations
                     b.ToTable("PatientInformationTreatmentPlace");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.SaleShirt2020", b =>
+                {
+                    b.Property<int>("ShirtSaleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BuyerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuyerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCanceled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCollected")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateConfection")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOrdered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DatePayment")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateProduced")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MaskQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PriceTotal")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("RegisterTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ShirtQuantityTotal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size12NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size14NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size16NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size4NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size8NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGGBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGGNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeMBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeMNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizePBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizePNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ShirtSaleId");
+
+                    b.ToTable("SalesShirt2020");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Stay", b =>
                 {
                     b.Property<int>("StayId")

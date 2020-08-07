@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "Felipe Pergher",
+      "companyName": "Doffs",
       "copyrightText": "Copyright (c) {companyName}. All Rights Reserved.",
       "documentationCulture": "pt-BR"
     },

@@ -1,5 +1,5 @@
-﻿// <copyright file="SocialObservationFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="SocialObservationFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using System.ComponentModel.DataAnnotations;

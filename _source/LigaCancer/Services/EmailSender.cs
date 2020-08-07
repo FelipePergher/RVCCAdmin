@@ -1,5 +1,5 @@
-﻿// <copyright file="EmailSender.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="EmailSender.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Identity.UI.Services;

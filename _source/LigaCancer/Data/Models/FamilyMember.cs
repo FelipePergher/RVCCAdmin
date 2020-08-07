@@ -1,5 +1,5 @@
-﻿// <copyright file="FamilyMember.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="FamilyMember.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -20,7 +20,7 @@ namespace RVCC.Data.Models
 
         public DateTime? DateOfBirth { get; set; }
 
-        public Globals.Sex Sex { get; set; }
+        public Enums.Sex Sex { get; set; }
 
         public double MonthlyIncome { get; set; }
 

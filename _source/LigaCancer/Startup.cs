@@ -1,5 +1,5 @@
-﻿// <copyright file="Startup.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="Startup.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Builder;
@@ -101,6 +101,7 @@ namespace RVCC
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
             services.AddTransient<IDataRepository<Stay>, StayRepository>();
+            services.AddTransient<IDataRepository<SaleShirt2020>, SaleShirt2020Repository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

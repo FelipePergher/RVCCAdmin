@@ -1,5 +1,5 @@
-﻿// <copyright file="20200502141821_Benefits.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="20200502141821_Benefits.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using System;

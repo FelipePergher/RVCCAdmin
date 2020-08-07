@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientPrintViewModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientPrintViewModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using System;
@@ -20,9 +20,9 @@ namespace RVCC.Models.ViewModel
 
         public bool FamiliarityGroup { get; set; }
 
-        public Globals.Sex Sex { get; set; }
+        public Enums.Sex Sex { get; set; }
 
-        public Globals.CivilState? CivilState { get; set; }
+        public Enums.CivilState? CivilState { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

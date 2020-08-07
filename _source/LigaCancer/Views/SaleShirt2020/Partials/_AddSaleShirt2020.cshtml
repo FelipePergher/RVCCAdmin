@@ -1,0 +1,195 @@
+﻿@using RVCC.Business
+@model RVCC.Models.FormModel.SaleShirt2020FormModel
+
+<form id="addSaleShirt2020Form" asp-action="AddSaleShirt2020" method="post">
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label asp-for="BuyerName" class="control-label label-required"></label>
+                    <input asp-for="BuyerName" class="form-control" />
+                    <span asp-validation-for="BuyerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label asp-for="BuyerPhone" class="control-label label-required"></label>
+                    <input asp-for="BuyerPhone" class="form-control" />
+                    <span asp-validation-for="BuyerPhone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label asp-for="DateOrdered" class="control-label label-required"></label>
+                    <input asp-for="DateOrdered" type="text" class="form-control" />
+                    <span asp-validation-for="DateOrdered" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-12">
+                <h5>Camiseta Normal</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizePNormalQuantity" class="control-label"></label>
+                    <input asp-for="SizePNormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizePNormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeMNormalQuantity" class="control-label"></label>
+                    <input asp-for="SizeMNormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeMNormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeGNormalQuantity" class="control-label"></label>
+                    <input asp-for="SizeGNormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeGNormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeGGNormalQuantity" class="control-label"></label>
+                    <input asp-for="SizeGGNormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeGGNormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-12">
+                <h5>Camiseta Infantil</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Size4NormalQuantity" class="control-label"></label>
+                    <input asp-for="Size4NormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="Size4NormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Size8NormalQuantity" class="control-label"></label>
+                    <input asp-for="Size8NormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="Size8NormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Size12NormalQuantity" class="control-label"></label>
+                    <input asp-for="Size12NormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="Size12NormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Size14NormalQuantity" class="control-label"></label>
+                    <input asp-for="Size14NormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="Size14NormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Size16NormalQuantity" class="control-label"></label>
+                    <input asp-for="Size16NormalQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="Size16NormalQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-12">
+                <h5>Camiseta Baby look</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizePBabyLookQuantity" class="control-label"></label>
+                    <input asp-for="SizePBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizePBabyLookQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeMBabyLookQuantity" class="control-label"></label>
+                    <input asp-for="SizeMBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeMBabyLookQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeGBabyLookQuantity" class="control-label"></label>
+                    <input asp-for="SizeGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeGBabyLookQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="SizeGGBabyLookQuantity" class="control-label"></label>
+                    <input asp-for="SizeGGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                    <span asp-validation-for="SizeGGBabyLookQuantity" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label asp-for="MaskQuantity" class="control-label"></label>
+                    <input asp-for="MaskQuantity" class="form-control" />
+                    <span asp-validation-for="MaskQuantity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-3">
+                <p><strong>Quantidade camisetas:</strong> <span id="totalShirtQuantity">0</span></p>
+                <p><strong>Valor camisetas:</strong> R$ <span id="totalShirtValue">0,00</span> </p>
+            </div>
+            <div class="col-3">
+                <p><strong>Quantidade máscaras:</strong> <span id="totalMaskQuantity">0</span></p>
+                <p><strong>Valor máscaras:</strong> R$ <span id="totalMaskValue">0,00</span> </p>
+            </div>
+            <div class="col-3">
+                <p><strong>Quantidade total:</strong> <span id="totalQuantity">0</span></p>
+                <p><strong>Valor total:</strong> R$ <span id="totalValue">0,00</span> </p>
+            </div>
+        </div>
+
+    </div>
+
+    <partial name="_ModalFooter" />
+
+</form>

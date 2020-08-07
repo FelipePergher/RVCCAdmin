@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientInformationCancerType.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientInformationCancerType.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 namespace RVCC.Data.Models.RelationModels

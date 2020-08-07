@@ -1,5 +1,5 @@
-﻿// <copyright file="FamilyMemberApiController.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="FamilyMemberApiController.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
@@ -49,7 +49,7 @@ namespace RVCC.Controllers.Api
                     Name = x.Name,
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
-                    Sex = Globals.GetDisplayName(x.Sex),
+                    Sex = Enums.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("C2"),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);

@@ -1,5 +1,5 @@
-﻿// <copyright file="FamilyMemberFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="FamilyMemberFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -27,7 +27,7 @@ namespace RVCC.Models.FormModel
         public string DateOfBirth { get; set; }
 
         [Display(Name = "Gênero")]
-        public Globals.Sex Sex { get; set; }
+        public Enums.Sex Sex { get; set; }
 
         [Display(Name = "Renda mensal")]
         public string MonthlyIncome { get; set; }

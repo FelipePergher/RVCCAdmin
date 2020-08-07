@@ -1,5 +1,5 @@
-﻿// <copyright file="Phone.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="Phone.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -14,7 +14,7 @@ namespace RVCC.Data.Models
         {
         }
 
-        public Phone(string patientId, string number, Globals.PhoneType? phoneType, string observationNote, ApplicationUser user)
+        public Phone(string patientId, string number, Enums.PhoneType? phoneType, string observationNote, ApplicationUser user)
         {
             Number = number;
             PhoneType = phoneType;
@@ -28,7 +28,7 @@ namespace RVCC.Data.Models
 
         public string Number { get; set; }
 
-        public Globals.PhoneType? PhoneType { get; set; }
+        public Enums.PhoneType? PhoneType { get; set; }
 
         public string ObservationNote { get; set; }
 

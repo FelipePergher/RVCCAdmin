@@ -1,5 +1,5 @@
-﻿// <copyright file="SeedData.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="SeedData.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,5 @@
-﻿// <copyright file="ArchivePatientFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="ArchivePatientFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -15,7 +15,7 @@ namespace RVCC.Models.FormModel
         }
 
         [Display(Name = "Motivo")]
-        public Globals.ArchivePatientType ArchivePatientType { get; set; }
+        public Enums.ArchivePatientType ArchivePatientType { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [Display(Name = "Data")]

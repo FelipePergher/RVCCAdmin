@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientRepository.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientRepository.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.EntityFrameworkCore;
@@ -198,12 +198,12 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(patientSearch.CivilState))
             {
-                query = query.Where(x => x.CivilState == (Globals.CivilState)int.Parse(patientSearch.CivilState));
+                query = query.Where(x => x.CivilState == (Enums.CivilState)int.Parse(patientSearch.CivilState));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Sex))
             {
-                query = query.Where(x => x.Sex == (Globals.Sex)int.Parse(patientSearch.Sex));
+                query = query.Where(x => x.Sex == (Enums.Sex)int.Parse(patientSearch.Sex));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.FamiliarityGroup))

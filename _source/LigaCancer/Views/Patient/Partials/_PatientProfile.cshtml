@@ -36,12 +36,12 @@
         </div>
         <div class="form-group col-md-6">
             <label asp-for="Sex" class="control-label"></label>
-            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Globals.Sex>()" class="form-control" ></select>
+            <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Enums.Sex>()" class="form-control" ></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
         <div class="form-group col-md-6">
             <label asp-for="CivilState" class="control-label"></label>
-            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Globals.CivilState>()" class="form-control">
+            <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Enums.CivilState>()" class="form-control">
                 <option value="" disabled selected></option>
             </select>
             <span asp-validation-for="CivilState" class="text-danger"></span>

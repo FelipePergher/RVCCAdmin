@@ -1,5 +1,5 @@
-﻿// <copyright file="AddressFormModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="AddressFormModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -35,7 +35,7 @@ namespace RVCC.Models.FormModel
         public string ObservationAddress { get; set; }
 
         [Display(Name = "Tipo de Residência")]
-        public Globals.ResidenceType? ResidenceType { get; set; }
+        public Enums.ResidenceType? ResidenceType { get; set; }
 
         [Display(Name = "Valor Mensal Residência")]
         public string MonthlyAmmountResidence { get; set; }

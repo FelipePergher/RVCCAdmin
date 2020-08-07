@@ -1,5 +1,5 @@
-﻿// <copyright file="FileAttachmentViewModel.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="FileAttachmentViewModel.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 namespace RVCC.Models.ViewModel

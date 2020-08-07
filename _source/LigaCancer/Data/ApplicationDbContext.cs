@@ -1,5 +1,5 @@
-﻿// <copyright file="ApplicationDbContext.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="ApplicationDbContext.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -131,5 +131,11 @@ namespace RVCC.Data
         public DbSet<PatientBenefit> PatientBenefits { get; set; }
 
         public DbSet<Stay> Stays { get; set; }
+
+        #region Shirt Sale 2020
+
+        public DbSet<SaleShirt2020> SalesShirt2020 { get; set; }
+
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
-﻿// <copyright file="AddressApiController.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="AddressApiController.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +48,7 @@ namespace RVCC.Controllers.Api
                     City = x.City,
                     HouseNumber = x.HouseNumber != null ? x.HouseNumber.ToString() : string.Empty,
                     Complement = x.Complement,
-                    ResidenceType = Globals.GetDisplayName(x.ResidenceType),
+                    ResidenceType = Enums.GetDisplayName(x.ResidenceType),
                     MonthlyAmmountResidence = x.MonthlyAmountResidence == 0 ? string.Empty : x.MonthlyAmountResidence.ToString("C2"),
                     ObservationAddress = x.ObservationAddress,
                     Actions = GetActionsHtml(x)

@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientInformation.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientInformation.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Data.Models.RelationModels;

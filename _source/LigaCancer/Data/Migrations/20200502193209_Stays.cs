@@ -1,5 +1,5 @@
-﻿// <copyright file="20200502193209_Stays.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="20200502193209_Stays.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using System;

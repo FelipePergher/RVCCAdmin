@@ -1,5 +1,5 @@
-﻿// <copyright file="Address.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="Address.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
@@ -25,7 +25,7 @@ namespace RVCC.Data.Models
 
         public string ObservationAddress { get; set; }
 
-        public Globals.ResidenceType? ResidenceType { get; set; }
+        public Enums.ResidenceType? ResidenceType { get; set; }
 
         public double MonthlyAmountResidence { get; set; }
 

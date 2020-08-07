@@ -1,5 +1,5 @@
-﻿// <copyright file="PatientController.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PatientController.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
@@ -166,7 +166,7 @@ namespace RVCC.Controllers
                 Phones = patient.Phones.Select(x => new PhoneViewModel
                 {
                     Number = x.Number,
-                    PhoneType = Globals.GetDisplayName(x.PhoneType),
+                    PhoneType = Enums.GetDisplayName(x.PhoneType),
                     ObservationNote = x.ObservationNote
                 }),
                 Addresses = patient.Addresses.Select(x => new AddressViewModel
@@ -176,7 +176,7 @@ namespace RVCC.Controllers
                     City = x.City,
                     HouseNumber = x.HouseNumber,
                     Complement = x.Complement,
-                    ResidenceType = Globals.GetDisplayName(x.ResidenceType),
+                    ResidenceType = Enums.GetDisplayName(x.ResidenceType),
                     MonthlyAmmountResidence = x.MonthlyAmountResidence.ToString("N"),
                     ObservationAddress = x.ObservationAddress,
                 }),
@@ -185,7 +185,7 @@ namespace RVCC.Controllers
                     Name = x.Name,
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToShortDateString() : string.Empty,
-                    Sex = Globals.GetDisplayName(x.Sex),
+                    Sex = Enums.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("N")
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
@@ -882,11 +882,11 @@ namespace RVCC.Controllers
             var dateTime = DateTime.Parse(archivePatientForm.DateTime);
             switch (archivePatientForm.ArchivePatientType)
             {
-                case Globals.ArchivePatientType.Death:
+                case Enums.ArchivePatientType.Death:
                     patient.ActivePatient.Death = true;
                     patient.ActivePatient.DeathDate = dateTime;
                     break;
-                case Globals.ArchivePatientType.Discharge:
+                case Enums.ArchivePatientType.Discharge:
                     patient.ActivePatient.Discharge = true;
                     patient.ActivePatient.DischargeDate = dateTime;
                     break;

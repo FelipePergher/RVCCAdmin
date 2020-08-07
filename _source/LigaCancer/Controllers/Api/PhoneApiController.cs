@@ -1,5 +1,5 @@
-﻿// <copyright file="PhoneApiController.cs" company="Felipe Pergher">
-// Copyright (c) Felipe Pergher. All Rights Reserved.
+﻿// <copyright file="PhoneApiController.cs" company="Doffs">
+// Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +44,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<PhoneViewModel> data = phones.Select(x => new PhoneViewModel
                 {
                     Number = x.Number,
-                    PhoneType = Globals.GetDisplayName(x.PhoneType),
+                    PhoneType = Enums.GetDisplayName(x.PhoneType),
                     ObservationNote = x.ObservationNote,
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);

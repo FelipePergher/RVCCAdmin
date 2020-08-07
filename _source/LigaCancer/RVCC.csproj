@@ -6,8 +6,8 @@
     <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
     <AssemblyName>RVCC</AssemblyName>
     <RootNamespace>RVCC</RootNamespace>
-    <Authors>Felipe Pergher</Authors>
-    <Company>Felipe Pergher</Company>
+    <Authors>Doffs</Authors>
+    <Company>Doffs</Company>
     <Product>RVCC Admin System</Product>
     <CodeAnalysisRuleSet>stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -71,6 +71,18 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Benefit\Partials\_FormBenefit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\SaleShirt2020\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\SaleShirt2020\Partials\_DetailsSaleShirt2020.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\SaleShirt2020\PublicDetailsSaleShirt2020.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\SaleShirt2020\Partials\_AddSaleShirt2020.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Medicine\Partials\_FormMedicine.cshtml">

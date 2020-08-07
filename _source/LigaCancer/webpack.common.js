@@ -26,6 +26,7 @@ module.exports = {
         'benefit': ['./src/sass/benefit/index.scss', './src/scripts/benefit/index.js'],
         'patient-benefit': ['./src/sass/patient-benefit/index.scss', './src/scripts/patient-benefit/index.js'],
         'stay': ['./src/sass/stay/index.scss', './src/scripts/stay/index.js'],
+        'sale-shirt-2020': ['./src/sass/sale-shirt-2020/index.scss', './src/scripts/sale-shirt-2020/index.js']
     },
     plugins: [
         new CleanWebpackPlugin(),
