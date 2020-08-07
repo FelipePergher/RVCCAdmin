@@ -1,5 +1,7 @@
 ﻿@model RVCC.Models.FormModel.SaleShirt2020FormModel
 
+<iframe src="@Url.Action("PublicDetails", "SaleShirt2020", new { code = Model.Code })" name="printDoc" id="printDoc" style="position: absolute; left: 9999px"></iframe>
+
 <div class="modal-body">
     <div class="row">
         <div class="col-3">
@@ -91,6 +93,13 @@
             </div>
         </div>
 
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="SizeXGNormalQuantity" class="control-label"></label>
+                <input disabled asp-for="SizeXGNormalQuantity" class="form-control shirtQuantity" min="0" />
+            </div>
+        </div>
+
     </div>
 
     <hr />
@@ -145,7 +154,7 @@
 
     <div class="row">
         <div class="col-12">
-            <h5>Camiseta Baby look</h5>
+            <h5>Baby look</h5>
         </div>
     </div>
 
@@ -177,6 +186,13 @@
                 <input disabled asp-for="SizeGGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
             </div>
         </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="SizeXGBabyLookQuantity" class="control-label"></label>
+                <input disabled asp-for="SizeXGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+            </div>
+        </div>
     </div>
 
     <hr />
@@ -205,3 +221,8 @@
 
 </div>
 
+<div class="modal-footer">
+    <button class="btn btn-primary" onclick="frames['printDoc'].print()">
+        <span class='fas fa-print'></span> Imprimir Pedido
+    </button>
+</div>

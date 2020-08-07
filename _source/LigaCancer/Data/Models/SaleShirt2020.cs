@@ -68,6 +68,8 @@ namespace RVCC.Data.Models
 
         public int SizeGGNormalQuantity { get; set; }
 
+        public int SizeXGNormalQuantity { get; set; }
+
         #endregion
 
         #region Shirt Baby Look Sizes
@@ -79,6 +81,8 @@ namespace RVCC.Data.Models
         public int SizeGBabyLookQuantity { get; set; }
 
         public int SizeGGBabyLookQuantity { get; set; }
+
+        public int SizeXGBabyLookQuantity { get; set; }
 
         #endregion
     }

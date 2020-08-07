@@ -134,19 +134,45 @@ namespace RVCC.Data.Repositories
 
         private IQueryable<SaleShirt2020> GetOrdinationSaleShirt2020(IQueryable<SaleShirt2020> query, string sortColumn, string sortDirection)
         {
-            // Todo sort
             return sortColumn switch
             {
+                "Status" => sortDirection == "asc"
+                    ? query.OrderByDescending(x => x.Status)
+                    : query.OrderBy(x => x.Status),
+                "BuyerName" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.BuyerName)
+                    : query.OrderByDescending(x => x.BuyerName),
+                "Date" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.DateOrdered)
+                    : query.OrderByDescending(x => x.DateOrdered),
+                "MaskQuantity" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.MaskQuantity)
+                    : query.OrderByDescending(x => x.MaskQuantity),
+                "ShirtQuantityTotal" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ShirtQuantityTotal)
+                    : query.OrderByDescending(x => x.ShirtQuantityTotal),
+                "PriceTotal" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.PriceTotal)
+                    : query.OrderByDescending(x => x.PriceTotal),
                 _ => sortDirection == "asc" ? query.OrderBy(x => "rvcc" + x.ShirtSaleId) : query.OrderByDescending(x => "rvcc" + x.ShirtSaleId)
             };
         }
 
         private IQueryable<SaleShirt2020> GetFilteredSaleShirt2020s(IQueryable<SaleShirt2020> query, SaleShirt2020SearchModel saleShirt2020Search)
         {
-            // Todo filter
             if (!string.IsNullOrEmpty(saleShirt2020Search.Code))
             {
-                query = query.Where(x => ("rvcc" + x.ShirtSaleId).Contains(saleShirt2020Search.Code));
+                query = query.Where(x => ("rvcc" + x.ShirtSaleId).Contains(saleShirt2020Search.Code.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(saleShirt2020Search.Name))
+            {
+                query = query.Where(x => x.BuyerName.ToLower().Contains(saleShirt2020Search.Name.ToLower()));
+            }
+
+            if (saleShirt2020Search.States != null && saleShirt2020Search.States.Any())
+            {
+                query = query.Where(x => saleShirt2020Search.States.Contains(x.Status));
             }
 
             return query;

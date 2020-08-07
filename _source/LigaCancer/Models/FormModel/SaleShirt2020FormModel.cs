@@ -21,8 +21,6 @@ namespace RVCC.Models.FormModel
         public string Status { get; set; }
 
         [Display(Name = "Telefone")]
-        [Required(ErrorMessage = "Este campo é obrigatório!")]
-        [StringLength(20, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string BuyerPhone { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório!")]
@@ -93,6 +91,10 @@ namespace RVCC.Models.FormModel
         [Display(Name = "GG")]
         public int SizeGGNormalQuantity { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
+        [Display(Name = "XG")]
+        public int SizeXGNormalQuantity { get; set; }
+
         #endregion
 
         #region Shirt Baby Look Sizes
@@ -112,6 +114,10 @@ namespace RVCC.Models.FormModel
         [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
         [Display(Name = "GG")]
         public int SizeGGBabyLookQuantity { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
+        [Display(Name = "XG")]
+        public int SizeXGBabyLookQuantity { get; set; }
 
         #endregion
     }

@@ -7,6 +7,7 @@ import "bootstrap/js/dist/modal";
 import 'bootstrap-datepicker';
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
 import "jquery-mask-plugin";
+import 'select2';
 
 export default (function () {
 
@@ -17,6 +18,8 @@ export default (function () {
     });
 
     function initPage() {
+        $(".select2").select2();
+
         let saleShirt2020Table = $("#saleShirt2020Table").DataTable({
             processing: true,
             serverSide: true,
@@ -27,6 +30,8 @@ export default (function () {
                 type: "POST",
                 data: function (d) {
                     d.code = $("#Code").val();
+                    d.name = $("#Name").val();
+                    d.states = $("#States").val();
                 },
                 datatype: "json",
                 error: function () {
@@ -140,13 +145,13 @@ export default (function () {
         let message = "Você não poderá reverter isso!";
 
         let dateInput =
-                '<form id="dateForm">' +
-                '   <div class="form-group">' +
-                '       <label class="control-label label-required" for="DateOrdered">Data</label>' +
-                '       <input type="text" class="form-control" data-val="true" data-val-required="Este campo é obrigatório!" id="Date" name="Date" data-date-end-date="0d" value="">' +
-                '       <span class="text-danger field-validation-valid" data-valmsg-for="Date" data-valmsg-replace="true"></span>' +
-                '   </div>' +
-                '</form>';
+            '<form id="dateForm">' +
+            '   <div class="form-group">' +
+            '       <label class="control-label label-required" for="DateOrdered">Data</label>' +
+            '       <input type="text" class="form-control" data-val="true" data-val-required="Este campo é obrigatório!" id="Date" name="Date" data-date-end-date="0d" value="">' +
+            '       <span class="text-danger field-validation-valid" data-valmsg-for="Date" data-valmsg-replace="true"></span>' +
+            '   </div>' +
+            '</form>';
 
         global.swalWithBootstrapButtons.fire({
             title: 'Você têm certeza?',

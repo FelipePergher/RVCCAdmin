@@ -49,7 +49,7 @@ namespace RVCC.Controllers.Api
                     BuyerPhone = x.BuyerPhone,
                     Date = x.DateOrdered.ToShortDateString(),
                     MaskQuantity = x.MaskQuantity,
-                    PriceTotal = x.PriceTotal,
+                    PriceTotal = $"R$ {x.PriceTotal:N2}",
                     ShirtQuantityTotal = x.ShirtQuantityTotal,
                     Status = Enums.GetDisplayName(x.Status),
                     Actions = GetActionsHtml(x)

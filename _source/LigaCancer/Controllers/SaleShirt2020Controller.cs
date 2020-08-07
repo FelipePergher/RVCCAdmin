@@ -77,12 +77,12 @@ namespace RVCC.Controllers
 
                 int shirtQuantity =
                     saleShirt2020Form.SizePBabyLookQuantity + saleShirt2020Form.SizeMBabyLookQuantity +
-                    saleShirt2020Form.SizeGBabyLookQuantity + saleShirt2020Form.SizeGGBabyLookQuantity +
+                    saleShirt2020Form.SizeGBabyLookQuantity + saleShirt2020Form.SizeGGBabyLookQuantity + saleShirt2020Form.SizeXGBabyLookQuantity +
                     saleShirt2020Form.Size4NormalQuantity + saleShirt2020Form.Size8NormalQuantity +
                     saleShirt2020Form.Size12NormalQuantity + saleShirt2020Form.Size14NormalQuantity +
                     saleShirt2020Form.Size16NormalQuantity + saleShirt2020Form.SizePNormalQuantity +
                     saleShirt2020Form.SizeMNormalQuantity + saleShirt2020Form.SizeGNormalQuantity +
-                    saleShirt2020Form.SizeGGNormalQuantity;
+                    saleShirt2020Form.SizeGGNormalQuantity + saleShirt2020Form.SizeXGNormalQuantity;
 
                 var saleShirt2020 = new SaleShirt2020
                 {
@@ -96,6 +96,7 @@ namespace RVCC.Controllers
                     SizeMBabyLookQuantity = saleShirt2020Form.SizeMBabyLookQuantity,
                     SizeGBabyLookQuantity = saleShirt2020Form.SizeGBabyLookQuantity,
                     SizeGGBabyLookQuantity = saleShirt2020Form.SizeGGBabyLookQuantity,
+                    SizeXGBabyLookQuantity = saleShirt2020Form.SizeXGBabyLookQuantity,
 
                     // baby look shirts
                     Size4NormalQuantity = saleShirt2020Form.Size4NormalQuantity,
@@ -107,6 +108,7 @@ namespace RVCC.Controllers
                     SizeMNormalQuantity = saleShirt2020Form.SizeMNormalQuantity,
                     SizeGNormalQuantity = saleShirt2020Form.SizeGNormalQuantity,
                     SizeGGNormalQuantity = saleShirt2020Form.SizeGGNormalQuantity,
+                    SizeXGNormalQuantity = saleShirt2020Form.SizeXGNormalQuantity,
 
                     PriceTotal = (shirtQuantity * 20) + (saleShirt2020Form.MaskQuantity * 5),
                     ShirtQuantityTotal = shirtQuantity,
@@ -194,6 +196,7 @@ namespace RVCC.Controllers
                 SizeMBabyLookQuantity = saleShirt2020.SizeMBabyLookQuantity,
                 SizeGBabyLookQuantity = saleShirt2020.SizeGBabyLookQuantity,
                 SizeGGBabyLookQuantity = saleShirt2020.SizeGGBabyLookQuantity,
+                SizeXGBabyLookQuantity = saleShirt2020.SizeXGBabyLookQuantity,
 
                 // baby look shirts
                 Size4NormalQuantity = saleShirt2020.Size4NormalQuantity,
@@ -205,6 +208,7 @@ namespace RVCC.Controllers
                 SizeMNormalQuantity = saleShirt2020.SizeMNormalQuantity,
                 SizeGNormalQuantity = saleShirt2020.SizeGNormalQuantity,
                 SizeGGNormalQuantity = saleShirt2020.SizeGGNormalQuantity,
+                SizeXGNormalQuantity = saleShirt2020.SizeXGNormalQuantity,
 
                 PriceTotal = saleShirt2020.PriceTotal,
                 ShirtQuantityTotal = saleShirt2020.ShirtQuantityTotal,

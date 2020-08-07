@@ -16,7 +16,7 @@ namespace RVCC.Models.ViewModel
 
         public int ShirtQuantityTotal { get; set; }
 
-        public double PriceTotal { get; set; }
+        public string PriceTotal { get; set; }
 
         public string BuyerName { get; set; }
 

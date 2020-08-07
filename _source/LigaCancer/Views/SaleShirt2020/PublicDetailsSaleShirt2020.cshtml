@@ -5,7 +5,6 @@
 }
 
 <main class="main">
-
     <div class="container-fluid">
         <div id="ui-view" style="opacity: 1;">
             <div class="animated fadeIn">
@@ -17,215 +16,231 @@
                             </div>
                             <div class="card-body">
 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="Code" class="control-label"></label>
-                                                <input disabled asp-for="Code" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="BuyerName" class="control-label"></label>
-                                                <input disabled asp-for="BuyerName" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="BuyerPhone" class="control-label"></label>
-                                                <input disabled asp-for="BuyerPhone" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="DateOrdered" class="control-label"></label>
-                                                <input disabled asp-for="DateOrdered" type="text" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="DatePayment" class="control-label"></label>
-                                                <input disabled asp-for="DatePayment" type="text" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="DateConfection" class="control-label"></label>
-                                                <input disabled asp-for="DateConfection" type="text" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="DateProduced" class="control-label"></label>
-                                                <input disabled asp-for="DateProduced" type="text" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="DateCollected" class="control-label"></label>
-                                                <input disabled asp-for="DateCollected" type="text" class="form-control" />
-                                            </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="Code" class="control-label"></label>
+                                            <input disabled asp-for="Code" class="form-control" />
                                         </div>
                                     </div>
 
-                                    <hr />
-
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h5>Camiseta Normal</h5>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="BuyerName" class="control-label"></label>
+                                            <input disabled asp-for="BuyerName" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="BuyerPhone" class="control-label"></label>
+                                            <input disabled asp-for="BuyerPhone" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="DateOrdered" class="control-label"></label>
+                                            <input disabled asp-for="DateOrdered" type="text" class="form-control" />
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizePNormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizePNormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeMNormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeMNormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeGNormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeGNormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeGGNormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeGGNormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <hr />
-
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h5>Camiseta Infantil</h5>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="DatePayment" class="control-label"></label>
+                                            <input disabled asp-for="DatePayment" type="text" class="form-control" />
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="Size4NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size4NormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="DateConfection" class="control-label"></label>
+                                            <input disabled asp-for="DateConfection" type="text" class="form-control" />
                                         </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="Size8NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size8NormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="Size12NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size12NormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="Size14NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size14NormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="Size16NormalQuantity" class="control-label"></label>
-                                                <input disabled asp-for="Size16NormalQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
                                     </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="DateProduced" class="control-label"></label>
+                                            <input disabled asp-for="DateProduced" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="DateCollected" class="control-label"></label>
+                                            <input disabled asp-for="DateCollected" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <hr />
 
-                                    <hr />
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Camiseta Normal</h5>
+                                    </div>
+                                </div>
 
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h5>Camiseta Baby look</h5>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizePNormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizePNormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizePBabyLookQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizePBabyLookQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeMBabyLookQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeMBabyLookQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeGBabyLookQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label asp-for="SizeGGBabyLookQuantity" class="control-label"></label>
-                                                <input disabled asp-for="SizeGGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
-                                            </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeMNormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeMNormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
                                     </div>
 
-                                    <hr />
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeGNormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeGNormalQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label asp-for="MaskQuantity" class="control-label"></label>
-                                                <input disabled asp-for="MaskQuantity" class="form-control" />
-                                                <span asp-validation-for="MaskQuantity" class="text-danger"></span>
-                                            </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeGGNormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeGGNormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
-                                        <div class="col-3">
-                                            <p><strong>Quantidade camisetas:</strong> <span id="totalShirtQuantity">@Model.ShirtQuantityTotal</span></p>
-                                            <p><strong>Valor camisetas:</strong> R$ <span id="totalShirtValue">@((Model.ShirtQuantityTotal * 20).ToString("N2"))</span> </p>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeXGNormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeXGNormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
-                                        <div class="col-3">
-                                            <p><strong>Quantidade máscaras:</strong> <span id="totalMaskQuantity">@Model.MaskQuantity</span></p>
-                                            <p><strong>Valor máscaras:</strong> R$ <span id="totalMaskValue">@((Model.MaskQuantity * 5).ToString("N2"))</span> </p>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Camiseta Infantil</h5>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="Size4NormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="Size4NormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
-                                        <div class="col-3">
-                                            <p><strong>Quantidade total:</strong> <span id="totalQuantity">@(Model.MaskQuantity + Model.ShirtQuantityTotal)</span></p>
-                                            <p><strong>Valor total:</strong> R$ <span id="totalValue">@Model.PriceTotal.ToString("N2")</span> </p>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="Size8NormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="Size8NormalQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="Size12NormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="Size12NormalQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="Size14NormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="Size14NormalQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="Size16NormalQuantity" class="control-label"></label>
+                                            <input disabled asp-for="Size16NormalQuantity" class="form-control shirtQuantity" min="0" />
                                         </div>
                                     </div>
 
                                 </div>
 
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Baby look</h5>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizePBabyLookQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizePBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeMBabyLookQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeMBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeGBabyLookQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeGGBabyLookQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeGGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label asp-for="SizeXGBabyLookQuantity" class="control-label"></label>
+                                            <input disabled asp-for="SizeXGBabyLookQuantity" class="form-control shirtQuantity" min="0" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label asp-for="MaskQuantity" class="control-label"></label>
+                                            <input disabled asp-for="MaskQuantity" class="form-control" />
+                                            <span asp-validation-for="MaskQuantity" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <p><strong>Quantidade camisetas:</strong> <span id="totalShirtQuantity">@Model.ShirtQuantityTotal</span></p>
+                                        <p><strong>Valor camisetas:</strong> R$ <span id="totalShirtValue">@((Model.ShirtQuantityTotal * 20).ToString("N2"))</span> </p>
+                                    </div>
+                                    <div class="col-3">
+                                        <p><strong>Quantidade máscaras:</strong> <span id="totalMaskQuantity">@Model.MaskQuantity</span></p>
+                                        <p><strong>Valor máscaras:</strong> R$ <span id="totalMaskValue">@((Model.MaskQuantity * 5).ToString("N2"))</span> </p>
+                                    </div>
+                                    <div class="col-3">
+                                        <p><strong>Quantidade total:</strong> <span id="totalQuantity">@(Model.MaskQuantity + Model.ShirtQuantityTotal)</span></p>
+                                        <p><strong>Valor total:</strong> R$ <span id="totalValue">@Model.PriceTotal.ToString("N2")</span> </p>
+                                    </div>
+                                </div>
+
+                                <footer class="text-center mt-4 d-print-none">
+                                    <div class="ml-auto">
+                                        <span>Desenvolvido por</span>
+                                        <a href="https://doffs.com.br" target="_blank">Doffs</a>
+                                    </div>
+                                </footer>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </main>
