@@ -77,8 +77,9 @@ namespace RVCC.Controllers
 
                 int shirtQuantity =
                     saleShirt2020Form.SizePBabyLookQuantity + saleShirt2020Form.SizeMBabyLookQuantity +
-                    saleShirt2020Form.SizeGBabyLookQuantity + saleShirt2020Form.SizeGGBabyLookQuantity + saleShirt2020Form.SizeXGBabyLookQuantity +
-                    saleShirt2020Form.Size4NormalQuantity + saleShirt2020Form.Size8NormalQuantity +
+                    saleShirt2020Form.SizeGBabyLookQuantity + saleShirt2020Form.SizeGGBabyLookQuantity +
+                    saleShirt2020Form.SizeXGBabyLookQuantity + saleShirt2020Form.Size4NormalQuantity +
+                    saleShirt2020Form.Size6NormalQuantity + saleShirt2020Form.Size8NormalQuantity + saleShirt2020Form.Size10NormalQuantity +
                     saleShirt2020Form.Size12NormalQuantity + saleShirt2020Form.Size14NormalQuantity +
                     saleShirt2020Form.Size16NormalQuantity + saleShirt2020Form.SizePNormalQuantity +
                     saleShirt2020Form.SizeMNormalQuantity + saleShirt2020Form.SizeGNormalQuantity +
@@ -100,7 +101,9 @@ namespace RVCC.Controllers
 
                     // baby look shirts
                     Size4NormalQuantity = saleShirt2020Form.Size4NormalQuantity,
+                    Size6NormalQuantity = saleShirt2020Form.Size6NormalQuantity,
                     Size8NormalQuantity = saleShirt2020Form.Size8NormalQuantity,
+                    Size10NormalQuantity = saleShirt2020Form.Size10NormalQuantity,
                     Size12NormalQuantity = saleShirt2020Form.Size12NormalQuantity,
                     Size14NormalQuantity = saleShirt2020Form.Size14NormalQuantity,
                     Size16NormalQuantity = saleShirt2020Form.Size16NormalQuantity,
@@ -200,7 +203,9 @@ namespace RVCC.Controllers
 
                 // baby look shirts
                 Size4NormalQuantity = saleShirt2020.Size4NormalQuantity,
+                Size6NormalQuantity = saleShirt2020.Size6NormalQuantity,
                 Size8NormalQuantity = saleShirt2020.Size8NormalQuantity,
+                Size10NormalQuantity = saleShirt2020.Size10NormalQuantity,
                 Size12NormalQuantity = saleShirt2020.Size12NormalQuantity,
                 Size14NormalQuantity = saleShirt2020.Size14NormalQuantity,
                 Size16NormalQuantity = saleShirt2020.Size16NormalQuantity,

@@ -48,17 +48,25 @@ namespace RVCC.Data.Models
         public int MaskQuantity { get; set; }
 
         // R$ 20
-        #region Shirt Normal Sizes
+        #region Shirt Younger Sizes
 
         public int Size4NormalQuantity { get; set; }
 
+        public int Size6NormalQuantity { get; set; }
+
         public int Size8NormalQuantity { get; set; }
+
+        public int Size10NormalQuantity { get; set; }
 
         public int Size12NormalQuantity { get; set; }
 
         public int Size14NormalQuantity { get; set; }
 
         public int Size16NormalQuantity { get; set; }
+
+        #endregion
+
+        #region Shirt Normal Sizes
 
         public int SizePNormalQuantity { get; set; }
 

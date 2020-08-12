@@ -38,7 +38,7 @@ export default (function () {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
-            order: [1, "asc"],
+            order: [1, "desc"],
             columns: [
                 { data: "actions", title: "Ações", width: "20px", name: "Actions", orderable: false },
                 { data: "code", title: "Código", name: "Code" },

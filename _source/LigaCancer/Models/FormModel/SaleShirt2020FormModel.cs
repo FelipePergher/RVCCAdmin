@@ -60,8 +60,16 @@ namespace RVCC.Models.FormModel
         public int Size4NormalQuantity { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
+        [Display(Name = "6")]
+        public int Size6NormalQuantity { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
         [Display(Name = "8")]
         public int Size8NormalQuantity { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
+        [Display(Name = "10")]
+        public int Size10NormalQuantity { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
         [Display(Name = "12")]
