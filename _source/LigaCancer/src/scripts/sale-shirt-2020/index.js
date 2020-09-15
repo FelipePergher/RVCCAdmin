@@ -58,6 +58,14 @@ export default (function () {
                 $(".updateStatusSaleShirt2020Button").click(function (e) {
                     initUpdateStatusSaleShirt2020($(this).data("url"), $(this).data("id"), $(this).data("status"));
                 });
+            },
+            footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+                let dataReceived = api.ajax.json();
+
+                $(api.column(6).footer()).html(dataReceived.totalMask);
+                $(api.column(7).footer()).html(dataReceived.totalShirt);
+                $(api.column(8).footer()).html(dataReceived.totalValue);
             }
         });
 

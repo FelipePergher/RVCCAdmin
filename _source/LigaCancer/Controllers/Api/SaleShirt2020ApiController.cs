@@ -58,7 +58,22 @@ namespace RVCC.Controllers.Api
                 int recordsTotal = _saleShirt2020Service.Count();
                 int recordsFiltered = saleShirts2020.Count();
 
-                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
+                var totalMaskQuantity = saleShirts2020.Sum(x => x.MaskQuantity);
+                var totalMaskQuantityPrice = $"R${saleShirts2020.Sum(x => x.MaskQuantity * 5):N2}";
+                var totalShirtQuantity = saleShirts2020.Sum(x => x.ShirtQuantityTotal);
+                var totalShirtQuantityPrice = $"R${saleShirts2020.Sum(x => x.ShirtQuantityTotal * 20):N2}";
+                var totalValue = $"R${saleShirts2020.Sum(x => x.PriceTotal):N2}";
+
+                return Ok(new
+                {
+                    searchModel.Draw,
+                    data,
+                    recordsTotal,
+                    recordsFiltered,
+                    totalValue,
+                    totalShirt = $"qtd: {totalShirtQuantity} - {totalShirtQuantityPrice}",
+                    totalMask = $"qtd: {totalMaskQuantity} - {totalMaskQuantityPrice}"
+                });
             }
             catch (Exception e)
             {
