@@ -50,6 +50,8 @@ namespace RVCC.Data.Models
         // R$ 20
         #region Shirt Younger Sizes
 
+        public int Size2NormalQuantity { get; set; }
+
         public int Size4NormalQuantity { get; set; }
 
         public int Size6NormalQuantity { get; set; }

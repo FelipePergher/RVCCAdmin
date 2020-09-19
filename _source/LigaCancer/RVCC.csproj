@@ -76,6 +76,12 @@
     <Content Update="Views\SaleShirt2020\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\SaleShirt2020\Partials\_SearchForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\SaleShirt2020\Partials\_DetailTable.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\SaleShirt2020\Partials\_DetailsSaleShirt2020.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

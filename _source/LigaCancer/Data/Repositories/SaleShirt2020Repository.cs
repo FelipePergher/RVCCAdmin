@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RVCC.Models.ViewModel;
 
 namespace RVCC.Data.Repositories
 {
@@ -176,6 +177,35 @@ namespace RVCC.Data.Repositories
             }
 
             return query;
+        }
+
+        #endregion
+
+        #region Custom Methods
+
+        public SaleShirt2020DataViewModel GetSaleShirtData()
+        {
+            return new SaleShirt2020DataViewModel
+            {
+                Size2NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size2NormalQuantity),
+                Size4NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size4NormalQuantity),
+                Size6NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size6NormalQuantity),
+                Size8NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size8NormalQuantity),
+                Size10NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size10NormalQuantity),
+                Size12NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size12NormalQuantity),
+                Size14NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size14NormalQuantity),
+                Size16NormalQuantity = _context.SalesShirt2020.Sum(x => x.Size16NormalQuantity),
+                SizePNormalQuantity = _context.SalesShirt2020.Sum(x => x.SizePNormalQuantity),
+                SizeMNormalQuantity = _context.SalesShirt2020.Sum(x => x.SizeMNormalQuantity),
+                SizeGNormalQuantity = _context.SalesShirt2020.Sum(x => x.SizeGNormalQuantity),
+                SizeGGNormalQuantity = _context.SalesShirt2020.Sum(x => x.SizeGGNormalQuantity),
+                SizeXGNormalQuantity = _context.SalesShirt2020.Sum(x => x.SizeXGNormalQuantity),
+                SizePBabyLookQuantity = _context.SalesShirt2020.Sum(x => x.SizePBabyLookQuantity),
+                SizeMBabyLookQuantity = _context.SalesShirt2020.Sum(x => x.SizeMBabyLookQuantity),
+                SizeGBabyLookQuantity = _context.SalesShirt2020.Sum(x => x.SizeGBabyLookQuantity),
+                SizeGGBabyLookQuantity = _context.SalesShirt2020.Sum(x => x.SizeGGBabyLookQuantity),
+                SizeXGBabyLookQuantity = _context.SalesShirt2020.Sum(x => x.SizeXGBabyLookQuantity)
+            };
         }
 
         #endregion

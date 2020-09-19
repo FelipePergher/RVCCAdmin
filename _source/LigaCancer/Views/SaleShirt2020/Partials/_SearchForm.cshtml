@@ -1,0 +1,27 @@
+﻿@using RVCC.Business
+@model RVCC.Models.SearchModel.SaleShirt2020SearchModel
+
+<form id="searchForm">
+    <div class="form-row form-group">
+        <div class="col-lg-3">
+            <label asp-for="Code"></label>
+            <input asp-for="Code" class="form-control" placeholder="@Html.DisplayNameFor(x => x.Code)" />
+        </div>
+        <div class="col-lg-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" placeholder="@Html.DisplayNameFor(x => x.Name)" />
+        </div>
+        <div class="col-lg-3">
+            <label asp-for="States"></label>
+            <select asp-for="States" class="form-control select2" multiple placeholder="@Html.DisplayNameFor(x => x.States)" asp-items="Html.GetEnumSelectList<Enums.Status>()"></select>
+        </div>
+        <div class="col-lg-3 filter-button">
+            <button type="reset" class="btn btn-secondary">
+                <i class="fas fa-eraser"></i> Limpar
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+        </div>
+    </div>
+</form>

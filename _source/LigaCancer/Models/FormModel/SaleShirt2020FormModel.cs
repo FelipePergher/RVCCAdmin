@@ -56,6 +56,10 @@ namespace RVCC.Models.FormModel
         #region Shirt Normal Sizes
 
         [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
+        [Display(Name = "2")]
+        public int Size2NormalQuantity { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Quantidade não pode ser negativa")]
         [Display(Name = "4")]
         public int Size4NormalQuantity { get; set; }
 

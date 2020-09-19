@@ -1,0 +1,95 @@
+﻿@model RVCC.Models.ViewModel.SaleShirt2020DataViewModel
+@{
+    int pQuantity = Model.SizePNormalQuantity + Model.SizePBabyLookQuantity;
+    int mQuantity = Model.SizeMNormalQuantity + Model.SizeMBabyLookQuantity;
+    int gQuantity = Model.SizeGNormalQuantity + Model.SizeGBabyLookQuantity;
+    int ggQuantity = Model.SizeGGNormalQuantity + Model.SizeGGBabyLookQuantity;
+    int xgQuantity = Model.SizeXGNormalQuantity + Model.SizeXGBabyLookQuantity;
+}
+
+<table class="table table-responsive-sm table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Quantidade</th>
+            <th>2</th>
+            <th>4</th>
+            <th>6</th>
+            <th>8</th>
+            <th>10</th>
+            <th>12</th>
+            <th>14</th>
+            <th>16</th>
+            <th>P</th>
+            <th>M</th>
+            <th>G</th>
+            <th>GG</th>
+            <th>XG</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Normal</th>
+            <td>@Model.Size2NormalQuantity</td>
+            <td>@Model.Size4NormalQuantity</td>
+            <td>@Model.Size6NormalQuantity</td>
+            <td>@Model.Size8NormalQuantity</td>
+            <td>@Model.Size10NormalQuantity</td>
+            <td>@Model.Size12NormalQuantity</td>
+            <td>@Model.Size14NormalQuantity</td>
+            <td>@Model.Size16NormalQuantity</td>
+            <td>@Model.SizePNormalQuantity</td>
+            <td>@Model.SizeMNormalQuantity</td>
+            <td>@Model.SizeGNormalQuantity</td>
+            <td>@Model.SizeGGNormalQuantity</td>
+            <td>@Model.SizeXGNormalQuantity</td>
+        </tr>
+        <tr>
+            <th>Baby Look</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>@Model.SizePBabyLookQuantity</td>
+            <td>@Model.SizeMBabyLookQuantity</td>
+            <td>@Model.SizeGBabyLookQuantity</td>
+            <td>@Model.SizeGGBabyLookQuantity</td>
+            <td>@Model.SizeXGBabyLookQuantity</td>
+        </tr>
+        <tr>
+            <th>Total</th>
+            <td>@Model.Size2NormalQuantity</td>
+            <td>@Model.Size4NormalQuantity</td>
+            <td>@Model.Size6NormalQuantity</td>
+            <td>@Model.Size8NormalQuantity</td>
+            <td>@Model.Size10NormalQuantity</td>
+            <td>@Model.Size12NormalQuantity</td>
+            <td>@Model.Size14NormalQuantity</td>
+            <td>@Model.Size16NormalQuantity</td>
+            <td>@pQuantity</td>
+            <td>@mQuantity</td>
+            <td>@gQuantity</td>
+            <td>@ggQuantity</td>
+            <td>@xgQuantity</td>
+        </tr>
+        <tr>
+            <th>Valor</th>
+            <td>R$ @((Model.Size2NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size4NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size6NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size8NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size10NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size12NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size14NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((Model.Size16NormalQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((pQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((mQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((gQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((ggQuantity * 20).ToString("N2"))</td>
+            <td>R$ @((xgQuantity * 20).ToString("N2"))</td>
+        </tr>
+    </tbody>
+</table>

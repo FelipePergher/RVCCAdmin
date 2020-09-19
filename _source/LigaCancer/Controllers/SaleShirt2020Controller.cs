@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
+using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using System;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace RVCC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(((SaleShirt2020Repository)_saleShirt2020Service).GetSaleShirtData());
         }
 
         [HttpGet]
@@ -78,8 +79,9 @@ namespace RVCC.Controllers
                 int shirtQuantity =
                     saleShirt2020Form.SizePBabyLookQuantity + saleShirt2020Form.SizeMBabyLookQuantity +
                     saleShirt2020Form.SizeGBabyLookQuantity + saleShirt2020Form.SizeGGBabyLookQuantity +
-                    saleShirt2020Form.SizeXGBabyLookQuantity + saleShirt2020Form.Size4NormalQuantity +
-                    saleShirt2020Form.Size6NormalQuantity + saleShirt2020Form.Size8NormalQuantity + saleShirt2020Form.Size10NormalQuantity +
+                    saleShirt2020Form.SizeXGBabyLookQuantity + saleShirt2020Form.Size2NormalQuantity +
+                    saleShirt2020Form.Size4NormalQuantity + saleShirt2020Form.Size6NormalQuantity +
+                    saleShirt2020Form.Size8NormalQuantity + saleShirt2020Form.Size10NormalQuantity +
                     saleShirt2020Form.Size12NormalQuantity + saleShirt2020Form.Size14NormalQuantity +
                     saleShirt2020Form.Size16NormalQuantity + saleShirt2020Form.SizePNormalQuantity +
                     saleShirt2020Form.SizeMNormalQuantity + saleShirt2020Form.SizeGNormalQuantity +
@@ -100,6 +102,7 @@ namespace RVCC.Controllers
                     SizeXGBabyLookQuantity = saleShirt2020Form.SizeXGBabyLookQuantity,
 
                     // baby look shirts
+                    Size2NormalQuantity = saleShirt2020Form.Size2NormalQuantity,
                     Size4NormalQuantity = saleShirt2020Form.Size4NormalQuantity,
                     Size6NormalQuantity = saleShirt2020Form.Size6NormalQuantity,
                     Size8NormalQuantity = saleShirt2020Form.Size8NormalQuantity,
@@ -202,6 +205,7 @@ namespace RVCC.Controllers
                 SizeXGBabyLookQuantity = saleShirt2020.SizeXGBabyLookQuantity,
 
                 // baby look shirts
+                Size2NormalQuantity = saleShirt2020.Size2NormalQuantity,
                 Size4NormalQuantity = saleShirt2020.Size4NormalQuantity,
                 Size6NormalQuantity = saleShirt2020.Size6NormalQuantity,
                 Size8NormalQuantity = saleShirt2020.Size8NormalQuantity,
