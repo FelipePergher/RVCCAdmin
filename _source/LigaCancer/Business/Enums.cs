@@ -95,6 +95,10 @@ namespace RVCC.Business
             [EnumMember(Value = "Alta")]
             Discharge,
 
+            [Display(Name = "Mudou-se")]
+            [EnumMember(Value = "Mudou-se")]
+            ResidenceChange,
+
             [Display(Name = "Óbito")]
             [EnumMember(Value = "Óbito")]
             Death

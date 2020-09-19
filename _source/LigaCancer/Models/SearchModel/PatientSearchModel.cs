@@ -3,6 +3,7 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RVCC.Business;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -36,14 +37,11 @@ namespace RVCC.Models.SearchModel
         [Display(Name = "Gênero")]
         public string Sex { get; set; }
 
-        [Display(Name = "Somente paciente com óbito")]
-        public bool Death { get; set; }
-
-        [Display(Name = "Somente pacientes com alta")]
-        public bool Discharge { get; set; }
-
         [Display(Name = "Grupo de convivência")]
         public string FamiliarityGroup { get; set; }
+
+        [Display(Name = "Status")]
+        public Enums.ArchivePatientType? ArchivePatientType { get; set; }
 
         [Display(Name = "Cânceres")]
         public List<string> CancerTypes { get; set; }

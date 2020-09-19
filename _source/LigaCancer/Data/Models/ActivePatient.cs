@@ -17,9 +17,13 @@ namespace RVCC.Data.Models
 
         public bool Discharge { get; set; }
 
+        public bool ResidenceChange { get; set; }
+
         public DateTime DeathDate { get; set; }
 
         public DateTime DischargeDate { get; set; }
+
+        public DateTime ResidenceChangeDate { get; set; }
 
         public int PatientId { get; set; }
 

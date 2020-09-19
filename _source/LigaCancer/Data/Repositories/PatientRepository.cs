@@ -211,17 +211,20 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
             }
 
-            if (patientSearch.Death)
+            switch (patientSearch.ArchivePatientType)
             {
-                query = query.Where(x => x.ActivePatient.Death);
-            }
-            else if (patientSearch.Discharge)
-            {
-                query = query.Where(x => x.ActivePatient.Discharge);
-            }
-            else
-            {
-                query = query.Where(x => !x.ActivePatient.Discharge && !x.ActivePatient.Death);
+                case Enums.ArchivePatientType.Death:
+                    query = query.Where(x => x.ActivePatient.Death);
+                    break;
+                case Enums.ArchivePatientType.Discharge:
+                    query = query.Where(x => x.ActivePatient.Discharge);
+                    break;
+                case Enums.ArchivePatientType.ResidenceChange:
+                    query = query.Where(x => x.ActivePatient.ResidenceChange);
+                    break;
+                default:
+                    query = query.Where(x => !x.ActivePatient.Death && !x.ActivePatient.Discharge && !x.ActivePatient.ResidenceChange);
+                    break;
             }
 
             foreach (string item in patientSearch.CancerTypes)

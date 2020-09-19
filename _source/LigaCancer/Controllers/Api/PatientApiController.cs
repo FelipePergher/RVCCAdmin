@@ -143,6 +143,13 @@ namespace RVCC.Controllers.Api
                 options += deletePatient;
             }
 
+            if (patient.ActivePatient.ResidenceChange)
+            {
+                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
+                                      $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";
+                options += enablePatient;
+            }
+
             string actionsHtml =
                 $"<div class='dropdown'>" +
                 $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +

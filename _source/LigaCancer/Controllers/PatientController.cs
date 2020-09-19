@@ -890,6 +890,10 @@ namespace RVCC.Controllers
                     patient.ActivePatient.Discharge = true;
                     patient.ActivePatient.DischargeDate = dateTime;
                     break;
+                case Enums.ArchivePatientType.ResidenceChange:
+                    patient.ActivePatient.ResidenceChange = true;
+                    patient.ActivePatient.ResidenceChangeDate = dateTime;
+                    break;
             }
 
             TaskResult result = await _patientService.UpdateAsync(patient);
@@ -920,6 +924,7 @@ namespace RVCC.Controllers
             }
 
             patient.ActivePatient.Discharge = false;
+            patient.ActivePatient.ResidenceChange = false;
             TaskResult result = await _patientService.UpdateAsync(patient);
 
             if (result.Succeeded)

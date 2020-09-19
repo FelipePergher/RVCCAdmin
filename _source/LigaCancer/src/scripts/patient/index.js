@@ -50,8 +50,7 @@ export default (function () {
                     d.doctors = $("#Doctors").val();
                     d.treatmentPlaces = $("#TreatmentPlaces").val();
                     d.familiarityGroup = $("#FamiliarityGroup").val();
-                    d.death = $("#Death").is(":checked");
-                    d.discharge = $("#Discharge").is(":checked");
+                    d.archivePatientType = $("#ArchivePatientType").val();
                     d.BirthdayDateFrom = $("#BirthdayDateFrom").val();
                     d.BirthdayDateTo = $("#BirthdayDateTo").val();
                     d.joinDateFrom = $("#JoinDateFrom").val();

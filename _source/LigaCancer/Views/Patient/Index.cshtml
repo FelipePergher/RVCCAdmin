@@ -144,22 +144,11 @@
                                                 <label asp-for="FamiliarityGroup"></label>
                                                 <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
                                             </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <div class="form-row">
-                                                    <label class="switch switch-label switch-pill switch-success ml-2">
-                                                        <input class="switch-input" asp-for="Discharge" />
-                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                                                    </label>
-                                                    <label class="ml-2" asp-for="Discharge">@Html.DisplayNameFor(model => model.Discharge)</label>
-                                                </div>
-                                                <div class="form-row">
-                                                    <label class="switch switch-label switch-pill switch-success ml-2">
-                                                        <input class="switch-input" asp-for="Death" />
-                                                        <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                                                    </label>
-                                                    <label asp-for="Death" class="ml-2">@Html.DisplayNameFor(model => model.Death)</label>
-                                                </div>
+                                            <div class="col-lg-3">
+                                                <label asp-for="ArchivePatientType"></label>
+                                                <select asp-for="ArchivePatientType" asp-items="Html.GetEnumSelectList<Enums.ArchivePatientType>()" class="form-control">
+                                                    <option selected value=""></option>
+                                                </select>
                                             </div>
 
                                         </div>
