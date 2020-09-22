@@ -24,11 +24,17 @@ namespace RVCC.Controllers.Api
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<FamilyMemberApiController> _logger;
+        private readonly IDataRepository<AdminInfo> _adminInfoService;
 
-        public FamilyMemberApiController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberApiController> logger)
+        public FamilyMemberApiController(
+            IDataRepository<FamilyMember> familyMemberService,
+            IDataRepository<Patient> patientService,
+            IDataRepository<AdminInfo> adminInfoService,
+            ILogger<FamilyMemberApiController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
+            _adminInfoService = adminInfoService;
             _logger = logger;
         }
 
@@ -43,6 +49,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
+                AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
                 List<FamilyMember> familyMembers = await _familyMemberService.GetAllAsync(null, sortColumn, sortDirection, familyMemberSearch);
                 IEnumerable<FamilyMemberViewModel> data = familyMembers.Select(x => new FamilyMemberViewModel
                 {
@@ -50,17 +57,27 @@ namespace RVCC.Controllers.Api
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
-                    MonthlyIncome = x.MonthlyIncome.ToString("C2"),
+                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * x.MonthlyIncomeMinSalary:C2})",
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
-                string familyIncome = (familyMembers.Sum(x => x.MonthlyIncome) + patient.MonthlyIncome).ToString("C2");
-                string perCapitaIncome = ((PatientRepository)_patientService).GetPerCapitaIncome(familyMembers, patient.MonthlyIncome);
+                var familyIncomeDouble = (familyMembers.Sum(x => x.MonthlyIncomeMinSalary) + patient.MonthlyIncomeMinSalary) * adminInfo.MinSalary;
+                string familyIncome = familyIncomeDouble.ToString("C2");
+                string perCapitaIncome = (familyIncomeDouble / (familyMembers.Count + 1)).ToString("C2");
 
                 int recordsTotal = familyMembers.Count;
 
-                return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered = recordsTotal, perCapitaIncome, familyIncome, monthlyIncome = patient.MonthlyIncome.ToString("C2") });
+                return Ok(new
+                {
+                    searchModel.Draw,
+                    data,
+                    recordsTotal,
+                    recordsFiltered = recordsTotal,
+                    perCapitaIncome,
+                    familyIncome,
+                    MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})"
+                });
             }
             catch (Exception e)
             {

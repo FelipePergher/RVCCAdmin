@@ -90,7 +90,7 @@
 
             <div class="col-6 d-flex">
                 <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Renda Mensal:</label>
-                <span class="d-flex align-items-end">@(Model.MonthlyIncome > 0 ? $"R$ {Model.MonthlyIncome.ToString("N")}" : string.Empty) </span>
+                <span class="d-flex align-items-end">@Model.MonthlyIncome</span>
             </div>
 
             <div class="col-6 d-flex">
@@ -266,7 +266,7 @@
                                 <td>@familyMember.Kinship</td>
                                 <td>@familyMember.DateOfBirth</td>
                                 <td>@familyMember.Sex</td>
-                                <td>R$ @familyMember.MonthlyIncome</td>
+                                <td>@familyMember.MonthlyIncome</td>
                             </tr>
                         }
                     </tbody>

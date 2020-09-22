@@ -1,0 +1,57 @@
+﻿@model RVCC.Models.FormModel.AdminFormModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@section styles {
+    <environment names="Development">
+        <link href="~/dist/css/admin.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/admin.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            Admin
+        </li>
+    </ol>
+
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-cog"></i> Admin
+                            </div>
+                            <div class="card-body">
+                                <partial name="Partials/_FormAdmin" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/col-->
+
+        </div>
+        <!--/row-->
+
+    </div>
+    <!-- /.conainer-fluid -->
+</main>
+
+@section scripts {
+    <environment names="Development">
+        <script src="~/dist/js/admin.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/admin.bundle.js" asp-append-version="true"></script>
+    </environment>
+}

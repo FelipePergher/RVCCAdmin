@@ -132,6 +132,8 @@ namespace RVCC.Data
 
         public DbSet<Stay> Stays { get; set; }
 
+        public DbSet<AdminInfo> AdminInfos { get; set; }
+
         #region Shirt Sale 2020
 
         public DbSet<SaleShirt2020> SalesShirt2020 { get; set; }

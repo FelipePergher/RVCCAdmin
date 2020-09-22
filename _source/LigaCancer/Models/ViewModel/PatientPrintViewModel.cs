@@ -30,7 +30,7 @@ namespace RVCC.Models.ViewModel
 
         public string Profession { get; set; }
 
-        public double MonthlyIncome { get; set; }
+        public string MonthlyIncome { get; set; }
 
         #endregion
 

@@ -40,6 +40,8 @@ namespace RVCC.Data.Models
 
         public double MonthlyIncome { get; set; }
 
+        public double MonthlyIncomeMinSalary { get; set; }
+
         public Enums.Sex Sex { get; set; }
 
         public Enums.CivilState? CivilState { get; set; }

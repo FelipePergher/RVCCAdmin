@@ -24,6 +24,8 @@ namespace RVCC.Data.Models
 
         public double MonthlyIncome { get; set; }
 
+        public double MonthlyIncomeMinSalary { get; set; }
+
         public int PatientId { get; set; }
 
         [ForeignKey(nameof(PatientId))]

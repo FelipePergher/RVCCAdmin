@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using RVCC.Business.Interface;
 using RVCC.Data;
 using RVCC.Data.Models;
 using System;
@@ -50,12 +51,14 @@ namespace RVCC.Business
             }
         }
 
-        public static async Task SeedAdminUser(IServiceScopeFactory scopeFactory, string email, string password)
+        public static async Task SeedAdmin(IServiceScopeFactory scopeFactory, string email, string password)
         {
             using (IServiceScope serviceScope = scopeFactory.CreateScope())
             {
                 UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                IDataRepository<AdminInfo> adminInfoService = serviceScope.ServiceProvider.GetRequiredService<IDataRepository<AdminInfo>>();
+
                 IList<ApplicationUser> applicationUsers = await userManager.GetUsersInRoleAsync(Business.Roles.Admin);
                 if (!applicationUsers.Any())
                 {
@@ -79,6 +82,14 @@ namespace RVCC.Business
                             await userManager.AddToRoleAsync(user, applicationRole.Name);
                         }
                     }
+                }
+
+                if (adminInfoService.Count() == 0)
+                {
+                    await adminInfoService.CreateAsync(new AdminInfo
+                    {
+                        CreatedBy = "Seed"
+                    });
                 }
             }
         }

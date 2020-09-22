@@ -144,8 +144,8 @@ namespace RVCC.Data.Repositories
                     : query.OrderByDescending(x => x.DateOfBirth),
                 "Sex" => sortDirection == "asc" ? query.OrderBy(x => x.Sex) : query.OrderByDescending(x => x.Sex),
                 "MonthlyIncome" => sortDirection == "asc"
-                    ? query.OrderBy(x => x.MonthlyIncome)
-                    : query.OrderByDescending(x => x.MonthlyIncome),
+                    ? query.OrderBy(x => x.MonthlyIncomeMinSalary)
+                    : query.OrderByDescending(x => x.MonthlyIncomeMinSalary),
                 _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
             };
         }

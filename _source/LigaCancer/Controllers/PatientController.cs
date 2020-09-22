@@ -31,6 +31,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly IDataRepository<Naturality> _naturalityService;
         private readonly IDataRepository<PatientInformation> _patientInformationService;
+        private readonly IDataRepository<AdminInfo> _adminInfoService;
         private readonly ILogger<PatientController> _logger;
 
         public PatientController(
@@ -41,6 +42,7 @@ namespace RVCC.Controllers
             IDataRepository<Medicine> medicineService,
             IDataRepository<Naturality> naturalityService,
             IDataRepository<PatientInformation> patientInformationService,
+            IDataRepository<AdminInfo> adminInfoService,
             ILogger<PatientController> logger,
             UserManager<ApplicationUser> userManager)
         {
@@ -52,6 +54,7 @@ namespace RVCC.Controllers
             _medicineService = medicineService;
             _naturalityService = naturalityService;
             _patientInformationService = patientInformationService;
+            _adminInfoService = adminInfoService;
             _logger = logger;
         }
 
@@ -80,6 +83,8 @@ namespace RVCC.Controllers
 
             Patient patient = await _patientService.FindByIdAsync(id, includes);
 
+            AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
+
             var patientDetails = new PatientDetailsViewModel
             {
                 PatientId = id,
@@ -97,7 +102,7 @@ namespace RVCC.Controllers
                     DateOfBirth = patient.DateOfBirth.ToShortDateString(),
                     JoinDate = patient.JoinDate.ToShortDateString(),
                     FamiliarityGroup = patient.FamiliarityGroup,
-                    MonthlyIncome = patient.MonthlyIncome.ToString()
+                    MonthlyIncomeMinSalary = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})"
                 },
                 PatientInformation = new PatientInformationFormModel
                 {
@@ -141,6 +146,7 @@ namespace RVCC.Controllers
                 "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace",
             };
 
+            AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
             Patient patient = await _patientService.FindByIdAsync(id, includes);
 
             var patientPrintViewModel = new PatientPrintViewModel
@@ -152,7 +158,7 @@ namespace RVCC.Controllers
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
                 JoinDate = patient.JoinDate,
-                MonthlyIncome = patient.MonthlyIncome,
+                MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})",
                 Profession = patient.Profession,
                 Sex = patient.Sex,
                 CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
@@ -186,7 +192,7 @@ namespace RVCC.Controllers
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToShortDateString() : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
-                    MonthlyIncome = x.MonthlyIncome.ToString("N")
+                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * x.MonthlyIncomeMinSalary:C2})"
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
                 {
@@ -244,8 +250,7 @@ namespace RVCC.Controllers
                     JoinDate = DateTime.Parse(patientProfileForm.JoinDate),
                     Profession = patientProfileForm.Profession,
                     CreatedBy = user.Name,
-                    MonthlyIncome =
-                        (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0)
+                    MonthlyIncomeMinSalary = (double)(decimal.TryParse(patientProfileForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0),
                 };
 
                 TaskResult result = await _patientService.CreateAsync(patient);
@@ -520,6 +525,7 @@ namespace RVCC.Controllers
                 DateOfBirth = patient.DateOfBirth.ToString("dd/MM/yyyy"),
                 JoinDate = patient.JoinDate.ToString("dd/MM/yyyy"),
                 MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
+                MonthlyIncomeMinSalary = patient.MonthlyIncomeMinSalary.ToString("N2"),
                 Profession = patient.Profession
             };
 
@@ -546,8 +552,10 @@ namespace RVCC.Controllers
                 patient.JoinDate = DateTime.Parse(patientProfileForm.JoinDate);
                 patient.Profession = patientProfileForm.Profession;
                 patient.UpdatedBy = user.Name;
-                patient.MonthlyIncome =
-                        (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
+
+                // Todo remove this in future
+                // MonthlyIncome = (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
+                patient.MonthlyIncomeMinSalary = (double)(decimal.TryParse(patientProfileForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 

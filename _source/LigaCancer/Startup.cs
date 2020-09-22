@@ -101,6 +101,7 @@ namespace RVCC
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
             services.AddTransient<IDataRepository<Stay>, StayRepository>();
+            services.AddTransient<IDataRepository<AdminInfo>, AdminInfoRepository>();
             services.AddTransient<IDataRepository<SaleShirt2020>, SaleShirt2020Repository>();
         }
 
@@ -170,7 +171,7 @@ namespace RVCC
 
             IServiceScopeFactory scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             SeedData.SeedRoles(scopeFactory).Wait();
-            SeedData.SeedAdminUser(scopeFactory, Configuration["Admin:Email"], Configuration["Admin:Password"]).Wait();
+            SeedData.SeedAdmin(scopeFactory, Configuration["Admin:Email"], Configuration["Admin:Password"]).Wait();
         }
     }
 }

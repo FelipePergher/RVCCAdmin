@@ -49,7 +49,7 @@ export default (function () {
     function initEditProfileForm() {
         $.validator.unobtrusive.parse("#editPatientProfileForm");
         $("#CPF").mask(global.masks.Cpf);
-        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
+        $("#MonthlyIncomeMinSalary").mask(global.masks.Price, { reverse: true });
 
         $('#DateOfBirth, #JoinDate').datepicker({
             clearBtn: true,
@@ -613,7 +613,7 @@ export default (function () {
     }
 
     function initAddFamilyMemberForm() {
-        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
+        $("#MonthlyIncomeMinSalary").mask(global.masks.Price, { reverse: true });
         $('#dateOfBirth').datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
@@ -659,7 +659,7 @@ export default (function () {
     }
 
     function initEditFamilyMemberForm() {
-        $("#MonthlyIncome").mask(masks.Price, { reverse: true });
+        $("#MonthlyIncomeMinSalary").mask(masks.Price, { reverse: true });
         $(".familyMemberSelect2").select2();
         $('#dateOfBirth').datepicker({
             clearBtn: true,

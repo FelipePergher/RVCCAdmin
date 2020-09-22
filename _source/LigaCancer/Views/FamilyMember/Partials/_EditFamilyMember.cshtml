@@ -1,7 +1,7 @@
 ﻿@using RVCC.Business
 @model RVCC.Models.FormModel.FamilyMemberFormModel
 
-<form id="editFamilyMemberForm" asp-action="EditFamilyMember" method="post" >
+<form id="editFamilyMemberForm" asp-action="EditFamilyMember" method="post">
 
     <div class="modal-body form-horizontal" id="">
         <div class="form-group">
@@ -24,13 +24,23 @@
             <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Enums.Sex>()" class="form-control"></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
+
+        @if (!string.IsNullOrEmpty(Model.MonthlyIncome))
+        {
+            <div class="form-group">
+                <label asp-for="MonthlyIncome" class="control-label"></label>
+                <input asp-for="MonthlyIncome" class="form-control" disabled />
+                <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
+            </div>
+        }
+
         <div class="form-group">
-            <label asp-for="MonthlyIncome" class="control-label"></label>
-            <input asp-for="MonthlyIncome" class="form-control" />
-            <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
+            <label asp-for="MonthlyIncomeMinSalary" class="control-label"></label>
+            <input asp-for="MonthlyIncomeMinSalary" class="form-control" />
+            <span asp-validation-for="MonthlyIncomeMinSalary" class="text-danger"></span>
         </div>
     </div>
 
-    <partial name="_ModalFooter"  />
+    <partial name="_ModalFooter" />
 
 </form>

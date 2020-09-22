@@ -144,11 +144,6 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(patient);
         }
 
-        public string GetPerCapitaIncome(List<FamilyMember> familyMembers, double monthlyPatient)
-        {
-            return familyMembers.Count > 0 ? ((familyMembers.Sum(x => x.MonthlyIncome) + monthlyPatient) / (familyMembers.Count + 1)).ToString("C2") : monthlyPatient.ToString("C2");
-        }
-
         #endregion
 
         #region Private Methods

@@ -69,8 +69,7 @@ namespace RVCC.Controllers
                     PatientId = int.Parse(id),
                     DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth),
                     Kinship = familyMemberForm.Kinship,
-                    MonthlyIncome =
-                        (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
+                    MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0),
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
                     CreatedBy = user.Name
@@ -110,6 +109,7 @@ namespace RVCC.Controllers
                 DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
+                MonthlyIncomeMinSalary = familyMember.MonthlyIncomeMinSalary.ToString("N2"),
                 Name = familyMember.Name,
                 Sex = familyMember.Sex
             });
@@ -125,8 +125,10 @@ namespace RVCC.Controllers
 
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
                 familyMember.Kinship = familyMemberForm.Kinship;
-                familyMember.MonthlyIncome =
-                    (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
+
+                // Todo remove in future
+                // familyMember.MonthlyIncome = (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
+                familyMember.MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
                 familyMember.UpdatedBy = user.Name;
