@@ -3,11 +3,11 @@
 
 <div class="card">
     <div class="card-header" data-toggle="collapse" data-target="#familyMemberCollapse" aria-expanded="true">
-        <i class="fa fa-male"></i>Membros Familiares
+        <span class="fa fa-male"></span>Membros Familiares
 
         <div class="card-header-actions">
             <a class="card-header-action btn-minimize" href="#">
-                <i class="fa fa-minus"></i>
+                <span class="fa fa-minus"></span>
             </a>
         </div>
     </div>
@@ -36,7 +36,7 @@
             <div class="form-inline float-right">
                 <a id="addFamilyMemberButton" asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" data-title="Adicionar Membro Familiar" class="btn btn-primary"
                    data-toggle="modal" data-target="#modal-action">
-                    <i class="fa fa-plus"></i> Adicionar Membro Familiar
+                    <span class="fa fa-plus"></span> Adicionar Membro Familiar
                 </a>
             </div>
         }

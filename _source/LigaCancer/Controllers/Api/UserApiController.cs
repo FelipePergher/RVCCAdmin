@@ -101,16 +101,16 @@ namespace RVCC.Controllers.Api
         private string GetActionsHtml(ApplicationUser user)
         {
             string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
-                $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><i class='fas fa-edit'></i> Editar </a>";
+                $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><span class='fas fa-edit'></span> Editar </a>";
 
             string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
-                $" class='dropdown-item deleteUserButton'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                $" class='dropdown-item deleteUserButton'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string unlockAccount = string.Empty;
             if (user.LockoutEnd != null)
             {
                 unlockAccount = $"<a href='javascript:void(0);' data-url='/User/UnlockUser' data-id='{user.Id}' " +
-                $" class='dropdown-item unlockUserButton'><i class='fas fa-unlock'></i> Desbloquear </a>";
+                $" class='dropdown-item unlockUserButton'><span class='fas fa-unlock'></span> Desbloquear </a>";
             }
 
             string actionsHtml =

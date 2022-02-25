@@ -69,7 +69,12 @@ namespace RVCC
                 options.SlidingExpiration = true;
             });
 
-            services.AddControllersWithViews();
+            var mvcBuilder = services.AddControllersWithViews();
+
+#if DEBUG
+            mvcBuilder.AddRazorRuntimeCompilation();
+#endif
+
             services.AddRazorPages();
 
             services.AddTransient<IEmailSender, EmailSender>(i =>

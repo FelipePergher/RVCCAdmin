@@ -56,8 +56,8 @@ export default (function () {
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
+                leftArrow: '<span class="fas fa-chevron-left"></span>',
+                rightArrow: '<span class="fas fa-chevron-right"></span>'
             }
         });
         $(".patientProfileSelect2").select2();
@@ -147,8 +147,8 @@ export default (function () {
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
+                leftArrow: '<span class="fas fa-chevron-left"></span>',
+                rightArrow: '<span class="fas fa-chevron-right"></span>'
             }
         });
         $(".patientInformationSelect").select2();
@@ -619,8 +619,8 @@ export default (function () {
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
+                leftArrow: '<span class="fas fa-chevron-left"></span>',
+                rightArrow: '<span class="fas fa-chevron-right"></span>'
             }
         });
         $.validator.unobtrusive.parse("#addFamilyMemberForm");
@@ -666,8 +666,8 @@ export default (function () {
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
+                leftArrow: '<span class="fas fa-chevron-left"></span>',
+                rightArrow: '<span class="fas fa-chevron-right"></span>'
             }
         });
         $.validator.unobtrusive.parse("#editFamilyMemberForm");

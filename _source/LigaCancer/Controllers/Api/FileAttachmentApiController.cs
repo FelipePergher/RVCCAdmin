@@ -69,7 +69,7 @@ namespace RVCC.Controllers.Api
             string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance)
                 ? string.Empty
                 : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
-                        <i class='fas fa-trash-alt'></i> Excluir 
+                        <span class='fas fa-trash-alt'></span> Excluir 
                     </a>";
 
             string actionsHtml =

@@ -44,103 +44,111 @@
                     <li class="nav-title">Pacientes</li>
                     <li class="nav-item">
                         <a asp-action="Index" asp-controller="Patient" class="nav-link">
-                            <i class="nav-icon fa fa-male"></i> Pacientes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Presence" class="nav-link">
-                            <i class="nav-icon far fa-address-book"></i> Presenças
-                        </a>
-                    </li>
-                    
-                    <li class="nav-title">Camisetas</li>
-                    <li class="nav-item">
-                        <a asp-action="Index" asp-controller="SaleShirt2020" class="nav-link">
-                            <i class="nav-icon fa fa-male"></i> Camisetas 2020
+                            <span class="nav-icon fa fa-male"></span> Pacientes
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Birthday" class="nav-link">
+                            <span class="nav-icon far fa-address-book"></span> Aniversariantes
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Presence" class="nav-link">
+                            <span class="nav-icon far fa-address-book"></span> Presenças
+                        </a>
+                    </li>
 
                     @if (!User.IsInRole(Roles.SocialAssistance))
                     {
-
                         <li class="nav-title">Benefícios</li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="PatientBenefit" class="nav-link">
-                                <i class="nav-icon fa fa-gift"></i> Benefícios
+                                <span class="nav-icon fa fa-gift"></span> Benefícios
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Benefit" class="nav-link">
-                                <i class="nav-icon fa fa-clipboard"></i> Tipos de Benefícios
+                                <span class="nav-icon fa fa-clipboard"></span> Tipos de Benefícios
                             </a>
                         </li>
 
                         <li class="nav-title">Estadias</li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Stay" class="nav-link">
-                                <i class="nav-icon fa fa-gift"></i> Estadias
+                                <span class="nav-icon fa fa-gift"></span> Estadias
                             </a>
                         </li>
-                       
+
                         <li class="nav-title">Informações Médicas</li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Medicine" class="nav-link">
-                                <i class="nav-icon fa fa-capsules"></i> Remédios
+                                <span class="nav-icon fa fa-capsules"></span> Remédios
                             </a>
                         </li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="CancerType" class="nav-link">
-                                <i class="nav-icon fa fa-notes-medical"></i> Cânceres
+                                <span class="nav-icon fa fa-notes-medical"></span> Cânceres
                             </a>
                         </li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="TreatmentPlace" class="nav-link">
-                                <i class="nav-icon fa fa-hospital-alt"></i> Locais de tratamento
+                                <span class="nav-icon fa fa-hospital-alt"></span> Locais de tratamento
                             </a>
                         </li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Doctor" class="nav-link">
-                                <i class="nav-icon fa fa-user-md"></i> Médicos
+                                <span class="nav-icon fa fa-user-md"></span> Médicos
                             </a>
                         </li>
-
                     }
 
                     @if (User.IsInRole(Roles.Admin))
                     {
                         @*<li class="nav-title">Relatórios</li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-icon fa fa-file-medical"></i> Relatórios
-                                </a>
+                            <a class="nav-link" href="#">
+                            <span class="nav-icon fa fa-file-medical"></span> Relatórios
+                            </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="nav-icon fa fa-file-medical-alt"></i> Relatórios Pessoais
-                                </a>
+                            <a class="nav-link" href="#">
+                            <span class="nav-icon fa fa-file-medical-alt"></span> Relatórios Pessoais
+                            </a>
                             </li> *@
 
                         <li class="nav-title">Administrativo</li>
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="User" class="nav-link">
-                                <i class="nav-icon fa fa-users"></i> Usuários
+                                <span class="nav-icon fa fa-users"></span> Usuários
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Admin" class="nav-link">
-                                <i class="nav-icon fa fa-cog"></i> Admin
+                                <span class="nav-icon fa fa-cog"></span> Admin
+                            </a>
+                        </li>
+                    }
+
+                    @if (!User.IsInRole(Roles.SocialAssistance))
+                    {
+                        <li class="nav-title">Camisetas</li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="SaleShirt2020" class="nav-link">
+                                <span class="nav-icon fa fa-male"></span> Camisetas 2020
                             </a>
                         </li>
                     }
                 </ul>
             </nav>
         </div>
-        @RenderBody()
 
+        @RenderBody()
     </div>
+
     <footer class="app-footer">
         <div class="ml-auto">
             <span>Desenvolvido por</span>

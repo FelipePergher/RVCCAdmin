@@ -111,14 +111,14 @@ namespace RVCC.Controllers.Api
             if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
             {
                 string patientDetails = $@"<a href='/Patient/Details/{patient.PatientId}' class='dropdown-item' target='_blank'>
-                                            <i class='fas fa-clipboard'></i> Detalhes do Paciente
+                                            <span class='fas fa-clipboard'></span> Detalhes do Paciente
                                         </a>";
 
                 string socialObservation = $@"<a href='/Patient/AddSocialObservation/{patient.PatientId}' data-toggle='modal' data-target='#modal-action'
-                                       data-title='Observações' class='dropdown-item socialObservationButton'><i class='fas fa-clipboard'></i> Observações</a>";
+                                       data-title='Observações' class='dropdown-item socialObservationButton'><span class='fas fa-clipboard'></span> Observações</a>";
 
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><i class='fas fa-user-alt-slash'></i> Arquivar </a>";
+                    $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><span class='fas fa-user-alt-slash'></span> Arquivar </a>";
 
                 options = patientDetails + socialObservation;
 
@@ -130,10 +130,10 @@ namespace RVCC.Controllers.Api
             else if (!User.IsInRole(Roles.SocialAssistance))
             {
                 string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
-                    $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";
+                    $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
 
                 string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
-                $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
                 if (!patient.ActivePatient.Death)
                 {
@@ -146,7 +146,7 @@ namespace RVCC.Controllers.Api
             if (patient.ActivePatient.ResidenceChange)
             {
                 string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
-                                      $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><i class='fas fa-user-plus'></i> Reativar </a>";
+                                      $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
                 options += enablePatient;
             }
 

@@ -17,6 +17,7 @@ module.exports = {
         'patient-details': ['./src/sass/patient-details/index.scss', './src/scripts/patient-details/index.js'],
         'patient-print': ['./src/sass/patient-print/index.scss', './src/scripts/patient-print/index.js'],
         'presence': ['./src/sass/presence/index.scss', './src/scripts/presence/index.js'],
+        'birthday': ['./src/sass/birthday/index.scss', './src/scripts/birthday/index.js'],
         'user': ['./src/sass/user/index.scss', './src/scripts/user/index.js'],
         'login': ['./src/sass/login/index.scss', './src/scripts/login/index.js'],
         'reset-password': ['./src/sass/reset-password/index.scss', './src/scripts/reset-password/index.js'],

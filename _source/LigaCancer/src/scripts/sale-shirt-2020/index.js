@@ -88,8 +88,8 @@ export default (function () {
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<i class="fas fa-chevron-left"></i>',
-                rightArrow: '<i class="fas fa-chevron-right"></i>'
+                leftArrow: '<span class="fas fa-chevron-left"></span>',
+                rightArrow: '<span class="fas fa-chevron-right"></span>'
             }
         });
         $('#BuyerPhone').mask(global.SPMaskBehavior, global.spOptions);
@@ -175,8 +175,8 @@ export default (function () {
                     format: "dd/mm/yyyy",
                     language: "pt-BR",
                     templates: {
-                        leftArrow: '<i class="fas fa-chevron-left"></i>',
-                        rightArrow: '<i class="fas fa-chevron-right"></i>'
+                        leftArrow: '<span class="fas fa-chevron-left"></span>',
+                        rightArrow: '<span class="fas fa-chevron-right"></span>'
                     }
                 });
             },

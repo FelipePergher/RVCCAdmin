@@ -96,10 +96,10 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
-                                   $"data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><i class='fas fa-edit'></i> Editar </a>";
+                                   $"data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
-                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+                    $"<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =

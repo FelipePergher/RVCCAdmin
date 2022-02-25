@@ -75,9 +75,9 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editStay = $"<a href='/Stay/EditStay/{stay.StayId}' data-toggle='modal' data-target='#modal-action' " +
-                   $"data-title='Editar Presença' class='dropdown-item editStayButton'><i class='fas fa-edit'></i> Editar </a>";
+                   $"data-title='Editar Presença' class='dropdown-item editStayButton'><span class='fas fa-edit'></span> Editar </a>";
                 deleteStay = $"<a href='javascript:void(0);' data-url='/Stay/DeleteStay' data-id='{stay.StayId}' " +
-                    $"class='deleteStayButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                    $"class='deleteStayButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
                 TimeSpan diff = DateTime.Now.Subtract(stay.RegisterTime);
                 if (diff.Days > 0)

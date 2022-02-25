@@ -75,10 +75,10 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
-                    $"data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><i class='fas fa-edit'></i> Editar </a>";
+                    $"data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
-                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+                    $"<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =

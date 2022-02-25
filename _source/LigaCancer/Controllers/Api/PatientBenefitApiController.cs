@@ -74,10 +74,10 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
-                   "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><i class='fas fa-edit'></i> Editar </a>";
+                   "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
-                    class='deletePatientBenefitButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                    class='deletePatientBenefitButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =

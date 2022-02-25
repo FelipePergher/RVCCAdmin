@@ -144,6 +144,28 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(patient);
         }
 
+        public Task<List<Patient>> GetByBirthdayMonth(string[] includes = null, string sortColumn = "", string sortDirection = "", BirthdaySearchModel filter = null)
+        {
+            IQueryable<Patient> query = _context.Patients;
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+            }
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdinationPatients(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredPatients(query, filter);
+            }
+
+            return Task.FromResult(query.ToList());
+        }
+
         #endregion
 
         #region Private Methods
@@ -173,17 +195,17 @@ namespace RVCC.Data.Repositories
         {
             if (!string.IsNullOrEmpty(patientSearch.Name))
             {
-                query = query.Where(x => x.FirstName.Contains(patientSearch.Name));
+                query = query.Where(x => x.FirstName.ToLower().Contains(patientSearch.Name.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Surname))
             {
-                query = query.Where(x => x.Surname.Contains(patientSearch.Surname));
+                query = query.Where(x => x.Surname.ToLower().Contains(patientSearch.Surname.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Rg))
             {
-                query = query.Where(x => x.RG.Contains(patientSearch.Rg));
+                query = query.Where(x => x.RG.ToLower().Contains(patientSearch.Rg.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Cpf))
@@ -260,6 +282,21 @@ namespace RVCC.Data.Repositories
             if (patientSearch.JoinDateTo != null)
             {
                 query = query.Where(x => x.JoinDate.Date <= DateTime.Parse(patientSearch.JoinDateTo).Date);
+            }
+
+            return query;
+        }
+
+        private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, BirthdaySearchModel birthdaySearch)
+        {
+            if (!string.IsNullOrEmpty(birthdaySearch.Name))
+            {
+                query = query.Where(x => x.FirstName.ToLower().Contains(birthdaySearch.Name) || x.Surname.ToLower().Contains(birthdaySearch.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(birthdaySearch.Month) && int.TryParse(birthdaySearch.Month, out int monthInt))
+            {
+                query = query.Where(x => x.DateOfBirth.Month == monthInt);
             }
 
             return query;

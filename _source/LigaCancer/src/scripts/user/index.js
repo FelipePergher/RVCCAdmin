@@ -69,7 +69,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addUserForm");
 
-        global.eyePassword();
+        //global.eyePassword();
 
         $("#addUserForm").submit(function (e) {
             e.preventDefault();

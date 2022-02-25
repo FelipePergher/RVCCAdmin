@@ -70,10 +70,10 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
-                    $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><i class='fas fa-edit'></i> Editar </a>";
+                    $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deletePhone = $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
-                    $"<i class='fas fa-trash-alt'></i> Excluir </a>";
+                    $"<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =

@@ -88,9 +88,9 @@ namespace RVCC.Controllers.Api
             if (!User.IsInRole(Roles.SocialAssistance))
             {
                 editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
-                   $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><i class='fas fa-edit'></i> Editar </a>";
+                   $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><span class='fas fa-edit'></span> Editar </a>";
                 deletePresence = $"<a href='javascript:void(0);' data-url='/Presence/DeletePresence' data-id='{presence.PresenceId}' " +
-                    $"class='deletePresenceButton dropdown-item'><i class='fas fa-trash-alt'></i> Excluir </a>";
+                    $"class='deletePresenceButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
                 TimeSpan diff = DateTime.Now.Subtract(presence.RegisterTime);
                 if (diff.Days > 0)

@@ -170,7 +170,7 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(patientBenefitSearch.Benefit))
             {
-                query = query.Where(x => x.Benefit.Name.Contains(patientBenefitSearch.Benefit) || x.Benefit.Name.Contains(patientBenefitSearch.Benefit));
+                query = query.Where(x => x.Benefit.Name.Contains(patientBenefitSearch.Benefit));
             }
 
             if (patientBenefitSearch.DateFrom != null && string.IsNullOrEmpty(patientBenefitSearch.PatientId))

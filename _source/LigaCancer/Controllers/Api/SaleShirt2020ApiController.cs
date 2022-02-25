@@ -113,7 +113,7 @@ namespace RVCC.Controllers.Api
                 ? string.Empty
                 : $@"
                 <a href='javascript:void(0);' data-url='/SaleShirt2020/UpdateStatusSaleShirt2020' data-id='{saleShirt2020.ShirtSaleId}' data-status='{nextStatusValue}' class='dropdown-item updateStatusSaleShirt2020Button'>
-                    <i class='fas fa-hand-point-right'></i> 
+                    <span class='fas fa-hand-point-right'></span> 
                     {nextStatus}
                 </a>";
 
@@ -121,12 +121,12 @@ namespace RVCC.Controllers.Api
                 ? string.Empty
                 : $@"
                 <a href='javascript:void(0);' data-url='/SaleShirt2020/UpdateStatusSaleShirt2020' data-id='{saleShirt2020.ShirtSaleId}' data-status='{Enums.Status.Canceled.ToString()}' class='dropdown-item updateStatusSaleShirt2020Button'>
-                    <i class='fas fa-trash-alt'></i> 
+                    <span class='fas fa-trash-alt'></span> 
                     Cancelar
                 </a>";
 
             string detailsSaleShirt2020 = $"<a href='{Url.Action("Details", "SaleShirt2020", new { id = saleShirt2020.ShirtSaleId })}' data-toggle='modal' " +
-                                          $"data-target='#modal-action' data-title='Detalhes <strong>({Enums.GetDisplayName(saleShirt2020.Status)})</strong>' class='dropdown-item detailsSaleShirt2020Button'><i class='fas fa-info'></i> Detalhes </a>";
+                                          $"data-target='#modal-action' data-title='Detalhes <strong>({Enums.GetDisplayName(saleShirt2020.Status)})</strong>' class='dropdown-item detailsSaleShirt2020Button'><span class='fas fa-info'></span> Detalhes </a>";
 
             string actionsHtml =
                 $"<div class='dropdown'>" +
