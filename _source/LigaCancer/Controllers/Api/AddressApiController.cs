@@ -60,7 +60,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Address Search Error", null);
+                _logger.LogError(e, "Address Search Error");
                 return BadRequest();
             }
         }

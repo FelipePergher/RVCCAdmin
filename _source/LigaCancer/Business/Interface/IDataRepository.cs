@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Business.Interface
 {
-    public interface IDataRepository<T> : IDisposable
-        where T : class
+    public interface IDataRepository<T>
     {
         Task<List<T>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null);
 

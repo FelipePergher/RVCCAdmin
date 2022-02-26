@@ -10,7 +10,6 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,10 +23,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Address> _addressService;
         private readonly ILogger<AddressController> _logger;
 
-        public AddressController(
-            IDataRepository<Address> addressService,
-            ILogger<AddressController> logger,
-            UserManager<ApplicationUser> userManager)
+        public AddressController(IDataRepository<Address> addressService, ILogger<AddressController> logger, UserManager<ApplicationUser> userManager)
         {
             _addressService = addressService;
             _userManager = userManager;
@@ -51,6 +47,7 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
+                double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome);
                 var address = new Address
                 {
                     PatientId = id,
@@ -61,9 +58,7 @@ namespace RVCC.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmountResidence = addressForm.ResidenceType != null
-                        ? (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0,
-
+                    MonthlyAmountResidence = addressForm.ResidenceType != null ? monthlyIncome : 0,
                     CreatedBy = user.Name
                 };
 
@@ -74,7 +69,8 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                var errorMessage = string.Join(" || ", result.Errors.Select(x => x.ToString()));
+                _logger.LogError(errorMessage);
                 return BadRequest();
             }
 
@@ -125,8 +121,8 @@ namespace RVCC.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                address.MonthlyAmountResidence = addressForm.ResidenceType != null ?
-                    (double)(decimal.TryParse(addressForm.MonthlyAmmountResidence, out decimal monthlyIncome) ? monthlyIncome : 0) : 0;
+                double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome);
+                address.MonthlyAmountResidence = addressForm.ResidenceType != null ? monthlyIncome : 0;
                 address.Street = addressForm.Street;
                 address.UpdatedBy = user.Name;
 

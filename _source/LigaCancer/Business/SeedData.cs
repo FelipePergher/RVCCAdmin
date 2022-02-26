@@ -21,76 +21,66 @@ namespace RVCC.Business
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {
-            using (IServiceScope serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                using (ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
-                {
-                    context.Database.Migrate();
-                }
-            }
+            using IServiceScope serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            context?.Database.Migrate();
         }
 
         public static async Task SeedRoles(IServiceScopeFactory scopeFactory)
         {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
+            using IServiceScope serviceScope = scopeFactory.CreateScope();
+            RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            foreach (string role in Roles)
             {
-                ApplicationDbContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-
-                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                foreach (string role in Roles)
+                if (!await roleManager.RoleExistsAsync(role))
                 {
-                    if (!await roleManager.RoleExistsAsync(role))
+                    await roleManager.CreateAsync(new IdentityRole
                     {
-                        await roleManager.CreateAsync(new IdentityRole
-                        {
-                            Name = role
-                        });
-                    }
+                        Name = role
+                    });
                 }
             }
         }
 
         public static async Task SeedAdmin(IServiceScopeFactory scopeFactory, string email, string password)
         {
-            using (IServiceScope serviceScope = scopeFactory.CreateScope())
+            using IServiceScope serviceScope = scopeFactory.CreateScope();
+            UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            IDataRepository<AdminInfo> adminInfoService = serviceScope.ServiceProvider.GetRequiredService<IDataRepository<AdminInfo>>();
+
+            IList<ApplicationUser> applicationUsers = await userManager.GetUsersInRoleAsync(Business.Roles.Admin);
+            if (!applicationUsers.Any())
             {
-                UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                IDataRepository<AdminInfo> adminInfoService = serviceScope.ServiceProvider.GetRequiredService<IDataRepository<AdminInfo>>();
-
-                IList<ApplicationUser> applicationUsers = await userManager.GetUsersInRoleAsync(Business.Roles.Admin);
-                if (!applicationUsers.Any())
+                var user = new ApplicationUser
                 {
-                    var user = new ApplicationUser
-                    {
-                        Name = "Felipe Pergher",
-                        EmailConfirmed = true,
-                        UserName = email,
-                        Email = email,
-                        RegisterTime = DateTime.Now,
-                        CreatedBy = "System"
-                    };
+                    Name = "Felipe Pergher",
+                    EmailConfirmed = true,
+                    UserName = email,
+                    Email = email,
+                    RegisterTime = DateTime.Now,
+                    CreatedBy = "System"
+                };
 
-                    IdentityResult result = await userManager.CreateAsync(user, password);
+                IdentityResult result = await userManager.CreateAsync(user, password);
 
-                    if (result.Succeeded)
+                if (result.Succeeded)
+                {
+                    IdentityRole applicationRole = await roleManager.FindByNameAsync(Business.Roles.Admin);
+                    if (applicationRole != null)
                     {
-                        IdentityRole applicationRole = await roleManager.FindByNameAsync(Business.Roles.Admin);
-                        if (applicationRole != null)
-                        {
-                            await userManager.AddToRoleAsync(user, applicationRole.Name);
-                        }
+                        await userManager.AddToRoleAsync(user, applicationRole.Name);
                     }
                 }
+            }
 
-                if (adminInfoService.Count() == 0)
+            if (adminInfoService.Count() == 0)
+            {
+                await adminInfoService.CreateAsync(new AdminInfo
                 {
-                    await adminInfoService.CreateAsync(new AdminInfo
-                    {
-                        CreatedBy = "Seed"
-                    });
-                }
+                    CreatedBy = "Seed"
+                });
             }
         }
     }

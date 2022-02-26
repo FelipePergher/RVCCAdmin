@@ -49,7 +49,7 @@ namespace RVCC.Controllers.Api
                     Size = x.FileSize.ToString("N"),
                     FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{x.FilePath}",
                     Actions = GetActionsHtml(x)
-                });
+                }).Skip(skip).Take(take);
 
                 int recordsTotal = fileAttachments.Count();
 
@@ -57,7 +57,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "File Attachment Search Error", null);
+                _logger.LogError(e, "File Attachment Search Error");
                 return BadRequest();
             }
         }

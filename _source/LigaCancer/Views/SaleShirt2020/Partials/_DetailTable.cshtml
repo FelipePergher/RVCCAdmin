@@ -7,28 +7,28 @@
     int xgQuantity = Model.SizeXGNormalQuantity + Model.SizeXGBabyLookQuantity;
 }
 
-<table class="table table-responsive-sm table-bordered text-center">
+<table class="table table-responsive-sm table-bordered text-center" aria-describedby="Detalhes de venda de camisetas 2020">
     <thead>
         <tr>
-            <th>Quantidade</th>
-            <th>2</th>
-            <th>4</th>
-            <th>6</th>
-            <th>8</th>
-            <th>10</th>
-            <th>12</th>
-            <th>14</th>
-            <th>16</th>
-            <th>P</th>
-            <th>M</th>
-            <th>G</th>
-            <th>GG</th>
-            <th>XG</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">2</th>
+            <th scope="col">4</th>
+            <th scope="col">6</th>
+            <th scope="col">8</th>
+            <th scope="col">10</th>
+            <th scope="col">12</th>
+            <th scope="col">14</th>
+            <th scope="col">16</th>
+            <th scope="col">P</th>
+            <th scope="col">M</th>
+            <th scope="col">G</th>
+            <th scope="col">GG</th>
+            <th scope="col">XG</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <th>Normal</th>
+            <th scope="row">Normal</th>
             <td>@Model.Size2NormalQuantity</td>
             <td>@Model.Size4NormalQuantity</td>
             <td>@Model.Size6NormalQuantity</td>
@@ -44,7 +44,7 @@
             <td>@Model.SizeXGNormalQuantity</td>
         </tr>
         <tr>
-            <th>Baby Look</th>
+            <th scope="row">Baby Look</th>
             <td>-</td>
             <td>-</td>
             <td>-</td>
@@ -60,7 +60,7 @@
             <td>@Model.SizeXGBabyLookQuantity</td>
         </tr>
         <tr>
-            <th>Total</th>
+            <th scope="row">Total</th>
             <td>@Model.Size2NormalQuantity</td>
             <td>@Model.Size4NormalQuantity</td>
             <td>@Model.Size6NormalQuantity</td>
@@ -76,7 +76,7 @@
             <td>@xgQuantity</td>
         </tr>
         <tr>
-            <th>Valor</th>
+            <th scope="row">Valor</th>
             <td>R$ @((Model.Size2NormalQuantity * 20).ToString("N2"))</td>
             <td>R$ @((Model.Size4NormalQuantity * 20).ToString("N2"))</td>
             <td>R$ @((Model.Size6NormalQuantity * 20).ToString("N2"))</td>

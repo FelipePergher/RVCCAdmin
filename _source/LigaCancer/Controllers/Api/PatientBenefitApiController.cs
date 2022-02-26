@@ -60,7 +60,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "PatientBenefit Search Error", null);
+                _logger.LogError(e, "PatientBenefit Search Error");
                 return BadRequest();
             }
         }

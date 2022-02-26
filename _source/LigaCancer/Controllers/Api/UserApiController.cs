@@ -84,7 +84,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "User Search Error", null);
+                _logger.LogError(e, "User Search Error");
                 return BadRequest();
             }
         }

@@ -81,7 +81,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Family Member Search Error", null);
+                _logger.LogError(e, "Family Member Search Error");
                 return BadRequest();
             }
         }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Business
 {
-    public class SelectHelper
+    public static class SelectHelper
     {
         public static async Task<List<SelectListItem>> GetDoctorSelectAsync(IDataRepository<Doctor> doctorService)
         {

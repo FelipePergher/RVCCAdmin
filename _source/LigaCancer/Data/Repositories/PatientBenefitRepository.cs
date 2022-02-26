@@ -87,11 +87,6 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
-
         public Task<List<PatientBenefit>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
             IQueryable<PatientBenefit> query = _context.PatientBenefits;

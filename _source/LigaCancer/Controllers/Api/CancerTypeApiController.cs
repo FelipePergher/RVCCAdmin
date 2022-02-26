@@ -55,7 +55,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Cancer Type Search Error", null);
+                _logger.LogError(e, "Cancer Type Search Error");
                 return BadRequest();
             }
         }

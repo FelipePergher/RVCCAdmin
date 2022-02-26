@@ -125,9 +125,6 @@ namespace RVCC.Controllers
 
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
                 familyMember.Kinship = familyMemberForm.Kinship;
-
-                // Todo remove in future
-                // familyMember.MonthlyIncome = (double)(decimal.TryParse(familyMemberForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0);
                 familyMember.MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;

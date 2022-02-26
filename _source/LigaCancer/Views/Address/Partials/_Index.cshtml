@@ -9,22 +9,19 @@
             <a class="card-header-action btn-minimize" href="#">
                 <span class="fa fa-minus"></span>
             </a>
-
         </div>
-
     </div>
 
     <div class="card-body collapse" id="addressCollapse">
         @if (!User.IsInRole(Roles.SocialAssistance))
         {
             <div class="form-inline float-right">
-                <a id="addAddressButton" asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" data-title="Adicionar Endereço" class="btn btn-primary"
-                   data-toggle="modal" data-target="#modal-action">
+                <a id="addAddressButton" asp-action="AddAddress" asp-controller="Address" asp-route-id="@Model.PatientId" data-title="Adicionar Endereço" class="btn btn-primary" data-toggle="modal" data-target="#modal-action">
                     <span class="fa fa-plus"></span> Adicionar Endereço
                 </a>
             </div>
         }
 
-        <table width="100%" class="table table-bordered table-striped text-center" id="addressTable"></table>
+        <table width="100%" class="table table-bordered table-striped text-center" id="addressTable" aria-describedby="Tabela de endereços" aria-hidden="True"></table>
     </div>
 </div>

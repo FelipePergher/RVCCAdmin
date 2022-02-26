@@ -15,7 +15,7 @@
 }
 
 <input asp-for="PatientId" id="patientId" hidden="hidden" />
-<iframe src="@Url.Action("Print", "Patient", new { id = Model.PatientId })" name="printPatient" id="printPatient" class="d-none"></iframe>
+<iframe src="@Url.Action("Print", "Patient", new { id = Model.PatientId })" name="printPatient" id="printPatient" class="d-none" title="Ficha do paciente para imprimir - @ViewData["Title"]"></iframe>
 
 <main class="main">
     <ol class="breadcrumb">

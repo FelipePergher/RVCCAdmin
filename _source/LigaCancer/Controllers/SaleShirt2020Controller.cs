@@ -46,28 +46,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddSaleShirt2020", new SaleShirt2020FormModel());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Details(string id)
-        {
-            SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(id);
-
-            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
-
-            return PartialView("Partials/_DetailsSaleShirt2020", salesShirtModel);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("DetalhesPedido/{code}")]
-        public async Task<IActionResult> PublicDetails(string code)
-        {
-            code = code.ToLower().Replace("rvcc", string.Empty);
-            SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(code);
-
-            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
-
-            return View("PublicDetailsSaleShirt2020", salesShirtModel);
-        }
-
         [HttpPost]
         public async Task<IActionResult> AddSaleShirt2020(SaleShirt2020FormModel saleShirt2020Form)
         {
@@ -132,6 +110,28 @@ namespace RVCC.Controllers
             }
 
             return PartialView("Partials/_AddSaleShirt2020", saleShirt2020Form);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(id);
+
+            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
+
+            return PartialView("Partials/_DetailsSaleShirt2020", salesShirtModel);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("DetalhesPedido/{code}")]
+        public async Task<IActionResult> PublicDetails(string code)
+        {
+            code = code.ToLower().Replace("rvcc", string.Empty);
+            SaleShirt2020 saleShirt2020 = await _saleShirt2020Service.FindByIdAsync(code);
+
+            SaleShirt2020FormModel salesShirtModel = GetShirtViewModel(saleShirt2020);
+
+            return View("PublicDetailsSaleShirt2020", salesShirtModel);
         }
 
         [HttpPost]

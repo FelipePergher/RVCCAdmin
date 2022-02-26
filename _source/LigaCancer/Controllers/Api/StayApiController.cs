@@ -61,7 +61,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Stay Search Error", null);
+                _logger.LogError(e, "Stay Search Error");
                 return BadRequest();
             }
         }

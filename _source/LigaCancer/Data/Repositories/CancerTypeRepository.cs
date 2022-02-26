@@ -70,11 +70,6 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
-
         public Task<CancerType> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<CancerType> query = _context.CancerTypes;

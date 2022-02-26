@@ -77,7 +77,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "SaleShirt2020 Search Error", null);
+                _logger.LogError(e, "SaleShirt2020 Search Error");
                 return BadRequest();
             }
         }

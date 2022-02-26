@@ -191,7 +191,7 @@ export default (function () {
 
     //Phone Functions
     function initPhoneTable() {
-        let phoneTable = $("#phoneTable").DataTable({
+        $("#phoneTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -328,7 +328,7 @@ export default (function () {
 
     //Address Functions
     function initAddressTable() {
-        let addressTable = $("#addressTable").DataTable({
+        $("#addressTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -479,7 +479,7 @@ export default (function () {
 
     //Patient Benefits Functions
     function initPatientBenefitTable() {
-        let patientBenefitTable = $("#patientBenefitTable").DataTable({
+        $("#patientBenefitTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -508,7 +508,7 @@ export default (function () {
 
     //Presence Functions
     function initPresenceTable() {
-        let presenceTable = $("#presenceTable").DataTable({
+        $("#presenceTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -535,7 +535,7 @@ export default (function () {
 
     //Stay Functions
     function initStayTable() {
-        let stayTable = $("#stayTable").DataTable({
+        $("#stayTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -564,7 +564,7 @@ export default (function () {
 
     //Family Member Functions
     function initFamilyMemberTable() {
-        let familyMemberTable = $("#familyMemberTable").DataTable({
+        $("#familyMemberTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -728,7 +728,7 @@ export default (function () {
     //Files
 
     function initFilesTable() {
-        let attachmentsTable = $("#attachmentsTable").DataTable({
+        $("#attachmentsTable").DataTable({
             autoWidth: false,
             processing: true,
             serverSide: true,
@@ -757,10 +757,8 @@ export default (function () {
                 {
                     data: "name", title: "Arquivo", name: "Name",
                     render: function (data, type, row, meta) {
-                        let html =
-                            '   <span class="editable" data-fileAttachmentId="' + row.fileAttachmentId + '">' + row.name + '</span>' +
+                        return '   <span class="editable" data-fileAttachmentId="' + row.fileAttachmentId + '">' + row.name + '</span>' +
                             '   <a class="float-right fa fa-download mt-1 ml-2" class="fa fa-download" href="' + row.filePath + '" download="' + row.name + row.extension + '"></a>';
-                        return html;
                     }
                 }
             ],

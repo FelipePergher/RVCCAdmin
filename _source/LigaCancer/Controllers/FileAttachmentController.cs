@@ -101,7 +101,7 @@ namespace RVCC.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "File Upload Error", null);
+                _logger.LogError(e, "File Upload Error");
                 return BadRequest();
             }
 
@@ -143,7 +143,7 @@ namespace RVCC.Controllers
             }
             catch (IOException ioExp)
             {
-                _logger.LogError(ioExp, "Upload File", null);
+                _logger.LogError(ioExp, "Upload File");
             }
 
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);

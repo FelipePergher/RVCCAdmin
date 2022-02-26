@@ -552,9 +552,6 @@ namespace RVCC.Controllers
                 patient.JoinDate = DateTime.Parse(patientProfileForm.JoinDate);
                 patient.Profession = patientProfileForm.Profession;
                 patient.UpdatedBy = user.Name;
-
-                // Todo remove this in future
-                // MonthlyIncome = (double)(decimal.TryParse(patientProfileForm.MonthlyIncome, out decimal monthlyIncome) ? monthlyIncome : 0),
                 patient.MonthlyIncomeMinSalary = (double)(decimal.TryParse(patientProfileForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
 
                 TaskResult result = await _patientService.UpdateAsync(patient);

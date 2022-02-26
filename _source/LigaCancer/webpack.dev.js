@@ -31,7 +31,7 @@ module.exports = merge(common, {
                 {
                     loader: "css-loader",
                     options: {
-                        minimize: false || {/* or CSSNano Options */ },
+                        minimize: false,
                         sourceMap: true
 
                     }

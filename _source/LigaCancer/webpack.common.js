@@ -60,7 +60,7 @@ module.exports = {
                 test: /\.css$/,
                 loader: "style-loader!css-loader",
                 options: {
-                    minimize: true || {/* or CSSNano Options */ }
+                    minimize: true
                 }
             },
             {

@@ -47,9 +47,7 @@ export default (function () {
         inputTooShort: function (args) {
             var remainingChars = args.minimum - args.input.length;
 
-            var message = 'Digite ' + remainingChars + ' ou mais caracteres';
-
-            return message;
+            return 'Digite ' + remainingChars + ' ou mais caracteres';
         },
         loadingMore: function () {
             return 'Carregando mais resultados…';

@@ -70,11 +70,6 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
-
         public Task<Phone> FindByIdAsync(string id, string[] includes = null)
         {
             IQueryable<Phone> query = _context.Phones;

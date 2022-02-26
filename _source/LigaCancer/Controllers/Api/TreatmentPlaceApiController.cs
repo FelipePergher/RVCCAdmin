@@ -55,7 +55,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Treatment Place Search Error", null);
+                _logger.LogError(e, "Treatment Place Search Error");
                 return BadRequest();
             }
         }
