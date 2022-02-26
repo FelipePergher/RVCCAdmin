@@ -2,8 +2,6 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +14,6 @@ namespace RVCC.Business
     {
         #region Patient Enums
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum Sex
         {
             [Display(Name = "Não especificado")]
@@ -32,7 +29,6 @@ namespace RVCC.Business
             Female
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum CivilState
         {
             [Display(Name = "Solteiro(a)")]
@@ -56,7 +52,6 @@ namespace RVCC.Business
             Widowed,
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum PhoneType
         {
             [Display(Name = "Fixo")]
@@ -68,7 +63,6 @@ namespace RVCC.Business
             Cellphone
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public enum ResidenceType
         {
             [Display(Name = "Própria")]
@@ -88,7 +82,7 @@ namespace RVCC.Business
             Other
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        // [JsonConverter(typeof(StringEnumConverter<,,>))]
         public enum ArchivePatientType
         {
             [Display(Name = "Alta")]
@@ -133,17 +127,6 @@ namespace RVCC.Business
             [Display(Name = "Cancelado")]
             [EnumMember(Value = "Cancelado")]
             Canceled = 30,
-        }
-
-        public enum ShirtType
-        {
-            [Display(Name = "Normal")]
-            [EnumMember(Value = "Normal")]
-            Normal = 5,
-
-            [Display(Name = "Baby look")]
-            [EnumMember(Value = "Baby look")]
-            BabyLook = 10,
         }
 
         #endregion
