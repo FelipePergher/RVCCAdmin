@@ -11,7 +11,7 @@ public class BirthdaySearchModel
 {
     public BirthdaySearchModel()
     {
-        Month = DateTime.Now.AddDays(-30).ToString("MMMM");
+        Month = DateTime.Now.ToString("MMMM");
     }
 
     [Display(Name = "Nome")]

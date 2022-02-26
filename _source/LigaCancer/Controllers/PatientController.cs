@@ -68,10 +68,10 @@ namespace RVCC.Controllers
             string[] includes =
             {
                 nameof(Patient.PatientInformation), nameof(Patient.Naturality),
-                nameof(PatientInformation.PatientInformationDoctors), nameof(PatientInformationDoctor.Doctor),
-                nameof(PatientInformation.PatientInformationCancerTypes), nameof(PatientInformationCancerType.CancerType),
-                nameof(PatientInformation.PatientInformationMedicines), nameof(PatientInformationMedicine.Medicine),
-                nameof(PatientInformation.PatientInformationTreatmentPlaces), nameof(PatientInformationTreatmentPlace.TreatmentPlace),
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
             };
 
             Patient patient = await _patientService.FindByIdAsync(id, includes);
@@ -127,11 +127,11 @@ namespace RVCC.Controllers
             string[] includes =
             {
                 nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers),
-                nameof(Patient.Presences), nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), nameof(PatientBenefit.Benefit),
-                nameof(PatientInformation.PatientInformationDoctors), nameof(PatientInformationDoctor.Doctor),
-                nameof(PatientInformation.PatientInformationCancerTypes), nameof(PatientInformationCancerType.CancerType),
-                nameof(PatientInformation.PatientInformationMedicines), nameof(PatientInformationMedicine.Medicine),
-                nameof(PatientInformation.PatientInformationTreatmentPlaces), nameof(PatientInformationTreatmentPlace.TreatmentPlace),
+                nameof(Patient.Presences), nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
+                $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
             };
 
             AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
@@ -271,7 +271,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Naturality naturality = await _naturalityService.FindByIdAsync(id, new[] { nameof(Naturality.Patient), nameof(Patient.PatientInformation) });
+                Naturality naturality = await _naturalityService.FindByIdAsync(id, new[] { nameof(Naturality.Patient), $"{nameof(Naturality.Patient)}.{nameof(Patient.PatientInformation)}" });
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;

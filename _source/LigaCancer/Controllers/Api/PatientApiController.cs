@@ -46,10 +46,10 @@ namespace RVCC.Controllers.Api
                 string[] includes =
                 {
                     nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses),
-                    nameof(PatientInformation.PatientInformationDoctors), nameof(PatientInformationDoctor.Doctor),
-                    nameof(PatientInformation.PatientInformationCancerTypes), nameof(PatientInformationCancerType.CancerType),
-                    nameof(PatientInformation.PatientInformationMedicines), nameof(PatientInformationMedicine.Medicine),
-                    nameof(PatientInformation.PatientInformationTreatmentPlaces), nameof(PatientInformationTreatmentPlace.TreatmentPlace),
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
                 };
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(includes, sortColumn, sortDirection, patientSearchModel);

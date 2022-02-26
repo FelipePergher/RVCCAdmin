@@ -101,7 +101,7 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id, new[] { nameof(PatientBenefit.PatientId), nameof(PatientBenefit.Benefit) });
+            PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id, new[] { nameof(PatientBenefit.Patient), nameof(PatientBenefit.Benefit) });
 
             if (patientBenefit == null)
             {
