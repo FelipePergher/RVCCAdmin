@@ -5,7 +5,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -23,21 +22,14 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class FileAttachmentController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<FileAttachment> _fileAttachmentService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<FileAttachmentController> _logger;
 
-        public FileAttachmentController(
-            IDataRepository<FileAttachment> fileAttachmentService,
-            IDataRepository<Patient> patientService,
-            ILogger<FileAttachmentController> logger,
-            IWebHostEnvironment webHostEnvironment,
-            UserManager<ApplicationUser> userManager)
+        public FileAttachmentController(IDataRepository<FileAttachment> fileAttachmentService, IDataRepository<Patient> patientService, IWebHostEnvironment webHostEnvironment, ILogger<FileAttachmentController> logger)
         {
             _fileAttachmentService = fileAttachmentService;
-            _userManager = userManager;
             _patientService = patientService;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
@@ -71,14 +63,12 @@ namespace RVCC.Controllers
                 return NotFound();
             }
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
             var fileAttachment = new FileAttachment
             {
                 PatientId = patient.PatientId,
                 FileName = Path.GetFileNameWithoutExtension(file.FileName),
                 FileExtension = Path.GetExtension(file.FileName),
                 FileSize = (double)file.Length / 1024 / 1024,
-                CreatedBy = user.Name
             };
 
             string path = $"uploads\\files\\{patient.PatientId}";
@@ -101,7 +91,7 @@ namespace RVCC.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "File Upload Error");
+                _logger.LogError(LogEvents.InsertItem, e, "File Upload Error");
                 return BadRequest();
             }
 
@@ -112,13 +102,12 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -143,7 +132,7 @@ namespace RVCC.Controllers
             }
             catch (IOException ioExp)
             {
-                _logger.LogError(ioExp, "Upload File");
+                _logger.LogError(LogEvents.DeleteItem, ioExp, "Upload File");
             }
 
             TaskResult result = await _fileAttachmentService.DeleteAsync(fileAttachment);
@@ -153,13 +142,12 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {
             if (string.IsNullOrEmpty(fileAttachmentModel.FileAttachmentId))
@@ -183,7 +171,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

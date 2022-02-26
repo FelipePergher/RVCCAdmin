@@ -85,7 +85,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(result.Errors.FirstOrDefault().Description);
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -157,14 +157,13 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(result.Errors.FirstOrDefault().Description);
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             }
 
             return PartialView("Partials/_EditUser", userForm);
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -186,12 +185,11 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(result.Errors.FirstOrDefault().Description);
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UnlockUser(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -213,7 +211,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(result.Errors.FirstOrDefault().Description);
+            _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

@@ -21,12 +21,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly IDataRepository<CancerType> _cancerTypeService;
 
-        public HomeController(
-            IDataRepository<Patient> patientService,
-            IDataRepository<Doctor> doctorService,
-            IDataRepository<TreatmentPlace> treatmentPlaceService,
-            IDataRepository<Medicine> medicineService,
-            IDataRepository<CancerType> cancerTypeService)
+        public HomeController(IDataRepository<Patient> patientService, IDataRepository<Doctor> doctorService, IDataRepository<TreatmentPlace> treatmentPlaceService, IDataRepository<Medicine> medicineService, IDataRepository<CancerType> cancerTypeService)
         {
             _patientService = patientService;
             _doctorService = doctorService;

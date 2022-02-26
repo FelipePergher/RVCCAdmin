@@ -13,6 +13,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -51,7 +52,7 @@ namespace RVCC.Controllers.Api
                     ResidenceType = Enums.GetDisplayName(x.ResidenceType),
                     MonthlyAmmountResidence = x.MonthlyAmountResidence == 0 ? string.Empty : x.MonthlyAmountResidence.ToString("C2"),
                     ObservationAddress = x.ObservationAddress,
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = addresses.Count;
@@ -60,35 +61,35 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Address Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Address Search Error");
                 return BadRequest();
             }
         }
 
         #region Private Methods
 
-        private string GetActionsHtml(Address address)
+        private static string GetActionsHtml(Address address, ClaimsPrincipal user)
         {
             string editAddress = string.Empty;
             string deleteAddress = string.Empty;
 
-            if (!User.IsInRole(Roles.SocialAssistance))
+            if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
-                    $"data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><span class='fas fa-edit'></span> Editar </a>";
+                    "data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
-                    $"<span class='fas fa-trash-alt'></span> Excluir </a>";
+                    "<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {editAddress}" +
                 $"      {deleteAddress}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

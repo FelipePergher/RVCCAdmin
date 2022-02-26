@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                familyMember.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -127,7 +126,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<FamilyMember> GetOrdinationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
+        private static IQueryable<FamilyMember> GetOrdinationFamilyMembers(IQueryable<FamilyMember> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -145,7 +144,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<FamilyMember> GetFilteredFamilyMembers(IQueryable<FamilyMember> query, FamilyMemberSearchModel familyMemberSearch)
+        private static IQueryable<FamilyMember> GetFilteredFamilyMembers(IQueryable<FamilyMember> query, FamilyMemberSearchModel familyMemberSearch)
         {
             if (!string.IsNullOrEmpty(familyMemberSearch.PatientId))
             {

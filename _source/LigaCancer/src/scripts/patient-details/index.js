@@ -314,7 +314,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#phoneTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
@@ -465,7 +465,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                     .done(function (data, textStatus) {
                         $("#addressTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
@@ -713,7 +713,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                     .done(function (data, textStatus) {
                         $("#familyMemberTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
@@ -826,7 +826,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#attachmentsTable").DataTable().ajax.reload(null, false);
                         reloadIframe();

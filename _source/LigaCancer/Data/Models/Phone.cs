@@ -14,13 +14,12 @@ namespace RVCC.Data.Models
         {
         }
 
-        public Phone(string patientId, string number, Enums.PhoneType? phoneType, string observationNote, ApplicationUser user)
+        public Phone(string patientId, string number, Enums.PhoneType? phoneType, string observationNote)
         {
             Number = number;
             PhoneType = phoneType;
             ObservationNote = observationNote;
             PatientId = int.Parse(patientId);
-            CreatedBy = user.Name;
         }
 
         [Key]

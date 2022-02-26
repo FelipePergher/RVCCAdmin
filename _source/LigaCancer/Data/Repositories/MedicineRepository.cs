@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                medicine.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -136,7 +135,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Medicine> GetOrdinationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
+        private static IQueryable<Medicine> GetOrdinationMedicine(IQueryable<Medicine> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -144,7 +143,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel medicineSearch)
+        private static IQueryable<Medicine> GetFilteredMedicines(IQueryable<Medicine> query, MedicineSearchModel medicineSearch)
         {
             if (!string.IsNullOrEmpty(medicineSearch.Name))
             {

@@ -26,6 +26,7 @@ namespace RVCC.Areas.Identity.Pages.Account
 
         public void OnGet()
         {
+            // Razor page flow
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)

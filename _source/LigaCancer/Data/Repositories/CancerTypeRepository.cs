@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                cancerType.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -136,7 +135,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<CancerType> GetOrdinationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
+        private static IQueryable<CancerType> GetOrdinationCancerType(IQueryable<CancerType> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -144,7 +143,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel cancerTypeSearch)
+        private static IQueryable<CancerType> GetFilteredCancerTypes(IQueryable<CancerType> query, CancerTypeSearchModel cancerTypeSearch)
         {
             if (!string.IsNullOrEmpty(cancerTypeSearch.Name))
             {

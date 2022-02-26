@@ -175,7 +175,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: patientBenefitId })
+                $.post(url, { id: patientBenefitId, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#patientBenefitTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O benefício de paciente foi removido com sucesso.", "success");

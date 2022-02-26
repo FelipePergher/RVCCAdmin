@@ -57,7 +57,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Birthday Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Birthday Search Error");
                 return BadRequest();
             }
         }

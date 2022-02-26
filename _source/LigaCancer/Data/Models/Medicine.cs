@@ -14,10 +14,9 @@ namespace RVCC.Data.Models
         {
         }
 
-        public Medicine(string name, ApplicationUser user)
+        public Medicine(string name)
         {
             Name = name;
-            CreatedBy = user.Name;
         }
 
         [Key]

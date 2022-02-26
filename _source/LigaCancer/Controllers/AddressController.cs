@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -19,14 +18,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class AddressController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Address> _addressService;
         private readonly ILogger<AddressController> _logger;
 
-        public AddressController(IDataRepository<Address> addressService, ILogger<AddressController> logger, UserManager<ApplicationUser> userManager)
+        public AddressController(IDataRepository<Address> addressService, ILogger<AddressController> logger)
         {
             _addressService = addressService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -46,8 +43,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
-                double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome);
                 var address = new Address
                 {
                     PatientId = id,
@@ -58,9 +53,12 @@ namespace RVCC.Controllers
                     ObservationAddress = addressForm.ObservationAddress,
                     Street = addressForm.Street,
                     ResidenceType = addressForm.ResidenceType,
-                    MonthlyAmountResidence = addressForm.ResidenceType != null ? monthlyIncome : 0,
-                    CreatedBy = user.Name
                 };
+
+                if (addressForm.ResidenceType != null && double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome))
+                {
+                    address.MonthlyAmountResidence = monthlyIncome;
+                }
 
                 TaskResult result = await _addressService.CreateAsync(address);
 
@@ -69,8 +67,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                var errorMessage = string.Join(" || ", result.Errors.Select(x => x.ToString()));
-                _logger.LogError(errorMessage);
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -112,7 +109,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Address address = await _addressService.FindByIdAsync(id);
 
                 address.Complement = addressForm.Complement;
@@ -121,10 +117,12 @@ namespace RVCC.Controllers
                 address.Neighborhood = addressForm.Neighborhood;
                 address.ObservationAddress = addressForm.ObservationAddress;
                 address.ResidenceType = addressForm.ResidenceType;
-                double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome);
-                address.MonthlyAmountResidence = addressForm.ResidenceType != null ? monthlyIncome : 0;
                 address.Street = addressForm.Street;
-                address.UpdatedBy = user.Name;
+
+                if (addressForm.ResidenceType != null && double.TryParse(addressForm.MonthlyAmmountResidence, out double monthlyIncome))
+                {
+                    address.MonthlyAmountResidence = monthlyIncome;
+                }
 
                 TaskResult result = await _addressService.UpdateAsync(address);
                 if (result.Succeeded)
@@ -132,7 +130,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -140,7 +138,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteAddress(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -162,7 +159,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -11,7 +10,6 @@ using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
 using RVCC.Models.SearchModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,17 +19,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class TreatmentPlaceController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<TreatmentPlace> _treatmentPlaceService;
         private readonly ILogger<TreatmentPlaceController> _logger;
 
-        public TreatmentPlaceController(
-            IDataRepository<TreatmentPlace> treatmentPlaceService,
-            ILogger<TreatmentPlaceController> logger,
-            UserManager<ApplicationUser> userManager)
+        public TreatmentPlaceController(IDataRepository<TreatmentPlace> treatmentPlaceService, ILogger<TreatmentPlaceController> logger)
         {
             _treatmentPlaceService = treatmentPlaceService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -52,7 +45,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var treatmentPlace = new TreatmentPlace(treatmentPlaceForm.City, await _userManager.GetUserAsync(User));
+                var treatmentPlace = new TreatmentPlace(treatmentPlaceForm.City);
 
                 TaskResult result = await _treatmentPlaceService.CreateAsync(treatmentPlace);
                 if (result.Succeeded)
@@ -60,7 +53,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -104,9 +97,7 @@ namespace RVCC.Controllers
                     return NotFound();
                 }
 
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 treatmentPlace.City = treatmentPlaceForm.City;
-                treatmentPlace.UpdatedBy = user.Name;
 
                 TaskResult result = await _treatmentPlaceService.UpdateAsync(treatmentPlace);
                 if (result.Succeeded)
@@ -114,7 +105,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -122,7 +113,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteTreatmentPlace(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -144,7 +134,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest(result);
         }
     }

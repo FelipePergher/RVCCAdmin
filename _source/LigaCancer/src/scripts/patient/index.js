@@ -357,7 +357,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#patientTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Ativo!", "O paciente foi reativado com sucesso.", "success");
@@ -376,7 +376,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#patientTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O paciente foi removido com sucesso.", "success");

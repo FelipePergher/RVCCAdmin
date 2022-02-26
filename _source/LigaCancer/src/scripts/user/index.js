@@ -69,8 +69,6 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addUserForm");
 
-        //global.eyePassword();
-
         $("#addUserForm").submit(function (e) {
             e.preventDefault();
 
@@ -144,7 +142,7 @@ export default (function () {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
                     .done(function (data, textStatus) {
                         $("#userTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O usuário foi removido com sucesso.", "success");

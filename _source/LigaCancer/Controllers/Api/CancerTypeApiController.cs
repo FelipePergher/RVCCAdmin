@@ -41,7 +41,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<CancerType> cancerTypes = await _cancerTypeService.GetAllAsync(new string[] { "PatientInformationCancerTypes" }, sortColumn, sortDirection, cancerTypeSearch);
+                IEnumerable<CancerType> cancerTypes = await _cancerTypeService.GetAllAsync(new[] { nameof(CancerType.PatientInformationCancerTypes) }, sortColumn, sortDirection, cancerTypeSearch);
                 IEnumerable<CancerTypeViewModel> data = cancerTypes.Select(x => new CancerTypeViewModel
                 {
                     Name = x.Name,
@@ -55,7 +55,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Cancer Type Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Cancer Type Search Error");
                 return BadRequest();
             }
         }
@@ -66,7 +66,7 @@ namespace RVCC.Controllers.Api
             IEnumerable<CancerType> cancerTypes = await _cancerTypeService.GetAllAsync(null, "FirstName", "asc", new CancerTypeSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
             {
-                Results = cancerTypes.Select(x => new Result
+                Results = cancerTypes.Select(x => new Select2Result
                 {
                     Id = x.CancerTypeId.ToString(),
                     Text = x.Name
@@ -85,7 +85,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(CancerType cancerType)
+        private static string GetActionsHtml(CancerType cancerType)
         {
             string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 $"data-title='Editar Tipo de Câncer' class='dropdown-item editCancerTypeButton'><span class='fas fa-edit'></span> Editar </a>";

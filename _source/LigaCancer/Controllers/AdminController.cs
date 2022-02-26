@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -19,17 +18,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class AdminController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<AdminInfo> _adminInfoService;
         private readonly ILogger<AdminController> _logger;
 
-        public AdminController(
-            IDataRepository<AdminInfo> adminInfoService,
-            ILogger<AdminController> logger,
-            UserManager<ApplicationUser> userManager)
+        public AdminController(IDataRepository<AdminInfo> adminInfoService, ILogger<AdminController> logger)
         {
             _adminInfoService = adminInfoService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -55,9 +49,7 @@ namespace RVCC.Controllers
 
                 if (adminInfo != null)
                 {
-                    ApplicationUser user = await _userManager.GetUserAsync(User);
                     adminInfo.MinSalary = (double)(decimal.TryParse(adminForm.MinSalary, out decimal monthlyIncome) ? monthlyIncome : 0);
-                    adminInfo.UpdatedBy = user.Name;
 
                     TaskResult result = await _adminInfoService.UpdateAsync(adminInfo);
                     if (result.Succeeded)
@@ -65,7 +57,7 @@ namespace RVCC.Controllers
                         return View(adminForm);
                     }
 
-                    _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                    _logger.LogError(LogEvents.ListItems, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 }
 
                 ModelState.AddModelError(string.Empty, "Alguma coisa deu errado!");

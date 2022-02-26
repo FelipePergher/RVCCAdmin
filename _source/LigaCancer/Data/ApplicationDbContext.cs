@@ -4,17 +4,113 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using RVCC.Business.Services;
 using RVCC.Data.Models;
 using RVCC.Data.Models.RelationModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RVCC.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions options)
+        private readonly UserResolverService _userResolverService;
+
+        public ApplicationDbContext(DbContextOptions options, UserResolverService userResolverService)
             : base(options)
         {
+            this._userResolverService = userResolverService;
         }
+
+        public DbSet<ActivePatient> ActivePatients { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<FileAttachment> FileAttachments { get; set; }
+
+        public DbSet<CancerType> CancerTypes { get; set; }
+
+        public DbSet<Doctor> Doctors { get; set; }
+
+        public DbSet<FamilyMember> FamilyMembers { get; set; }
+
+        public DbSet<Medicine> Medicines { get; set; }
+
+        public DbSet<Naturality> Naturalities { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
+
+        public DbSet<PatientInformation> PatientInformation { get; set; }
+
+        public DbSet<Phone> Phones { get; set; }
+
+        public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
+
+        public DbSet<Presence> Presences { get; set; }
+
+        public DbSet<Benefit> Benefits { get; set; }
+
+        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+
+        public DbSet<Stay> Stays { get; set; }
+
+        public DbSet<AdminInfo> AdminInfos { get; set; }
+
+        #region Shirt Sale 2020
+
+        public DbSet<SaleShirt2020> SalesShirt2020 { get; set; }
+
+        #endregion
+
+        #region Override Save Methods
+
+        public override int SaveChanges()
+        {
+            IEnumerable<EntityEntry> entries = this.ChangeTracker.Entries().Where(e => e.Entity is RegisterData && (e.State == EntityState.Added || e.State == EntityState.Modified));
+            var user = _userResolverService.GetUserName();
+
+            foreach (EntityEntry entityEntry in entries)
+            {
+                var registerData = (RegisterData)entityEntry.Entity;
+                registerData.UpdatedTime = DateTime.Now;
+                registerData.UpdatedBy = user;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    registerData.RegisterTime = DateTime.Now;
+                    registerData.CreatedBy = user;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            IEnumerable<EntityEntry> entries = this.ChangeTracker.Entries().Where(e => e.Entity is RegisterData && (e.State == EntityState.Added || e.State == EntityState.Modified));
+            var user = _userResolverService.GetUserName();
+
+            foreach (EntityEntry entityEntry in entries)
+            {
+                var registerData = (RegisterData)entityEntry.Entity;
+                registerData.UpdatedTime = DateTime.Now;
+                registerData.UpdatedBy = user;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    registerData.UpdatedTime = DateTime.Now;
+                    registerData.CreatedBy = user;
+                }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -99,45 +195,5 @@ namespace RVCC.Data
 
             #endregion
         }
-
-        public DbSet<ActivePatient> ActivePatients { get; set; }
-
-        public DbSet<Address> Addresses { get; set; }
-
-        public DbSet<FileAttachment> FileAttachments { get; set; }
-
-        public DbSet<CancerType> CancerTypes { get; set; }
-
-        public DbSet<Doctor> Doctors { get; set; }
-
-        public DbSet<FamilyMember> FamilyMembers { get; set; }
-
-        public DbSet<Medicine> Medicines { get; set; }
-
-        public DbSet<Naturality> Naturalities { get; set; }
-
-        public DbSet<Patient> Patients { get; set; }
-
-        public DbSet<PatientInformation> PatientInformation { get; set; }
-
-        public DbSet<Phone> Phones { get; set; }
-
-        public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
-
-        public DbSet<Presence> Presences { get; set; }
-
-        public DbSet<Benefit> Benefits { get; set; }
-
-        public DbSet<PatientBenefit> PatientBenefits { get; set; }
-
-        public DbSet<Stay> Stays { get; set; }
-
-        public DbSet<AdminInfo> AdminInfos { get; set; }
-
-        #region Shirt Sale 2020
-
-        public DbSet<SaleShirt2020> SalesShirt2020 { get; set; }
-
-        #endregion
     }
 }

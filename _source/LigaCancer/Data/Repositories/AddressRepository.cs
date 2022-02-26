@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                address.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -127,7 +126,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Address> GetOrdinationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
+        private static IQueryable<Address> GetOrdinationAddresses(IQueryable<Address> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -154,7 +153,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
+        private static IQueryable<Address> GetFilteredAddresses(IQueryable<Address> query, AddressSearchModel addressSearch)
         {
             if (!string.IsNullOrEmpty(addressSearch.PatientId))
             {

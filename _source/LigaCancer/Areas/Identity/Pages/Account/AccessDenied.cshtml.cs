@@ -10,6 +10,7 @@ namespace RVCC.Areas.Identity.Pages.Account
     {
         public void OnGet()
         {
+            // Razor page flow
         }
     }
 }

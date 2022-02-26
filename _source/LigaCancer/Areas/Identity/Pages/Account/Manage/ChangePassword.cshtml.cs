@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RVCC.Business;
 using RVCC.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,10 +20,7 @@ namespace RVCC.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ChangePasswordModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+        public ChangePasswordModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -34,26 +32,6 @@ namespace RVCC.Areas.Identity.Pages.Account.Manage
 
         [TempData]
         public string StatusMessage { get; set; }
-
-        public class InputModel
-        {
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [DataType(DataType.Password)]
-            [Display(Name = "Senha atual")]
-            public string OldPassword { get; set; }
-
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [StringLength(100, ErrorMessage = "A {0} deve ter ao menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
-            [Display(Name = "Nova senha")]
-            public string NewPassword { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirmação de senha")]
-            [Compare("NewPassword", ErrorMessage = "Confirmação de senha não confere")]
-            public string ConfirmPassword { get; set; }
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -77,8 +55,8 @@ namespace RVCC.Areas.Identity.Pages.Account.Manage
             IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
-                _logger.LogError(string.Join(" || ", changePasswordResult.Errors.Select(x => x.ToString())));
-                return BadRequest(changePasswordResult.Errors?.FirstOrDefault()?.Description);
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", changePasswordResult.Errors.Select(x => $"{x.Code} {x.Description}")) });
+                return BadRequest(changePasswordResult.Errors?.FirstOrDefault()?.Description ?? string.Empty);
             }
 
             await _signInManager.RefreshSignInAsync(user);
@@ -86,5 +64,29 @@ namespace RVCC.Areas.Identity.Pages.Account.Manage
 
             return StatusCode(200);
         }
+
+        #region Classes
+
+        public class InputModel
+        {
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [DataType(DataType.Password)]
+            [Display(Name = "Senha atual")]
+            public string OldPassword { get; set; }
+
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [StringLength(100, ErrorMessage = "A {0} deve ter ao menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
+            [Display(Name = "Nova senha")]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirmação de senha")]
+            [Compare("NewPassword", ErrorMessage = "Confirmação de senha não confere")]
+            public string ConfirmPassword { get; set; }
+        }
+
+        #endregion
     }
 }

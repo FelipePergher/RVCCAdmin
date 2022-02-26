@@ -14,6 +14,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -47,7 +48,7 @@ namespace RVCC.Controllers.Api
                     Patient = x.Name,
                     Date = x.PresenceDateTime.ToString("dd/MM/yyyy"),
                     Hour = x.PresenceDateTime.ToString("HH:mm"),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = string.IsNullOrEmpty(presenceSearchModel.PatientId)
@@ -60,7 +61,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Presence Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Presence Search Error");
                 return BadRequest();
             }
         }
@@ -81,11 +82,11 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(Presence presence)
+        private static string GetActionsHtml(Presence presence, ClaimsPrincipal user)
         {
             string editPresence = string.Empty;
             string deletePresence = string.Empty;
-            if (!User.IsInRole(Roles.SocialAssistance))
+            if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editPresence = $"<a href='/Presence/EditPresence/{presence.PresenceId}' data-toggle='modal' data-target='#modal-action' " +
                    $"data-title='Editar Presença' class='dropdown-item editPresenceButton'><span class='fas fa-edit'></span> Editar </a>";

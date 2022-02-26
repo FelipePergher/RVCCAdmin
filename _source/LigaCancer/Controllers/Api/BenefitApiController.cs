@@ -14,6 +14,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -40,12 +41,12 @@ namespace RVCC.Controllers.Api
                 string sortDirection = searchModel.Order[0].Dir;
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
-                IEnumerable<Benefit> benefits = await _benefitService.GetAllAsync(new string[] { "PatientBenefits" }, sortColumn, sortDirection, benefitSearch);
+                IEnumerable<Benefit> benefits = await _benefitService.GetAllAsync(new[] { nameof(Benefit.PatientBenefits) }, sortColumn, sortDirection, benefitSearch);
                 IEnumerable<BenefitViewModel> data = benefits.Select(x => new BenefitViewModel
                 {
                     Name = x.Name,
                     Note = x.Note,
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _benefitService.Count();
@@ -55,7 +56,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Benefit Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Benefit Search Error");
                 return BadRequest();
             }
         }
@@ -66,7 +67,7 @@ namespace RVCC.Controllers.Api
             IEnumerable<Benefit> benefits = await _benefitService.GetAllAsync(null, "Name", "asc", new BenefitSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
             {
-                Results = benefits.Select(x => new Result
+                Results = benefits.Select(x => new Select2Result
                 {
                     Id = x.BenefitId.ToString(),
                     Text = x.Name
@@ -86,11 +87,11 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(Benefit benefit)
+        private static string GetActionsHtml(Benefit benefit, ClaimsPrincipal user)
         {
             string editBenefit = string.Empty;
             string deleteBenefit = string.Empty;
-            if (!User.IsInRole(Roles.SocialAssistance))
+            if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editBenefit = $"<a href='/Benefit/EditBenefit/{benefit.BenefitId}' data-toggle='modal' " +
                                      $"data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editBenefitButton'><span class='fas fa-edit'></span> Editar </a>";

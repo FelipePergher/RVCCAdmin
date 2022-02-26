@@ -84,7 +84,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "User Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "User Search Error");
                 return BadRequest();
             }
         }
@@ -98,7 +98,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(ApplicationUser user)
+        private static string GetActionsHtml(ApplicationUser user)
         {
             string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><span class='fas fa-edit'></span> Editar </a>";
@@ -126,7 +126,7 @@ namespace RVCC.Controllers.Api
             return actionsHtml;
         }
 
-        private IEnumerable<UserViewModel> GetOrdinationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
+        private static IEnumerable<UserViewModel> GetOrdinationUser(IEnumerable<UserViewModel> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {

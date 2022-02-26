@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
-using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
@@ -52,7 +51,7 @@ namespace RVCC.Controllers.Api
                     PriceTotal = $"R$ {x.PriceTotal:N2}",
                     ShirtQuantityTotal = x.ShirtQuantityTotal,
                     Status = Enums.GetDisplayName(x.Status),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, Url)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _saleShirt2020Service.Count();
@@ -77,14 +76,14 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "SaleShirt2020 Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "SaleShirt2020 Search Error");
                 return BadRequest();
             }
         }
 
         #region Private Methods
 
-        private string GetActionsHtml(SaleShirt2020 saleShirt2020)
+        private static string GetActionsHtml(SaleShirt2020 saleShirt2020, IUrlHelper urlHelper)
         {
             string nextStatus = string.Empty;
             string nextStatusValue = string.Empty;
@@ -125,7 +124,7 @@ namespace RVCC.Controllers.Api
                     Cancelar
                 </a>";
 
-            string detailsSaleShirt2020 = $"<a href='{Url.Action("Details", "SaleShirt2020", new { id = saleShirt2020.ShirtSaleId })}' data-toggle='modal' " +
+            string detailsSaleShirt2020 = $"<a href='{urlHelper.Action("Details", "SaleShirt2020", new { id = saleShirt2020.ShirtSaleId })}' data-toggle='modal' " +
                                           $"data-target='#modal-action' data-title='Detalhes <strong>({Enums.GetDisplayName(saleShirt2020.Status)})</strong>' class='dropdown-item detailsSaleShirt2020Button'><span class='fas fa-info'></span> Detalhes </a>";
 
             string actionsHtml =

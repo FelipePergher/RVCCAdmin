@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                benefit.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -136,7 +135,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Benefit> GetOrdinationBenefit(IQueryable<Benefit> query, string sortColumn, string sortDirection)
+        private static IQueryable<Benefit> GetOrdinationBenefit(IQueryable<Benefit> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -145,7 +144,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Benefit> GetFilteredBenefits(IQueryable<Benefit> query, BenefitSearchModel benefitSearch)
+        private static IQueryable<Benefit> GetFilteredBenefits(IQueryable<Benefit> query, BenefitSearchModel benefitSearch)
         {
             if (!string.IsNullOrEmpty(benefitSearch.Name))
             {

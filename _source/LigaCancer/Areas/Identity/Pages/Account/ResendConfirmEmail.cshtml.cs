@@ -29,13 +29,6 @@ namespace RVCC.Areas.Identity.Pages.Account
         [BindProperty]
         public ResetConfirmEmailFormModel ResetConfirmEmail { get; set; }
 
-        public class ResetConfirmEmailFormModel
-        {
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
-            public string Email { get; set; }
-        }
-
         public void OnGet(string email)
         {
             ResetConfirmEmail = new ResetConfirmEmailFormModel
@@ -62,5 +55,16 @@ namespace RVCC.Areas.Identity.Pages.Account
 
             return RedirectToPage("./ResendConfirmEmailConfirmation");
         }
+
+        #region Classess
+
+        public class ResetConfirmEmailFormModel
+        {
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
+            public string Email { get; set; }
+        }
+
+        #endregion
     }
 }

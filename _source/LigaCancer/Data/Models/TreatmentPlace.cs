@@ -14,10 +14,9 @@ namespace RVCC.Data.Models
         {
         }
 
-        public TreatmentPlace(string city, ApplicationUser user)
+        public TreatmentPlace(string city)
         {
             City = city;
-            CreatedBy = user.Name;
         }
 
         [Key]

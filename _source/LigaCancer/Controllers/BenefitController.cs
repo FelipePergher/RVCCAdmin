@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -19,17 +18,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class BenefitController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Benefit> _benefitService;
         private readonly ILogger<BenefitController> _logger;
 
-        public BenefitController(
-            IDataRepository<Benefit> benefitService,
-            ILogger<BenefitController> logger,
-            UserManager<ApplicationUser> userManager)
+        public BenefitController(IDataRepository<Benefit> benefitService, ILogger<BenefitController> logger)
         {
             _benefitService = benefitService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -49,7 +43,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var benefit = new Benefit(benefitForm.Name, await _userManager.GetUserAsync(User))
+                var benefit = new Benefit(benefitForm.Name)
                 {
                     Note = benefitForm.Note
                 };
@@ -60,7 +54,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -95,12 +89,10 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Benefit benefit = await _benefitService.FindByIdAsync(id);
 
                 benefit.Name = benefitForm.Name;
                 benefit.Note = benefitForm.Note;
-                benefit.UpdatedBy = user.Name;
 
                 TaskResult result = await _benefitService.UpdateAsync(benefit);
                 if (result.Succeeded)
@@ -108,7 +100,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -116,7 +108,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteBenefit(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -138,7 +129,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest(result);
         }
     }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -23,20 +22,14 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class PresenceController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Presence> _presenceService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<PresenceController> _logger;
 
-        public PresenceController(
-            IDataRepository<Presence> presenceService,
-            IDataRepository<Patient> patientService,
-            ILogger<PresenceController> logger,
-            UserManager<ApplicationUser> userManager)
+        public PresenceController(IDataRepository<Presence> presenceService, IDataRepository<Patient> patientService, ILogger<PresenceController> logger)
         {
             _presenceService = presenceService;
             _patientService = patientService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -66,7 +59,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Patient patient = await _patientService.FindByIdAsync(presenceForm.PatientId);
                 var dateTime = DateTime.Parse(presenceForm.Date);
                 var presence = new Presence
@@ -74,7 +66,6 @@ namespace RVCC.Controllers
                     PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0),
                     PatientId = patient.PatientId,
                     Name = $"{patient.FirstName} {patient.Surname}",
-                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _presenceService.CreateAsync(presence);
@@ -84,7 +75,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -131,11 +122,9 @@ namespace RVCC.Controllers
 
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Presence presence = await _presenceService.FindByIdAsync(id);
                 var dateTime = DateTime.Parse(presenceForm.Date);
                 presence.PresenceDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, presenceForm.Time.Hours, presenceForm.Time.Minutes, 0);
-                presence.UpdatedBy = user.Name;
 
                 TaskResult result = await _presenceService.UpdateAsync(presence);
                 if (result.Succeeded)
@@ -143,7 +132,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -152,7 +141,6 @@ namespace RVCC.Controllers
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePresence(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -174,7 +162,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

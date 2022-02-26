@@ -41,7 +41,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(new string[] { "PatientInformationTreatmentPlaces" }, sortColumn, sortDirection, treatmentPlaceSearch);
+                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(new[] { nameof(TreatmentPlace.PatientInformationTreatmentPlaces) }, sortColumn, sortDirection, treatmentPlaceSearch);
                 IEnumerable<TreatmentPlaceViewModel> data = presences.Select(x => new TreatmentPlaceViewModel
                 {
                     City = x.City,
@@ -55,7 +55,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Treatment Place Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Treatment Place Search Error");
                 return BadRequest();
             }
         }
@@ -66,7 +66,7 @@ namespace RVCC.Controllers.Api
             IEnumerable<TreatmentPlace> treatmentPlaces = await _treatmentPlaceService.GetAllAsync(null, "City", "asc", new TreatmentPlaceSearchModel { City = term });
             var select2PagedResult = new Select2PagedResult
             {
-                Results = treatmentPlaces.Select(x => new Result
+                Results = treatmentPlaces.Select(x => new Select2Result
                 {
                     Id = x.TreatmentPlaceId.ToString(),
                     Text = x.City
@@ -85,7 +85,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(TreatmentPlace treatmentPlace)
+        private static string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
             string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";

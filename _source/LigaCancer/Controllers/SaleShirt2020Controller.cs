@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -21,17 +20,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class SaleShirt2020Controller : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<SaleShirt2020> _saleShirt2020Service;
         private readonly ILogger<SaleShirt2020Controller> _logger;
 
-        public SaleShirt2020Controller(
-            IDataRepository<SaleShirt2020> saleShirt2020Service,
-            ILogger<SaleShirt2020Controller> logger,
-            UserManager<ApplicationUser> userManager)
+        public SaleShirt2020Controller(IDataRepository<SaleShirt2020> saleShirt2020Service, ILogger<SaleShirt2020Controller> logger)
         {
             _saleShirt2020Service = saleShirt2020Service;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -51,7 +45,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 var dateTime = DateTime.Parse(saleShirt2020Form.DateOrdered);
 
                 int shirtQuantity =
@@ -96,7 +89,6 @@ namespace RVCC.Controllers
 
                     PriceTotal = (shirtQuantity * 20) + (saleShirt2020Form.MaskQuantity * 5),
                     ShirtQuantityTotal = shirtQuantity,
-                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _saleShirt2020Service.CreateAsync(saleShirt2020);
@@ -105,7 +97,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -135,7 +127,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> UpdateStatusSaleShirt2020(string id, Enums.Status status, string date)
         {
             if (string.IsNullOrEmpty(id))
@@ -182,11 +173,11 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest(result);
         }
 
-        private SaleShirt2020FormModel GetShirtViewModel(SaleShirt2020 saleShirt2020)
+        private static SaleShirt2020FormModel GetShirtViewModel(SaleShirt2020 saleShirt2020)
         {
             return new SaleShirt2020FormModel
             {

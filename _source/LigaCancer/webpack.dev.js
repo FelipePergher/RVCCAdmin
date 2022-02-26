@@ -3,6 +3,7 @@ const common = require('./webpack.common.js');
 const webpack = require('webpack');
 const glob = require("glob");
 const path = require('path');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
     mode: 'development',
@@ -13,7 +14,8 @@ module.exports = merge(common, {
     plugins: [
         new webpack.SourceMapDevToolPlugin({
             filename: 'js/[name].js.map'
-        })
+        }),
+        new BundleAnalyzerPlugin(),
     ], module: {
         rules: [{
             test: /\.scss$/,

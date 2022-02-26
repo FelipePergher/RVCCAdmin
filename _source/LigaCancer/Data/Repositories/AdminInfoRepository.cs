@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
-using RVCC.Models.SearchModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,7 +98,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                adminInfo.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }

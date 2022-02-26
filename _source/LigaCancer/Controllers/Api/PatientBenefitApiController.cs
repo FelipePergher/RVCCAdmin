@@ -14,6 +14,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -41,14 +42,14 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<PatientBenefit> patientBenefits = await _patientBenefitService.GetAllAsync(new[] { "Patient", "Benefit" }, sortColumn, sortDirection, patientBenefitSearchModel);
+                IEnumerable<PatientBenefit> patientBenefits = await _patientBenefitService.GetAllAsync(new[] { nameof(PatientBenefit.Patient), nameof(PatientBenefit.Benefit) }, sortColumn, sortDirection, patientBenefitSearchModel);
                 IEnumerable<PatientBenefitViewModel> data = patientBenefits.Select(x => new PatientBenefitViewModel
                 {
                     Patient = $"{x.Patient.FirstName} {x.Patient.Surname}",
                     Date = x.BenefitDate.ToString("dd/MM/yyyy"),
                     Benefit = x.Benefit.Name,
                     Quantity = x.Quantity.ToString(),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId)
@@ -60,18 +61,18 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "PatientBenefit Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "PatientBenefit Search Error");
                 return BadRequest();
             }
         }
 
         #region Private Methods
 
-        private string GetActionsHtml(PatientBenefit patientBenefit)
+        private static string GetActionsHtml(PatientBenefit patientBenefit, ClaimsPrincipal user)
         {
             string editPatientBenefit = string.Empty;
             string deletePatientBenefit = string.Empty;
-            if (!User.IsInRole(Roles.SocialAssistance))
+            if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
                    "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";

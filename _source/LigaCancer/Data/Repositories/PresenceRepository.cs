@@ -114,7 +114,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                presence.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -184,7 +183,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Presence> GetOrdinationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)
+        private static IQueryable<Presence> GetOrdinationPresences(IQueryable<Presence> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -198,7 +197,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
+        private static IQueryable<Presence> GetFilteredPresences(IQueryable<Presence> query, PresenceSearchModel presenceSearch)
         {
             if (!string.IsNullOrEmpty(presenceSearch.PatientId))
             {

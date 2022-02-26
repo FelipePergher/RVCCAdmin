@@ -41,7 +41,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new string[] { "PatientInformationDoctors" }, sortColumn, sortDirection, doctorSearch);
+                IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(new[] { nameof(Doctor.PatientInformationDoctors) }, sortColumn, sortDirection, doctorSearch);
                 IEnumerable<DoctorViewModel> data = doctors.Select(x => new DoctorViewModel
                 {
                     Name = x.Name,
@@ -56,7 +56,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Doctor Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Doctor Search Error");
                 return BadRequest();
             }
         }
@@ -67,7 +67,7 @@ namespace RVCC.Controllers.Api
             IEnumerable<Doctor> doctors = await _doctorService.GetAllAsync(null, "Name", "asc", new DoctorSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
             {
-                Results = doctors.Select(x => new Result
+                Results = doctors.Select(x => new Select2Result
                 {
                     Id = x.DoctorId.ToString(),
                     Text = x.Name
@@ -86,7 +86,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(Doctor doctor)
+        private static string GetActionsHtml(Doctor doctor)
         {
             string editDoctor = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
                 $"data-title='Editar Médico' class='dropdown-item editDoctorButton'><span class='fas fa-edit'></span> Editar </a>";

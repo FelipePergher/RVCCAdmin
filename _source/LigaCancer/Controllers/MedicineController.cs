@@ -3,14 +3,12 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,17 +18,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class MedicineController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly ILogger<MedicineController> _logger;
 
-        public MedicineController(
-            IDataRepository<Medicine> medicineService,
-            ILogger<MedicineController> logger,
-            UserManager<ApplicationUser> userManager)
+        public MedicineController(IDataRepository<Medicine> medicineService, ILogger<MedicineController> logger)
         {
             _medicineService = medicineService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -50,7 +43,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var medicine = new Medicine(medicineForm.Name, await _userManager.GetUserAsync(User));
+                var medicine = new Medicine(medicineForm.Name);
 
                 TaskResult result = await _medicineService.CreateAsync(medicine);
                 if (result.Succeeded)
@@ -58,7 +51,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -90,11 +83,9 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Medicine medicine = await _medicineService.FindByIdAsync(id);
 
                 medicine.Name = medicineForm.Name;
-                medicine.UpdatedBy = user.Name;
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);
                 if (result.Succeeded)
@@ -102,7 +93,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -110,7 +101,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteMedicine(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -132,7 +122,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest(result);
         }
     }

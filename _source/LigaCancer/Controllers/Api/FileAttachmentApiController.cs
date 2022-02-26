@@ -13,6 +13,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -48,7 +49,7 @@ namespace RVCC.Controllers.Api
                     Extension = x.FileExtension,
                     Size = x.FileSize.ToString("N"),
                     FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{x.FilePath}",
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = fileAttachments.Count();
@@ -57,16 +58,16 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "File Attachment Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "File Attachment Search Error");
                 return BadRequest();
             }
         }
 
         #region Private Methods
 
-        private string GetActionsHtml(FileAttachment fileAttachment)
+        private static string GetActionsHtml(FileAttachment fileAttachment, ClaimsPrincipal user)
         {
-            string deleteFileAttachment = User.IsInRole(Roles.SocialAssistance)
+            string deleteFileAttachment = user.IsInRole(Roles.SocialAssistance)
                 ? string.Empty
                 : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
                         <span class='fas fa-trash-alt'></span> Excluir 

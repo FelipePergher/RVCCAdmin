@@ -8,12 +8,14 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
+using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -43,15 +45,11 @@ namespace RVCC.Controllers.Api
 
                 string[] includes =
                 {
-                    "PatientInformation", "Naturality", "ActivePatient", "Phones", "Addresses",
-                    "PatientInformation.PatientInformationDoctors",
-                    "PatientInformation.PatientInformationDoctors.Doctor",
-                    "PatientInformation.PatientInformationCancerTypes",
-                    "PatientInformation.PatientInformationMedicines",
-                    "PatientInformation.PatientInformationTreatmentPlaces",
-                    "PatientInformation.PatientInformationMedicines.Medicine",
-                    "PatientInformation.PatientInformationCancerTypes.CancerType",
-                    "PatientInformation.PatientInformationTreatmentPlaces.TreatmentPlace"
+                    nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses),
+                    nameof(PatientInformation.PatientInformationDoctors), nameof(PatientInformationDoctor.Doctor),
+                    nameof(PatientInformation.PatientInformationCancerTypes), nameof(PatientInformationCancerType.CancerType),
+                    nameof(PatientInformation.PatientInformationMedicines), nameof(PatientInformationMedicine.Medicine),
+                    nameof(PatientInformation.PatientInformationTreatmentPlaces), nameof(PatientInformationTreatmentPlace.TreatmentPlace),
                 };
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(includes, sortColumn, sortDirection, patientSearchModel);
@@ -71,7 +69,7 @@ namespace RVCC.Controllers.Api
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
                     TreatmentPlaces = string.Join(", ", x.PatientInformation.PatientInformationTreatmentPlaces.Select(y => y.TreatmentPlace.City).ToList()),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 });
 
                 int recordsTotal = _patientService.Count();
@@ -81,7 +79,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Patient Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Patient Search Error");
                 return BadRequest();
             }
         }
@@ -104,11 +102,11 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(Patient patient)
+        private static string GetActionsHtml(Patient patient, ClaimsPrincipal user)
         {
             string options = string.Empty;
 
-            if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge)
+            if (!patient.ActivePatient.Death && !patient.ActivePatient.Discharge && !patient.ActivePatient.ResidenceChange)
             {
                 string patientDetails = $@"<a href='/Patient/Details/{patient.PatientId}' class='dropdown-item' target='_blank'>
                                             <span class='fas fa-clipboard'></span> Detalhes do Paciente
@@ -122,18 +120,18 @@ namespace RVCC.Controllers.Api
 
                 options = patientDetails + socialObservation;
 
-                if (!User.IsInRole(Roles.SocialAssistance))
+                if (!user.IsInRole(Roles.SocialAssistance))
                 {
                     options += archivePatient;
                 }
             }
-            else if (!User.IsInRole(Roles.SocialAssistance))
+            else if (!user.IsInRole(Roles.SocialAssistance))
             {
                 string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
-                    $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
+                    "data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
 
                 string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
-                $"data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+                    "data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
                 if (!patient.ActivePatient.Death)
                 {
@@ -143,25 +141,18 @@ namespace RVCC.Controllers.Api
                 options += deletePatient;
             }
 
-            if (patient.ActivePatient.ResidenceChange)
-            {
-                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
-                                      $"data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
-                options += enablePatient;
-            }
-
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {options}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }
 
-        private string GetAddressToTable(Address address)
+        private static string GetAddressToTable(Address address)
         {
             string addressString = string.Empty;
 

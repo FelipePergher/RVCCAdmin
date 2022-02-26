@@ -13,6 +13,7 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -46,7 +47,7 @@ namespace RVCC.Controllers.Api
                     Number = x.Number,
                     PhoneType = Enums.GetDisplayName(x.PhoneType),
                     ObservationNote = x.ObservationNote,
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = phones.Count;
@@ -55,19 +56,19 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Phone Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Phone Search Error");
                 return BadRequest();
             }
         }
 
         #region Private Methods
 
-        private string GetActionsHtml(Phone phone)
+        private static string GetActionsHtml(Phone phone, ClaimsPrincipal user)
         {
             string editPhone = string.Empty;
             string deletePhone = string.Empty;
 
-            if (!User.IsInRole(Roles.SocialAssistance))
+            if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editPhone = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
                     $"data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><span class='fas fa-edit'></span> Editar </a>";

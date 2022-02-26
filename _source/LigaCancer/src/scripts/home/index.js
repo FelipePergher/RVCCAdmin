@@ -53,7 +53,7 @@ export default (function () {
                         dayChart.data.datasets[0].data = data.dayChartDate;
                         dayChart.update();
 
-                        monthChart.data.labels = Array.from(Array(data.daysInMonth).keys()).map(x => ++x);
+                        monthChart.data.labels = Array.from(Array(data.daysInMonth).keys()).map(x => x + 1);
                         monthChart.data.datasets[0].data = data.monthChartDate;
                         monthChart.update();
 
@@ -76,7 +76,7 @@ export default (function () {
         monthChart = new Chart($("#monthChart"), {
             type: "line",
             data: {
-                labels: Array.from(Array(daysInMonth).keys()).map(x => ++x),
+                labels: Array.from(Array(daysInMonth).keys()).map(x => x + 1),
                 datasets: [{
                     label: "Presen\u00E7as",
                     backgroundColor: hexToRgba(getStyle("--info"), 10),

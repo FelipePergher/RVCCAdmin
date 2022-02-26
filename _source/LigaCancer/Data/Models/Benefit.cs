@@ -14,10 +14,9 @@ namespace RVCC.Data.Models
         {
         }
 
-        public Benefit(string name, ApplicationUser user)
+        public Benefit(string name)
         {
             Name = name;
-            CreatedBy = user.Name;
         }
 
         [Key]

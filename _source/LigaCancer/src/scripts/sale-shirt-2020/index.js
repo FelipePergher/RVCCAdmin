@@ -11,7 +11,7 @@ import 'select2';
 
 export default (function () {
 
-    //global.setupValidator($.validator);
+    global.setupValidator($.validator);
 
     $(function () {
         initPage();
@@ -184,7 +184,7 @@ export default (function () {
                 let form = $("#dateForm");
                 if (form.valid()) {
                     let date = $("#Date").val();
-                    $.post(url, { id: id, status: status, date: date })
+                    $.post(url, { id: id, status: status, date: date, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                         .done(function (data, textStatus) {
                             $("#saleShirt2020Table").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Atualizado!", "O pedido foi atualizado com sucesso.", "success");

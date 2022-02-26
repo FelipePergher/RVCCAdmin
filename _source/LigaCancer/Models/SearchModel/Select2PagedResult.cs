@@ -10,24 +10,12 @@ namespace RVCC.Models.SearchModel
     {
         public Select2PagedResult()
         {
-            Results = new List<Result>();
-            Pagination = new Pagination();
+            Results = new List<Select2Result>();
+            Pagination = new Select2Pagination();
         }
 
-        public List<Result> Results { get; set; }
+        public List<Select2Result> Results { get; set; }
 
-        public Pagination Pagination { get; set; }
-    }
-
-    public class Pagination
-    {
-        public bool More { get; set; } = false;
-    }
-
-    public class Result
-    {
-        public string Id { get; set; }
-
-        public string Text { get; set; }
+        public Select2Pagination Pagination { get; set; }
     }
 }

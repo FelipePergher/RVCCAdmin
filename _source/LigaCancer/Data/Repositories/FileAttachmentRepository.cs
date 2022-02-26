@@ -110,7 +110,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                fileAttachment.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -128,7 +127,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<FileAttachment> GetOrdinationFiles(IQueryable<FileAttachment> query, string sortColumn, string sortDirection)
+        private static IQueryable<FileAttachment> GetOrdinationFiles(IQueryable<FileAttachment> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {

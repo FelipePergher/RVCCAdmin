@@ -114,7 +114,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                patientBenefit.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -132,7 +131,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<PatientBenefit> GetOrdinationPatientBenefits(IQueryable<PatientBenefit> query, string sortColumn, string sortDirection)
+        private static IQueryable<PatientBenefit> GetOrdinationPatientBenefits(IQueryable<PatientBenefit> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -151,7 +150,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<PatientBenefit> GetFilteredPatientBenefits(IQueryable<PatientBenefit> query, PatientBenefitSearchModel patientBenefitSearch)
+        private static IQueryable<PatientBenefit> GetFilteredPatientBenefits(IQueryable<PatientBenefit> query, PatientBenefitSearchModel patientBenefitSearch)
         {
             if (!string.IsNullOrEmpty(patientBenefitSearch.PatientId))
             {

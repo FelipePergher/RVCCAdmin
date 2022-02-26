@@ -41,7 +41,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(new string[] { "PatientInformationMedicines" }, sortColumn, sortDirection, medicineSearch);
+                IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(new[] { nameof(Medicine.PatientInformationMedicines) }, sortColumn, sortDirection, medicineSearch);
                 IEnumerable<MedicineViewModel> data = medicines.Select(x => new MedicineViewModel
                 {
                     Name = x.Name,
@@ -55,7 +55,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Medicine Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Medicine Search Error");
                 return BadRequest();
             }
         }
@@ -66,7 +66,7 @@ namespace RVCC.Controllers.Api
             IEnumerable<Medicine> medicines = await _medicineService.GetAllAsync(null, "Name", "asc", new MedicineSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
             {
-                Results = medicines.Select(x => new Result
+                Results = medicines.Select(x => new Select2Result
                 {
                     Id = x.MedicineId.ToString(),
                     Text = x.Name
@@ -86,7 +86,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private string GetActionsHtml(Medicine medicine)
+        private static string GetActionsHtml(Medicine medicine)
         {
             string editMedicine = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
                 $"data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><span class='fas fa-edit'></span> Editar </a>";

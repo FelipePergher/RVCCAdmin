@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -11,7 +10,6 @@ using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
 using RVCC.Models.SearchModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,17 +19,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class CancerTypeController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<CancerType> _cancerTypeService;
         private readonly ILogger<CancerTypeController> _logger;
 
-        public CancerTypeController(
-            IDataRepository<CancerType> cancerTypeService,
-            ILogger<CancerTypeController> logger,
-            UserManager<ApplicationUser> userManager)
+        public CancerTypeController(IDataRepository<CancerType> cancerTypeService, ILogger<CancerTypeController> logger)
         {
             _cancerTypeService = cancerTypeService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -51,7 +44,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cancerType = new CancerType(cancerTypeForm.Name, await _userManager.GetUserAsync(User));
+                var cancerType = new CancerType(cancerTypeForm.Name);
 
                 TaskResult result = await _cancerTypeService.CreateAsync(cancerType);
                 if (result.Succeeded)
@@ -59,7 +52,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -103,9 +96,7 @@ namespace RVCC.Controllers
                     return NotFound();
                 }
 
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 cancerType.Name = cancerTypeForm.Name;
-                cancerType.UpdatedBy = user.Name;
 
                 TaskResult result = await _cancerTypeService.UpdateAsync(cancerType);
                 if (result.Succeeded)
@@ -113,7 +104,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -121,7 +112,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteCancerType([FromForm] string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -143,7 +133,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest(result);
         }
     }

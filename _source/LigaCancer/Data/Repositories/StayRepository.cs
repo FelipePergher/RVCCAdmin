@@ -114,7 +114,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                stay.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -132,7 +131,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Stay> GetOrdinationStays(IQueryable<Stay> query, string sortColumn, string sortDirection)
+        private static IQueryable<Stay> GetOrdinationStays(IQueryable<Stay> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -147,7 +146,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Stay> GetFilteredStays(IQueryable<Stay> query, StaySearchModel staySearch)
+        private static IQueryable<Stay> GetFilteredStays(IQueryable<Stay> query, StaySearchModel staySearch)
         {
             if (!string.IsNullOrEmpty(staySearch.PatientId))
             {

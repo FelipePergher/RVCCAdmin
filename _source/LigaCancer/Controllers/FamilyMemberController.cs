@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
@@ -20,19 +19,13 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class FamilyMemberController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<FamilyMemberController> _logger;
 
-        public FamilyMemberController(
-            IDataRepository<FamilyMember> familyMemberService,
-            IDataRepository<Patient> patientService,
-            ILogger<FamilyMemberController> logger,
-            UserManager<ApplicationUser> userManager)
+        public FamilyMemberController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberController> logger)
         {
             _familyMemberService = familyMemberService;
-            _userManager = userManager;
             _patientService = patientService;
             _logger = logger;
         }
@@ -63,7 +56,6 @@ namespace RVCC.Controllers
                     return NotFound();
                 }
 
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 var familyMember = new FamilyMember
                 {
                     PatientId = int.Parse(id),
@@ -72,7 +64,6 @@ namespace RVCC.Controllers
                     MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0),
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
-                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
@@ -82,7 +73,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -120,7 +111,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
@@ -128,7 +118,6 @@ namespace RVCC.Controllers
                 familyMember.MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
-                familyMember.UpdatedBy = user.Name;
 
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 
@@ -137,7 +126,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -145,7 +134,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteFamilyMember(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -167,7 +155,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

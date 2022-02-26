@@ -14,17 +14,15 @@ namespace RVCC.Data.Models
         {
         }
 
-        public Doctor(string name, ApplicationUser user)
+        public Doctor(string name)
         {
             Name = name;
-            CreatedBy = user.Name;
         }
 
-        public Doctor(string name, string crm, ApplicationUser user)
+        public Doctor(string name, string crm)
         {
             Name = name;
             CRM = crm;
-            CreatedBy = user.Name;
         }
 
         [Key]

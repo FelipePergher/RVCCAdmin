@@ -3,14 +3,12 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,19 +18,13 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class PhoneController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Phone> _phoneService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<PhoneController> _logger;
 
-        public PhoneController(
-            IDataRepository<Phone> phoneService,
-            IDataRepository<Patient> patientService,
-            ILogger<PhoneController> logger,
-            UserManager<ApplicationUser> userManager)
+        public PhoneController(IDataRepository<Phone> phoneService, IDataRepository<Patient> patientService, ILogger<PhoneController> logger)
         {
             _phoneService = phoneService;
-            _userManager = userManager;
             _patientService = patientService;
             _logger = logger;
         }
@@ -63,7 +55,7 @@ namespace RVCC.Controllers
                     return NotFound();
                 }
 
-                var phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote, await _userManager.GetUserAsync(User));
+                var phone = new Phone(id, phoneForm.Number, phoneForm.PhoneType, phoneForm.ObservationNote);
 
                 TaskResult result = await _phoneService.CreateAsync(phone);
 
@@ -72,7 +64,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -107,13 +99,11 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Phone phone = await _phoneService.FindByIdAsync(id);
 
                 phone.Number = phoneForm.Number;
                 phone.PhoneType = phoneForm.PhoneType;
                 phone.ObservationNote = phoneForm.ObservationNote;
-                phone.UpdatedBy = user.Name;
 
                 TaskResult result = await _phoneService.UpdateAsync(phone);
                 if (result.Succeeded)
@@ -121,7 +111,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -129,7 +119,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeletePhone(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -151,7 +140,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

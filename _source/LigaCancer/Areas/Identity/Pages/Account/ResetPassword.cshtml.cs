@@ -25,24 +25,6 @@ namespace RVCC.Areas.Identity.Pages.Account
         [BindProperty]
         public ResetPasswordFormModel ResetPassword { get; set; }
 
-        public class ResetPasswordFormModel
-        {
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
-            public string Email { get; set; }
-
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Compare("Password", ErrorMessage = "A senha e a confirmação de senha são diferentes.")]
-            public string ConfirmPassword { get; set; }
-
-            public string Code { get; set; }
-        }
-
         public IActionResult OnGet(string code = null)
         {
             if (code == null)
@@ -87,5 +69,27 @@ namespace RVCC.Areas.Identity.Pages.Account
 
             return Page();
         }
+
+        #region Classes
+
+        public class ResetPasswordFormModel
+        {
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
+            public string Email { get; set; }
+
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [RegularExpression(@"^(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "A senha deve conter letras, numeros e minimo de 8 caracteres")]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Compare("Password", ErrorMessage = "A senha e a confirmação de senha são diferentes.")]
+            public string ConfirmPassword { get; set; }
+
+            public string Code { get; set; }
+        }
+
+        #endregion
     }
 }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -23,20 +22,14 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class StayController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Stay> _stayService;
         private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<StayController> _logger;
 
-        public StayController(
-            IDataRepository<Stay> stayService,
-            IDataRepository<Patient> patientService,
-            ILogger<StayController> logger,
-            UserManager<ApplicationUser> userManager)
+        public StayController(IDataRepository<Stay> stayService, IDataRepository<Patient> patientService, ILogger<StayController> logger)
         {
             _stayService = stayService;
             _patientService = patientService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -66,7 +59,6 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Patient patient = await _patientService.FindByIdAsync(stayForm.PatientId);
                 var dateTime = DateTime.Parse(stayForm.Date);
                 var stay = new Stay
@@ -76,7 +68,6 @@ namespace RVCC.Controllers
                     PatientName = $"{patient.FirstName} {patient.Surname}",
                     City = stayForm.City,
                     Note = stayForm.Note,
-                    CreatedBy = user.Name
                 };
 
                 TaskResult result = await _stayService.CreateAsync(stay);
@@ -86,7 +77,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -134,13 +125,11 @@ namespace RVCC.Controllers
 
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Stay stay = await _stayService.FindByIdAsync(id);
                 var dateTime = DateTime.Parse(stayForm.Date);
                 stay.StayDateTime = dateTime;
                 stay.Note = stayForm.Note;
                 stay.City = stayForm.City;
-                stay.UpdatedBy = user.Name;
 
                 TaskResult result = await _stayService.UpdateAsync(stay);
                 if (result.Succeeded)
@@ -148,7 +137,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -157,7 +146,6 @@ namespace RVCC.Controllers
 
         [Authorize(Roles = Roles.AdminUserAuthorize)]
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteStay(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -179,7 +167,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

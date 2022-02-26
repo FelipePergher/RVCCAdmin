@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using RVCC.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -33,22 +32,6 @@ namespace RVCC.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
-
-        public class LoginFormModel
-        {
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
-            public string Email { get; set; }
-
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [Display(Name = "Lembrar Login?")]
-            public bool RememberMe { get; set; }
-
-            public bool ShowResend { get; set; }
-        }
 
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
@@ -111,5 +94,25 @@ namespace RVCC.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        #region Classes
+
+        public class LoginFormModel
+        {
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
+            public string Email { get; set; }
+
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [Display(Name = "Lembrar Login?")]
+            public bool RememberMe { get; set; }
+
+            public bool ShowResend { get; set; }
+        }
+
+        #endregion
     }
 }

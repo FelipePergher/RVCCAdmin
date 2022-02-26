@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
+using RVCC.Business.Services;
 using RVCC.Data;
 using RVCC.Data.Models;
 using RVCC.Data.Models.RelationModels;
@@ -36,6 +37,8 @@ namespace RVCC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -69,7 +72,7 @@ namespace RVCC
                 options.SlidingExpiration = true;
             });
 
-            var mvcBuilder = services.AddControllersWithViews();
+            IMvcBuilder mvcBuilder = services.AddControllersWithViews();
 
 #if DEBUG
             mvcBuilder.AddRazorRuntimeCompilation();
@@ -108,6 +111,7 @@ namespace RVCC
             services.AddTransient<IDataRepository<Stay>, StayRepository>();
             services.AddTransient<IDataRepository<AdminInfo>, AdminInfoRepository>();
             services.AddTransient<IDataRepository<SaleShirt2020>, SaleShirt2020Repository>();
+            services.AddTransient<UserResolverService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,7 +120,6 @@ namespace RVCC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

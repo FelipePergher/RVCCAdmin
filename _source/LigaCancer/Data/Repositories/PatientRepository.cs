@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                patient.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -165,7 +164,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Patient> GetOrdinationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
+        private static IQueryable<Patient> GetOrdinationPatients(IQueryable<Patient> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -186,7 +185,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, PatientSearchModel patientSearch)
+        private static IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, PatientSearchModel patientSearch)
         {
             if (!string.IsNullOrEmpty(patientSearch.Name))
             {
@@ -282,7 +281,7 @@ namespace RVCC.Data.Repositories
             return query;
         }
 
-        private IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, BirthdaySearchModel birthdaySearch)
+        private static IQueryable<Patient> GetFilteredPatients(IQueryable<Patient> query, BirthdaySearchModel birthdaySearch)
         {
             if (!string.IsNullOrEmpty(birthdaySearch.Name))
             {

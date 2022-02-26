@@ -29,13 +29,6 @@ namespace RVCC.Areas.Identity.Pages.Account
         [BindProperty]
         public ForgotPasswordFormModel ForgotPassword { get; set; }
 
-        public class ForgotPasswordFormModel
-        {
-            [Required(ErrorMessage = "Este campo é obrigatório!")]
-            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
-            public string Email { get; set; }
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
@@ -66,5 +59,16 @@ namespace RVCC.Areas.Identity.Pages.Account
 
             return Page();
         }
+
+        #region Classess
+
+        public class ForgotPasswordFormModel
+        {
+            [Required(ErrorMessage = "Este campo é obrigatório!")]
+            [EmailAddress(ErrorMessage = "Insira um endreço de e-mail válido")]
+            public string Email { get; set; }
+        }
+
+        #endregion
     }
 }

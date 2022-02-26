@@ -109,7 +109,6 @@ namespace RVCC.Data.Repositories
             var result = new TaskResult();
             try
             {
-                phone.UpdatedTime = DateTime.Now;
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -127,7 +126,7 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private IQueryable<Phone> GetOrdinationPhones(IQueryable<Phone> query, string sortColumn, string sortDirection)
+        private static IQueryable<Phone> GetOrdinationPhones(IQueryable<Phone> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
@@ -141,7 +140,7 @@ namespace RVCC.Data.Repositories
             };
         }
 
-        private IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)
+        private static IQueryable<Phone> GetFilteredPhones(IQueryable<Phone> query, PhoneSearchModel phoneSearch)
         {
             if (!string.IsNullOrEmpty(phoneSearch.PatientId))
             {

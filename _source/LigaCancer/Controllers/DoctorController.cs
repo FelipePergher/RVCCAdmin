@@ -3,14 +3,12 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models;
 using RVCC.Models.FormModel;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,17 +18,12 @@ namespace RVCC.Controllers
     [AutoValidateAntiforgeryToken]
     public class DoctorController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataRepository<Doctor> _doctorService;
         private readonly ILogger<DoctorController> _logger;
 
-        public DoctorController(
-            IDataRepository<Doctor> doctorService,
-            ILogger<DoctorController> logger,
-            UserManager<ApplicationUser> userManager)
+        public DoctorController(IDataRepository<Doctor> doctorService, ILogger<DoctorController> logger)
         {
             _doctorService = doctorService;
-            _userManager = userManager;
             _logger = logger;
         }
 
@@ -51,7 +44,7 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var doctor = new Doctor(doctorForm.Name, doctorForm.CRM, await _userManager.GetUserAsync(User));
+                var doctor = new Doctor(doctorForm.Name, doctorForm.CRM);
 
                 TaskResult result = await _doctorService.CreateAsync(doctor);
                 if (result.Succeeded)
@@ -59,7 +52,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.InsertItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -89,12 +82,10 @@ namespace RVCC.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.GetUserAsync(User);
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
 
                 doctor.Name = doctorForm.Name;
                 doctor.CRM = doctorForm.CRM;
-                doctor.UpdatedBy = user.Name;
 
                 TaskResult result = await _doctorService.UpdateAsync(doctor);
                 if (result.Succeeded)
@@ -102,7 +93,7 @@ namespace RVCC.Controllers
                     return Ok();
                 }
 
-                _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+                _logger.LogError(LogEvents.UpdateItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
                 return BadRequest();
             }
 
@@ -110,7 +101,6 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteDoctor(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -132,7 +122,7 @@ namespace RVCC.Controllers
                 return Ok();
             }
 
-            _logger.LogError(string.Join(" || ", result.Errors.Select(x => x.ToString())));
+            _logger.LogError(LogEvents.DeleteItem, "Errors: {errorList}", new { errorList = string.Join(" || ", result.Errors.Select(x => $"{x.Code} {x.Description}")) });
             return BadRequest();
         }
     }

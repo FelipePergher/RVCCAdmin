@@ -14,10 +14,9 @@ namespace RVCC.Data.Models
         {
         }
 
-        public CancerType(string name, ApplicationUser user)
+        public CancerType(string name)
         {
             Name = name;
-            CreatedBy = user.Name;
         }
 
         [Key]
