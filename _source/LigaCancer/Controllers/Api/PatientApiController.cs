@@ -32,7 +32,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/patient/search")]
         public async Task<IActionResult> PatientSearch([FromForm] SearchModel searchModel, [FromForm] PatientSearchModel patientSearchModel)
         {
@@ -84,7 +84,7 @@ namespace RVCC.Controllers.Api
             }
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet("~/api/patient/IsCpfExist")]
         public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
         {
@@ -92,7 +92,7 @@ namespace RVCC.Controllers.Api
             return Ok(patient == null);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet("~/api/patient/IsRgExist")]
         public async Task<IActionResult> IsRgExist(string rg, int patientId)
         {

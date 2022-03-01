@@ -30,7 +30,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/birthday/search")]
         public async Task<IActionResult> BirthdaySearch([FromForm] SearchModel searchModel, [FromForm] BirthdaySearchModel birthdaySearchModel)
         {

@@ -14,11 +14,12 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class TreatmentPlaceApiController : Controller
     {
@@ -46,7 +47,7 @@ namespace RVCC.Controllers.Api
                 {
                     City = x.City,
                     Quantity = x.PatientInformationTreatmentPlaces.Count(),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _treatmentPlaceService.Count();
@@ -86,21 +87,23 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(TreatmentPlace treatmentPlace)
+        private static string GetActionsHtml(TreatmentPlace treatmentPlace, ClaimsPrincipal user)
         {
-            string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
-                "data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
+            string options = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
+                             "data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
-                $"data-relation='{treatmentPlace.PatientInformationTreatmentPlaces.Count > 0}' class='dropdown-item deleteTreatmentPlaceButton'>" +
-                "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
+                           $"data-relation='{treatmentPlace.PatientInformationTreatmentPlaces.Count > 0}' class='dropdown-item deleteTreatmentPlaceButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editTreatmentPlace}" +
-                $"      {deleteTreatmentPlace}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

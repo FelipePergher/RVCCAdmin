@@ -11,7 +11,7 @@ using RVCC.Models.ViewModel;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {

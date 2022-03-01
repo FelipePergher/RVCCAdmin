@@ -31,7 +31,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/stay/search")]
         public async Task<IActionResult> StaySearch([FromForm] SearchModel searchModel, [FromForm] StaySearchModel staySearchModel)
         {

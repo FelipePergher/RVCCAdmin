@@ -14,11 +14,12 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class CancerTypeApiController : Controller
     {
@@ -46,7 +47,7 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     Quantity = x.PatientInformationCancerTypes.Count(),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _cancerTypeService.Count();
@@ -86,21 +87,23 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(CancerType cancerType)
+        private static string GetActionsHtml(CancerType cancerType, ClaimsPrincipal user)
         {
-            string editCancerType = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
+            string options = $"<a href='/CancerType/EditCancerType/{cancerType.CancerTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Câncer' class='dropdown-item editCancerTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            string deleteCancerType = $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
-                $"data-relation='{cancerType.PatientInformationCancerTypes.Count > 0}' class='dropdown-item deleteCancerTypeButton'>" +
-                "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/CancerType/DeleteCancerType' data-id='{cancerType.CancerTypeId}' " +
+                           $"data-relation='{cancerType.PatientInformationCancerTypes.Count > 0}' class='dropdown-item deleteCancerTypeButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editCancerType}" +
-                $"      {deleteCancerType}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

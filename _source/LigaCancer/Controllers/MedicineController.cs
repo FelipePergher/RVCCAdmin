@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class MedicineController : Controller
     {
@@ -100,6 +100,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditMedicine", medicineForm);
         }
 
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteMedicine(string id)
         {

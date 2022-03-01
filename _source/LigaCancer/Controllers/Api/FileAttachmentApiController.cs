@@ -30,7 +30,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/FileAttachment/search")]
         public async Task<IActionResult> FileAttachmentSearch([FromForm] SearchModel searchModel, [FromForm] FileAttachmentSearchModel fileAttachmentSearch)
         {

@@ -8,21 +8,21 @@ namespace RVCC.Business
     {
         public const string Admin = "Admin";
 
-        public const string User = "User";
+        public const string Secretary = "Secretary";
 
         public const string SocialAssistance = "SocialAssistance";
 
-        public const string AdminUserAuthorize = "Admin, User";
+        public const string AdminSecretaryAuthorize = "Admin, Secretary";
 
-        public const string AdminUserSocialAssistanceAuthorize = "Admin, User, SocialAssistance";
+        public const string AdminSecretarySocialAssistanceAuthorize = "Admin, Secretary, SocialAssistance";
 
         public static string GetRoleName(string role)
         {
             string userRoleName = role switch
             {
-                Admin => "Administrador",
-                User => "Usuário",
+                Secretary => "Secretária",
                 SocialAssistance => "Assistente Social",
+                Admin => "Administrador",
                 _ => string.Empty
             };
 

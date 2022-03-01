@@ -33,14 +33,14 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
             return View(new StaySearchModel());
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddStay()
         {
@@ -53,7 +53,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddStay(StayFormModel stayForm)
         {
@@ -87,7 +87,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditStay(string id)
         {
@@ -114,7 +114,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditStay(string id, StayFormModel stayForm)
         {
@@ -144,7 +144,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteStay(string id)
         {

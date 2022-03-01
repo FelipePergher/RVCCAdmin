@@ -35,14 +35,14 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
             return View(new PatientBenefitSearchModel());
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddPatientBenefit()
         {
@@ -57,7 +57,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientBenefit", patientBenefitForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientBenefit(PatientBenefitFormModel patientBenefitForm)
         {
@@ -92,7 +92,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientBenefit", patientBenefitForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPatientBenefit(string id)
         {
@@ -121,7 +121,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientBenefit", patientBenefitForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPatientBenefit(string id, PatientBenefitFormModel patientBenefitForm)
         {
@@ -148,7 +148,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientBenefit", patientBenefitForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeletePatientBenefit(string id)
         {

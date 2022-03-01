@@ -17,7 +17,7 @@ namespace RVCC.Business
 {
     public static class SeedData
     {
-        private static readonly string[] Roles = { Business.Roles.Admin, Business.Roles.User, Business.Roles.SocialAssistance };
+        private static readonly string[] Roles = { Business.Roles.Admin, Business.Roles.Secretary, Business.Roles.SocialAssistance };
 
         public static void ApplyMigrations(IServiceProvider serviceProvider)
         {

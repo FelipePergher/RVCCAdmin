@@ -31,7 +31,7 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/patientBenefit/search")]
         public async Task<IActionResult> PatientBenefitSearch([FromForm] SearchModel searchModel, [FromForm] PatientBenefitSearchModel patientBenefitSearchModel)
         {

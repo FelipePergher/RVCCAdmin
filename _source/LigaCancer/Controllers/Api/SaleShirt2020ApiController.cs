@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
     [ApiController]
     public class SaleShirt2020ApiController : Controller
     {

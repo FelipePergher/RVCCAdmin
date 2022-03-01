@@ -14,11 +14,12 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class MedicineApiController : Controller
     {
@@ -46,7 +47,7 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     Quantity = x.PatientInformationMedicines.Count(),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _medicineService.Count();
@@ -87,21 +88,23 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Medicine medicine)
+        private static string GetActionsHtml(Medicine medicine, ClaimsPrincipal user)
         {
-            string editMedicine = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
-                "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><span class='fas fa-edit'></span> Editar </a>";
+            string options = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
+                            "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            string deleteMedicine = $"<a href='javascript:void(0);' data-url='/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
-                $"data-relation='{medicine.PatientInformationMedicines.Count > 0}' class='dropdown-item deleteMedicineButton'>" +
-                "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
+                           $"data-relation='{medicine.PatientInformationMedicines.Count > 0}' class='dropdown-item deleteMedicineButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editMedicine}" +
-                $"      {deleteMedicine}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

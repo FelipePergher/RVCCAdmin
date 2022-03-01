@@ -33,14 +33,14 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
             return View(new PresenceSearchModel());
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddPresence()
         {
@@ -53,7 +53,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPresence", presenceForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPresence(PresenceFormModel presenceForm)
         {
@@ -85,7 +85,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPresence", presenceForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditPresence(string id)
         {
@@ -111,7 +111,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPresence", presenceForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditPresence(string id, PresenceFormModel presenceForm)
         {
@@ -139,7 +139,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPresence", presenceForm);
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeletePresence(string id)
         {

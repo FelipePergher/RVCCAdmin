@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
     [ApiController]
     public class BenefitApiController : Controller
     {

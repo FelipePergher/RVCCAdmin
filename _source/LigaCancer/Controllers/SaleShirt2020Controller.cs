@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class SaleShirt2020Controller : Controller
     {

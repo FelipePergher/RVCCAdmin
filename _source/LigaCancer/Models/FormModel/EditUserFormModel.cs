@@ -31,11 +31,11 @@ namespace RVCC.Models.FormModel
         public string Name { get; set; }
 
         public List<SelectListItem> ApplicationRoles => new List<SelectListItem>
-                {
-                    new SelectListItem("Administrador", Roles.Admin),
-                    new SelectListItem("Usuário", Roles.User),
-                    new SelectListItem("Assistente Social", Roles.SocialAssistance)
-                };
+        {
+            new SelectListItem("Secretária", Roles.Secretary),
+            new SelectListItem("Assistente Social", Roles.SocialAssistance),
+            new SelectListItem("Administrador", Roles.Admin)
+        };
 
         [Display(Name = "Regra")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]

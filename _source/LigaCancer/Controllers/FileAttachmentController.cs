@@ -35,7 +35,7 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult FileUpload(string id)
         {
@@ -47,7 +47,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_FileUpload", new FileAttachmentSearchModel(id));
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> FileUpload(string id, IFormFile file)
         {
@@ -106,7 +106,7 @@ namespace RVCC.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
@@ -146,7 +146,7 @@ namespace RVCC.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = Roles.AdminUserAuthorize)]
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {

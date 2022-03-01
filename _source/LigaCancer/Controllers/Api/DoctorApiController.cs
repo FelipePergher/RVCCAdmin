@@ -14,11 +14,12 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminUserAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class DoctorApiController : Controller
     {
@@ -47,7 +48,7 @@ namespace RVCC.Controllers.Api
                     Name = x.Name,
                     CRM = x.CRM,
                     Quantity = x.PatientInformationDoctors.Count(),
-                    Actions = GetActionsHtml(x)
+                    Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _doctorService.Count();
@@ -87,19 +88,22 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Doctor doctor)
+        private static string GetActionsHtml(Doctor doctor, ClaimsPrincipal user)
         {
-            string editDoctor = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
-                "data-title='Editar Médico' class='dropdown-item editDoctorButton'><span class='fas fa-edit'></span> Editar </a>";
-            string deleteDoctor = $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor' data-id='{doctor.DoctorId}' " +
-                $"data-relation='{doctor.PatientInformationDoctors.Count > 0}' class='deleteDoctorButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+            string options = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
+                             "data-title='Editar Médico' class='dropdown-item editDoctorButton'><span class='fas fa-edit'></span> Editar </a>";
+
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/Doctor/DeleteDoctor' data-id='{doctor.DoctorId}' " +
+                           $"data-relation='{doctor.PatientInformationDoctors.Count > 0}' class='deleteDoctorButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+            }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editDoctor}" +
-                $"      {deleteDoctor}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

@@ -10,9 +10,9 @@ using RVCC.Models.SearchModel;
 namespace RVCC.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     public class BirthdayController : Controller
     {
-        [Authorize(Roles = Roles.AdminUserSocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
