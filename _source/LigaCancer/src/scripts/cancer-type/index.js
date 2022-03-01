@@ -33,7 +33,8 @@ export default (function () {
             order: [1, "asc"],
             columns: [
                 { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
-                { data: "name", title: "Nome", name: "Name" }
+                { data: "name", title: "Nome", name: "Name" },
+                { data: "quantity", title: "Pacientes", name: "Quantity" }
             ],
             drawCallback: function (settings) {
                 $(".editCancerTypeButton").click(function () {

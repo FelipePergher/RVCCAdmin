@@ -45,6 +45,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<TreatmentPlaceViewModel> data = presences.Select(x => new TreatmentPlaceViewModel
                 {
                     City = x.City,
+                    Quantity = x.PatientInformationTreatmentPlaces.Count(),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 

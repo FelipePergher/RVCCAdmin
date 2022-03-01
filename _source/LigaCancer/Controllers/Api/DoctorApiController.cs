@@ -46,6 +46,7 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     CRM = x.CRM,
+                    Quantity = x.PatientInformationDoctors.Count(),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 

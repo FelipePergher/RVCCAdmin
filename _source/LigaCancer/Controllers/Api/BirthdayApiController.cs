@@ -41,13 +41,13 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Patient> patients = await ((PatientRepository)_patientService).GetByBirthdayMonth(null, sortColumn, sortDirection, birthdaySearchModel);
+                IEnumerable<Patient> patients = await ((PatientRepository)_patientService).GetByBirthdayMonth(new[] { nameof(Patient.Phones) }, sortColumn, sortDirection, birthdaySearchModel);
 
                 IEnumerable<BirthdayViewModel> data = patients.Select(x => new BirthdayViewModel
                 {
                     Name = $"<a href='{Url.Action("Details", "Patient", new { id = x.PatientId })}' target='_blank'>{x.FirstName} {x.Surname}</a>",
                     DateOfBirth = x.DateOfBirth.ToString("dd MMMM"),
-                    Phone = x.Phones.FirstOrDefault()?.Number,
+                    Phone = x.Phones.Any() ? string.Join(", ", x.Phones.Select(y => y.Number).ToList()) : string.Empty,
                 });
 
                 int recordsTotal = _patientService.Count();

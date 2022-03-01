@@ -8,6 +8,8 @@ namespace RVCC.Models.ViewModel
     {
         public string City { get; set; }
 
+        public int Quantity { get; set; }
+
         public string Actions { get; set; }
     }
 }

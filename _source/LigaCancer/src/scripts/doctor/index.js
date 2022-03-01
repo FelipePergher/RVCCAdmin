@@ -35,7 +35,8 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
                 { data: "name", title: "Nome", name: "Name" },
-                { data: "crm", title: "CRM", name: "CRM" }
+                { data: "crm", title: "CRM", name: "CRM" },
+                { data: "quantity", title: "Pacientes", name: "Quantity" }
             ],
             drawCallback: function (settings) {
                 $(".editDoctorButton").click(function () {

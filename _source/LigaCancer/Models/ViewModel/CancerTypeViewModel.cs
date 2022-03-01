@@ -6,8 +6,10 @@ namespace RVCC.Models.ViewModel
 {
     public class CancerTypeViewModel
     {
-        public string Actions { get; set; }
-
         public string Name { get; set; }
+
+        public int Quantity { get; set; }
+
+        public string Actions { get; set; }
     }
 }

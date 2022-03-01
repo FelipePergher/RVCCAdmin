@@ -139,6 +139,7 @@ namespace RVCC.Data.Repositories
         {
             return sortColumn switch
             {
+                "Quantity" => sortDirection == "asc" ? query.OrderBy(x => x.PatientInformationTreatmentPlaces.Count) : query.OrderByDescending(x => x.PatientInformationTreatmentPlaces.Count),
                 _ => sortDirection == "asc" ? query.OrderBy(x => x.City) : query.OrderByDescending(x => x.City)
             };
         }

@@ -45,6 +45,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<CancerTypeViewModel> data = cancerTypes.Select(x => new CancerTypeViewModel
                 {
                     Name = x.Name,
+                    Quantity = x.PatientInformationCancerTypes.Count(),
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 

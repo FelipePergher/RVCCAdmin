@@ -33,7 +33,8 @@ export default (function () {
             order: [1, "asc"],
             columns: [
                 { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
-                { data: "city", title: "Cidade", name: "City" }
+                { data: "city", title: "Cidade", name: "City" },
+                { data: "quantity", title: "Pacientes", name: "Quantity" }
             ],
             drawCallback: function (settings) {
                 $(".editTreatmentPlaceButton").click(function () {
