@@ -48,7 +48,7 @@ export default (function () {
 
         $('#cancerTypeTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             cancerTypeTable.search("").draw("");
         });
@@ -61,7 +61,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addCancerTypeForm");
 
-        $("#addCancerTypeForm").submit(function (e) {
+        $("#addCancerTypeForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -95,7 +95,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editCancerTypeForm");
 
-        $("#editCancerTypeForm").submit(function (e) {
+        $("#editCancerTypeForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

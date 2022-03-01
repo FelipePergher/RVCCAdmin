@@ -105,7 +105,7 @@ export default (function () {
             $(".filterSelect").val("").trigger("change");
         });
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             patientTable.search("").draw("");
         });
@@ -133,7 +133,7 @@ export default (function () {
         $(".patientProfileSelect2").select2();
         $.validator.unobtrusive.parse("#addPatientProfileForm");
 
-        $("#addPatientProfileForm").submit(function (e) {
+        $("#addPatientProfileForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -173,7 +173,7 @@ export default (function () {
     function initAddNaturalityForm() {
         $.validator.unobtrusive.parse("#addPatientNaturalityForm");
 
-        $("#addPatientNaturalityForm").submit(function (e) {
+        $("#addPatientNaturalityForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -222,7 +222,7 @@ export default (function () {
             }
         });
 
-        $("#addPatientInformationForm").submit(function (e) {
+        $("#addPatientInformationForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -262,7 +262,7 @@ export default (function () {
     function initAddSocialObservationForm() {
         $.validator.unobtrusive.parse("#addSocialObservationForm");
 
-        $("#addSocialObservationForm").submit(function (e) {
+        $("#addSocialObservationForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -312,7 +312,7 @@ export default (function () {
         });
         $.validator.unobtrusive.parse("#archivePatientForm");
 
-        $("#archivePatientForm").submit(function (e) {
+        $("#archivePatientForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

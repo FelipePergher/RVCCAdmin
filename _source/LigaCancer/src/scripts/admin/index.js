@@ -18,7 +18,7 @@ export default (function () {
     function initForm() {
         $("#MinSalary").mask(global.masks.Price, { reverse: true });
 
-        $("#adminForm").submit(function (e) {
+        $("#adminForm").off("submit").submit(function (e) {
             let form = $(this);
             if (form.valid()) {
                 let submitButton = $(this).find("button[type='submit']");

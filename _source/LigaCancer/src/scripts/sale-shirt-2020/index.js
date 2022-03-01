@@ -71,7 +71,7 @@ export default (function () {
 
         $('#saleShirt2020Table').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             saleShirt2020Table.search("").draw("");
         });
@@ -114,7 +114,7 @@ export default (function () {
             $("#totalValue").text(totalShirtValue + totalMaskValue);
         });
 
-        $("#addSaleShirt2020Form").submit(function (e) {
+        $("#addSaleShirt2020Form").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

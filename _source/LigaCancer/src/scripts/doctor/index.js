@@ -50,7 +50,7 @@ export default (function () {
 
         $('#doctorTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             doctorTable.search("").draw("");
         });
@@ -63,7 +63,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addDoctorForm");
 
-        $("#addDoctorForm").submit(function (e) {
+        $("#addDoctorForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -97,7 +97,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editDoctorForm");
 
-        $("#editDoctorForm").submit(function (e) {
+        $("#editDoctorForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

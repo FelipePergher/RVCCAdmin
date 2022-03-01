@@ -48,7 +48,7 @@ export default (function () {
 
         $('#medicineTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             medicineTable.search("").draw("");
         });
@@ -61,7 +61,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addMedicineForm");
 
-        $("#addMedicineForm").submit(function (e) {
+        $("#addMedicineForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -95,7 +95,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editMedicineForm");
 
-        $("#editMedicineForm").submit(function (e) {
+        $("#editMedicineForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

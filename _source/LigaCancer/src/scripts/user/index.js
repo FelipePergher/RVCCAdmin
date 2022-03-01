@@ -56,7 +56,7 @@ export default (function () {
 
         $('#userTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             userTable.search("").draw("");
         });
@@ -69,7 +69,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addUserForm");
 
-        $("#addUserForm").submit(function (e) {
+        $("#addUserForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -103,7 +103,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editUserForm");
 
-        $("#editUserForm").submit(function (e) {
+        $("#editUserForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

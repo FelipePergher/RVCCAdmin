@@ -48,7 +48,7 @@ export default (function () {
 
         $('#treatmentPlaceTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             treatmentPlaceTable.search("").draw("");
         });
@@ -61,7 +61,8 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addTreatmentPlaceForm");
 
-        $("#addTreatmentPlaceForm").submit(function (e) {
+        $("#addTreatmentPlaceForm").off("submit").submit(function (e) {
+            console.log(e);
             e.preventDefault();
 
             let form = $(this);
@@ -95,7 +96,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editTreatmentPlaceForm");
 
-        $("#editTreatmentPlaceForm").submit(function (e) {
+        $("#editTreatmentPlaceForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

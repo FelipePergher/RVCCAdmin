@@ -67,7 +67,7 @@ export default (function () {
             }
         });
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             patientBenefitTable.search("").draw("");
         });
@@ -92,7 +92,7 @@ export default (function () {
             }
         });
 
-        $("#addPatientBenefitForm").submit(function (e) {
+        $("#addPatientBenefitForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -136,7 +136,7 @@ export default (function () {
             }
         });
 
-        $("#editPatientBenefitForm").submit(function (e) {
+        $("#editPatientBenefitForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

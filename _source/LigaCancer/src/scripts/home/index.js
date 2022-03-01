@@ -39,7 +39,7 @@ export default (function () {
             getChart(true);
         });
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             getChart(true);
         });

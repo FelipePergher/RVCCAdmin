@@ -66,7 +66,7 @@ export default (function () {
             }
         });
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             presenceTable.search("").draw("");
         });
@@ -95,7 +95,7 @@ export default (function () {
             }
         });
 
-        $("#addPresenceForm").submit(function (e) {
+        $("#addPresenceForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -143,7 +143,7 @@ export default (function () {
             }
         });
 
-        $("#editPresenceForm").submit(function (e) {
+        $("#editPresenceForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

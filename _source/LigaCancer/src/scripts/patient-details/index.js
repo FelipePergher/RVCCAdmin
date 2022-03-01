@@ -62,7 +62,7 @@ export default (function () {
         });
         $(".patientProfileSelect2").select2();
 
-        $("#editPatientProfileForm").submit(function (e) {
+        $("#editPatientProfileForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -102,7 +102,7 @@ export default (function () {
     function initEditNaturalityForm() {
         $.validator.unobtrusive.parse("#editPatientNaturalityForm");
 
-        $("#editPatientNaturalityForm").submit(function (e) {
+        $("#editPatientNaturalityForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -153,7 +153,7 @@ export default (function () {
         });
         $(".patientInformationSelect").select2();
 
-        $("#editPatientInformationForm").submit(function (e) {
+        $("#editPatientInformationForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -236,7 +236,7 @@ export default (function () {
         $('#Number').mask(global.SPMaskBehavior, global.spOptions);
         $.validator.unobtrusive.parse("#addPhoneForm");
 
-        $("#addPhoneForm").submit(function (e) {
+        $("#addPhoneForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -273,7 +273,7 @@ export default (function () {
         $('#Number').mask(global.SPMaskBehavior, global.spOptions);
         $.validator.unobtrusive.parse("#editPhoneForm");
 
-        $("#editPhoneForm").submit(function (e) {
+        $("#editPhoneForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -382,7 +382,7 @@ export default (function () {
             !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
 
-        $("#addAddressForm").submit(function (e) {
+        $("#addAddressForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -424,7 +424,7 @@ export default (function () {
             !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
 
-        $("#editAddressForm").submit(function (e) {
+        $("#editAddressForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -625,7 +625,7 @@ export default (function () {
         });
         $.validator.unobtrusive.parse("#addFamilyMemberForm");
 
-        $("#addFamilyMemberForm").submit(function (e) {
+        $("#addFamilyMemberForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -672,7 +672,7 @@ export default (function () {
         });
         $.validator.unobtrusive.parse("#editFamilyMemberForm");
 
-        $("#editFamilyMemberForm").submit(function (e) {
+        $("#editFamilyMemberForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

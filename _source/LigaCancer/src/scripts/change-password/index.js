@@ -19,7 +19,7 @@ export default (function () {
 
         global.eyePassword();
 
-        $("#changePasswordForm").submit(function (e) {
+        $("#changePasswordForm").off("submit").submit(function (e) {
             e.preventDefault();
             let form = $(this);
             if (form.valid()) {

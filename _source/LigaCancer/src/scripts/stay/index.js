@@ -67,7 +67,7 @@ export default (function () {
             }
         });
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             stayTable.search("").draw("");
         });
@@ -92,7 +92,7 @@ export default (function () {
             }
         });
 
-        $("#addStayForm").submit(function (e) {
+        $("#addStayForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -136,7 +136,7 @@ export default (function () {
             }
         });
 
-        $("#editStayForm").submit(function (e) {
+        $("#editStayForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

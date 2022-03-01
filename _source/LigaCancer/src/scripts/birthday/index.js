@@ -61,7 +61,7 @@ export default (function () {
 
         $('#birthdayTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             birthdayTable.search("").draw("");
         });

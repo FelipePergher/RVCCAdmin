@@ -49,7 +49,7 @@ export default (function () {
 
         $('#benefitTable').attr('style', 'border-collapse: collapse !important');
 
-        $("#searchForm").submit(function (e) {
+        $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
             benefitTable.search("").draw("");
         });
@@ -62,7 +62,7 @@ export default (function () {
     function initAddForm() {
         $.validator.unobtrusive.parse("#addBenefitForm");
 
-        $("#addBenefitForm").submit(function (e) {
+        $("#addBenefitForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -96,7 +96,7 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editBenefitForm");
 
-        $("#editBenefitForm").submit(function (e) {
+        $("#editBenefitForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);

@@ -17,7 +17,7 @@ export default (function () {
     function initForgotForm() {
         $.validator.unobtrusive.parse("#forgotPasswordForm");
 
-        $("#forgotPasswordForm").submit(function (e) {
+        $("#forgotPasswordForm").off("submit").submit(function (e) {
             let form = $(this);
             if (form.valid()) {
                 let submitButton = $(this).find("button[type='submit']");

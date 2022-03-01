@@ -19,7 +19,7 @@ export default (function () {
 
         global.eyePassword();
 
-        $("#loginForm").submit(function (e) {
+        $("#loginForm").off("submit").submit(function (e) {
             let form = $(this);
             if (form.valid()) {
                 let submitButton = $(this).find("button[type='submit']");
