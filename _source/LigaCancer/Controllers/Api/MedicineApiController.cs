@@ -89,20 +89,20 @@ namespace RVCC.Controllers.Api
         private static string GetActionsHtml(Medicine medicine)
         {
             string editMedicine = $"<a href='/Medicine/EditMedicine/{medicine.MedicineId}' data-toggle='modal' " +
-                $"data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><span class='fas fa-edit'></span> Editar </a>";
+                "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editMedicineButton'><span class='fas fa-edit'></span> Editar </a>";
 
             string deleteMedicine = $"<a href='javascript:void(0);' data-url='/Medicine/DeleteMedicine' data-id='{medicine.MedicineId}' " +
                 $"data-relation='{medicine.PatientInformationMedicines.Count > 0}' class='dropdown-item deleteMedicineButton'>" +
-                $"<span class='fas fa-trash-alt'></span> Excluir </a>";
+                "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {editMedicine}" +
                 $"      {deleteMedicine}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

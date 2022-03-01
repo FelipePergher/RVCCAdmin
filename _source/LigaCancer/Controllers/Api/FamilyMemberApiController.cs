@@ -96,20 +96,20 @@ namespace RVCC.Controllers.Api
             if (!user.IsInRole(Roles.SocialAssistance))
             {
                 editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
-                                   $"data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";
+                                   "data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";
 
                 deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
-                    $"<span class='fas fa-trash-alt'></span> Excluir </a>";
+                    "<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {editFamilyMember}" +
                 $"      {deleteFamilyMember}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

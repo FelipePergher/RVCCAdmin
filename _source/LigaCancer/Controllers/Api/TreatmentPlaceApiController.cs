@@ -88,20 +88,20 @@ namespace RVCC.Controllers.Api
         private static string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
             string editTreatmentPlace = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
-                $"data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
+                "data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
 
             string deleteTreatmentPlace = $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
                 $"data-relation='{treatmentPlace.PatientInformationTreatmentPlaces.Count > 0}' class='dropdown-item deleteTreatmentPlaceButton'>" +
-                $"<span class='fas fa-trash-alt'></span> Excluir </a>";
+                "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {editTreatmentPlace}" +
                 $"      {deleteTreatmentPlace}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

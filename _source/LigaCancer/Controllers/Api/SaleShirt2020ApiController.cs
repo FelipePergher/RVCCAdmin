@@ -128,14 +128,14 @@ namespace RVCC.Controllers.Api
                                           $"data-target='#modal-action' data-title='Detalhes <strong>({Enums.GetDisplayName(saleShirt2020.Status)})</strong>' class='dropdown-item detailsSaleShirt2020Button'><span class='fas fa-info'></span> Detalhes </a>";
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {detailsSaleShirt2020}" +
                 $"      {updateStatusSaleShirt2020}" +
                 $"      {cancelSaleShirt2020}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

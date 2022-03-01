@@ -37,6 +37,7 @@ namespace RVCC.Models.FormModel
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Benefit { get; set; }
 
+        [Display(Name = "Quantidade")]
         [Range(1, 999999, ErrorMessage = "Quantidade deve ser maior que 0")]
         public int Quantity { get; set; }
 

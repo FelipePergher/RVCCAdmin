@@ -116,7 +116,7 @@ namespace RVCC.Controllers.Api
                                        data-title='Observações' class='dropdown-item socialObservationButton'><span class='fas fa-clipboard'></span> Observações</a>";
 
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
-                    $"data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><span class='fas fa-user-alt-slash'></span> Arquivar </a>";
+                    "data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><span class='fas fa-user-alt-slash'></span> Arquivar </a>";
 
                 options = patientDetails + socialObservation;
 

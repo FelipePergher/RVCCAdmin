@@ -8,7 +8,8 @@
     <ul class="nav navbar-nav ml-auto mr-4">
         <li class="nav-item dropdown">
             <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="fa fa-user"> @User.Identity.Name</span>
+                <span class="fa fa-user"></span>
+                <span>@User.Identity.Name</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "Admin" })" method="post">

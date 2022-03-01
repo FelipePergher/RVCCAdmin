@@ -101,27 +101,27 @@ namespace RVCC.Controllers.Api
         private static string GetActionsHtml(ApplicationUser user)
         {
             string editUser = $"<a href='/User/EditUser/{user.Id}' data-toggle='modal' " +
-                $"data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><span class='fas fa-edit'></span> Editar </a>";
+                "data-target='#modal-action' data-title='Editar Usuário' class='dropdown-item editUserButton'><span class='fas fa-edit'></span> Editar </a>";
 
             string deleteUser = $"<a href='javascript:void(0);' data-url='/User/DeleteUser' data-id='{user.Id}' " +
-                $" class='dropdown-item deleteUserButton'><span class='fas fa-trash-alt'></span> Excluir </a>";
+                " class='dropdown-item deleteUserButton'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string unlockAccount = string.Empty;
             if (user.LockoutEnd != null)
             {
                 unlockAccount = $"<a href='javascript:void(0);' data-url='/User/UnlockUser' data-id='{user.Id}' " +
-                $" class='dropdown-item unlockUserButton'><span class='fas fa-unlock'></span> Desbloquear </a>";
+                " class='dropdown-item unlockUserButton'><span class='fas fa-unlock'></span> Desbloquear </a>";
             }
 
             string actionsHtml =
-                $"<div class='dropdown'>" +
-                $"  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                $"  <div class='dropdown-menu'>" +
+                "<div class='dropdown'>" +
+                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                "  <div class='dropdown-menu'>" +
                 $"      {editUser}" +
                 $"      {unlockAccount}" +
                 $"      {deleteUser}" +
-                $"  </div>" +
-                $"</div>";
+                "  </div>" +
+                "</div>";
 
             return actionsHtml;
         }

@@ -66,9 +66,9 @@ namespace RVCC
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = $"/Identity/Account/Login";
-                options.LogoutPath = $"/Identity/Account/Logout";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
@@ -145,6 +145,7 @@ namespace RVCC
             {
                 new CultureInfo("pt-BR")
             };
+
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("pt-BR"),
@@ -167,13 +168,10 @@ namespace RVCC
             loggerFactory.AddLog4Net();
 
             app.UseEndpoints(endpoints =>
-              {
-                  endpoints.MapControllerRoute(
-                      name: "default",
-                      pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                  endpoints.MapRazorPages();
-              });
+            {
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
 
             SeedData.ApplyMigrations(app.ApplicationServices);
 
