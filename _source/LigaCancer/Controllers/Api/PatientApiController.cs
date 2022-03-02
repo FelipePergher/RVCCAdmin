@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class PatientApiController : Controller
     {
@@ -32,7 +33,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/patient/search")]
         public async Task<IActionResult> PatientSearch([FromForm] SearchModel searchModel, [FromForm] PatientSearchModel patientSearchModel)
         {
@@ -84,7 +84,6 @@ namespace RVCC.Controllers.Api
             }
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet("~/api/patient/IsCpfExist")]
         public async Task<IActionResult> IsCpfExist(string cpf, int patientId)
         {
@@ -92,7 +91,6 @@ namespace RVCC.Controllers.Api
             return Ok(patient == null);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet("~/api/patient/IsRgExist")]
         public async Task<IActionResult> IsRgExist(string rg, int patientId)
         {
@@ -111,34 +109,26 @@ namespace RVCC.Controllers.Api
                 string patientDetails = $@"<a href='/Patient/Details/{patient.PatientId}' class='dropdown-item' target='_blank'>
                                             <span class='fas fa-clipboard'></span> Detalhes do Paciente
                                         </a>";
-
                 string socialObservation = $@"<a href='/Patient/AddSocialObservation/{patient.PatientId}' data-toggle='modal' data-target='#modal-action'
                                        data-title='Observações' class='dropdown-item socialObservationButton'><span class='fas fa-clipboard'></span> Observações</a>";
-
                 string archivePatient = $"<a href='/Patient/ArchivePatient/{patient.PatientId}'' data-toggle='modal' data-target='#modal-action' " +
                     "data-title='Arquivar Paciente' class='archivePatientButton dropdown-item'><span class='fas fa-user-alt-slash'></span> Arquivar </a>";
 
-                options = patientDetails + socialObservation;
-
-                if (!user.IsInRole(Roles.SocialAssistance))
-                {
-                    options += archivePatient;
-                }
+                options = patientDetails + socialObservation + archivePatient;
             }
-            else if (!user.IsInRole(Roles.SocialAssistance))
+            else
             {
-                string enablePatient = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
-                    "data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
-
-                string deletePatient = $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
-                    "data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
-
                 if (!patient.ActivePatient.Death)
                 {
-                    options = enablePatient;
+                    options = $"<a href='javascript:void(0);' data-url='/Patient/ActivePatient' data-id='{patient.PatientId}' " +
+                              "data-title='Ativar Paciente' class='activePatientButton dropdown-item'><span class='fas fa-user-plus'></span> Reativar </a>";
                 }
 
-                options += deletePatient;
+                if (user.IsInRole(Roles.Admin))
+                {
+                    options += $"<a href='javascript:void(0);' data-url='/Patient/DeletePatient' data-id='{patient.PatientId}' " +
+                               "data-title='Deletar Paciente' class='deletePatientButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+                }
             }
 
             string actionsHtml =

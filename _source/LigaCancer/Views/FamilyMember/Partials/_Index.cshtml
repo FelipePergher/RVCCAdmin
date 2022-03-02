@@ -1,5 +1,4 @@
-﻿@using RVCC.Business
-@model RVCC.Models.SearchModel.FamilyMemberSearchModel
+﻿@model RVCC.Models.SearchModel.FamilyMemberSearchModel
 
 <div class="card">
     <div class="card-header" data-toggle="collapse" data-target="#familyMemberCollapse" aria-expanded="true">
@@ -31,15 +30,12 @@
 
         <hr />
 
-        @if (!User.IsInRole(Roles.SocialAssistance))
-        {
-            <div class="form-inline float-right">
-                <a id="addFamilyMemberButton" asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" data-title="Adicionar Membro Familiar" class="btn btn-primary"
-                   data-toggle="modal" data-target="#modal-action">
-                    <span class="fa fa-plus"></span> Adicionar Membro Familiar
-                </a>
-            </div>
-        }
+        <div class="form-inline float-right">
+            <a id="addFamilyMemberButton" asp-action="AddFamilyMember" asp-controller="FamilyMember" asp-route-id="@Model.PatientId" data-title="Adicionar Membro Familiar" class="btn btn-primary"
+               data-toggle="modal" data-target="#modal-action">
+                <span class="fa fa-plus"></span> Adicionar Membro Familiar
+            </a>
+        </div>
 
         <table class="table table-bordered table-striped text-center" id="familyMemberTable" aria-describedby="Tabela de membros familiares"></table>
     </div>

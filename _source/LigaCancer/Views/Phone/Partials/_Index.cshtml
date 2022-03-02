@@ -1,5 +1,4 @@
-﻿@using RVCC.Business
-@model RVCC.Models.SearchModel.PhoneSearchModel
+﻿@model RVCC.Models.SearchModel.PhoneSearchModel
 
 <div class="card">
     <div class="card-header" data-toggle="collapse" data-target="#phoneCollapse" aria-expanded="true">
@@ -14,16 +13,12 @@
     </div>
 
     <div class="card-body collapse" id="phoneCollapse">
-        @if (!User.IsInRole(Roles.SocialAssistance))
-        {
-
-            <div class="form-inline float-right">
-                <a id="addPhoneButton" asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-title="Adicionar Telefone" class="btn btn-primary"
-                   data-toggle="modal" data-target="#modal-action">
-                    <span class="fa fa-plus"></span> Adicionar Telefone
-                </a>
-            </div>
-        }
+        <div class="form-inline float-right">
+            <a id="addPhoneButton" asp-action="AddPhone" asp-controller="Phone" asp-route-id="@Model.PatientId" data-title="Adicionar Telefone" class="btn btn-primary"
+               data-toggle="modal" data-target="#modal-action">
+                <span class="fa fa-plus"></span> Adicionar Telefone
+            </a>
+        </div>
 
         <table class="table table-bordered table-striped text-center" id="phoneTable" aria-describedby="Tabela de telefone do paciente"></table>
     </div>

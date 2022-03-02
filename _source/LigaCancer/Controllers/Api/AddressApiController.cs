@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class AddressApiController : Controller
     {
@@ -30,7 +31,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/address/search")]
         public async Task<IActionResult> AddressSearch([FromForm] SearchModel searchModel, [FromForm] AddressSearchModel addressSearch)
         {
@@ -70,24 +70,20 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(Address address, ClaimsPrincipal user)
         {
-            string editAddress = string.Empty;
-            string deleteAddress = string.Empty;
+            string options = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
+                             "data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (!user.IsInRole(Roles.SocialAssistance))
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
             {
-                editAddress = $"<a href='/Address/EditAddress/{address.AddressId}' data-toggle='modal' " +
-                    "data-target='#modal-action' data-title='Editar Endereço' class='dropdown-item editAddressButton'><span class='fas fa-edit'></span> Editar </a>";
-
-                deleteAddress = $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
-                    "<span class='fas fa-trash-alt'></span> Excluir </a>";
+                options += $"<a href='javascript:void(0);' data-url='/Address/DeleteAddress' data-id='{address.AddressId}' class='dropdown-item deleteAddressButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editAddress}" +
-                $"      {deleteAddress}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

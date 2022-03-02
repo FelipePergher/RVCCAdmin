@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class FileAttachmentController : Controller
     {
@@ -35,7 +36,6 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult FileUpload(string id)
         {
@@ -47,7 +47,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_FileUpload", new FileAttachmentSearchModel(id));
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> FileUpload(string id, IFormFile file)
         {
@@ -106,7 +105,6 @@ namespace RVCC.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteFileAttachment(string id)
         {
@@ -146,7 +144,6 @@ namespace RVCC.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> UpdateNameFile(FileAttachmentViewModel fileAttachmentModel)
         {

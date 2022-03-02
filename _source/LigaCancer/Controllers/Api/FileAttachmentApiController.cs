@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class FileAttachmentApiController : Controller
     {
@@ -30,7 +31,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/FileAttachment/search")]
         public async Task<IActionResult> FileAttachmentSearch([FromForm] SearchModel searchModel, [FromForm] FileAttachmentSearchModel fileAttachmentSearch)
         {
@@ -67,19 +67,18 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(FileAttachment fileAttachment, ClaimsPrincipal user)
         {
-            string deleteFileAttachment = user.IsInRole(Roles.SocialAssistance)
-                ? string.Empty
-                : $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
+            string deleteFileAttachment = $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
                         <span class='fas fa-trash-alt'></span> Excluir 
                     </a>";
 
-            string actionsHtml =
-                "<div class='dropdown'>" +
-                "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
-                "  <div class='dropdown-menu'>" +
-                $"      {deleteFileAttachment}" +
-                "  </div>" +
-                "</div>";
+            string actionsHtml = user.IsInRole(Roles.SocialAssistance)
+                ? string.Empty
+                : "<div class='dropdown'>" +
+                  "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
+                  "  <div class='dropdown-menu'>" +
+                  $"      {deleteFileAttachment}" +
+                  "  </div>" +
+                  "</div>";
 
             return actionsHtml;
         }

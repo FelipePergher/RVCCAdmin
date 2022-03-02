@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
-    [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class BenefitApiController : Controller
     {
@@ -89,24 +89,21 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(Benefit benefit, ClaimsPrincipal user)
         {
-            string editBenefit = string.Empty;
-            string deleteBenefit = string.Empty;
-            if (!user.IsInRole(Roles.SocialAssistance))
-            {
-                editBenefit = $"<a href='/Benefit/EditBenefit/{benefit.BenefitId}' data-toggle='modal' " +
-                                     "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
+            string options = $"<a href='/Benefit/EditBenefit/{benefit.BenefitId}' data-toggle='modal' " +
+                             "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
 
-                deleteBenefit = $"<a href='javascript:void(0);' data-url='/Benefit/DeleteBenefit' data-id='{benefit.BenefitId}' " +
-                                       $"data-relation='{benefit.PatientBenefits.Count > 0}' class='dropdown-item deleteBenefitButton'>" +
-                                       "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/Benefit/DeleteBenefit' data-id='{benefit.BenefitId}' " +
+                           $"data-relation='{benefit.PatientBenefits.Count > 0}' class='dropdown-item deleteBenefitButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
                 $@"<div class='dropdown'>
                 <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>
                     <div class='dropdown-menu'>
-                        {editBenefit}
-                        {deleteBenefit}
+                        {options}
                     </div>
                 </div>";
 

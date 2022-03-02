@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class FamilyMemberApiController : Controller
     {
@@ -38,7 +39,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/familyMember/search")]
         public async Task<IActionResult> FamilyMemberSearch([FromForm] SearchModel searchModel, [FromForm] FamilyMemberSearchModel familyMemberSearch)
         {
@@ -90,24 +90,20 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(FamilyMember familyMember, ClaimsPrincipal user)
         {
-            string editFamilyMember = string.Empty;
-            string deleteFamilyMember = string.Empty;
+            string options = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
+                             "data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (!user.IsInRole(Roles.SocialAssistance))
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
             {
-                editFamilyMember = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
-                                   "data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";
-
-                deleteFamilyMember = $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
-                    "<span class='fas fa-trash-alt'></span> Excluir </a>";
+                options += $"<a href='javascript:void(0);' data-url='/FamilyMember/DeleteFamilyMember' data-id='{familyMember.FamilyMemberId}' class='dropdown-item deleteFamilyMemberButton'>" +
+                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
                 "<div class='dropdown'>" +
                 "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                 "  <div class='dropdown-menu'>" +
-                $"      {editFamilyMember}" +
-                $"      {deleteFamilyMember}" +
+                $"      {options}" +
                 "  </div>" +
                 "</div>";
 

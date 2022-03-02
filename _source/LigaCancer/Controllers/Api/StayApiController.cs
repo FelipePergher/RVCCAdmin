@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class StayApiController : Controller
     {
@@ -31,7 +32,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/stay/search")]
         public async Task<IActionResult> StaySearch([FromForm] SearchModel searchModel, [FromForm] StaySearchModel staySearchModel)
         {
@@ -71,28 +71,20 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(Stay stay, ClaimsPrincipal user)
         {
-            string editStay = string.Empty;
-            string deleteStay = string.Empty;
-            if (!user.IsInRole(Roles.SocialAssistance))
-            {
-                editStay = $"<a href='/Stay/EditStay/{stay.StayId}' data-toggle='modal' data-target='#modal-action' " +
-                   "data-title='Editar Presença' class='dropdown-item editStayButton'><span class='fas fa-edit'></span> Editar </a>";
-                deleteStay = $"<a href='javascript:void(0);' data-url='/Stay/DeleteStay' data-id='{stay.StayId}' " +
-                    "class='deleteStayButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+            string options = $"<a href='/Stay/EditStay/{stay.StayId}' data-toggle='modal' data-target='#modal-action' " +
+                             "data-title='Editar Presença' class='dropdown-item editStayButton'><span class='fas fa-edit'></span> Editar </a>";
 
-                TimeSpan diff = DateTime.Now.Subtract(stay.RegisterTime);
-                if (diff.Days > 0)
-                {
-                    editStay = string.Empty;
-                }
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $"<a href='javascript:void(0);' data-url='/Stay/DeleteStay' data-id='{stay.StayId}' " +
+                           "class='deleteStayButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
             string actionsHtml =
                 $@"<div class='dropdown'>
                   <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>
                   <div class='dropdown-menu'>
-                      {editStay}
-                      {deleteStay}
+                      {options}
                   </div>
                 </div>";
 

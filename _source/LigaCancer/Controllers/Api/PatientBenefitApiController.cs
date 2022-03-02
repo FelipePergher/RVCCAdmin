@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
     public class PatientBenefitApiController : Controller
     {
@@ -31,7 +32,6 @@ namespace RVCC.Controllers.Api
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpPost("~/api/patientBenefit/search")]
         public async Task<IActionResult> PatientBenefitSearch([FromForm] SearchModel searchModel, [FromForm] PatientBenefitSearchModel patientBenefitSearchModel)
         {
@@ -70,14 +70,12 @@ namespace RVCC.Controllers.Api
 
         private static string GetActionsHtml(PatientBenefit patientBenefit, ClaimsPrincipal user)
         {
-            string editPatientBenefit = string.Empty;
-            string deletePatientBenefit = string.Empty;
-            if (!user.IsInRole(Roles.SocialAssistance))
-            {
-                editPatientBenefit = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
-                   "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
+            string options = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
+                                                  "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
 
-                deletePatientBenefit = $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
+            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
+            {
+                options += $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
                     class='deletePatientBenefitButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
             }
 
@@ -85,8 +83,7 @@ namespace RVCC.Controllers.Api
                 $@"<div class='dropdown'>
                   <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>
                   <div class='dropdown-menu'>
-                      {editPatientBenefit}
-                      {deletePatientBenefit}
+                      {options}
                   </div>
                 </div>";
 

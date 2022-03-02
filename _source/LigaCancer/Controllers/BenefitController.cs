@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
-    [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class BenefitController : Controller
     {
@@ -107,6 +107,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditBenefit", benefitForm);
         }
 
+        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteBenefit(string id)
         {

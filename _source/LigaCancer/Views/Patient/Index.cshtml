@@ -65,6 +65,8 @@
                                                 <select asp-for="CancerTypes" class="form-control filterSelect"
                                                         data-theme="bootstrap"
                                                         data-language="pt-BR"
+                                                        data-ajax--url="/api/CancerType/select2Get"
+                                                        data-ajax--data-type="json"
                                                         data-placeholder="Cânceres">
                                                     <option value=""></option>
                                                 </select>

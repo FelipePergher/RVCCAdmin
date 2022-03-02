@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace RVCC.Controllers
 {
+    [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
     public class StayController : Controller
     {
@@ -33,14 +34,12 @@ namespace RVCC.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public IActionResult Index()
         {
             return View(new StaySearchModel());
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddStay()
         {
@@ -53,7 +52,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddStay(StayFormModel stayForm)
         {
@@ -87,7 +85,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> EditStay(string id)
         {
@@ -114,7 +111,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> EditStay(string id, StayFormModel stayForm)
         {
