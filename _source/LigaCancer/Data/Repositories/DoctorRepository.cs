@@ -5,7 +5,7 @@
 using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Models.SearchModel;
 using System;
 using System.Collections.Generic;

@@ -35,7 +35,7 @@
         }
 
         <div class="form-group">
-            <label asp-for="MonthlyIncomeMinSalary" class="control-label"></label>
+            <label asp-for="MonthlyIncomeMinSalary" class="control-label">@Html.DisplayNameFor(x => x.MonthlyIncomeMinSalary) (R$ @Model.MinSalary.ToString("N2"))</label>
             <input asp-for="MonthlyIncomeMinSalary" class="form-control" />
             <span asp-validation-for="MonthlyIncomeMinSalary" class="text-danger"></span>
         </div>

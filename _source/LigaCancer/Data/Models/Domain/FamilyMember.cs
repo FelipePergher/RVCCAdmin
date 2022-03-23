@@ -3,11 +3,12 @@
 // </copyright>
 
 using RVCC.Business;
+using RVCC.Data.Models.Audit;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Domain
 {
     public class FamilyMember : RegisterData
     {

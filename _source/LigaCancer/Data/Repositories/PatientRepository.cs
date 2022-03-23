@@ -5,7 +5,7 @@
 using Microsoft.EntityFrameworkCore;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Models.SearchModel;
 using System;
 using System.Collections.Generic;
@@ -189,17 +189,17 @@ namespace RVCC.Data.Repositories
         {
             if (!string.IsNullOrEmpty(patientSearch.Name))
             {
-                query = query.Where(x => x.FirstName.ToLower().Contains(patientSearch.Name.ToLower()));
+                query = query.Where(x => x.FirstName.Contains(patientSearch.Name));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Surname))
             {
-                query = query.Where(x => x.Surname.ToLower().Contains(patientSearch.Surname.ToLower()));
+                query = query.Where(x => x.Surname.Contains(patientSearch.Surname));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Rg))
             {
-                query = query.Where(x => x.RG.ToLower().Contains(patientSearch.Rg.ToLower()));
+                query = query.Where(x => x.RG.Contains(patientSearch.Rg));
             }
 
             if (!string.IsNullOrEmpty(patientSearch.Cpf))
@@ -285,7 +285,7 @@ namespace RVCC.Data.Repositories
         {
             if (!string.IsNullOrEmpty(birthdaySearch.Name))
             {
-                query = query.Where(x => x.FirstName.ToLower().Contains(birthdaySearch.Name) || x.Surname.ToLower().Contains(birthdaySearch.Name.ToLower()));
+                query = query.Where(x => x.FirstName.Contains(birthdaySearch.Name) || x.Surname.Contains(birthdaySearch.Name));
             }
 
             if (!string.IsNullOrEmpty(birthdaySearch.Month) && int.TryParse(birthdaySearch.Month, out int monthInt))

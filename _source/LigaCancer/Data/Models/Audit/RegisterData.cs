@@ -4,7 +4,7 @@
 
 using System;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Audit
 {
     public abstract class RegisterData
     {

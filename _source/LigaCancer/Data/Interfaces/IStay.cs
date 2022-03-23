@@ -1,22 +1,16 @@
-﻿// <copyright file="Stay.cs" company="Doffs">
+﻿// <copyright file="IStay.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Interfaces
 {
-    public class Stay : RegisterData
+    public interface IStay
     {
-        [Key]
         public int StayId { get; set; }
 
         public int? PatientId { get; set; }
-
-        [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
 
         public string PatientName { get; set; }
 

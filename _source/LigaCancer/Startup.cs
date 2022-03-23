@@ -2,8 +2,10 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using Audit.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
@@ -16,12 +18,15 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Business.Services;
 using RVCC.Data;
-using RVCC.Data.Models;
+using RVCC.Data.Interfaces;
+using RVCC.Data.Models.Audit;
+using RVCC.Data.Models.Domain;
 using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Services;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace RVCC
 {
@@ -93,23 +98,68 @@ namespace RVCC
 
             services.AddAntiforgery();
 
+            Audit.Core.Configuration.Setup()
+                .UseEntityFramework(ef => ef
+                    .AuditTypeExplicitMapper(x => x
+                        .Map<Doctor, AuditDoctor>()
+                        .Map<TreatmentPlace, AuditTreatmentPlace>()
+                        .Map<CancerType, AuditCancerType>()
+                        .Map<Medicine, AuditMedicine>()
+                        .Map<Stay, AuditStay>()
+                        .Map<Presence, AuditPresence>()
+                        .Map<Setting, AuditSetting>()
+                        .Map<Benefit, AuditBenefit>()
+                        .Map<PatientBenefit, AuditPatientBenefit>((patientBenefit, auditPatientBenefit) =>
+                        {
+                            ServiceProvider serviceProvider = services.BuildServiceProvider();
+                            IDataRepository<PatientBenefit> patientBenefitRepository = serviceProvider?.GetService<IDataRepository<PatientBenefit>>();
+
+                            PatientBenefit patientBenefitData = patientBenefitRepository.FindByIdAsync(patientBenefit.PatientBenefitId.ToString(), new[] { nameof(patientBenefit.Benefit), nameof(patientBenefit.Patient) }).Result;
+
+                            if (patientBenefitData != null)
+                            {
+                                auditPatientBenefit.BenefitName = patientBenefitData.Benefit?.Name;
+                                auditPatientBenefit.PatientName = patientBenefitData.Patient != null ? $"{patientBenefitData.Patient?.FirstName} {patientBenefitData.Patient.Surname}" : string.Empty;
+                            }
+                        })
+                        .Map<SaleShirt2020, AuditSaleShirt2020>()
+                        .AuditEntityAction<IAudit>((evt, entry, auditEntity) =>
+                        {
+                            auditEntity.AuditDate = DateTime.Now;
+                            auditEntity.AuditAction = entry.Action;
+
+                            // Todo improve that?
+                            ServiceProvider serviceProvider = services.BuildServiceProvider();
+                            HttpContext httpContext = serviceProvider?.GetService<IHttpContextAccessor>()?.HttpContext;
+
+                            if (httpContext != null)
+                            {
+                                auditEntity.UserName = httpContext.User.Identity?.Name ?? string.Empty;
+                            }
+
+                            return Task.FromResult(true);
+                        })));
+
             // Application Services
             services.AddTransient<IDataRepository<Doctor>, DoctorRepository>();
             services.AddTransient<IDataRepository<TreatmentPlace>, TreatmentPlaceRepository>();
             services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
             services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
+
             services.AddTransient<IDataRepository<Patient>, PatientRepository>();
-            services.AddTransient<IDataRepository<Phone>, PhoneRepository>();
+            services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
+            services.AddTransient<IDataRepository<Naturality>, NaturalityRepository>();
+
             services.AddTransient<IDataRepository<Address>, AddressRepository>();
+            services.AddTransient<IDataRepository<Phone>, PhoneRepository>();
             services.AddTransient<IDataRepository<FamilyMember>, FamilyMemberRepository>();
             services.AddTransient<IDataRepository<FileAttachment>, FileAttachmentRepository>();
+
             services.AddTransient<IDataRepository<Presence>, PresenceRepository>();
-            services.AddTransient<IDataRepository<Naturality>, NaturalityRepository>();
-            services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
             services.AddTransient<IDataRepository<Stay>, StayRepository>();
-            services.AddTransient<IDataRepository<AdminInfo>, AdminInfoRepository>();
+            services.AddTransient<IDataRepository<Setting>, SettingRepository>();
             services.AddTransient<IDataRepository<SaleShirt2020>, SaleShirt2020Repository>();
             services.AddTransient<UserResolverService>();
         }

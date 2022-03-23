@@ -3,12 +3,13 @@
 // </copyright>
 
 using RVCC.Business;
+using RVCC.Data.Models.Audit;
+using RVCC.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using RVCC.Data.Models.RelationModels;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Domain
 {
     public class Patient : RegisterData
     {

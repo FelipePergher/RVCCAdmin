@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Domain
 {
     public class ApplicationUser : IdentityUser
     {

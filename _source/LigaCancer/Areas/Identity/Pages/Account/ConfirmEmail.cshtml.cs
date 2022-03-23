@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using System.Threading.Tasks;
 
 namespace RVCC.Areas.Identity.Pages.Account

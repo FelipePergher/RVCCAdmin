@@ -4,7 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

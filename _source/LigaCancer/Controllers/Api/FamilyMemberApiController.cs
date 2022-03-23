@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
+using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
@@ -24,18 +25,14 @@ namespace RVCC.Controllers.Api
     {
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
+        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<FamilyMemberApiController> _logger;
-        private readonly IDataRepository<AdminInfo> _adminInfoService;
 
-        public FamilyMemberApiController(
-            IDataRepository<FamilyMember> familyMemberService,
-            IDataRepository<Patient> patientService,
-            IDataRepository<AdminInfo> adminInfoService,
-            ILogger<FamilyMemberApiController> logger)
+        public FamilyMemberApiController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, IDataRepository<Setting> settingRepository, ILogger<FamilyMemberApiController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
-            _adminInfoService = adminInfoService;
+            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -49,7 +46,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
+                var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
                 List<FamilyMember> familyMembers = await _familyMemberService.GetAllAsync(null, sortColumn, sortDirection, familyMemberSearch);
                 IEnumerable<FamilyMemberViewModel> data = familyMembers.Select(x => new FamilyMemberViewModel
                 {
@@ -57,12 +54,12 @@ namespace RVCC.Controllers.Api
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
-                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * x.MonthlyIncomeMinSalary:C2})",
+                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({minSalary * x.MonthlyIncomeMinSalary:C2})",
                     Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
-                var familyIncomeDouble = (familyMembers.Sum(x => x.MonthlyIncomeMinSalary) + patient.MonthlyIncomeMinSalary) * adminInfo.MinSalary;
+                var familyIncomeDouble = (familyMembers.Sum(x => x.MonthlyIncomeMinSalary) + patient.MonthlyIncomeMinSalary) * minSalary;
                 string familyIncome = familyIncomeDouble.ToString("C2");
                 string perCapitaIncome = (familyIncomeDouble / (familyMembers.Count + 1)).ToString("C2");
 
@@ -76,7 +73,7 @@ namespace RVCC.Controllers.Api
                     recordsFiltered = recordsTotal,
                     perCapitaIncome,
                     familyIncome,
-                    MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})"
+                    MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({minSalary * patient.MonthlyIncomeMinSalary:C2})"
                 });
             }
             catch (Exception e)

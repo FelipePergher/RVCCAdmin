@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Models.FormModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -100,7 +100,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditDoctor", doctorForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteDoctor(string id)
         {

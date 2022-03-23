@@ -1,13 +1,8 @@
-﻿@using RVCC.Business
-@model RVCC.Models.SearchModel.FileAttachmentSearchModel
+﻿@model RVCC.Models.SearchModel.FileAttachmentSearchModel
 
 <div class="modal-body">
     <input asp-for="PatientId" />
-    @if (!User.IsInRole(Roles.SocialAssistance))
-    {
-        <form asp-action="FileUpload" class="dropzone" method="post" id="dropzoneForm" enctype="multipart/form-data"></form>
-    }
-
+    <form asp-action="FileUpload" class="dropzone" method="post" id="dropzoneForm" enctype="multipart/form-data"></form>
 </div>
 
 <div class="modal-footer">

@@ -2,13 +2,15 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Data.Interfaces;
+using RVCC.Data.Models.Audit;
 using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Domain
 {
-    public class Doctor : RegisterData
+    public class Doctor : RegisterData, IDoctor
     {
         public Doctor()
         {
@@ -25,12 +27,16 @@ namespace RVCC.Data.Models
             CRM = crm;
         }
 
+        #region IDoctor
+
         [Key]
         public int DoctorId { get; set; }
 
         public string Name { get; set; }
 
         public string CRM { get; set; }
+
+        #endregion
 
         #region Relations
 

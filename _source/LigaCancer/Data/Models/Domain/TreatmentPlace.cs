@@ -2,13 +2,15 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Data.Interfaces;
+using RVCC.Data.Models.Audit;
 using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Models.Domain
 {
-    public class TreatmentPlace : RegisterData
+    public class TreatmentPlace : RegisterData, ITreatmentPlace
     {
         public TreatmentPlace()
         {
@@ -19,10 +21,14 @@ namespace RVCC.Data.Models
             City = city;
         }
 
+        #region ITreatmentPlace
+
         [Key]
         public int TreatmentPlaceId { get; set; }
 
         public string City { get; set; }
+
+        #endregion
 
         #region Relations
 

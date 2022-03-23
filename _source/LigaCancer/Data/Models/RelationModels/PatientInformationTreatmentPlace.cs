@@ -2,6 +2,8 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Data.Models.Domain;
+
 namespace RVCC.Data.Models.RelationModels
 {
     public class PatientInformationTreatmentPlace

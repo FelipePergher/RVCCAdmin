@@ -2,11 +2,13 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using Audit.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RVCC.Business.Services;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Audit;
+using RVCC.Data.Models.Domain;
 using RVCC.Data.Models.RelationModels;
 using System;
 using System.Collections.Generic;
@@ -16,37 +18,48 @@ using System.Threading.Tasks;
 
 namespace RVCC.Data
 {
+    [AuditDbContext]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly UserResolverService _userResolverService;
+        private readonly DbContextHelper _helper = new DbContextHelper();
+        private readonly IAuditDbContext _auditContext;
 
         public ApplicationDbContext(DbContextOptions options, UserResolverService userResolverService)
             : base(options)
         {
-            this._userResolverService = userResolverService;
+            _userResolverService = userResolverService;
+            _auditContext = new DefaultAuditContext(this);
+            _helper.SetConfig(_auditContext);
         }
+
+        #region Patient
+
+        public DbSet<Patient> Patients { get; set; }
 
         public DbSet<ActivePatient> ActivePatients { get; set; }
 
+        public DbSet<PatientInformation> PatientInformation { get; set; }
+
+        public DbSet<Naturality> Naturalities { get; set; }
+
         public DbSet<Address> Addresses { get; set; }
 
+        public DbSet<Phone> Phones { get; set; }
+
+        public DbSet<FamilyMember> FamilyMembers { get; set; }
+
         public DbSet<FileAttachment> FileAttachments { get; set; }
+
+        #endregion
+
+        #region General Models
 
         public DbSet<CancerType> CancerTypes { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }
 
-        public DbSet<FamilyMember> FamilyMembers { get; set; }
-
         public DbSet<Medicine> Medicines { get; set; }
-
-        public DbSet<Naturality> Naturalities { get; set; }
-
-        public DbSet<Patient> Patients { get; set; }
-
-        public DbSet<PatientInformation> PatientInformation { get; set; }
-
-        public DbSet<Phone> Phones { get; set; }
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 
@@ -58,11 +71,37 @@ namespace RVCC.Data
 
         public DbSet<Stay> Stays { get; set; }
 
-        public DbSet<AdminInfo> AdminInfos { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+
+        #endregion
 
         #region Shirt Sale 2020
 
         public DbSet<SaleShirt2020> SalesShirt2020 { get; set; }
+
+        #endregion
+
+        #region Audit Models
+
+        public DbSet<AuditDoctor> AuditDoctors { get; set; }
+
+        public DbSet<AuditTreatmentPlace> AuditTreatmentPlaces { get; set; }
+
+        public DbSet<AuditCancerType> AuditCancerTypes { get; set; }
+
+        public DbSet<AuditMedicine> AuditMedicines { get; set; }
+
+        public DbSet<AuditStay> AuditStays { get; set; }
+
+        public DbSet<AuditPresence> AuditPresences { get; set; }
+
+        public DbSet<AuditSetting> AuditSettings { get; set; }
+
+        public DbSet<AuditBenefit> AuditBenefits { get; set; }
+
+        public DbSet<AuditPatientBenefit> AuditPatientBenefits { get; set; }
+
+        public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 
         #endregion
 
@@ -86,7 +125,7 @@ namespace RVCC.Data
                 }
             }
 
-            return base.SaveChanges();
+            return _helper.SaveChanges(_auditContext, () => base.SaveChanges());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -107,7 +146,7 @@ namespace RVCC.Data
                 }
             }
 
-            return await base.SaveChangesAsync(cancellationToken);
+            return await _helper.SaveChangesAsync(_auditContext, () => base.SaveChangesAsync(cancellationToken));
         }
 
         #endregion
@@ -115,6 +154,21 @@ namespace RVCC.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            #region Changing collationg from fields that can have accent
+
+            // Todo not better change the database collation at once?
+            builder.Entity<Patient>().Property(c => c.FirstName).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Patient>().Property(c => c.Surname).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Patient>().Property(c => c.RG).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Patient>().Property(c => c.CPF).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Medicine>().Property(c => c.Name).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Doctor>().Property(c => c.Name).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<TreatmentPlace>().Property(c => c.City).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<CancerType>().Property(c => c.Name).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<ApplicationUser>().Property(c => c.Name).UseCollation("Latin1_General_CI_AI");
+            builder.Entity<Stay>().Property(c => c.City).UseCollation("Latin1_General_CI_AI");
+            #endregion
 
             #region Many to Many Relations
 

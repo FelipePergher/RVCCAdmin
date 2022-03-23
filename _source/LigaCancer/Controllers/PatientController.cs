@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Data.Models.RelationModels;
 using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
@@ -30,7 +30,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly IDataRepository<Naturality> _naturalityService;
         private readonly IDataRepository<PatientInformation> _patientInformationService;
-        private readonly IDataRepository<AdminInfo> _adminInfoService;
+        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<PatientController> _logger;
 
         public PatientController(
@@ -41,7 +41,7 @@ namespace RVCC.Controllers
             IDataRepository<Medicine> medicineService,
             IDataRepository<Naturality> naturalityService,
             IDataRepository<PatientInformation> patientInformationService,
-            IDataRepository<AdminInfo> adminInfoService,
+            IDataRepository<Setting> settingRepository,
             ILogger<PatientController> logger)
         {
             _patientService = patientService;
@@ -51,7 +51,7 @@ namespace RVCC.Controllers
             _medicineService = medicineService;
             _naturalityService = naturalityService;
             _patientInformationService = patientInformationService;
-            _adminInfoService = adminInfoService;
+            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -75,7 +75,7 @@ namespace RVCC.Controllers
 
             Patient patient = await _patientService.FindByIdAsync(id, includes);
 
-            AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
+            var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
 
             var patientDetails = new PatientDetailsViewModel
             {
@@ -94,7 +94,7 @@ namespace RVCC.Controllers
                     DateOfBirth = patient.DateOfBirth.ToShortDateString(),
                     JoinDate = patient.JoinDate.ToShortDateString(),
                     FamiliarityGroup = patient.FamiliarityGroup,
-                    MonthlyIncomeMinSalary = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})"
+                    MonthlyIncomeMinSalary = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({minSalary * patient.MonthlyIncomeMinSalary:C2})"
                 },
                 PatientInformation = new PatientInformationFormModel
                 {
@@ -132,7 +132,7 @@ namespace RVCC.Controllers
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
             };
 
-            AdminInfo adminInfo = (await _adminInfoService.GetAllAsync()).FirstOrDefault();
+            var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
             Patient patient = await _patientService.FindByIdAsync(id, includes);
 
             var patientPrintViewModel = new PatientPrintViewModel
@@ -144,7 +144,7 @@ namespace RVCC.Controllers
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
                 JoinDate = patient.JoinDate,
-                MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * patient.MonthlyIncomeMinSalary:C2})",
+                MonthlyIncome = $"{patient.MonthlyIncomeMinSalary:N2} Sal. Mín. ({minSalary * patient.MonthlyIncomeMinSalary:C2})",
                 Profession = patient.Profession,
                 Sex = patient.Sex,
                 CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
@@ -178,7 +178,7 @@ namespace RVCC.Controllers
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToShortDateString() : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
-                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({adminInfo.MinSalary * x.MonthlyIncomeMinSalary:C2})"
+                    MonthlyIncome = $"{x.MonthlyIncomeMinSalary:N2} Sal. Mín. ({minSalary * x.MonthlyIncomeMinSalary:C2})"
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
                 {
@@ -209,14 +209,13 @@ namespace RVCC.Controllers
 
         #region Add Methods
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public IActionResult AddPatientProfile()
         {
-            return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel());
+            var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
+            return PartialView("Partials/_AddPatientProfile", new PatientProfileFormModel { MinSalary = minSalary });
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientProfile(PatientProfileFormModel patientProfileForm)
         {
@@ -251,7 +250,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientProfile", patientProfileForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public IActionResult AddPatientNaturality(string id)
         {
@@ -263,7 +261,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientNaturality", new NaturalityFormModel());
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientNaturality(string id, NaturalityFormModel naturalityForm)
         {
@@ -296,7 +293,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientNaturality", naturalityForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddPatientInformation(string id)
         {
@@ -315,7 +311,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> AddPatientInformation(string id, PatientInformationFormModel patientInformationForm)
         {
@@ -441,7 +436,8 @@ namespace RVCC.Controllers
                 JoinDate = patient.JoinDate.ToString("dd/MM/yyyy"),
                 MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
                 MonthlyIncomeMinSalary = patient.MonthlyIncomeMinSalary.ToString("N2"),
-                Profession = patient.Profession
+                Profession = patient.Profession,
+                MinSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble()
             };
 
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);

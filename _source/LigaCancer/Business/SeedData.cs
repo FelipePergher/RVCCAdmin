@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RVCC.Business.Interface;
 using RVCC.Data;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace RVCC.Business
             using IServiceScope serviceScope = scopeFactory.CreateScope();
             UserManager<ApplicationUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            IDataRepository<AdminInfo> adminInfoService = serviceScope.ServiceProvider.GetRequiredService<IDataRepository<AdminInfo>>();
+            IDataRepository<Setting> settingRepository = serviceScope.ServiceProvider.GetRequiredService<IDataRepository<Setting>>();
 
             IList<ApplicationUser> applicationUsers = await userManager.GetUsersInRoleAsync(Business.Roles.Admin);
             if (!applicationUsers.Any())
@@ -75,12 +75,9 @@ namespace RVCC.Business
                 }
             }
 
-            if (adminInfoService.Count() == 0)
+            if (settingRepository.Count() == 0)
             {
-                await adminInfoService.CreateAsync(new AdminInfo
-                {
-                    CreatedBy = "Seed"
-                });
+                await settingRepository.CreateAsync(new Setting(SettingKey.MinSalary, "0"));
             }
         }
     }

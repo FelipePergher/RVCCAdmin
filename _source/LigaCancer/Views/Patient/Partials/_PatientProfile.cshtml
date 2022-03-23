@@ -33,7 +33,7 @@
             <span asp-validation-for="Profession" class="text-danger"></span>
         </div>
 
-        @if (isEdit)
+        @if (!string.IsNullOrEmpty(Model.MonthlyIncome))
         {
             <div class="form-group col-md-3">
                 <label asp-for="MonthlyIncome" class="control-label"></label>
@@ -42,8 +42,8 @@
             </div>
         }
 
-        <div class="form-group @(isEdit ? "col-md-3" : "col-md-6")">
-            <label asp-for="MonthlyIncomeMinSalary" class="control-label"></label>
+        <div class="form-group @(!string.IsNullOrEmpty(Model.MonthlyIncome) ? "col-md-3" : "col-md-6")">
+            <label asp-for="MonthlyIncomeMinSalary" class="control-label">@Html.DisplayNameFor(x => x.MonthlyIncomeMinSalary) (R$ @Model.MinSalary.ToString("N2"))</label>
             <input asp-for="MonthlyIncomeMinSalary" class="form-control" />
             <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
         </div>

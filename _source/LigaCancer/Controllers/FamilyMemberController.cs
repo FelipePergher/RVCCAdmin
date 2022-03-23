@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
+using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using System;
 using System.Linq;
@@ -21,12 +22,14 @@ namespace RVCC.Controllers
     {
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
+        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<FamilyMemberController> _logger;
 
-        public FamilyMemberController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberController> logger)
+        public FamilyMemberController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, IDataRepository<Setting> settingRepository, ILogger<FamilyMemberController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
+            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -38,7 +41,8 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
+            var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
+            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel { MinSalary = minSalary });
         }
 
         [HttpPost]
@@ -102,7 +106,8 @@ namespace RVCC.Controllers
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
                 MonthlyIncomeMinSalary = familyMember.MonthlyIncomeMinSalary.ToString("N2"),
                 Name = familyMember.Name,
-                Sex = familyMember.Sex
+                Sex = familyMember.Sex,
+                MinSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble()
             });
         }
 

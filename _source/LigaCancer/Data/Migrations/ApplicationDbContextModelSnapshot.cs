@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RVCC.Data;
 
+#nullable disable
+
 namespace RVCC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
@@ -15,9 +17,10 @@ namespace RVCC.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -29,29 +32,30 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -67,15 +71,16 @@ namespace RVCC.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -91,7 +96,7 @@ namespace RVCC.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -113,7 +118,7 @@ namespace RVCC.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -128,7 +133,7 @@ namespace RVCC.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -147,15 +152,425 @@ namespace RVCC.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.ActivePatient", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditBenefit", b =>
+                {
+                    b.Property<int>("AuditBenefitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditBenefitId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BenefitId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditBenefitId");
+
+                    b.ToTable("AuditBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditCancerType", b =>
+                {
+                    b.Property<int>("AuditCancerTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditCancerTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CancerTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditCancerTypeId");
+
+                    b.ToTable("AuditCancerTypes");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditDoctor", b =>
+                {
+                    b.Property<int>("AuditDoctorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditDoctorId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CRM")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditDoctorId");
+
+                    b.ToTable("AuditDoctors");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditMedicine", b =>
+                {
+                    b.Property<int>("AuditMedicineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditMedicineId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditMedicineId");
+
+                    b.ToTable("AuditMedicines");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientBenefit", b =>
+                {
+                    b.Property<int>("AuditPatientBenefitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientBenefitId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BenefitDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BenefitId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BenefitName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientBenefitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PatientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditPatientBenefitId");
+
+                    b.ToTable("AuditPatientBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPresence", b =>
+                {
+                    b.Property<int>("AuditPresenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPresenceId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PresenceDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PresenceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditPresenceId");
+
+                    b.ToTable("AuditPresences");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditSaleShirt2020", b =>
+                {
+                    b.Property<int>("AuditShirtSaleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditShirtSaleId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BuyerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuyerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCanceled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCollected")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateConfection")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOrdered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DatePayment")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateProduced")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MaskQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PriceTotal")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ShirtQuantityTotal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShirtSaleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size10NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size12NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size14NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size16NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size2NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size4NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size6NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size8NormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGGBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGGNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeGNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeMBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeMNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizePBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizePNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeXGBabyLookQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeXGNormalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditShirtSaleId");
+
+                    b.ToTable("AuditSaleShirt2020s");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditSetting", b =>
+                {
+                    b.Property<int>("AuditSettingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditSettingId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SettingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditSettingId");
+
+                    b.ToTable("AuditSettings");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditStay", b =>
+                {
+                    b.Property<int>("AuditStayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditStayId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PatientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StayDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StayId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditStayId");
+
+                    b.ToTable("AuditStays");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditTreatmentPlace", b =>
+                {
+                    b.Property<int>("AuditTreatmentPlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditTreatmentPlaceId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TreatmentPlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditTreatmentPlaceId");
+
+                    b.ToTable("AuditTreatmentPlaces");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ActivePatient", b =>
                 {
                     b.Property<int>("ActivePatientId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivePatientId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -198,12 +613,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("ActivePatients");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Address", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Address", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -251,34 +667,7 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.AdminInfo", b =>
-                {
-                    b.Property<int>("AdminInfoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("MinSalary")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("RegisterTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AdminInfoId");
-
-                    b.ToTable("AdminInfos");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.ApplicationUser", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -294,8 +683,8 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -307,15 +696,16 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -336,28 +726,29 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Benefit", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Benefit", b =>
                 {
                     b.Property<int>("BenefitId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BenefitId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -382,18 +773,20 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Benefits");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.CancerType", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.CancerType", b =>
                 {
                     b.Property<int>("CancerTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CancerTypeId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<DateTime>("RegisterTime")
                         .HasColumnType("datetime2");
@@ -413,12 +806,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("CancerTypes");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Doctor", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Doctor", b =>
                 {
                     b.Property<int>("DoctorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"), 1L, 1);
 
                     b.Property<string>("CRM")
                         .HasColumnType("nvarchar(450)");
@@ -427,7 +821,8 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<DateTime>("RegisterTime")
                         .HasColumnType("datetime2");
@@ -447,12 +842,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.FamilyMember", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.FamilyMember", b =>
                 {
                     b.Property<int>("FamilyMemberId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FamilyMemberId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -494,12 +890,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("FamilyMembers");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.FileAttachment", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.FileAttachment", b =>
                 {
                     b.Property<int>("FileAttachmentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileAttachmentId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -535,18 +932,20 @@ namespace RVCC.Data.Migrations
                     b.ToTable("FileAttachments");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Medicine", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Medicine", b =>
                 {
                     b.Property<int>("MedicineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MedicineId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<DateTime>("RegisterTime")
                         .HasColumnType("datetime2");
@@ -566,12 +965,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Naturality", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Naturality", b =>
                 {
                     b.Property<int>("NaturalityId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NaturalityId"), 1L, 1);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -605,15 +1005,17 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Naturalities");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Patient", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Patient", b =>
                 {
                     b.Property<int>("PatientId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"), 1L, 1);
 
                     b.Property<string>("CPF")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<int?>("CivilState")
                         .HasColumnType("int");
@@ -628,7 +1030,8 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
@@ -643,7 +1046,8 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RG")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<DateTime>("RegisterTime")
                         .HasColumnType("datetime2");
@@ -655,7 +1059,8 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -676,12 +1081,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.PatientInformation", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.PatientInformation", b =>
                 {
                     b.Property<int>("PatientInformationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientInformationId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -709,12 +1115,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("PatientInformation");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Phone", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Phone", b =>
                 {
                     b.Property<int>("PhoneId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhoneId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -747,12 +1154,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Presence", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Presence", b =>
                 {
                     b.Property<int>("PresenceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PresenceId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -782,112 +1190,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Presences");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientBenefit", b =>
-                {
-                    b.Property<int>("PatientBenefitId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("BenefitDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("BenefitId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PatientBenefitId");
-
-                    b.HasIndex("BenefitId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("PatientBenefits");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationCancerType", b =>
-                {
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CancerTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientInformationId", "CancerTypeId");
-
-                    b.HasIndex("CancerTypeId");
-
-                    b.ToTable("PatientInformationCancerType");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationDoctor", b =>
-                {
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientInformationId", "DoctorId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("PatientInformationDoctor");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationMedicine", b =>
-                {
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MedicineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientInformationId", "MedicineId");
-
-                    b.HasIndex("MedicineId");
-
-                    b.ToTable("PatientInformationMedicine");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
-                {
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TreatmentPlaceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientInformationId", "TreatmentPlaceId");
-
-                    b.HasIndex("TreatmentPlaceId");
-
-                    b.ToTable("PatientInformationTreatmentPlace");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.SaleShirt2020", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.SaleShirt2020", b =>
                 {
                     b.Property<int>("ShirtSaleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShirtSaleId"), 1L, 1);
 
                     b.Property<string>("BuyerName")
                         .HasColumnType("nvarchar(max)");
@@ -996,15 +1305,36 @@ namespace RVCC.Data.Migrations
                     b.ToTable("SalesShirt2020");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Stay", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Setting", b =>
+                {
+                    b.Property<int>("SettingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SettingId"), 1L, 1);
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SettingId");
+
+                    b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Stay", b =>
                 {
                     b.Property<int>("StayId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StayId"), 1L, 1);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1037,15 +1367,17 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Stays");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.TreatmentPlace", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.TreatmentPlace", b =>
                 {
                     b.Property<int>("TreatmentPlaceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TreatmentPlaceId"), 1L, 1);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_CI_AI");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1068,6 +1400,107 @@ namespace RVCC.Data.Migrations
                     b.ToTable("TreatmentPlaces");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientBenefit", b =>
+                {
+                    b.Property<int>("PatientBenefitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientBenefitId"), 1L, 1);
+
+                    b.Property<DateTime>("BenefitDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BenefitId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegisterTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PatientBenefitId");
+
+                    b.HasIndex("BenefitId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PatientBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationCancerType", b =>
+                {
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CancerTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientInformationId", "CancerTypeId");
+
+                    b.HasIndex("CancerTypeId");
+
+                    b.ToTable("PatientInformationCancerType");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationDoctor", b =>
+                {
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientInformationId", "DoctorId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("PatientInformationDoctor");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationMedicine", b =>
+                {
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MedicineId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientInformationId", "MedicineId");
+
+                    b.HasIndex("MedicineId");
+
+                    b.ToTable("PatientInformationMedicine");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
+                {
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TreatmentPlaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientInformationId", "TreatmentPlaceId");
+
+                    b.HasIndex("TreatmentPlaceId");
+
+                    b.ToTable("PatientInformationTreatmentPlace");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1079,7 +1512,7 @@ namespace RVCC.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.ApplicationUser", null)
+                    b.HasOne("RVCC.Data.Models.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1088,7 +1521,7 @@ namespace RVCC.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.ApplicationUser", null)
+                    b.HasOne("RVCC.Data.Models.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1103,7 +1536,7 @@ namespace RVCC.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.ApplicationUser", null)
+                    b.HasOne("RVCC.Data.Models.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1112,165 +1545,262 @@ namespace RVCC.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.ApplicationUser", null)
+                    b.HasOne("RVCC.Data.Models.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.ActivePatient", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ActivePatient", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithOne("ActivePatient")
-                        .HasForeignKey("RVCC.Data.Models.ActivePatient", "PatientId")
+                        .HasForeignKey("RVCC.Data.Models.Domain.ActivePatient", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Address", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Address", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("Addresses")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.FamilyMember", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.FamilyMember", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("FamilyMembers")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.FileAttachment", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.FileAttachment", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("FileAttachments")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Naturality", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Naturality", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithOne("Naturality")
-                        .HasForeignKey("RVCC.Data.Models.Naturality", "PatientId")
+                        .HasForeignKey("RVCC.Data.Models.Domain.Naturality", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.PatientInformation", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.PatientInformation", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithOne("PatientInformation")
-                        .HasForeignKey("RVCC.Data.Models.PatientInformation", "PatientId")
+                        .HasForeignKey("RVCC.Data.Models.Domain.PatientInformation", "PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Phone", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Phone", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("Phones")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Presence", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Presence", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("Presences")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Stay", b =>
+                {
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
+                        .WithMany("Stays")
+                        .HasForeignKey("PatientId");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientBenefit", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Benefit", "Benefit")
+                    b.HasOne("RVCC.Data.Models.Domain.Benefit", "Benefit")
                         .WithMany("PatientBenefits")
                         .HasForeignKey("BenefitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
                         .WithMany("PatientBenefits")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Benefit");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationCancerType", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.CancerType", "CancerType")
+                    b.HasOne("RVCC.Data.Models.Domain.CancerType", "CancerType")
                         .WithMany("PatientInformationCancerTypes")
                         .HasForeignKey("CancerTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.PatientInformation", "PatientInformation")
+                    b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationCancerTypes")
                         .HasForeignKey("PatientInformationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CancerType");
+
+                    b.Navigation("PatientInformation");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationDoctor", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Doctor", "Doctor")
+                    b.HasOne("RVCC.Data.Models.Domain.Doctor", "Doctor")
                         .WithMany("PatientInformationDoctors")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.PatientInformation", "PatientInformation")
+                    b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationDoctors")
                         .HasForeignKey("PatientInformationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("PatientInformation");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationMedicine", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Medicine", "Medicine")
+                    b.HasOne("RVCC.Data.Models.Domain.Medicine", "Medicine")
                         .WithMany("PatientInformationMedicines")
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.PatientInformation", "PatientInformation")
+                    b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationMedicines")
                         .HasForeignKey("PatientInformationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Medicine");
+
+                    b.Navigation("PatientInformation");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.PatientInformation", "PatientInformation")
+                    b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
                         .WithMany("PatientInformationTreatmentPlaces")
                         .HasForeignKey("PatientInformationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.TreatmentPlace", "TreatmentPlace")
+                    b.HasOne("RVCC.Data.Models.Domain.TreatmentPlace", "TreatmentPlace")
                         .WithMany("PatientInformationTreatmentPlaces")
                         .HasForeignKey("TreatmentPlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PatientInformation");
+
+                    b.Navigation("TreatmentPlace");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Stay", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Benefit", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Patient", "Patient")
-                        .WithMany("Stays")
-                        .HasForeignKey("PatientId");
+                    b.Navigation("PatientBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.CancerType", b =>
+                {
+                    b.Navigation("PatientInformationCancerTypes");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Doctor", b =>
+                {
+                    b.Navigation("PatientInformationDoctors");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Medicine", b =>
+                {
+                    b.Navigation("PatientInformationMedicines");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.Patient", b =>
+                {
+                    b.Navigation("ActivePatient");
+
+                    b.Navigation("Addresses");
+
+                    b.Navigation("FamilyMembers");
+
+                    b.Navigation("FileAttachments");
+
+                    b.Navigation("Naturality");
+
+                    b.Navigation("PatientBenefits");
+
+                    b.Navigation("PatientInformation");
+
+                    b.Navigation("Phones");
+
+                    b.Navigation("Presences");
+
+                    b.Navigation("Stays");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.PatientInformation", b =>
+                {
+                    b.Navigation("PatientInformationCancerTypes");
+
+                    b.Navigation("PatientInformationDoctors");
+
+                    b.Navigation("PatientInformationMedicines");
+
+                    b.Navigation("PatientInformationTreatmentPlaces");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.TreatmentPlace", b =>
+                {
+                    b.Navigation("PatientInformationTreatmentPlaces");
                 });
 #pragma warning restore 612, 618
         }

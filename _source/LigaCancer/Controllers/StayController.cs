@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using RVCC.Models.SearchModel;
@@ -140,7 +140,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditStay", stayForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretaryAuthorize)]
         [HttpPost]
         public async Task<IActionResult> DeleteStay(string id)
         {

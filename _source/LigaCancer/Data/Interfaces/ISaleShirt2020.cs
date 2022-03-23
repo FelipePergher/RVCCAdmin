@@ -1,21 +1,14 @@
-﻿// <copyright file="SaleShirt2020.cs" company="Doffs">
+﻿// <copyright file="ISaleShirt2020.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace RVCC.Data.Models
+namespace RVCC.Data.Interfaces
 {
-    public class SaleShirt2020 : RegisterData
+    public interface ISaleShirt2020
     {
-        public SaleShirt2020()
-        {
-            Status = Enums.Status.Ordered;
-        }
-
-        [Key]
         public int ShirtSaleId { get; set; }
 
         public int ShirtQuantityTotal { get; set; }

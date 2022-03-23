@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
-using RVCC.Data.Models;
+using RVCC.Data.Models.Domain;
 using RVCC.Models.FormModel;
 using System.Collections.Generic;
 using System.Linq;

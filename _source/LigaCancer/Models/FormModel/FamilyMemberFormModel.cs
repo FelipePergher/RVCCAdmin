@@ -34,5 +34,7 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Renda mensal (Sal min)")]
         public string MonthlyIncomeMinSalary { get; set; }
+
+        public double MinSalary { get; set; }
     }
 }
