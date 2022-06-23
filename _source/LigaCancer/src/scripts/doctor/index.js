@@ -3,6 +3,8 @@ import "jquery-validation";
 import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
+import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
+import "datatables.net-buttons/js/buttons.html5.min.js";
 import "bootstrap/js/dist/modal";
 
 export default (function () {
@@ -15,6 +17,17 @@ export default (function () {
 
     function initPage() {
         let doctorTable = $("#doctorTable").DataTable({
+            dom:
+                "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'B>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            lengthMenu: [
+                [10, 25, 50, 99999999],
+                ['10', '25', '50', 'Tudo']
+            ],
+            buttons: [
+                "csv"
+            ],
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,
