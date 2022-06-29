@@ -73,14 +73,20 @@ namespace RVCC.Controllers
                         await _userManager.AddToRoleAsync(user, applicationRole.Name);
                     }
 
-                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    string callbackUrl = Url.Page(
-                       "/Account/ConfirmEmail",
-                       pageHandler: null,
-                       values: new { area = "Identity", userId = user.Id, code },
-                       protocol: Request.Scheme);
+                    try
+                    {
+                        string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        string callbackUrl = Url.Page(
+                           "/Account/ConfirmEmail",
+                           pageHandler: null,
+                           values: new { area = "Identity", userId = user.Id, code },
+                           protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirme seu email", $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                        await _emailSender.SendEmailAsync(user.Email, "Confirme seu email", $"Por favor confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                    }
+                    catch (System.Exception e)
+                    {
+                    }
 
                     return Ok();
                 }

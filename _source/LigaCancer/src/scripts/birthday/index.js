@@ -44,7 +44,7 @@ export default (function () {
                 {
                     extend: "csv",
                     exportOptions: {
-                        columns: [1, 2, 3]
+                        columns: [0, 1, 2]
                     }
                 }
             ],
