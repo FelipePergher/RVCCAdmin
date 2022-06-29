@@ -8,6 +8,8 @@ import "select2";
 import 'bootstrap-datepicker';
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
 import "jquery-mask-plugin";
+import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
+import "datatables.net-buttons/js/buttons.html5.min.js";
 
 export default (function () {
 
@@ -31,6 +33,22 @@ export default (function () {
         });
 
         let patientTable = $("#patientTable").DataTable({
+            dom:
+                "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'B>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            lengthMenu: [
+                [10, 25, 50, 99999999],
+                ['10', '25', '50', 'Tudo']
+            ],
+            buttons: [
+                {
+                    extend: "csv",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    }
+                }
+            ],
             processing: true,
             serverSide: true,
             language: global.datatablesLanguage,

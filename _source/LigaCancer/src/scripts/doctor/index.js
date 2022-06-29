@@ -26,7 +26,12 @@ export default (function () {
                 ['10', '25', '50', 'Tudo']
             ],
             buttons: [
-                "csv"
+                {
+                    extend: "csv",
+                    exportOptions: {
+                        columns: [1,2,3]
+                    }
+                }
             ],
             processing: true,
             serverSide: true,
