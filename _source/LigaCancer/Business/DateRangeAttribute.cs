@@ -18,8 +18,7 @@ namespace RVCC.Business
 
         public override bool IsValid(object value)
         {
-            return value == null || !DateTime.TryParse(value.ToString(), out DateTime dateTime) ||
-                   DateTime.Now.Date > dateTime.Date;
+            return value == null || !DateTime.TryParse(value.ToString(), out DateTime dateTime) || DateTime.Now.Date >= dateTime.Date;
         }
     }
 }
