@@ -2,11 +2,12 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Data.Interfaces;
 using RVCC.Data.Models.Domain;
 
 namespace RVCC.Data.Models.RelationModels
 {
-    public class PatientInformationDoctor
+    public class PatientInformationDoctor : IPatientInformationDoctor
     {
         public PatientInformationDoctor()
         {

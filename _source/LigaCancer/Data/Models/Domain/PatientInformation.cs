@@ -2,6 +2,7 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Data.Interfaces;
 using RVCC.Data.Models.Audit;
 using RVCC.Data.Models.RelationModels;
 using System;
@@ -11,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models.Domain
 {
-    public class PatientInformation : RegisterData
+    public class PatientInformation : RegisterData, IPatientInformation
     {
         public PatientInformation()
         {

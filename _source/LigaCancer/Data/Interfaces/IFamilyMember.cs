@@ -1,19 +1,14 @@
-﻿// <copyright file="FamilyMember.cs" company="Doffs">
+﻿// <copyright file="IFamilyMember.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
-using RVCC.Data.Interfaces;
-using RVCC.Data.Models.Audit;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models.Domain
+namespace RVCC.Data.Interfaces
 {
-    public class FamilyMember : RegisterData, IFamilyMember
+    public interface IFamilyMember
     {
-        [Key]
         public int FamilyMemberId { get; set; }
 
         public string Name { get; set; }
@@ -29,8 +24,5 @@ namespace RVCC.Data.Models.Domain
         public double MonthlyIncomeMinSalary { get; set; }
 
         public int PatientId { get; set; }
-
-        [ForeignKey(nameof(PatientId))]
-        public virtual Patient Patient { get; set; }
     }
 }

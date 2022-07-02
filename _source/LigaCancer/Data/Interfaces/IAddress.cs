@@ -1,18 +1,13 @@
-﻿// <copyright file="Address.cs" company="Doffs">
+﻿// <copyright file="IAddress.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
-using RVCC.Data.Interfaces;
-using RVCC.Data.Models.Audit;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models.Domain
+namespace RVCC.Data.Interfaces
 {
-    public class Address : RegisterData, IAddress
+    public interface IAddress
     {
-        [Key]
         public int AddressId { get; set; }
 
         public string Street { get; set; }
@@ -32,8 +27,5 @@ namespace RVCC.Data.Models.Domain
         public double MonthlyAmountResidence { get; set; }
 
         public int PatientId { get; set; }
-
-        [ForeignKey(nameof(PatientId))]
-        public virtual Patient Patient { get; set; }
     }
 }

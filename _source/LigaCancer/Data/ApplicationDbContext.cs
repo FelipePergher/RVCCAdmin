@@ -99,7 +99,29 @@ namespace RVCC.Data
 
         public DbSet<AuditBenefit> AuditBenefits { get; set; }
 
+        public DbSet<AuditPatient> AuditPatients { get; set; }
+
+        public DbSet<AuditPatientInformation> AuditPatientInformations { get; set; }
+
+        public DbSet<AuditNaturality> AuditNaturalities { get; set; }
+
+        public DbSet<AuditPhone> AuditPhones { get; set; }
+
+        public DbSet<AuditAddress> AuditAddresses { get; set; }
+
+        public DbSet<AuditFamilyMember> AuditFamilyMembers { get; set; }
+
+        public DbSet<AuditFileAttachment> AuditFileAttachments { get; set; }
+
         public DbSet<AuditPatientBenefit> AuditPatientBenefits { get; set; }
+
+        public DbSet<AuditPatientInformationTreatmentPlace> AuditPatientInformationTreatmentPlaces { get; set; }
+
+        public DbSet<AuditPatientInformationDoctor> AuditPatientInformationDoctors { get; set; }
+
+        public DbSet<AuditPatientInformationCancerType> AuditPatientInformationCancerTypes { get; set; }
+
+        public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
 
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 

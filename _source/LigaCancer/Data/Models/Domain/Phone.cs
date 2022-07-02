@@ -3,13 +3,14 @@
 // </copyright>
 
 using RVCC.Business;
+using RVCC.Data.Interfaces;
 using RVCC.Data.Models.Audit;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models.Domain
 {
-    public class Phone : RegisterData
+    public class Phone : RegisterData, IPhone
     {
         public Phone()
         {

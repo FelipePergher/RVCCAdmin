@@ -1,18 +1,21 @@
-﻿// <copyright file="Address.cs" company="Doffs">
+﻿// <copyright file="AuditAddress.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
 using RVCC.Business;
 using RVCC.Data.Interfaces;
-using RVCC.Data.Models.Audit;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RVCC.Data.Models.Domain
+namespace RVCC.Data.Models.Audit
 {
-    public class Address : RegisterData, IAddress
+    public class AuditAddress : IAudit, IAddress
     {
         [Key]
+        public int AuditAddressId { get; set; }
+
+        #region IAudit
+
         public int AddressId { get; set; }
 
         public string Street { get; set; }
@@ -33,7 +36,16 @@ namespace RVCC.Data.Models.Domain
 
         public int PatientId { get; set; }
 
-        [ForeignKey(nameof(PatientId))]
-        public virtual Patient Patient { get; set; }
+        #endregion
+
+        #region IAudit
+
+        public DateTime AuditDate { get; set; }
+
+        public string UserName { get; set; }
+
+        public string AuditAction { get; set; }
+
+        #endregion
     }
 }

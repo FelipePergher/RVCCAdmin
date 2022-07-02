@@ -3,6 +3,7 @@
 // </copyright>
 
 using RVCC.Business;
+using RVCC.Data.Interfaces;
 using RVCC.Data.Models.Audit;
 using RVCC.Data.Models.RelationModels;
 using System;
@@ -11,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Data.Models.Domain
 {
-    public class Patient : RegisterData
+    public class Patient : RegisterData, IPatient
     {
         public Patient()
         {
@@ -55,6 +56,8 @@ namespace RVCC.Data.Models.Domain
 
         public string SocialObservation { get; set; }
 
+        #region Relations
+
         public ActivePatient ActivePatient { get; set; }
 
         public PatientInformation PatientInformation { get; set; }
@@ -74,5 +77,7 @@ namespace RVCC.Data.Models.Domain
         public ICollection<Presence> Presences { get; set; }
 
         public ICollection<Stay> Stays { get; set; }
+
+        #endregion
     }
 }

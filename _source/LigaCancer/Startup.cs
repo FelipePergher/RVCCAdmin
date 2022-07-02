@@ -109,6 +109,17 @@ namespace RVCC
                         .Map<Presence, AuditPresence>()
                         .Map<Setting, AuditSetting>()
                         .Map<Benefit, AuditBenefit>()
+                        .Map<Patient, AuditPatient>()
+                        .Map<PatientInformation, AuditPatientInformation>()
+                        .Map<Naturality, AuditNaturality>()
+                        .Map<Phone, AuditPhone>()
+                        .Map<Address, AuditAddress>()
+                        .Map<FamilyMember, AuditFamilyMember>()
+                        .Map<FileAttachment, AuditFileAttachment>()
+                        .Map<PatientInformationCancerType, AuditPatientInformationCancerType>()
+                        .Map<PatientInformationDoctor, AuditPatientInformationDoctor>()
+                        .Map<PatientInformationMedicine, AuditPatientInformationMedicine>()
+                        .Map<PatientInformationTreatmentPlace, AuditPatientInformationTreatmentPlace>()
                         .Map<PatientBenefit, AuditPatientBenefit>((patientBenefit, auditPatientBenefit) =>
                         {
                             ServiceProvider serviceProvider = services.BuildServiceProvider();

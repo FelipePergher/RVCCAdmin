@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RVCC.Data;
 
@@ -11,9 +12,10 @@ using RVCC.Data;
 namespace RVCC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220702202214_AuditDatabase")]
+    partial class AuditDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -584,118 +586,6 @@ namespace RVCC.Data.Migrations
                     b.HasKey("AuditPatientInformationId");
 
                     b.ToTable("AuditPatientInformations");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationCancerType", b =>
-                {
-                    b.Property<int>("AuditPatientInformationCancerTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientInformationCancerTypeId"), 1L, 1);
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CancerTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditPatientInformationCancerTypeId");
-
-                    b.ToTable("AuditPatientInformationCancerTypes");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationDoctor", b =>
-                {
-                    b.Property<int>("AuditPatientInformationDoctorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientInformationDoctorId"), 1L, 1);
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditPatientInformationDoctorId");
-
-                    b.ToTable("AuditPatientInformationDoctors");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationMedicine", b =>
-                {
-                    b.Property<int>("AuditPatientInformationMedicineId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientInformationMedicineId"), 1L, 1);
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MedicineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditPatientInformationMedicineId");
-
-                    b.ToTable("AuditPatientInformationMedicines");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationTreatmentPlace", b =>
-                {
-                    b.Property<int>("AuditPatientInformationTreatmentPlaceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientInformationTreatmentPlaceId"), 1L, 1);
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PatientInformationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TreatmentPlaceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditPatientInformationTreatmentPlaceId");
-
-                    b.ToTable("AuditPatientInformationTreatmentPlaces");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPhone", b =>
