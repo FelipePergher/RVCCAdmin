@@ -182,7 +182,7 @@ export default (function () {
             showLoaderOnConfirm: true,
             reverseButtons: true,
             preConfirm: () => {
-                $.post(url, { id: id })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                     .done(function (data, textStatus) {
                         $("#userTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Desbloqueado!", "Usuário desbloqueado com sucesso.", "success");
