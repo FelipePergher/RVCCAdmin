@@ -136,7 +136,7 @@ export default (function () {
     // Add Functions
     function initAddProfileForm() {
         $("#CPF").mask(global.masks.Cpf);
-        $("#MonthlyIncomeMinSalary").mask(global.masks.Price, { reverse: true });
+        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
 
         $('#DateOfBirth, #JoinDate').datepicker({
             clearBtn: true,

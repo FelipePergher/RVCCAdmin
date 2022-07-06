@@ -9,28 +9,32 @@
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Kinship" class="control-label"></label>
             <input asp-for="Kinship" class="form-control" />
             <span asp-validation-for="Kinship" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="DateOfBirth" class="control-label"></label>
             <input asp-for="DateOfBirth" type="text" class="form-control" id="dateOfBirth" />
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Sex" class="control-label"></label>
             <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Enums.Sex>()" class="form-control"></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="MonthlyIncomeMinSalary" class="control-label">@Html.DisplayNameFor(x => x.MonthlyIncomeMinSalary) (R$ @Model.MinSalary.ToString("N2"))</label>
-            <input asp-for="MonthlyIncomeMinSalary" class="form-control" />
-            <span asp-validation-for="MonthlyIncomeMinSalary" class="text-danger"></span>
+            <label asp-for="MonthlyIncome" class="control-label"></label>
+            <input asp-for="MonthlyIncome" class="form-control" />
+            <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
         </div>
     </div>
 
-    <partial name="_ModalFooter"  />
+    <partial name="_ModalFooter" />
 
 </form>

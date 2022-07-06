@@ -42,6 +42,7 @@ namespace RVCC.Data.Models.Domain
 
         public double MonthlyIncome { get; set; }
 
+        [Obsolete("Use MonthlyIncome instead")]
         public double MonthlyIncomeMinSalary { get; set; }
 
         public Enums.Sex Sex { get; set; }

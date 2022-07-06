@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.Domain;
-using RVCC.Data.Repositories;
 using RVCC.Models.FormModel;
 using System;
 using System.Linq;
@@ -41,8 +40,7 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            var minSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble();
-            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel { MinSalary = minSalary });
+            return PartialView("Partials/_AddFamilyMember", new FamilyMemberFormModel());
         }
 
         [HttpPost]
@@ -65,7 +63,7 @@ namespace RVCC.Controllers
                     PatientId = int.Parse(id),
                     DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth),
                     Kinship = familyMemberForm.Kinship,
-                    MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0),
+                    MonthlyIncome = double.TryParse(familyMemberForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0,
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
                 };
@@ -104,10 +102,8 @@ namespace RVCC.Controllers
                 DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
-                MonthlyIncomeMinSalary = familyMember.MonthlyIncomeMinSalary.ToString("N2"),
                 Name = familyMember.Name,
                 Sex = familyMember.Sex,
-                MinSalary = ((SettingRepository)_settingRepository).GetByKey(SettingKey.MinSalary).GetValueAsDouble()
             });
         }
 
@@ -120,7 +116,7 @@ namespace RVCC.Controllers
 
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
                 familyMember.Kinship = familyMemberForm.Kinship;
-                familyMember.MonthlyIncomeMinSalary = (double)(decimal.TryParse(familyMemberForm.MonthlyIncomeMinSalary, out decimal monthlyIncomeMinSalary) ? monthlyIncomeMinSalary : 0);
+                familyMember.MonthlyIncome = double.TryParse(familyMemberForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0;
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
 
