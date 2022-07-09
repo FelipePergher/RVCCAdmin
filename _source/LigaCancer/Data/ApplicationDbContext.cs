@@ -63,8 +63,6 @@ namespace RVCC.Data
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 
-        public DbSet<Presence> Presences { get; set; }
-
         public DbSet<Benefit> Benefits { get; set; }
 
         public DbSet<PatientBenefit> PatientBenefits { get; set; }
@@ -92,8 +90,6 @@ namespace RVCC.Data
         public DbSet<AuditMedicine> AuditMedicines { get; set; }
 
         public DbSet<AuditStay> AuditStays { get; set; }
-
-        public DbSet<AuditPresence> AuditPresences { get; set; }
 
         public DbSet<AuditSetting> AuditSettings { get; set; }
 

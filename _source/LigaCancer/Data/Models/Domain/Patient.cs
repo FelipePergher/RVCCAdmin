@@ -40,6 +40,8 @@ namespace RVCC.Data.Models.Domain
 
         public bool FamiliarityGroup { get; set; }
 
+        public bool ForwardedToSupportHouse { get; set; }
+
         public double MonthlyIncome { get; set; }
 
         [Obsolete("Use MonthlyIncome instead")]
@@ -56,6 +58,10 @@ namespace RVCC.Data.Models.Domain
         public string Profession { get; set; }
 
         public string SocialObservation { get; set; }
+
+        public string ImmediateNecessities { get; set; }
+
+        public DateTime ImmediateNecessitiesDateUpdated { get; set; }
 
         #region Relations
 
@@ -74,8 +80,6 @@ namespace RVCC.Data.Models.Domain
         public ICollection<FileAttachment> FileAttachments { get; set; }
 
         public ICollection<PatientBenefit> PatientBenefits { get; set; }
-
-        public ICollection<Presence> Presences { get; set; }
 
         public ICollection<Stay> Stays { get; set; }
 

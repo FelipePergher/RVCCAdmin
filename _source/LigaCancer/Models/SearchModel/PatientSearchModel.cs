@@ -40,6 +40,9 @@ namespace RVCC.Models.SearchModel
         [Display(Name = "Grupo de convivência")]
         public string FamiliarityGroup { get; set; }
 
+        [Display(Name = "Encaminhado Casa de apoio")]
+        public string ForwardedToSupportHouse { get; set; }
+
         [Display(Name = "Status")]
         public Enums.ArchivePatientType? ArchivePatientType { get; set; }
 
@@ -56,11 +59,18 @@ namespace RVCC.Models.SearchModel
         public List<string> TreatmentPlaces { get; set; }
 
         public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
-            {
-                new SelectListItem(string.Empty, string.Empty),
-                new SelectListItem("Participa", "true"),
-                new SelectListItem("Não Participa", "false")
-            };
+        {
+            new SelectListItem(string.Empty, string.Empty),
+            new SelectListItem("Participa", "true"),
+            new SelectListItem("Não Participa", "false")
+        };
+
+        public List<SelectListItem> ForwardedToSupportHouseOptions => new List<SelectListItem>
+        {
+            new SelectListItem(string.Empty, string.Empty),
+            new SelectListItem("Encaminhado", "true"),
+            new SelectListItem("Não encaminhado", "false")
+        };
 
         [Display(Name = "Data Nascimento Inicial")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]

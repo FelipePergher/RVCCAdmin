@@ -106,7 +106,6 @@ namespace RVCC
                         .Map<CancerType, AuditCancerType>()
                         .Map<Medicine, AuditMedicine>()
                         .Map<Stay, AuditStay>()
-                        .Map<Presence, AuditPresence>()
                         .Map<Setting, AuditSetting>()
                         .Map<Benefit, AuditBenefit>()
                         .Map<Patient, AuditPatient>()
@@ -166,7 +165,6 @@ namespace RVCC
             services.AddTransient<IDataRepository<FamilyMember>, FamilyMemberRepository>();
             services.AddTransient<IDataRepository<FileAttachment>, FileAttachmentRepository>();
 
-            services.AddTransient<IDataRepository<Presence>, PresenceRepository>();
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
             services.AddTransient<IDataRepository<Stay>, StayRepository>();

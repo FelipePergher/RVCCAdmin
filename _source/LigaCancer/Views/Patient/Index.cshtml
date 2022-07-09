@@ -147,6 +147,10 @@
                                                 <select asp-for="FamiliarityGroup" asp-items="Model.FamiliarityGroups" class="form-control"></select>
                                             </div>
                                             <div class="col-lg-3">
+                                                <label asp-for="ForwardedToSupportHouse"></label>
+                                                <select asp-for="ForwardedToSupportHouse" asp-items="Model.ForwardedToSupportHouseOptions" class="form-control"></select>
+                                            </div>
+                                            <div class="col-lg-3">
                                                 <label asp-for="ArchivePatientType"></label>
                                                 <select asp-for="ArchivePatientType" asp-items="Html.GetEnumSelectList<Enums.ArchivePatientType>()" class="form-control">
                                                     <option selected value=""></option>

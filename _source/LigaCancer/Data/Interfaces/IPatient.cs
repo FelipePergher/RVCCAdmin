@@ -21,6 +21,8 @@ namespace RVCC.Data.Interfaces
 
         public bool FamiliarityGroup { get; set; }
 
+        public bool ForwardedToSupportHouse { get; set; }
+
         public double MonthlyIncome { get; set; }
 
         [Obsolete("Use MonthlyIncome instead")]
@@ -37,5 +39,9 @@ namespace RVCC.Data.Interfaces
         public string Profession { get; set; }
 
         public string SocialObservation { get; set; }
+
+        public string ImmediateNecessities { get; set; }
+
+        public DateTime ImmediateNecessitiesDateUpdated { get; set; }
     }
 }

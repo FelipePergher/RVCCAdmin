@@ -62,6 +62,12 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Patient patient = await _patientService.FindByIdAsync(patientBenefitForm.PatientId);
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
                 var dateTime = DateTime.Parse(patientBenefitForm.Date);
                 var patientBenefit = new PatientBenefit
                 {
@@ -110,7 +116,7 @@ namespace RVCC.Controllers
                 PatientIdHidden = patientBenefit.PatientId,
                 BenefitIdHidden = patientBenefit.BenefitId,
                 PatientId = $"{patientBenefit.Patient.FirstName} {patientBenefit.Patient.Surname}",
-                Date = patientBenefit.BenefitDate.ToString("dd/MM/yyyy"),
+                Date = patientBenefit.BenefitDate.ToDateString(),
                 Benefit = patientBenefit.Benefit.Name,
                 Quantity = patientBenefit.Quantity,
             };
@@ -124,6 +130,12 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 PatientBenefit patientBenefit = await _patientBenefitService.FindByIdAsync(id);
+
+                if (patientBenefit == null)
+                {
+                    return NotFound();
+                }
+
                 var dateTime = DateTime.Parse(patientBenefitForm.Date);
                 patientBenefit.BenefitDate = dateTime;
                 patientBenefit.Quantity = patientBenefitForm.Quantity;

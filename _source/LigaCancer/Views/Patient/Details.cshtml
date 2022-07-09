@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                 <div class="row">
                                     <div class="col-md-6">
                                         <label class="font-weight-bold">Profissão</label>
                                     </div>
@@ -91,6 +91,17 @@
                                         <p>@Model.PatientProfile.Profession</p>
                                     </div>
                                 </div>
+
+                                @if(!string.IsNullOrEmpty(Model.PatientProfile.ImmediateNecessities)){
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="font-weight-bold">Necessidades Imediatas</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.PatientProfile.ImmediateNecessities (Salvo em: @Model.PatientProfile.ImmediateNecessitiesDateUpdated.ToDateString())</p>
+                                        </div>
+                                    </div>
+                                }
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -143,6 +154,15 @@
                                     </div>
                                     <div class="col-md-6">
                                         <p>@(Model.PatientProfile.FamiliarityGroup ? "Participa" : "Não participa")</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Casa de apoio</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@(Model.PatientProfile.ForwardedToSupportHouse ? "Encaminhado" : "Não encaminhado")</p>
                                     </div>
                                 </div>
 
@@ -277,10 +297,6 @@
 
                     <div class="col-12">
                         <partial name="~/Views/PatientBenefit/Partials/_Index.cshtml" />
-                    </div>
-
-                    <div class="col-12">
-                        <partial name="~/Views/Presence/Partials/_Index.cshtml" />
                     </div>
 
                     <div class="col-12">

@@ -21,14 +21,12 @@ namespace RVCC.Controllers
     {
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
-        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<FamilyMemberController> _logger;
 
-        public FamilyMemberController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, IDataRepository<Setting> settingRepository, ILogger<FamilyMemberController> logger)
+        public FamilyMemberController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
-            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -66,6 +64,8 @@ namespace RVCC.Controllers
                     MonthlyIncome = double.TryParse(familyMemberForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0,
                     Name = familyMemberForm.Name,
                     Sex = familyMemberForm.Sex,
+                    IgnoreOnIncome = familyMemberForm.IgnoreOnIncome,
+                    Responsible = familyMemberForm.Responsible
                 };
 
                 TaskResult result = await _familyMemberService.CreateAsync(familyMember);
@@ -99,11 +99,13 @@ namespace RVCC.Controllers
 
             return PartialView("Partials/_EditFamilyMember", new FamilyMemberFormModel
             {
-                DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
+                DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToDateString() : string.Empty,
                 Kinship = familyMember.Kinship,
                 MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
                 Name = familyMember.Name,
                 Sex = familyMember.Sex,
+                IgnoreOnIncome = familyMember.IgnoreOnIncome,
+                Responsible = familyMember.Responsible
             });
         }
 
@@ -114,11 +116,18 @@ namespace RVCC.Controllers
             {
                 FamilyMember familyMember = await _familyMemberService.FindByIdAsync(id);
 
+                if (familyMember == null)
+                {
+                    return NotFound();
+                }
+
                 familyMember.DateOfBirth = string.IsNullOrEmpty(familyMemberForm.DateOfBirth) ? (DateTime?)null : DateTime.Parse(familyMemberForm.DateOfBirth);
                 familyMember.Kinship = familyMemberForm.Kinship;
                 familyMember.MonthlyIncome = double.TryParse(familyMemberForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0;
                 familyMember.Name = familyMemberForm.Name;
                 familyMember.Sex = familyMemberForm.Sex;
+                familyMember.IgnoreOnIncome = familyMemberForm.IgnoreOnIncome;
+                familyMember.Responsible = familyMemberForm.Responsible;
 
                 TaskResult result = await _familyMemberService.UpdateAsync(familyMember);
 

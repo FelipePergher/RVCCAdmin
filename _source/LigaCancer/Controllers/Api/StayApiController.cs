@@ -46,7 +46,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<StayViewModel> data = stays.Select(x => new StayViewModel
                 {
                     Patient = x.PatientName,
-                    Date = x.StayDateTime.ToString("dd/MM/yyyy"),
+                    Date = x.StayDateTime.ToDateString(),
                     Note = x.Note,
                     City = x.City,
                     Actions = GetActionsHtml(x, User)

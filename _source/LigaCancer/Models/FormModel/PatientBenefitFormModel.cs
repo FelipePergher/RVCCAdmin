@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RVCC.Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,7 @@ namespace RVCC.Models.FormModel
     {
         public PatientBenefitFormModel()
         {
-            Date = DateTime.Now.ToString("dd/MM/yyyy");
+            Date = DateTime.Now.ToDateString();
         }
 
         [HiddenInput]

@@ -30,6 +30,26 @@
             <input asp-for="MonthlyIncome" class="form-control" />
             <span asp-validation-for="MonthlyIncome" class="text-danger"></span>
         </div>
+
+        <div class="form-group">
+            <div class="form-row mt-2">
+                <label class="switch switch-label switch-pill switch-success ml-2">
+                    <input class="switch-input" asp-for="Responsible" />
+                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                </label>
+                <span class="ml-2">@Html.DisplayNameFor(model => model.Responsible)</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-row mt-2">
+                <label class="switch switch-label switch-pill switch-success ml-2">
+                    <input class="switch-input" asp-for="IgnoreOnIncome" />
+                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                </label>
+                <span class="ml-2">@Html.DisplayNameFor(model => model.IgnoreOnIncome)</span>
+            </div>
+        </div>
     </div>
 
     <partial name="_ModalFooter" />

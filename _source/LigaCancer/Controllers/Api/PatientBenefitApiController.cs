@@ -46,7 +46,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<PatientBenefitViewModel> data = patientBenefits.Select(x => new PatientBenefitViewModel
                 {
                     Patient = $"{x.Patient.FirstName} {x.Patient.Surname}",
-                    Date = x.BenefitDate.ToString("dd/MM/yyyy"),
+                    Date = x.BenefitDate.ToDateString(),
                     Benefit = x.Benefit.Name,
                     Quantity = x.Quantity.ToString(),
                     Actions = GetActionsHtml(x, User)

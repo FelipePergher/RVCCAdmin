@@ -98,6 +98,19 @@
                 <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Grupo de Convivência:</label>
                 <span class="d-flex align-items-end">@(Model.FamiliarityGroup ? "Participa": "Não participa")</span>
             </div>
+
+            <div class="col-6 d-flex">
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Casa de apoio:</label>
+                <span class="d-flex align-items-end">@(Model.ForwardedToSupportHouse ? "Encaminhado": "Não encaminhado")</span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImmediateNecessities))
+            {
+                <div class="col-12 d-flex">
+                    <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Necessidades Imediatas:</label>
+                    <span class="d-flex align-items-end">@Model.ImmediateNecessities (Salvo em: @Model.ImmediateNecessitiesDateUpdated.ToDateString())</span>
+                </div>
+            }
         </div>
 
         <div class="row mt-5">
@@ -248,7 +261,7 @@
             <div class="row mt-5">
                 <div class="col-12">
                     <p class="h2">
-                        Membros Familiares
+                        Membros Familiares e Amigos
                     </p>
                 </div>
 
@@ -263,6 +276,7 @@
                                 <th scope="col">Data de Nascimento</th>
                                 <th scope="col">Genêro</th>
                                 <th scope="col">Renda</th>
+                                <th scope="col">Responsavel</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -274,39 +288,12 @@
                                     <td>@familyMember.DateOfBirth</td>
                                     <td>@familyMember.Sex</td>
                                     <td>@familyMember.MonthlyIncome</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
-
-        @if (Model.Presences.Any())
-        {
-            <div class="row mt-5">
-                <div class="col-12">
-                    <p class="h2">
-                        Presenças Na Rede
-                    </p>
-                </div>
-
-                <div class="col-12">
-                    <hr class="w-100" />
-
-                    <table class="table table-bordered text-center" aria-hidden="true">
-                        <thead>
-                            <tr>
-                                <th scope="col">Data</th>
-                                <th scope="col">Hora</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var presence in Model.Presences)
-                            {
-                                <tr>
-                                    <td>@presence.Date</td>
-                                    <td>@presence.Hour</td>
+                                    <td>
+                                        @if (familyMember.Responsible == "true")
+                                        {
+                                            <span class='fa fa-check'></span>
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>

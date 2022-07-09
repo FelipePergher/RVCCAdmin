@@ -58,6 +58,12 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Patient patient = await _patientService.FindByIdAsync(stayForm.PatientId);
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
                 var dateTime = DateTime.Parse(stayForm.Date);
                 var stay = new Stay
                 {
@@ -103,7 +109,7 @@ namespace RVCC.Controllers
             var stayForm = new StayFormModel
             {
                 PatientId = stay.PatientName,
-                Date = stay.StayDateTime.ToString("dd/MM/yyyy"),
+                Date = stay.StayDateTime.ToDateString(),
                 City = stay.City,
                 Note = stay.Note
             };
@@ -122,6 +128,12 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Stay stay = await _stayService.FindByIdAsync(id);
+
+                if (stay == null)
+                {
+                    return NotFound();
+                }
+
                 var dateTime = DateTime.Parse(stayForm.Date);
                 stay.StayDateTime = dateTime;
                 stay.Note = stayForm.Note;

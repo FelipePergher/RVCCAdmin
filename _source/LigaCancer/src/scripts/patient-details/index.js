@@ -25,7 +25,6 @@ export default (function () {
         initFamilyMemberTable();
         initFilesTable();
         initPatientBenefitTable();
-        initPresenceTable();
         initStayTable();
     }
 
@@ -506,33 +505,6 @@ export default (function () {
         $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
     }
 
-    //Presence Functions
-    function initPresenceTable() {
-        $("#presenceTable").DataTable({
-            autoWidth: false,
-            processing: true,
-            serverSide: true,
-            language: global.datatablesLanguage,
-            filter: false,
-            ajax: {
-                url: "/api/presence/search",
-                type: "POST",
-                data: function (d) {
-                    d.patientId = $("#patientId").val();
-                },
-                datatype: "json",
-                error: function () {
-                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
-                }
-            },
-            columns: [
-                { data: "date", title: "Data da presença", name: "Date" },
-                { data: "hour", title: "Hora da presença", name: "Hour" }
-            ],
-        });
-        $('#presenceTable').attr('style', 'border-collapse: collapse !important');
-    }
-
     //Stay Functions
     function initStayTable() {
         $("#stayTable").DataTable({
@@ -594,7 +566,9 @@ export default (function () {
                 { data: "kinship", title: "Parentesco", name: "Kinship" },
                 { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth" },
                 { data: "sex", title: "Gênero", name: "Sex" },
-                { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
+                { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" },
+                { data: "ignoreOnIncome", title: "Ignore Renda no Calculo", name: "IgnoreOnIncome" },
+                { data: "responsible", title: "É responsavel?", name: "Responsible" }
             ],
             drawCallback: function (settings) {
                 $(".editFamilyMemberButton").click(function () {

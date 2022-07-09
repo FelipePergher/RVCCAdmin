@@ -42,8 +42,8 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<TreatmentPlace> presences = await _treatmentPlaceService.GetAllAsync(new[] { nameof(TreatmentPlace.PatientInformationTreatmentPlaces) }, sortColumn, sortDirection, treatmentPlaceSearch);
-                IEnumerable<TreatmentPlaceViewModel> data = presences.Select(x => new TreatmentPlaceViewModel
+                IEnumerable<TreatmentPlace> treatmentPlaces = await _treatmentPlaceService.GetAllAsync(new[] { nameof(TreatmentPlace.PatientInformationTreatmentPlaces) }, sortColumn, sortDirection, treatmentPlaceSearch);
+                IEnumerable<TreatmentPlaceViewModel> data = treatmentPlaces.Select(x => new TreatmentPlaceViewModel
                 {
                     City = x.City,
                     Quantity = x.PatientInformationTreatmentPlaces.Count(),
@@ -51,7 +51,7 @@ namespace RVCC.Controllers.Api
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _treatmentPlaceService.Count();
-                int recordsFiltered = presences.Count();
+                int recordsFiltered = treatmentPlaces.Count();
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }

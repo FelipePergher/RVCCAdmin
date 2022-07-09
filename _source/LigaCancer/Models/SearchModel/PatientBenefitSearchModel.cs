@@ -2,6 +2,7 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Business;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,8 +12,8 @@ namespace RVCC.Models.SearchModel
     {
         public PatientBenefitSearchModel()
         {
-            DateFrom = DateTime.Now.AddDays(-7).ToString("dd/MM/yyyy");
-            DateTo = DateTime.Now.ToString("dd/MM/yyyy");
+            DateFrom = DateTime.Now.AddDays(-7).ToDateString();
+            DateTo = DateTime.Now.ToDateString();
         }
 
         public string PatientId { get; set; }

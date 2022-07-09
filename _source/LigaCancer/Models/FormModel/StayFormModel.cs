@@ -3,6 +3,7 @@
 // </copyright>
 
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RVCC.Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace RVCC.Models.FormModel
     {
         public StayFormModel()
         {
-            Date = DateTime.Now.ToString("dd/MM/yyyy");
+            Date = DateTime.Now.ToDateString();
         }
 
         [Display(Name = "Paciente")]

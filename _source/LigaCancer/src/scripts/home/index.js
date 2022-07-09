@@ -46,30 +46,30 @@ export default (function () {
     }
 
     function getChart(update = false) {
-        if ($("#searchForm").valid()) {
-            $.post("/api/presence/getChartData", $("#searchForm").serialize())
-                .done(function (data) {
-                    if (update) {
-                        dayChart.data.datasets[0].data = data.dayChartDate;
-                        dayChart.update();
+        //if ($("#searchForm").valid()) {
+        //    $.post("/api/presence/getChartData", $("#searchForm").serialize())
+        //        .done(function (data) {
+        //            if (update) {
+        //                dayChart.data.datasets[0].data = data.dayChartDate;
+        //                dayChart.update();
 
-                        monthChart.data.labels = Array.from(Array(data.daysInMonth).keys()).map(x => x + 1);
-                        monthChart.data.datasets[0].data = data.monthChartDate;
-                        monthChart.update();
+        //                monthChart.data.labels = Array.from(Array(data.daysInMonth).keys()).map(x => x + 1);
+        //                monthChart.data.datasets[0].data = data.monthChartDate;
+        //                monthChart.update();
 
-                        yearChart.data.datasets[0].data = data.yearChartDate;
-                        yearChart.update();
-                    }
-                    else {
-                        initDayChart(data.dayChartDate);
-                        initMonthChart(data.monthChartDate, data.daysInMonth);
-                        initYearChart(data.yearChartDate);
-                    }
-                })
-                .fail(function () {
-                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
-                });
-        }
+        //                yearChart.data.datasets[0].data = data.yearChartDate;
+        //                yearChart.update();
+        //            }
+        //            else {
+        //                initDayChart(data.dayChartDate);
+        //                initMonthChart(data.monthChartDate, data.daysInMonth);
+        //                initYearChart(data.yearChartDate);
+        //            }
+        //        })
+        //        .fail(function () {
+        //            global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+        //        });
+        //}
     }
 
     function initMonthChart(data, daysInMonth) {

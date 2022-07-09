@@ -30,7 +30,6 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly IDataRepository<Naturality> _naturalityService;
         private readonly IDataRepository<PatientInformation> _patientInformationService;
-        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<PatientController> _logger;
 
         public PatientController(
@@ -41,7 +40,6 @@ namespace RVCC.Controllers
             IDataRepository<Medicine> medicineService,
             IDataRepository<Naturality> naturalityService,
             IDataRepository<PatientInformation> patientInformationService,
-            IDataRepository<Setting> settingRepository,
             ILogger<PatientController> logger)
         {
             _patientService = patientService;
@@ -51,7 +49,6 @@ namespace RVCC.Controllers
             _medicineService = medicineService;
             _naturalityService = naturalityService;
             _patientInformationService = patientInformationService;
-            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -75,6 +72,11 @@ namespace RVCC.Controllers
 
             Patient patient = await _patientService.FindByIdAsync(id, includes);
 
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
             var patientDetails = new PatientDetailsViewModel
             {
                 PatientId = id,
@@ -92,7 +94,10 @@ namespace RVCC.Controllers
                     DateOfBirth = patient.DateOfBirth.ToShortDateString(),
                     JoinDate = patient.JoinDate.ToShortDateString(),
                     FamiliarityGroup = patient.FamiliarityGroup,
-                    MonthlyIncome = patient.MonthlyIncome.ToString("C2")
+                    ForwardedToSupportHouse = patient.ForwardedToSupportHouse,
+                    MonthlyIncome = patient.MonthlyIncome.ToString("C2"),
+                    ImmediateNecessities = patient.ImmediateNecessities,
+                    ImmediateNecessitiesDateUpdated = patient.ImmediateNecessitiesDateUpdated
                 },
                 PatientInformation = new PatientInformationFormModel
                 {
@@ -123,7 +128,7 @@ namespace RVCC.Controllers
             string[] includes =
             {
                 nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers),
-                nameof(Patient.Presences), nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
+                nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
@@ -131,6 +136,11 @@ namespace RVCC.Controllers
             };
 
             Patient patient = await _patientService.FindByIdAsync(id, includes);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
             var patientPrintViewModel = new PatientPrintViewModel
             {
@@ -140,9 +150,12 @@ namespace RVCC.Controllers
                 CivilState = patient.CivilState,
                 DateOfBirth = patient.DateOfBirth,
                 FamiliarityGroup = patient.FamiliarityGroup,
+                ForwardedToSupportHouse = patient.ForwardedToSupportHouse,
                 JoinDate = patient.JoinDate,
                 MonthlyIncome = patient.MonthlyIncome.ToString("N2"),
                 Profession = patient.Profession,
+                ImmediateNecessities = patient.ImmediateNecessities,
+                ImmediateNecessitiesDateUpdated = patient.ImmediateNecessitiesDateUpdated,
                 Sex = patient.Sex,
                 CancerTypes = patient.PatientInformation.PatientInformationCancerTypes.Select(x => x.CancerType.Name).ToList(),
                 Doctors = patient.PatientInformation.PatientInformationDoctors.Select(x => x.Doctor.Name).ToList(),
@@ -175,18 +188,14 @@ namespace RVCC.Controllers
                     Kinship = x.Kinship,
                     DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToShortDateString() : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
-                    MonthlyIncome = x.MonthlyIncome.ToString("N2")
+                    MonthlyIncome = x.MonthlyIncome.ToString("N2"),
+                    Responsible = x.Responsible.ToString()
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
                 {
                     Benefit = x.Benefit.Name,
                     Date = x.BenefitDate.ToShortDateString(),
                     Quantity = x.Quantity.ToString()
-                }),
-                Presences = patient.Presences.Select(x => new PresenceViewModel
-                {
-                    Date = x.PresenceDateTime.ToShortDateString(),
-                    Hour = x.PresenceDateTime.ToShortTimeString()
                 }),
                 Stays = patient.Stays.Select(x => new StayViewModel
                 {
@@ -224,13 +233,20 @@ namespace RVCC.Controllers
                     RG = patientProfileForm.RG,
                     CPF = patientProfileForm.CPF,
                     FamiliarityGroup = patientProfileForm.FamiliarityGroup,
+                    ForwardedToSupportHouse = patientProfileForm.ForwardedToSupportHouse,
                     Sex = patientProfileForm.Sex,
                     CivilState = patientProfileForm.CivilState,
                     DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth),
                     JoinDate = DateTime.Parse(patientProfileForm.JoinDate),
                     Profession = patientProfileForm.Profession,
                     MonthlyIncome = double.TryParse(patientProfileForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0,
+                    ImmediateNecessities = patientProfileForm.ImmediateNecessities
                 };
+
+                if (!string.IsNullOrEmpty(patient.ImmediateNecessities))
+                {
+                    patient.ImmediateNecessitiesDateUpdated = DateTime.Now;
+                }
 
                 TaskResult result = await _patientService.CreateAsync(patient);
 
@@ -263,6 +279,11 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Naturality naturality = await _naturalityService.FindByIdAsync(id, new[] { nameof(Naturality.Patient), $"{nameof(Naturality.Patient)}.{nameof(Patient.PatientInformation)}" });
+
+                if (naturality == null)
+                {
+                    return NotFound();
+                }
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
@@ -322,6 +343,11 @@ namespace RVCC.Controllers
 
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, includes);
 
+                if (patientInformation == null)
+                {
+                    return NotFound();
+                }
+
                 patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                     ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)
                     : DateTime.MinValue;
@@ -367,6 +393,12 @@ namespace RVCC.Controllers
             }
 
             Patient patient = await _patientService.FindByIdAsync(id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
             var socialObservationForm = new SocialObservationFormModel
             {
                 Observations = patient.SocialObservation
@@ -382,6 +414,11 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Patient patient = await _patientService.FindByIdAsync(id);
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
 
                 patient.SocialObservation = socialObservationForm.Observations;
 
@@ -426,12 +463,14 @@ namespace RVCC.Controllers
                 RG = patient.RG,
                 CPF = patient.CPF,
                 FamiliarityGroup = patient.FamiliarityGroup,
+                ForwardedToSupportHouse = patient.ForwardedToSupportHouse,
                 Sex = patient.Sex,
                 CivilState = patient.CivilState,
-                DateOfBirth = patient.DateOfBirth.ToString("dd/MM/yyyy"),
-                JoinDate = patient.JoinDate.ToString("dd/MM/yyyy"),
+                DateOfBirth = patient.DateOfBirth.ToDateString(),
+                JoinDate = patient.JoinDate.ToDateString(),
                 MonthlyIncome = patient.MonthlyIncome.ToString("N2"),
                 Profession = patient.Profession,
+                ImmediateNecessities = patient.ImmediateNecessities,
             };
 
             return PartialView("Partials/_EditPatientProfile", patientProfileForm);
@@ -444,17 +483,29 @@ namespace RVCC.Controllers
             {
                 Patient patient = await _patientService.FindByIdAsync(id);
 
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
                 patient.FirstName = patientProfileForm.FirstName;
                 patient.Surname = patientProfileForm.Surname;
                 patient.RG = patientProfileForm.RG;
                 patient.CPF = patientProfileForm.CPF;
                 patient.FamiliarityGroup = patientProfileForm.FamiliarityGroup;
+                patient.ForwardedToSupportHouse = patientProfileForm.ForwardedToSupportHouse;
                 patient.Sex = patientProfileForm.Sex;
                 patient.CivilState = patientProfileForm.CivilState;
                 patient.DateOfBirth = DateTime.Parse(patientProfileForm.DateOfBirth);
                 patient.JoinDate = DateTime.Parse(patientProfileForm.JoinDate);
                 patient.Profession = patientProfileForm.Profession;
                 patient.MonthlyIncome = double.TryParse(patientProfileForm.MonthlyIncome, out double monthlyIncome) ? monthlyIncome : 0;
+
+                if (patient.ImmediateNecessities != patientProfileForm.ImmediateNecessities)
+                {
+                    patient.ImmediateNecessities = patientProfileForm.ImmediateNecessities;
+                    patient.ImmediateNecessitiesDateUpdated = DateTime.Now;
+                }
 
                 TaskResult result = await _patientService.UpdateAsync(patient);
 
@@ -501,6 +552,11 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Naturality naturality = await _naturalityService.FindByIdAsync(id);
+
+                if (naturality == null)
+                {
+                    return NotFound();
+                }
 
                 naturality.City = naturalityForm.City;
                 naturality.State = naturalityForm.State;
@@ -556,7 +612,7 @@ namespace RVCC.Controllers
             };
             if (patientInformation.TreatmentBeginDate != DateTime.MinValue)
             {
-                patientInformationForm.TreatmentBeginDate = patientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy");
+                patientInformationForm.TreatmentBeginDate = patientInformation.TreatmentBeginDate.ToDateString();
             }
 
             return PartialView("Partials/_EditPatientInformation", patientInformationForm);
@@ -576,6 +632,11 @@ namespace RVCC.Controllers
                 };
 
                 PatientInformation patientInformation = await _patientInformationService.FindByIdAsync(id, includes);
+
+                if (patientInformation == null)
+                {
+                    return NotFound();
+                }
 
                 patientInformation.TreatmentBeginDate = !string.IsNullOrEmpty(patientInformationForm.TreatmentBeginDate)
                    ? DateTime.Parse(patientInformationForm.TreatmentBeginDate)

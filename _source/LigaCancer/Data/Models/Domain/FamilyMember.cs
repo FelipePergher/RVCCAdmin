@@ -26,12 +26,20 @@ namespace RVCC.Data.Models.Domain
 
         public double MonthlyIncome { get; set; }
 
-        [Obsolete("Use MonthlyIncome instead")]
-        public double MonthlyIncomeMinSalary { get; set; }
+        public bool Responsible { get; set; }
+
+        public bool IgnoreOnIncome { get; set; }
 
         public int PatientId { get; set; }
 
         [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
+
+        #region Obsolete
+
+        [Obsolete("Use MonthlyIncome instead")]
+        public double MonthlyIncomeMinSalary { get; set; }
+
+        #endregion
     }
 }

@@ -222,6 +222,11 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
             }
 
+            if (!string.IsNullOrEmpty(patientSearch.ForwardedToSupportHouse))
+            {
+                query = query.Where(x => x.ForwardedToSupportHouse == bool.Parse(patientSearch.ForwardedToSupportHouse));
+            }
+
             switch (patientSearch.ArchivePatientType)
             {
                 case Enums.ArchivePatientType.Death:

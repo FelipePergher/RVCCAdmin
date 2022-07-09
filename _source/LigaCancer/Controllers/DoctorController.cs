@@ -84,6 +84,11 @@ namespace RVCC.Controllers
             {
                 Doctor doctor = await _doctorService.FindByIdAsync(id);
 
+                if (doctor == null)
+                {
+                    return NotFound();
+                }
+
                 doctor.Name = doctorForm.Name;
                 doctor.CRM = doctorForm.CRM;
 
