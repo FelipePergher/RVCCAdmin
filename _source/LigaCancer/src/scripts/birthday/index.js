@@ -3,8 +3,8 @@ import "jquery-validation";
 import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
 import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
 import "datatables.net-buttons/js/buttons.html5.min.js";
 
@@ -17,7 +17,7 @@ export default (function () {
     });
 
     function initPage() {
-        $('#Month').datepicker({
+        $("#Month").datepicker({
             clearBtn: true,
             language: "pt-BR",
             format: "MM",
@@ -26,8 +26,8 @@ export default (function () {
             maxViewMode: "months",
             immediateUpdates: true,
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -38,7 +38,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -59,9 +59,9 @@ export default (function () {
                     d.name = $("#Name").val();
                     d.month = $("#Month").val();
 
-                    var monthDatepicker = $("#Month").data('datepicker');
+                    var monthDatepicker = $("#Month").data("datepicker");
                     if (monthDatepicker) {
-                        d.month = monthDatepicker.getFormattedDate('mm');
+                        d.month = monthDatepicker.getFormattedDate("mm");
                     }
                 },
                 datatype: "json",
@@ -77,7 +77,7 @@ export default (function () {
             ]
         });
 
-        $('#birthdayTable').attr('style', 'border-collapse: collapse !important');
+        $("#birthdayTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();

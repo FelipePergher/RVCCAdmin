@@ -5,8 +5,8 @@ import "datatables.net";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
 import "select2";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
 import "jquery-mask-plugin";
 import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
 import "datatables.net-buttons/js/buttons.html5.min.js";
@@ -22,13 +22,13 @@ export default (function () {
     function initPage() {
         $("#Cpf").mask(global.masks.Cpf);
 
-        $('#BirthdayDateFrom, #BirthdayDateTo, #JoinDateFrom, #JoinDateTo').datepicker({
+        $("#BirthdayDateFrom, #BirthdayDateTo, #JoinDateFrom, #JoinDateTo").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -39,7 +39,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -96,16 +96,16 @@ export default (function () {
                 { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
                 { data: "doctors", title: "Médicos", name: "Doctors", orderable: false }
             ],
-            drawCallback: function (settings) {
-                $(".archivePatientButton").click(function (e) {
+            drawCallback: function () {
+                $(".archivePatientButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initArchivePatient);
                 });
 
-                $(".deletePatientButton").click(function (e) {
+                $(".deletePatientButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("id"));
                 });
 
-                $(".activePatientButton").click(function (e) {
+                $(".activePatientButton").click(function () {
                     initActivePatient($(this).data("url"), $(this).data("id"));
                 });
 
@@ -116,11 +116,11 @@ export default (function () {
             }
         });
 
-        $('#patientTable').attr('style', 'border-collapse: collapse !important');
+        $("#patientTable").attr("style", "border-collapse: collapse !important");
 
         $(".filterSelect").select2();
 
-        $('#searchForm').on('reset', function (e) {
+        $("#searchForm").on("reset", function () {
             $(".filterSelect").val("").trigger("change");
         });
 
@@ -139,13 +139,13 @@ export default (function () {
         $("#CPF").mask(global.masks.Cpf);
         $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
 
-        $('#DateOfBirth, #JoinDate').datepicker({
+        $("#DateOfBirth, #JoinDate").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -162,14 +162,14 @@ export default (function () {
                 $("#submitSpinner").show();
 
                 $.post($(form).attr("action"), form.serialize())
-                    .done(function (data, textStatus) {
+                    .done(function (data) {
                         if (data.ok) {
                             $("#patientTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Paciente registrado com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 global.openModal(data.url, data.title, initAddNaturalityForm);
                             });
                         }
@@ -177,8 +177,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initAddProfileForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -202,14 +202,14 @@ export default (function () {
                 $("#submitSpinner").show();
 
                 $.post($(form).attr("action"), form.serialize())
-                    .done(function (data, textStatus) {
+                    .done(function (data) {
                         if (data.ok) {
                             $("#patientTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Naturalidade registrado com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 global.openModal(data.url, data.title, initAddPatientInformationForm);
                             });
                         }
@@ -217,8 +217,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initAddNaturalityForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -231,13 +231,13 @@ export default (function () {
     function initAddPatientInformationForm() {
         $.validator.unobtrusive.parse("#addPatientInformationForm");
         $(".patientInformationSelect").select2();
-        $('#TreatmentBeginDate').datepicker({
+        $("#TreatmentBeginDate").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -255,20 +255,20 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#patientTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Informação do paciente adicionada com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 $("#modal-action").modal("hide");
-                                $('.modal-backdrop').remove();
+                                $(".modal-backdrop").remove();
                             });
                         }
                         else {
                             $("#modalBody").html(data);
                             initAddPatientInformationForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -295,20 +295,20 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#patientTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Observações salvas com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 $("#modal-action").modal("hide");
-                                $('.modal-backdrop').remove();
+                                $(".modal-backdrop").remove();
                             });
                         }
                         else {
                             $("#modalBody").html(data);
                             initAddSocialObservationForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -320,13 +320,13 @@ export default (function () {
 
     //Control Enable/Disable Functions
     function initArchivePatient() {
-        $('#DateTime').datepicker({
+        $("#DateTime").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
         $.validator.unobtrusive.parse("#archivePatientForm");
@@ -345,20 +345,20 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#patientTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "O paciente foi arquivado com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 $("#modal-action").modal("hide");
-                                $('.modal-backdrop').remove();
+                                $(".modal-backdrop").remove();
                             });
                         }
                         else {
                             $("#modalBody").html(data);
                             initArchivePatient();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -370,17 +370,17 @@ export default (function () {
 
     function initActivePatient(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você quer reativar este paciente?",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#patientTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Ativo!", "O paciente foi reativado com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
@@ -389,17 +389,17 @@ export default (function () {
 
     function initDelete(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#patientTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O paciente foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

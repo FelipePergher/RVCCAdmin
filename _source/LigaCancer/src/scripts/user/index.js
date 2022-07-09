@@ -23,7 +23,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -57,22 +57,22 @@ export default (function () {
                 { data: "lockout", title: "Conta bloqueada", name: "Lockout" },
                 { data: "role", title: "Regra", name: "Role" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editUserButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteUserButton").click(function (e) {
+                $(".deleteUserButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("id"));
                 });
 
-                $(".unlockUserButton").click(function (e) {
+                $(".unlockUserButton").click(function () {
                     initUnlock($(this).data("url"), $(this).data("id"));
                 });
             }
         });
 
-        $('#userTable').attr('style', 'border-collapse: collapse !important');
+        $("#userTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -100,15 +100,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#userTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Usuário registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -134,15 +134,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#userTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Usuário atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -152,19 +152,19 @@ export default (function () {
         });
     }
 
-    function initDelete(url, id, relation) {
+    function initDelete(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#userTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O usuário foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
@@ -173,20 +173,20 @@ export default (function () {
 
     function initUnlock(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "A conta será desbloqueada!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
             showLoaderOnConfirm: true,
             reverseButtons: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#userTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Desbloqueado!", "Usuário desbloqueado com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

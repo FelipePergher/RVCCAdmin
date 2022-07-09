@@ -1,14 +1,13 @@
-﻿const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+﻿const merge = require("webpack-merge");
+const common = require("./webpack.common.js");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const webpack = require('webpack');
 const glob = require("glob");
-const path = require('path');
+const path = require("path");
 
 module.exports = merge(common, {
-    mode: 'production',
+    mode: "production",
     devtool: false,
     stats: { modules: false },
     optimization: {
@@ -27,8 +26,8 @@ module.exports = merge(common, {
             chunkFilename: "[id].css"
         }),
         //new webpack.SourceMapDevToolPlugin({
-        //    filename: 'js/[name].bundle.js.map',
-        //    exclude: ['js/vendors.bundle.js']
+        //    filename: "js/[name].bundle.js.map",
+        //    exclude: ["js/vendors.bundle.js"]
         //})
     ],
     module: {
@@ -44,14 +43,14 @@ module.exports = merge(common, {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: "file-loader",
                         options: {
-                            name: 'css/[folder].bundle.css'
+                            name: "css/[folder].bundle.css"
 
                         }
                     },
                     {
-                        loader: 'extract-loader'
+                        loader: "extract-loader"
                     },
                     {
                         loader: "css-loader",
@@ -64,7 +63,7 @@ module.exports = merge(common, {
                     {
                         loader: "sass-loader",
                         options: {
-                            includePaths: glob.sync('node_modules').map((d) => path.join(__dirname, d))
+                            includePaths: glob.sync("node_modules").map((d) => path.join(__dirname, d))
                         }
                     }
                 ]
