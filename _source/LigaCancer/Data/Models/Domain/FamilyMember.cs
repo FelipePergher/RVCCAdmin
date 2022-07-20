@@ -32,8 +32,12 @@ namespace RVCC.Data.Models.Domain
 
         public int PatientId { get; set; }
 
+        #region Relation
+
         [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
+
+        #endregion
 
         #region Obsolete
 

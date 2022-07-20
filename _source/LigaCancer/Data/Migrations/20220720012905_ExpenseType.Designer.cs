@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RVCC.Data;
 
@@ -11,9 +12,10 @@ using RVCC.Data;
 namespace RVCC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220720012905_ExpenseType")]
+    partial class ExpenseType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,7 +313,7 @@ namespace RVCC.Data.Migrations
                     b.Property<DateTime>("AuditDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ExpenseTypeFrequency")
+                    b.Property<int>("ExpenseTypeEnum")
                         .HasColumnType("int");
 
                     b.Property<int>("ExpenseTypeId")
@@ -1318,7 +1320,7 @@ namespace RVCC.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExpenseTypeFrequency")
+                    b.Property<int>("ExpenseTypeEnum")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

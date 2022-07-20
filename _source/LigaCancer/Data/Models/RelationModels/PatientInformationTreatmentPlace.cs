@@ -4,6 +4,7 @@
 
 using RVCC.Data.Interfaces;
 using RVCC.Data.Models.Domain;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models.RelationModels
 {
@@ -20,10 +21,16 @@ namespace RVCC.Data.Models.RelationModels
 
         public int PatientInformationId { get; set; }
 
-        public PatientInformation PatientInformation { get; set; }
-
         public int TreatmentPlaceId { get; set; }
 
+        #region Relation
+
+        [ForeignKey(nameof(PatientInformationId))]
+        public PatientInformation PatientInformation { get; set; }
+
+        [ForeignKey(nameof(TreatmentPlaceId))]
         public TreatmentPlace TreatmentPlace { get; set; }
+
+        #endregion
     }
 }

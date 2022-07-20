@@ -83,6 +83,8 @@ namespace RVCC.Data.Models.Domain
 
         public ICollection<Stay> Stays { get; set; }
 
+        public ICollection<PatientExpenseType> PatientExpenseTypes { get; set; }
+
         #endregion
     }
 }

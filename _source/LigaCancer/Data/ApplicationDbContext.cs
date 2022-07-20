@@ -51,6 +51,10 @@ namespace RVCC.Data
 
         public DbSet<FileAttachment> FileAttachments { get; set; }
 
+        public DbSet<PatientExpenseType> PatientExpenseTypes { get; set; }
+
+        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+
         #endregion
 
         #region General Models
@@ -65,7 +69,7 @@ namespace RVCC.Data
 
         public DbSet<Benefit> Benefits { get; set; }
 
-        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+        public DbSet<ExpenseType> ExpenseTypes { get; set; }
 
         public DbSet<Stay> Stays { get; set; }
 
@@ -118,6 +122,10 @@ namespace RVCC.Data
         public DbSet<AuditPatientInformationCancerType> AuditPatientInformationCancerTypes { get; set; }
 
         public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
+
+        public DbSet<AuditExpenseType> AuditExpenseTypes { get; set; }
+
+        public DbSet<AuditPatientExpenseType> AuditPatientExpenseTypes { get; set; }
 
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 

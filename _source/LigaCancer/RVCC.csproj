@@ -48,6 +48,18 @@
     <Content Update="Views\Address\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\ExpenseType\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\ExpenseType\Partials\_AddExpenseType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\ExpenseType\Partials\_EditExpenseType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\ExpenseType\Partials\_FormExpenseType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\CancerType\Partials\_FormCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

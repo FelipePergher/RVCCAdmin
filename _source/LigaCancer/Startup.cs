@@ -132,6 +132,8 @@ namespace RVCC
                                 auditPatientBenefit.PatientName = patientBenefitData.Patient != null ? $"{patientBenefitData.Patient?.FirstName} {patientBenefitData.Patient.Surname}" : string.Empty;
                             }
                         })
+                        .Map<ExpenseType, AuditExpenseType>()
+                        .Map<PatientExpenseType, AuditPatientExpenseType>()
                         .Map<SaleShirt2020, AuditSaleShirt2020>()
                         .AuditEntityAction<IAudit>((evt, entry, auditEntity) =>
                         {
@@ -155,6 +157,8 @@ namespace RVCC
             services.AddTransient<IDataRepository<TreatmentPlace>, TreatmentPlaceRepository>();
             services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
             services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
+            services.AddTransient<IDataRepository<ExpenseType>, ExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<PatientExpenseType>, PatientExpenseTypeRepository>();
 
             services.AddTransient<IDataRepository<Patient>, PatientRepository>();
             services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
