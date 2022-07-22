@@ -72,7 +72,7 @@ namespace RVCC.Business
 
             var selectListItems = expenseTypes.Select(x => new SelectListItem
             {
-                Text = x.Name,
+                Text = $"{x.Name} ({Enums.GetDisplayName(x.ExpenseTypeFrequency)})",
                 Value = x.ExpenseTypeId.ToString()
             }).ToList();
 

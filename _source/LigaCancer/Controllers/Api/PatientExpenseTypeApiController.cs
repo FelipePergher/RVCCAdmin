@@ -48,6 +48,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<PatientExpenseTypeViewModel> data = patientExpenseTypes.Select(x => new PatientExpenseTypeViewModel
                 {
                     ExpenseType = x.ExpenseType.Name,
+                    Frequency = Enums.GetDisplayName(x.ExpenseType.ExpenseTypeFrequency),
                     Value = x.Value.ToString("N2"),
                     Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);

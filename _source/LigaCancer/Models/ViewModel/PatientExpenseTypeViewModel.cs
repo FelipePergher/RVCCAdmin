@@ -8,6 +8,8 @@ namespace RVCC.Models.ViewModel
     {
         public string ExpenseType { get; set; }
 
+        public string Frequency { get; set; }
+
         public string Value { get; set; }
 
         public string Actions { get; set; }

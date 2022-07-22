@@ -722,6 +722,7 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
                 { data: "expenseType", title: "Despesa", name: "ExpenseType" },
+                { data: "frequency", title: "Frequency", name: "Frequency" },
                 { data: "value", title: "Valor", name: "Value" },
             ],
             drawCallback: function () {

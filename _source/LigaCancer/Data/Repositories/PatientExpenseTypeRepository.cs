@@ -138,6 +138,9 @@ namespace RVCC.Data.Repositories
                 "Value" => sortDirection == "asc"
                     ? query.OrderBy(x => x.Value)
                     : query.OrderByDescending(x => x.Value),
+                "Frequency" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.ExpenseType.ExpenseTypeFrequency)
+                    : query.OrderByDescending(x => x.ExpenseType.ExpenseTypeFrequency),
                 _ => sortDirection == "asc"
                     ? query.OrderBy(x => x.ExpenseType.Name)
                     : query.OrderByDescending(x => x.ExpenseType.Name),
