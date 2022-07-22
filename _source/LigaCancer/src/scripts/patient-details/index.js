@@ -23,6 +23,7 @@ export default (function () {
         initPhoneTable();
         initAddressTable();
         initFamilyMemberTable();
+        initPatientExpenseTypeTable();
         initFilesTable();
         initPatientBenefitTable();
         initStayTable();
@@ -59,7 +60,6 @@ export default (function () {
                 rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
-        $(".patientProfileSelect2").select2();
 
         $("#editPatientProfileForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -692,6 +692,143 @@ export default (function () {
                         $("#familyMemberTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar removido com sucesso.", "success");
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
+
+    // Social Economic
+    function initPatientExpenseTypeTable() {
+        $("#patientExpenseTypeTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientExpenseType/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "expenseType", title: "Despesa", name: "ExpenseType" },
+                { data: "value", title: "Valor", name: "Value" },
+            ],
+            drawCallback: function () {
+                $(".editPatientExpenseTypeButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientExpenseTypeForm);
+                });
+                $(".deletePatientExpenseTypeButton").click(function () {
+                    initDeletePatientExpenseType($(this).data("url"), $(this).data("id"));
+                });
+            }
+        });
+        $("#patientExpenseTypeTable").attr("style", "border-collapse: collapse !important");
+
+        $("#addPatientExpenseTypeButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPatientExpenseTypeForm);
+        });
+    }
+
+    function initAddPatientExpenseTypeForm() {
+        $("#Value").mask(global.masks.Price, { reverse: true });
+        $("#ExpenseType").select2();
+        $.validator.unobtrusive.parse("#addPatientExpenseTypeForm");
+
+        $("#addPatientExpenseTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPatientExpenseTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initEditPatientExpenseTypeForm() {
+        $("#Value").mask(global.masks.Price, { reverse: true });
+        $("#ExpenseType").select2();
+        $.validator.unobtrusive.parse("#editPatientExpenseTypeForm");
+
+        $("#editPatientExpenseTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPatientExpenseTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePatientExpenseType(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: "Você têm certeza?",
+            text: "Você não poderá reverter isso!",
+            type: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
+                    .done(function () {
+                        $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
+                        global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
                     }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

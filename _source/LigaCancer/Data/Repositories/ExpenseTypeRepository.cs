@@ -131,6 +131,11 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(_context.ExpenseTypes.FirstOrDefault(x => x.Name == name && x.ExpenseTypeId != expenseTypeId));
         }
 
+        public Task<List<ExpenseType>> GetNotRelatedToPatient(int patientId, int includeExpense = 0)
+        {
+            return Task.FromResult(_context.ExpenseTypes.AsNoTracking().Where(x => x.ExpenseTypeId == includeExpense || x.PatientExpenseTypes.All(y => y.PatientId != patientId)).ToList());
+        }
+
         #endregion
 
         #region Private Methods

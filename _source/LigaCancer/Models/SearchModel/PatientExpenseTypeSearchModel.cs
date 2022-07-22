@@ -2,18 +2,22 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RVCC.Models.SearchModel
 {
     public class PatientExpenseTypeSearchModel
     {
+        public PatientExpenseTypeSearchModel()
+        {
+        }
+
+        public PatientExpenseTypeSearchModel(string patientId)
+        {
+            PatientId = patientId;
+        }
+
+        [HiddenInput]
         public string PatientId { get; set; }
-
-        [Display(Name = "Nome")]
-        public string Name { get; set; }
-
-        [Display(Name = "Benefício")]
-        public string ExpenseType { get; set; }
     }
 }

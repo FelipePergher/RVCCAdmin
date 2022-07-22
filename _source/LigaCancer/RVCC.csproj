@@ -63,6 +63,15 @@
     <Content Update="Views\CancerType\Partials\_FormCancerType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\PatientExpenseType\Partials\_AddPatientExpenseType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PatientExpenseType\Partials\_EditPatientExpenseType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PatientExpenseType\Partials\_Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\FamilyMember\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

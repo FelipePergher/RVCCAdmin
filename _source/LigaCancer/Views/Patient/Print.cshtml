@@ -287,13 +287,46 @@
                                     <td>@familyMember.Kinship</td>
                                     <td>@familyMember.DateOfBirth</td>
                                     <td>@familyMember.Sex</td>
-                                    <td>@familyMember.MonthlyIncome</td>
+                                    <td>R$ @familyMember.MonthlyIncome</td>
                                     <td>
                                         @if (familyMember.Responsible == "true")
                                         {
                                             <span class='fa fa-check'></span>
                                         }
                                     </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if (Model.PatientExpenseTypes.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Estudo Sócio Economico
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center" aria-hidden="true">
+                        <thead>
+                            <tr>
+                                <th scope="col">Despesa</th>
+                                <th scope="col">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var patientExpenseTypes in Model.PatientExpenseTypes)
+                            {
+                                <tr>
+                                    <td>@patientExpenseTypes.ExpenseType</td>
+                                    <td>R$ @patientExpenseTypes.Value</td>
                                 </tr>
                             }
                         </tbody>

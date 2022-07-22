@@ -128,6 +128,7 @@ namespace RVCC.Controllers
             string[] includes =
             {
                 nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers),
+                nameof(Patient.PatientExpenseTypes), $"{nameof(Patient.PatientExpenseTypes)}.{nameof(PatientExpenseType.ExpenseType)}",
                 nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
@@ -179,7 +180,7 @@ namespace RVCC.Controllers
                     HouseNumber = x.HouseNumber,
                     Complement = x.Complement,
                     ResidenceType = Enums.GetDisplayName(x.ResidenceType),
-                    MonthlyAmmountResidence = x.MonthlyAmountResidence.ToString("N"),
+                    MonthlyAmmountResidence = x.MonthlyAmountResidence.ToString("N2"),
                     ObservationAddress = x.ObservationAddress,
                 }),
                 FamilyMembers = patient.FamilyMembers.Select(x => new FamilyMemberViewModel
@@ -190,6 +191,11 @@ namespace RVCC.Controllers
                     Sex = Enums.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("N2"),
                     Responsible = x.Responsible.ToString()
+                }),
+                PatientExpenseTypes = patient.PatientExpenseTypes.Select(x => new PatientExpenseTypeViewModel
+                {
+                    ExpenseType = x.ExpenseType.Name,
+                    Value = x.Value.ToString("N2"),
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
                 {

@@ -149,7 +149,6 @@ export default (function () {
             }
         });
 
-        $(".patientProfileSelect2").select2();
         $.validator.unobtrusive.parse("#addPatientProfileForm");
 
         $("#addPatientProfileForm").off("submit").submit(function (e) {

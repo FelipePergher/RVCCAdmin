@@ -70,6 +70,8 @@ namespace RVCC.Models.ViewModel
 
         public IEnumerable<FamilyMemberViewModel> FamilyMembers { get; set; }
 
+        public IEnumerable<PatientExpenseTypeViewModel> PatientExpenseTypes { get; set; }
+
         public IEnumerable<PatientBenefitViewModel> Benefits { get; set; }
 
         public IEnumerable<StayViewModel> Stays { get; set; }

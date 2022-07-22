@@ -135,12 +135,12 @@ namespace RVCC.Data.Repositories
         {
             return sortColumn switch
             {
-                "ExpenseType" => sortDirection == "asc"
+                "Value" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Value)
+                    : query.OrderByDescending(x => x.Value),
+                _ => sortDirection == "asc"
                     ? query.OrderBy(x => x.ExpenseType.Name)
                     : query.OrderByDescending(x => x.ExpenseType.Name),
-                _ => sortDirection == "asc"
-                    ? query.OrderBy(x => x.Patient.FirstName + x.Patient.Surname)
-                    : query.OrderByDescending(x => x.Patient.FirstName + x.Patient.Surname)
             };
         }
 
@@ -149,16 +149,6 @@ namespace RVCC.Data.Repositories
             if (!string.IsNullOrEmpty(patientExpenseTypeSearch.PatientId))
             {
                 query = query.Where(x => x.PatientId == int.Parse(patientExpenseTypeSearch.PatientId));
-            }
-
-            if (!string.IsNullOrEmpty(patientExpenseTypeSearch.Name))
-            {
-                query = query.Where(x => x.Patient.FirstName.Contains(patientExpenseTypeSearch.Name) || x.Patient.Surname.Contains(patientExpenseTypeSearch.Name));
-            }
-
-            if (!string.IsNullOrEmpty(patientExpenseTypeSearch.ExpenseType))
-            {
-                query = query.Where(x => x.ExpenseType.Name.Contains(patientExpenseTypeSearch.ExpenseType));
             }
 
             return query;
