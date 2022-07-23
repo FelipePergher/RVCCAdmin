@@ -52,6 +52,8 @@ namespace RVCC.Models.ViewModel
 
         public List<string> Medicines { get; set; }
 
+        public List<string> ServiceTypes { get; set; }
+
         #endregion
 
         #region Naturality

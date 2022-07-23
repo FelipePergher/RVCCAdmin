@@ -67,6 +67,7 @@ export default (function () {
                     d.medicines = $("#Medicines").val();
                     d.doctors = $("#Doctors").val();
                     d.treatmentPlaces = $("#TreatmentPlaces").val();
+                    d.serviceTypes = $("#ServiceTypes").val();
                     d.familiarityGroup = $("#FamiliarityGroup").val();
                     d.forwardedToSupportHouse = $("#ForwardedToSupportHouse").val();
                     d.archivePatientType = $("#ArchivePatientType").val();

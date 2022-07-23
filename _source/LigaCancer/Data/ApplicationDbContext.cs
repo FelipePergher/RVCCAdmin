@@ -71,6 +71,8 @@ namespace RVCC.Data
 
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
 
+        public DbSet<ServiceType> ServiceTypes { get; set; }
+
         public DbSet<Stay> Stays { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
@@ -123,9 +125,13 @@ namespace RVCC.Data
 
         public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
 
+        public DbSet<AuditPatientInformationServiceType> AuditPatientInformationServiceTypes { get; set; }
+
         public DbSet<AuditExpenseType> AuditExpenseTypes { get; set; }
 
         public DbSet<AuditPatientExpenseType> AuditPatientExpenseTypes { get; set; }
+
+        public DbSet<AuditServiceType> AuditServiceTypes { get; set; }
 
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 
@@ -262,6 +268,22 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.MedicineId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Patient Information and Cancer Type
+            builder.Entity<PatientInformationServiceType>()
+                .HasKey(bc => new { bc.PatientInformationId, bc.ServiceTypeId });
+
+            builder.Entity<PatientInformationServiceType>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationServiceTypes)
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PatientInformationServiceType>()
+                .HasOne(bc => bc.ServiceType)
+                .WithMany(c => c.PatientInformationServiceTypes)
+                .HasForeignKey(bc => bc.ServiceTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion
 
             #region Unique
@@ -272,6 +294,8 @@ namespace RVCC.Data
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
             builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
+            builder.Entity<ExpenseType>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<ServiceType>().HasIndex(p => p.Name).IsUnique();
 
             #endregion
         }

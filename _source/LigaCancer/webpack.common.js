@@ -16,6 +16,7 @@ module.exports = {
         "medicine": ["./src/sass/medicine/index.scss", "./src/scripts/medicine/index.js"],
         "cancer-type": ["./src/sass/cancer-type/index.scss", "./src/scripts/cancer-type/index.js"],
         "expense-type": ["./src/sass/expense-type/index.scss", "./src/scripts/expense-type/index.js"],
+        "service-type": ["./src/sass/service-type/index.scss", "./src/scripts/service-type/index.js"],
         "patient": ["./src/sass/patient/index.scss", "./src/scripts/patient/index.js"],
         "patient-details": ["./src/sass/patient-details/index.scss", "./src/scripts/patient-details/index.js"],
         "patient-print": ["./src/sass/patient-print/index.scss"],

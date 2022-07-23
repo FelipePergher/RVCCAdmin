@@ -104,6 +104,7 @@ namespace RVCC
                         .Map<Doctor, AuditDoctor>()
                         .Map<TreatmentPlace, AuditTreatmentPlace>()
                         .Map<CancerType, AuditCancerType>()
+                        .Map<ServiceType, AuditServiceType>()
                         .Map<Medicine, AuditMedicine>()
                         .Map<Stay, AuditStay>()
                         .Map<Setting, AuditSetting>()
@@ -119,6 +120,7 @@ namespace RVCC
                         .Map<PatientInformationDoctor, AuditPatientInformationDoctor>()
                         .Map<PatientInformationMedicine, AuditPatientInformationMedicine>()
                         .Map<PatientInformationTreatmentPlace, AuditPatientInformationTreatmentPlace>()
+                        .Map<PatientInformationServiceType, AuditPatientInformationServiceType>()
                         .Map<PatientBenefit, AuditPatientBenefit>((patientBenefit, auditPatientBenefit) =>
                         {
                             ServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -159,6 +161,7 @@ namespace RVCC
             services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
             services.AddTransient<IDataRepository<ExpenseType>, ExpenseTypeRepository>();
             services.AddTransient<IDataRepository<PatientExpenseType>, PatientExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<ServiceType>, ServiceTypeRepository>();
 
             services.AddTransient<IDataRepository<Patient>, PatientRepository>();
             services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();

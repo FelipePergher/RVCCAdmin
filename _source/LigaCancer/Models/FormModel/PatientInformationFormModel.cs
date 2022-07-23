@@ -17,6 +17,7 @@ namespace RVCC.Models.FormModel
             Medicines = new List<string>();
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
+            ServiceTypes = new List<string>();
         }
 
         [Display(Name = "Data de início do tratamento")]
@@ -38,6 +39,9 @@ namespace RVCC.Models.FormModel
         [Display(Name = "Remédios")]
         public List<string> Medicines { get; set; }
 
+        [Display(Name = "Serviços")]
+        public List<string> ServiceTypes { get; set; }
+
         #region Selects
 
         public List<SelectListItem> SelectDoctors { get; set; }
@@ -47,6 +51,8 @@ namespace RVCC.Models.FormModel
         public List<SelectListItem> SelectMedicines { get; set; }
 
         public List<SelectListItem> SelectCancerTypes { get; set; }
+
+        public List<SelectListItem> SelectServiceTypes { get; set; }
 
         #endregion
     }

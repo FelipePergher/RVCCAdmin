@@ -62,8 +62,9 @@
                                         <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="CancerTypes"></label>
-                                                <select asp-for="CancerTypes" class="form-control filterSelect"
+                                                <select asp-for="CancerTypes" class="form-control filterSelect" style="width: 100%"
                                                         data-theme="bootstrap"
+                                                        data-width="resolve"
                                                         data-language="pt-BR"
                                                         data-ajax--url="/api/CancerType/select2Get"
                                                         data-ajax--data-type="json"
@@ -71,10 +72,12 @@
                                                     <option value=""></option>
                                                 </select>
                                             </div>
+
                                             <div class="col-lg-3">
                                                 <label asp-for="Medicines"></label>
-                                                <select asp-for="Medicines" class="form-control filterSelect"
+                                                <select asp-for="Medicines" class="form-control filterSelect" style="width: 100%"
                                                         data-theme="bootstrap"
+                                                        data-width="resolve"
                                                         data-language="pt-BR"
                                                         data-ajax--url="/api/Medicine/select2Get"
                                                         data-ajax--data-type="json"
@@ -82,10 +85,12 @@
                                                     <option value=""></option>
                                                 </select>
                                             </div>
+
                                             <div class="col-lg-3">
                                                 <label asp-for="Doctors"></label>
-                                                <select asp-for="Doctors" class="form-control filterSelect"
+                                                <select asp-for="Doctors" class="form-control filterSelect" style="width: 100%"
                                                         data-theme="bootstrap"
+                                                        data-width="resolve"
                                                         data-language="pt-BR"
                                                         data-ajax--url="/api/Doctor/select2Get"
                                                         data-ajax--data-type="json"
@@ -93,10 +98,12 @@
                                                     <option value=""></option>
                                                 </select>
                                             </div>
+
                                             <div class="col-lg-3">
                                                 <label asp-for="TreatmentPlaces"></label>
-                                                <select asp-for="TreatmentPlaces" class="form-control filterSelect"
+                                                <select asp-for="TreatmentPlaces" class="form-control filterSelect" style="width: 100%"
                                                         data-theme="bootstrap"
+                                                        data-width="resolve"
                                                         data-language="pt-BR"
                                                         data-ajax--url="/api/TreatmentPlace/select2Get"
                                                         data-ajax--data-type="json"
@@ -150,6 +157,9 @@
                                                 <label asp-for="ForwardedToSupportHouse"></label>
                                                 <select asp-for="ForwardedToSupportHouse" asp-items="Model.ForwardedToSupportHouseOptions" class="form-control"></select>
                                             </div>
+                                        </div>
+
+                                        <div class="form-row form-group">
                                             <div class="col-lg-3">
                                                 <label asp-for="ArchivePatientType"></label>
                                                 <select asp-for="ArchivePatientType" asp-items="Html.GetEnumSelectList<Enums.ArchivePatientType>()" class="form-control">
@@ -157,6 +167,18 @@
                                                 </select>
                                             </div>
 
+                                            <div class="col-lg-3">
+                                                <label asp-for="ServiceTypes"></label>
+                                                <select asp-for="ServiceTypes" class="form-control filterSelect" style="width: 100%"
+                                                        data-theme="bootstrap"
+                                                        data-width="resolve"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/ServiceType/select2Get"
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Serviços">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <button type="reset" class="btn btn-secondary">

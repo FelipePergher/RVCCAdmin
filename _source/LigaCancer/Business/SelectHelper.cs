@@ -78,5 +78,18 @@ namespace RVCC.Business
 
             return selectListItems;
         }
+
+        public static async Task<List<SelectListItem>> GetServiceTypesSelectAsync(IDataRepository<ServiceType> serviceTypeService)
+        {
+            List<ServiceType> serviceTypes = await serviceTypeService.GetAllAsync();
+
+            var selectListItems = serviceTypes.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ServiceTypeId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace RVCC.Models.SearchModel
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
             Medicines = new List<string>();
+            ServiceTypes = new List<string>();
         }
 
         [Display(Name = "Nome")]
@@ -57,6 +58,9 @@ namespace RVCC.Models.SearchModel
 
         [Display(Name = "Locais de Tratamentos")]
         public List<string> TreatmentPlaces { get; set; }
+
+        [Display(Name = "Serviços")]
+        public List<string> ServiceTypes { get; set; }
 
         public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
         {
