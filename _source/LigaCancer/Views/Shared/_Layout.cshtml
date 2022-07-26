@@ -96,22 +96,18 @@
                         </a>
                     </li>
 
+                    <li class="nav-title">Configurações</li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="ExpenseType" class="nav-link">
+                            <span class="nav-icon fa fa-money-bill"></span> Tipos de Despesas
+                        </a>
+                    </li>
 
-                    @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Secretary))
-                    {
-                        <li class="nav-title">Configurações</li>
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="ExpenseType" class="nav-link">
-                                <span class="nav-icon fa fa-money-bill"></span> Tipos de Despesas
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="ServiceType" class="nav-link">
-                                <span class="nav-icon fa fa-notes-medical"></span> Tipos de Serviços
-                            </a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="ServiceType" class="nav-link">
+                            <span class="nav-icon fa fa-notes-medical"></span> Tipos de Serviços
+                        </a>
+                    </li>
 
                     @if (User.IsInRole(Roles.Admin))
                     {
