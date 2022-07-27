@@ -48,6 +48,27 @@
     <Content Update="Views\Address\Partials\_Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\AuxiliarAccessoryType\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AuxiliarAccessoryType\Partials\_AddAuxiliarAccessoryType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AuxiliarAccessoryType\Partials\_EditAuxiliarAccessoryType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AuxiliarAccessoryType\Partials\_FormAuxiliarAccessoryType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PatientAuxiliarAccessoryType\Partials\_AddPatientAuxiliarAccessoryType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PatientAuxiliarAccessoryType\Partials\_EditPatientAuxiliarAccessoryType.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\PatientAuxiliarAccessoryType\Partials\_Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\ServiceType\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

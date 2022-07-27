@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-header" data-toggle="collapse" data-target="#patientExpenseTypeCollapse" aria-expanded="true">
-        <span class="fa fa-child"></span>Estudo Sócio Economico
+        <span class="fa fa-money-bill"></span>Estudo Sócio Economico
 
         <div class="card-header-actions">
             <a class="card-header-action btn-minimize" href="#">
@@ -13,7 +13,7 @@
 
     <div class="card-body collapse" id="patientExpenseTypeCollapse">
         <div class="form-inline float-right">
-            <a id="addPatientExpenseTypeButton" asp-action="AddPatientExpenseType" asp-controller="PatientExpenseType" asp-route-id="@Model.PatientId" data-title="Adicionar Membro Familiar" class="btn btn-primary"
+            <a id="addPatientExpenseTypeButton" asp-action="AddPatientExpenseType" asp-controller="PatientExpenseType" asp-route-id="@Model.PatientId" data-title="Adicionar Despesa" class="btn btn-primary"
                data-toggle="modal" data-target="#modal-action">
                 <span class="fa fa-plus"></span> Adicionar Despesa
             </a>

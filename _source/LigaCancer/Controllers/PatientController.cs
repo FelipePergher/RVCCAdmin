@@ -133,9 +133,10 @@ namespace RVCC.Controllers
 
             string[] includes =
             {
-                nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers),
-                nameof(Patient.PatientExpenseTypes), $"{nameof(Patient.PatientExpenseTypes)}.{nameof(PatientExpenseType.ExpenseType)}",
-                nameof(Patient.Stays), nameof(Patient.FileAttachments), nameof(Patient.PatientBenefits), $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
+                nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers), nameof(Patient.Stays), nameof(Patient.FileAttachments),
+                $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
+                $"{nameof(Patient.PatientExpenseTypes)}.{nameof(PatientExpenseType.ExpenseType)}",
+                $"{nameof(Patient.PatientAuxiliarAccessoryTypes)}.{nameof(PatientAuxiliarAccessoryType.AuxiliarAccessoryType)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
@@ -205,6 +206,13 @@ namespace RVCC.Controllers
                     ExpenseType = x.ExpenseType.Name,
                     Frequency = Enums.GetDisplayName(x.ExpenseType.ExpenseTypeFrequency),
                     Value = x.Value.ToString("N2"),
+                }),
+                PatientAuxiliarAccessoryTypes = patient.PatientAuxiliarAccessoryTypes.Select(x => new PatientAuxiliarAccessoryTypeViewModel
+                {
+                    AuxiliarAccessoryType = x.AuxiliarAccessoryType.Name,
+                    AuxiliarAccessoryTypeTime = Enums.GetDisplayName(x.AuxiliarAccessoryTypeTime),
+                    DuoDate = x.DuoDate != DateTime.MinValue ? x.DuoDate.ToDateString() : "-",
+                    Note = x.Note
                 }),
                 Benefits = patient.PatientBenefits.Select(x => new PatientBenefitViewModel
                 {

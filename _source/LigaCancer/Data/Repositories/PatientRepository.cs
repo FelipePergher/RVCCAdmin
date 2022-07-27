@@ -268,6 +268,11 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.PatientInformation.PatientInformationServiceTypes.Any(y => y.ServiceTypeId == int.Parse(item)));
             }
 
+            foreach (string item in patientSearch.PatientAuxiliarAccessoryTypes)
+            {
+                query = query.Where(x => x.PatientAuxiliarAccessoryTypes.Any(y => y.AuxiliarAccessoryTypeId == int.Parse(item)));
+            }
+
             if (patientSearch.BirthdayDateFrom != null)
             {
                 query = query.Where(x => x.DateOfBirth.Date >= DateTime.Parse(patientSearch.BirthdayDateFrom).Date);

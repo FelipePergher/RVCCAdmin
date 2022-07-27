@@ -342,6 +342,43 @@
             </div>
         }
 
+         @if (Model.PatientAuxiliarAccessoryTypes.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Acessórios Auxiliares
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center" aria-hidden="true">
+                        <thead>
+                            <tr>
+                                <th scope="col">Acessório Auxiliar</th>
+                                <th scope="col">Tipo de Uso</th>
+                                <th scope="col">Data para parar de usar</th>
+                                <th scope="col">Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var patientAuxiliarAccessoryType in Model.PatientAuxiliarAccessoryTypes)
+                            {
+                                <tr>
+                                    <td>@patientAuxiliarAccessoryType.AuxiliarAccessoryType</td>
+                                    <td>@patientAuxiliarAccessoryType.AuxiliarAccessoryTypeTime</td>
+                                    <td>@patientAuxiliarAccessoryType.DuoDate</td>
+                                    <td>@patientAuxiliarAccessoryType.Note</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
         @if (Model.Benefits.Any())
         {
             <div class="row mt-5">

@@ -1,14 +1,14 @@
-﻿@model RVCC.Models.SearchModel.ExpenseTypeSearchModel
+﻿@model RVCC.Models.SearchModel.AuxiliarAccessoryTypeSearchModel
 @{
-    ViewData["Title"] = "Tipos de despesas";
+    ViewData["Title"] = "Tipos de Acessórios Auxiliares";
 }
 
 @section styles {
     <environment names="Development">
-        <link href="~/dist/css/expense-type.bundle.css" rel="stylesheet" />
+        <link href="~/dist/css/auxiliar-accessory.bundle.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="~/dist/css/expense-type.bundle.css" asp-append-version="true" rel="stylesheet" />
+        <link href="~/dist/css/auxiliar-accessory.bundle.css" asp-append-version="true" rel="stylesheet" />
     </environment>
 }
 
@@ -18,7 +18,7 @@
             <a asp-controller="Home" asp-action="Index">Home</a>
         </li>
         <li class="breadcrumb-item">
-            Tipos de despesas
+            Tipos de Acessórios Auxiliares
         </li>
     </ol>
     <div class="container-fluid">
@@ -57,37 +57,32 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <span class="fa fa-money-bill"></span> Tipos de Despesas
+                                <span class="fa fa-universal-access"></span> Tipos de Acessórios Auxiliares
                             </div>
                             <div class="card-body">
                                 <div class="form-inline float-right">
-                                    <a id="addExpenseTypeButton" asp-action="AddExpenseType" data-title="Adicionar Tipo de Despesa" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                        <span class="fa fa-plus"></span> Adicionar Tipo de Despesa
+                                    <a id="addAuxiliarAccessoryTypeButton" asp-action="AddAuxiliarAccessoryType" data-title="Adicionar Tipo de Acessório Auxiliar" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <span class="fa fa-plus"></span> Adicionar Tipo de Acessório Auxiliar
                                     </a>
                                 </div>
 
-                                <table class="table table-bordered table-striped text-center" id="expenseTypeTable" aria-describedby="Tabela de tipos de despesas"></table>
+                                <table class="table table-bordered table-striped text-center" id="auxiliarAccessoryTypeTable" aria-describedby="Tabela de tipos de acessórios auxiliares"></table>
                             </div>
                         </div>
                     </div>
-                    <!--/col-->
-
                 </div>
-                <!--/row-->
-
             </div>
         </div>
     </div>
-    <!-- /.conainer-fluid -->
 </main>
 
 <partial name="_Modal" />
 
 @section scripts {
     <environment names="Development">
-        <script src="~/dist/js/expense-type.bundle.js"></script>
+        <script src="~/dist/js/auxiliar-accessory.bundle.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/dist/js/expense-type.bundle.js" asp-append-version="true"></script>
+        <script src="~/dist/js/auxiliar-accessory.bundle.js" asp-append-version="true"></script>
     </environment>
 }

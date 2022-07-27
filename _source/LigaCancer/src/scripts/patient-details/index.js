@@ -24,6 +24,7 @@ export default (function () {
         initAddressTable();
         initFamilyMemberTable();
         initPatientExpenseTypeTable();
+        initPatientAuxiliarAccessoryTypeTable();
         initFilesTable();
         initPatientBenefitTable();
         initStayTable();
@@ -828,6 +829,160 @@ export default (function () {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                     .done(function () {
                         $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
+                        global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
+
+    // Patient Auxiliar Accessory Type
+    function initPatientAuxiliarAccessoryTypeTable() {
+        $("#patientAuxiliarAccessoryTypeTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientAuxiliarAccessoryType/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "auxiliarAccessoryType", title: "Acessório Auxiliar", name: "AuxiliarAccessoryType" },
+                { data: "auxiliarAccessoryTypeTime", title: "Tipo de uso", name: "AuxiliarAccessoryTypeTime" },
+                { data: "duoDate", title: "Data parar de usar", name: "DuoDate" },
+                { data: "note", title: "Notas", name: "Note" },
+            ],
+            drawCallback: function () {
+                $(".editPatientAuxiliarAccessoryTypeButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientAuxiliarAccessoryTypeForm);
+                });
+                $(".deletePatientAuxiliarAccessoryTypeButton").click(function () {
+                    initDeletePatientAuxiliarAccessoryType($(this).data("url"), $(this).data("id"));
+                });
+            }
+        });
+        $("#patientAuxiliarAccessoryTypeTable").attr("style", "border-collapse: collapse !important");
+
+        $("#addPatientAuxiliarAccessoryTypeButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPatientAuxiliarAccessoryTypeForm);
+        });
+    }
+
+    function initAddPatientAuxiliarAccessoryTypeForm() {
+        $("#duoDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+        $.validator.unobtrusive.parse("#addPatientAuxiliarAccessoryTypeForm");
+
+        $("#addPatientAuxiliarAccessoryTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPatientAuxiliarAccessoryTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initEditPatientAuxiliarAccessoryTypeForm() {
+        $("#duoDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+
+        $.validator.unobtrusive.parse("#editPatientAuxiliarAccessoryTypeForm");
+
+        $("#editPatientAuxiliarAccessoryTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPatientAuxiliarAccessoryTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePatientAuxiliarAccessoryType(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: "Você têm certeza?",
+            text: "Você não poderá reverter isso!",
+            type: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
+                    .done(function () {
+                        $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
                     }).fail(function () {

@@ -85,6 +85,8 @@ namespace RVCC.Data.Models.Domain
 
         public ICollection<PatientExpenseType> PatientExpenseTypes { get; set; }
 
+        public ICollection<PatientAuxiliarAccessoryType> PatientAuxiliarAccessoryTypes { get; set; }
+
         #endregion
     }
 }

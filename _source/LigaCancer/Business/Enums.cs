@@ -112,6 +112,18 @@ namespace RVCC.Business
             Total = 2
         }
 
+        // Todo thing a better name
+        public enum AuxiliarAccessoryTypeTime
+        {
+            [Display(Name = "Temporário")]
+            [EnumMember(Value = "Temporário")]
+            Temporary = 0,
+
+            [Display(Name = "Vida inteira")]
+            [EnumMember(Value = "Vida Inteira")]
+            Lifetime = 1,
+        }
+
         #endregion
 
         #region Sales Shirt 2020

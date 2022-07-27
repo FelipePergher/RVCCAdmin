@@ -179,6 +179,19 @@
                                                     <option value=""></option>
                                                 </select>
                                             </div>
+
+                                            <div class="col-lg-3">
+                                                <label asp-for="PatientAuxiliarAccessoryTypes"></label>
+                                                <select asp-for="PatientAuxiliarAccessoryTypes" class="form-control filterSelect" style="width: 100%"
+                                                        data-theme="bootstrap"
+                                                        data-width="resolve"
+                                                        data-language="pt-BR"
+                                                        data-ajax--url="/api/AuxiliarAccessoryType/select2Get"
+                                                        data-ajax--data-type="json"
+                                                        data-placeholder="Acessórios Auxiliares">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <button type="reset" class="btn btn-secondary">

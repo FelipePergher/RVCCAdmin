@@ -74,6 +74,8 @@ namespace RVCC.Models.ViewModel
 
         public IEnumerable<PatientExpenseTypeViewModel> PatientExpenseTypes { get; set; }
 
+        public IEnumerable<PatientAuxiliarAccessoryTypeViewModel> PatientAuxiliarAccessoryTypes { get; set; }
+
         public IEnumerable<PatientBenefitViewModel> Benefits { get; set; }
 
         public IEnumerable<StayViewModel> Stays { get; set; }

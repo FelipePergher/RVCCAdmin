@@ -1,0 +1,24 @@
+﻿@model RVCC.Models.SearchModel.PatientAuxiliarAccessoryTypeSearchModel
+
+<div class="card">
+    <div class="card-header" data-toggle="collapse" data-target="#patientAuxiliarAccessoryTypeCollapse" aria-expanded="true">
+        <span class="fa fa-universal-access"></span>Acessórios Auxiliares
+
+        <div class="card-header-actions">
+            <a class="card-header-action btn-minimize" href="#">
+                <span class="fa fa-minus"></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body collapse" id="patientAuxiliarAccessoryTypeCollapse">
+        <div class="form-inline float-right">
+            <a id="addPatientAuxiliarAccessoryTypeButton" asp-action="AddPatientAuxiliarAccessoryType" asp-controller="PatientAuxiliarAccessoryType" asp-route-id="@Model.PatientId" data-title="Adicionar Acessório Auxiliar" class="btn btn-primary"
+               data-toggle="modal" data-target="#modal-action">
+                <span class="fa fa-plus"></span> Adicionar Acessório Auxiliar
+            </a>
+        </div>
+
+        <table class="table table-bordered table-striped text-center" id="patientAuxiliarAccessoryTypeTable" aria-describedby="Tabela de Acessórios Auxiliares"></table>
+    </div>
+</div>
