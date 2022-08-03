@@ -92,12 +92,9 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/ServiceType/EditServiceType/{serviceType.ServiceTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Serviço' class='dropdown-item editServiceTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/ServiceType/DeleteServiceType' data-id='{serviceType.ServiceTypeId}' " +
-                           $"data-relation='{serviceType.PatientInformationServiceTypes.Count > 0}' class='dropdown-item deleteServiceTypeButton'>" +
-                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/ServiceType/DeleteServiceType' data-id='{serviceType.ServiceTypeId}' " +
+                       $"data-relation='{serviceType.PatientInformationServiceTypes.Count > 0}' class='dropdown-item deleteServiceTypeButton'>" +
+                       "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

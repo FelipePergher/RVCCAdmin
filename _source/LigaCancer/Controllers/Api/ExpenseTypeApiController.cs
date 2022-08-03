@@ -93,12 +93,9 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/ExpenseType/EditExpenseType/{expenseType.ExpenseTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Despesa' class='dropdown-item editExpenseTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/ExpenseType/DeleteExpenseType' data-id='{expenseType.ExpenseTypeId}' " +
-                           $"data-relation='{expenseType.PatientExpenseTypes.Count > 0}' class='dropdown-item deleteExpenseTypeButton'>" +
-                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/ExpenseType/DeleteExpenseType' data-id='{expenseType.ExpenseTypeId}' " +
+                       $"data-relation='{expenseType.PatientExpenseTypes.Count > 0}' class='dropdown-item deleteExpenseTypeButton'>" +
+                       "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

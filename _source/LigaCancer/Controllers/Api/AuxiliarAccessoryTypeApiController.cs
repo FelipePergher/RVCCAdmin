@@ -92,12 +92,9 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/AuxiliarAccessoryType/EditAuxiliarAccessoryType/{auxiliarAccessoryType.AuxiliarAccessoryTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Acessório Auxiliar' class='dropdown-item editAuxiliarAccessoryTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/AuxiliarAccessoryType/DeleteAuxiliarAccessoryType' data-id='{auxiliarAccessoryType.AuxiliarAccessoryTypeId}' " +
-                           $"data-relation='{auxiliarAccessoryType.PatientAuxiliarAccessoryTypes.Count > 0}' class='dropdown-item deleteAuxiliarAccessoryTypeButton'>" +
-                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/AuxiliarAccessoryType/DeleteAuxiliarAccessoryType' data-id='{auxiliarAccessoryType.AuxiliarAccessoryTypeId}' " +
+                       $"data-relation='{auxiliarAccessoryType.PatientAuxiliarAccessoryTypes.Count > 0}' class='dropdown-item deleteAuxiliarAccessoryTypeButton'>" +
+                       "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

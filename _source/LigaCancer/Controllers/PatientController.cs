@@ -412,7 +412,6 @@ namespace RVCC.Controllers
             return PartialView("Partials/_AddPatientInformation", patientInformationForm);
         }
 
-        [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
         [HttpGet]
         public async Task<IActionResult> AddSocialObservation(string id)
         {
