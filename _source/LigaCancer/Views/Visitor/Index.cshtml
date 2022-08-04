@@ -1,0 +1,100 @@
+﻿@model RVCC.Models.SearchModel.VisitorSearchModel
+@{
+    ViewData["Title"] = "Visitantes";
+}
+
+@section styles {
+    <environment names="Development">
+        <link href="~/dist/css/visitor.bundle.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/dist/css/visitor.bundle.css" asp-append-version="true" rel="stylesheet" />
+    </environment>
+}
+
+<main class="main">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            Visitantes
+        </li>
+    </ol>
+    <div class="container-fluid">
+        <div id="ui-view" style="opacity: 1;">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="fas fa-filter"></span> Pesquisar
+                                <div class="card-header-actions">
+                                    <a class="card-header-action btn-minimize" href="#" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="true">
+                                        <span class="fa fa-minus"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show" id="filterCollapse">
+                                <form id="searchForm">
+                                    <div class="form-row form-group">
+                                        <div class="col-lg-3">
+                                            <label asp-for="Name"></label>
+                                            <input asp-for="Name" class="form-control" placeholder="Nome" />
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label asp-for="CPF"></label>
+                                            <input asp-for="CPF" class="form-control" placeholder="CPF" />
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label asp-for="Phone"></label>
+                                            <input asp-for="Phone" class="form-control" placeholder="Telefone" />
+                                        </div>
+                                        <div class="col-lg-3 filter-button">
+                                            <button type="reset" class="btn btn-secondary">
+                                                <span class="fas fa-eraser"></span> Limpar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <span class="fas fa-filter"></span> Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="fas fa-user-md"></span> Visitantes
+                            </div>
+                            <div class="card-body">
+                                <div class="form-inline float-right">
+                                    <a id="addVisitorButton" asp-action="AddVisitor" data-title="Adicionar Visitante" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <span class="fa fa-plus"></span> Adicionar Visitante
+                                    </a>
+                                </div>
+
+                                <table class="table table-bordered table-striped text-center" id="visitorTable" aria-describedby="Tabela de médicos"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/col-->
+
+            </div>
+            <!--/row-->
+
+        </div>
+    </div>
+    <!-- /.conainer-fluid -->
+</main>
+
+<partial name="_Modal" />
+
+@section scripts {
+    <environment names="Development">
+        <script src="~/dist/js/visitor.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/visitor.bundle.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -173,6 +173,10 @@ namespace RVCC
             services.AddTransient<IDataRepository<Setting>, SettingRepository>();
             services.AddTransient<IDataRepository<SaleShirt2020>, SaleShirt2020Repository>();
             services.AddTransient<UserResolverService>();
+
+            services.AddTransient<IDataRepository<Visitor>, VisitorRepository>();
+            services.AddTransient<IDataRepository<AttendanceType>, AttendanceTypeRepository>();
+            services.AddTransient<IDataRepository<VisitorAttendance>, VisitorAttendanceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

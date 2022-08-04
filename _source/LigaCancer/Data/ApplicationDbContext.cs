@@ -73,6 +73,12 @@ namespace RVCC.Data
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<Visitor> Visitors { get; set; }
+
+        public DbSet<AttendanceType> AttendanceTypes { get; set; }
+
+        public DbSet<VisitorAttendance> VisitorAttendances { get; set; }
+
         #endregion
 
         #region Shirt Sale 2020

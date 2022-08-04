@@ -28,7 +28,10 @@ module.exports = {
         'patient-benefit': ['./src/sass/patient-benefit/index.scss', './src/scripts/patient-benefit/index.js'],
         'stay': ['./src/sass/stay/index.scss', './src/scripts/stay/index.js'],
         'admin': ['./src/sass/admin/index.scss', './src/scripts/admin/index.js'],
-        'sale-shirt-2020': ['./src/sass/sale-shirt-2020/index.scss', './src/scripts/sale-shirt-2020/index.js']
+        'sale-shirt-2020': ['./src/sass/sale-shirt-2020/index.scss', './src/scripts/sale-shirt-2020/index.js'],
+        'visitor': ['./src/sass/visitor/index.scss', './src/scripts/visitor/index.js'],
+        'attendance-type': ['./src/sass/attendance-type/index.scss', './src/scripts/attendance-type/index.js'],
+        'visitor-attendance': ['./src/sass/visitor-attendance/index.scss', './src/scripts/visitor-attendance/index.js']
     },
     plugins: [
         new CleanWebpackPlugin(),
