@@ -28,6 +28,7 @@ namespace RVCC.Models.FormModel
         public string VisitorId { get; set; }
 
         [Display(Name = "Data")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "Insira uma data válida")]
@@ -38,7 +39,7 @@ namespace RVCC.Models.FormModel
         public string Attendance { get; set; }
 
         [Display(Name = "Observação")]
-        [Range(1, 999999, ErrorMessage = "Quantidade deve ser maior que 0")]
+        [StringLength(1000, ErrorMessage = "O {0} deve ter no máximo {1} caracteres.")]
         public string Observation { get; set; }
 
         public List<SelectListItem> Visitors { get; set; }

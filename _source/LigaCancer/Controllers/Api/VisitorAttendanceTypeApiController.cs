@@ -33,7 +33,7 @@ namespace RVCC.Controllers.Api
         }
 
         [HttpPost("~/api/visitorAttendanceType/search")]
-        public async Task<IActionResult> VisitorAttendanceSearch([FromForm] SearchModel searchModel, [FromForm] VisitorAttendanceTypeSearchModel visitorAttendanceTypeSearchModel)
+        public async Task<IActionResult> VisitorAttendanceTypeSearch([FromForm] SearchModel searchModel, [FromForm] VisitorAttendanceTypeSearchModel visitorAttendanceTypeSearchModel)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace RVCC.Controllers.Api
                     Date = x.AttendanceDate.ToDateString(),
                     AttendanceType = x.AttendanceType.Name,
                     Observation = x.Observation,
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = string.IsNullOrEmpty(visitorAttendanceTypeSearchModel.VisitorId)
@@ -68,13 +68,13 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(VisitorAttendanceType visitorAttendance, ClaimsPrincipal user)
+        private static string GetActionsHtml(VisitorAttendanceType visitorAttendanceType)
         {
-            string options = $"<a href='/VisitorAttendance/EditVisitorAttendance/{visitorAttendance.VisitorAttendanceTypeId}' data-toggle='modal' data-target='#modal-action' " +
-                                                  "data-title='Editar Atendimento visitante ' class='dropdown-item editVisitorAttendanceButton'><span class='fas fa-edit'></span> Editar </a>";
+            string options = $"<a href='/VisitorAttendanceType/EditVisitorAttendanceType/{visitorAttendanceType.VisitorAttendanceTypeId}' data-toggle='modal' data-target='#modal-action' " +
+                                                  "data-title='Editar Atendimento visitante ' class='dropdown-item editVisitorAttendanceTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            options += $@"<a href='javascript:void(0);' data-url='/VisitorAttendance/DeleteVisitorAttendance' data-visitorAttendanceId='{visitorAttendance.VisitorAttendanceTypeId}' 
-                    class='deleteVisitorAttendanceButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
+            options += $@"<a href='javascript:void(0);' data-url='/VisitorAttendanceType/DeleteVisitorAttendanceType' data-visitorAttendanceTypeId='{visitorAttendanceType.VisitorAttendanceTypeId}' 
+                    class='deleteVisitorAttendanceTypeButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 $@"<div class='dropdown'>

@@ -23,7 +23,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -57,18 +57,18 @@ export default (function () {
                 { data: "cpf", title: "CPF", name: "CPF" },
                 { data: "phone", title: "Phone", name: "Phone" },
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editVisitorButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteVisitorButton").click(function (e) {
+                $(".deleteVisitorButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $('#visitorTable').attr('style', 'border-collapse: collapse !important');
+        $("#visitorTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -96,15 +96,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#visitorTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Visitante registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -130,15 +130,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#visitorTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Visitante atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -148,21 +148,21 @@ export default (function () {
         });
     }
 
-    function initDelete(url, id, relation) {
+    function initDelete(url, id) {
         let message = "Você não poderá reverter isso!";
 
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: message,
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#visitorTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O visitante foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

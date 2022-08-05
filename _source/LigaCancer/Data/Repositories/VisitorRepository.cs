@@ -139,7 +139,8 @@ namespace RVCC.Data.Repositories
         {
             return sortColumn switch
             {
-                "Quantity" => sortDirection == "asc" ? query.OrderBy(x => x.VisitorAttendanceTypes.Count) : query.OrderByDescending(x => x.VisitorAttendanceTypes.Count),
+                "CPF" => sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF),
+                "Phone" => sortDirection == "asc" ? query.OrderBy(x => x.Phone) : query.OrderByDescending(x => x.Phone),
                 _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
             };
         }
@@ -149,6 +150,16 @@ namespace RVCC.Data.Repositories
             if (!string.IsNullOrEmpty(visitorSearch.Name))
             {
                 query = query.Where(x => x.Name.Contains(visitorSearch.Name));
+            }
+
+            if (!string.IsNullOrEmpty(visitorSearch.CPF))
+            {
+                query = query.Where(x => x.CPF.Contains(visitorSearch.CPF));
+            }
+
+            if (!string.IsNullOrEmpty(visitorSearch.Phone))
+            {
+                query = query.Where(x => x.Phone.Contains(visitorSearch.Phone));
             }
 
             return query;

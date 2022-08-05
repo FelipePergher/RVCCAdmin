@@ -112,6 +112,7 @@ namespace RVCC.Controllers
                 VisitorId = $"{visitorAttendanceType.Visitor.Name}",
                 Date = visitorAttendanceType.AttendanceDate.ToString("dd/MM/yyyy"),
                 Attendance = visitorAttendanceType.AttendanceType.Name,
+                Observation = visitorAttendanceType.Observation
             };
 
             return PartialView("Partials/_EditVisitorAttendanceType", visitorAttendanceTypeForm);
@@ -123,8 +124,8 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id);
-                var dateTime = DateTime.Parse(visitorAttendanceTypeForm.Date);
-                visitorAttendanceType.AttendanceDate = dateTime;
+                visitorAttendanceType.AttendanceDate = DateTime.Parse(visitorAttendanceTypeForm.Date);
+                visitorAttendanceType.Observation = visitorAttendanceTypeForm.Observation;
 
                 TaskResult result = await _visitorAttendanceTypeTypeService.UpdateAsync(visitorAttendanceType);
                 if (result.Succeeded)
@@ -143,7 +144,7 @@ namespace RVCC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeletePatientBenefit(string id)
+        public async Task<IActionResult> DeleteVisitorAttendanceType(string id)
         {
             if (string.IsNullOrEmpty(id))
             {

@@ -197,9 +197,6 @@
     <Content Update="Views\User\Partials\_EditUser.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\VisitorAttendanceType\Partials\_Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Visitor\Partials\_EditVisitor.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

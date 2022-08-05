@@ -46,6 +46,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<AttendanceTypeViewModel> data = attendanceTypes.Select(x => new AttendanceTypeViewModel
                 {
                     Name = x.Name,
+                    Quantity = x.VisitorAttendanceTypes.Count(),
                     Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 

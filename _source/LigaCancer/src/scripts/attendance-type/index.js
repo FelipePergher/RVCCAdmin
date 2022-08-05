@@ -23,7 +23,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -52,19 +52,20 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "Actions", width: "20px", orderable: false },
                 { data: "name", title: "Nome", name: "Name" },
+                { data: "quantity", title: "Visitantes", name: "Quantity" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editAttendanceTypeButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteAttendanceTypeButton").click(function (e) {
+                $(".deleteAttendanceTypeButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $('#attendanceTypeTable').attr('style', 'border-collapse: collapse !important');
+        $("#attendanceTypeTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -92,15 +93,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#attendanceTypeTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Tipo de atendimento registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -126,15 +127,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#attendanceTypeTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Tipo de atendimento atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -147,21 +148,21 @@ export default (function () {
     function initDelete(url, id, relation) {
         let message = "Você não poderá reverter isso!";
         if (relation) {
-            message = "Este Tipo de atendimento está atribuído a visita, deseja prosseguir mesmo assim?";
+            message = "Este Tipo de atendimento está atribuído a visitante, deseja prosseguir mesmo assim?";
         }
 
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: message,
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#attendanceTypeTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O Tipo de atendimento foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

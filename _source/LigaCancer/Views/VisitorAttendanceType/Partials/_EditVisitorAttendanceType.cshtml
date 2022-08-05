@@ -1,18 +1,18 @@
 ﻿@model RVCC.Models.FormModel.VisitorAttendanceTypeFormModel
 
-<form id="editVisitorAttendanceForm" asp-action="EditVisitorAttendance" method="post" > 
-    
+<form id="editVisitorAttendanceTypeForm" asp-action="EditVisitorAttendanceType" method="post">
+
     <div class="modal-body form-horizontal">
-        
-        <input asp-for="VisitorIdHidden"/>
-        <input asp-for="AttendanceTypeIdHidden"/>
+
+        <input asp-for="VisitorIdHidden" />
+        <input asp-for="AttendanceTypeIdHidden" />
 
         <div class="form-group">
             <label asp-for="VisitorId" class="control-label"></label>
-            <input asp-for="VisitorId" class="form-control" value="@Model.VisitorId" readonly=""/>
+            <input asp-for="VisitorId" class="form-control" value="@Model.VisitorId" readonly="" />
             <span asp-validation-for="VisitorId" class="text-danger"></span>
         </div>
-        
+
         <div class="form-group">
             <label asp-for="Attendance" class="control-label"></label>
             <input asp-for="Attendance" class="form-control" value="@Model.Attendance" readonly="" />
@@ -21,17 +21,17 @@
 
         <div class="form-group">
             <label asp-for="Date" class="control-label label-required"></label>
-            <input asp-for="Date" type="text" class="form-control" data-date-end-date="0d"/>
+            <input asp-for="Date" type="text" class="form-control" data-date-end-date="0d" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Observation" class="control-label label-required"></label>
-            <input asp-for="Observation" class="form-control"/>
+            <label asp-for="Observation" class="control-label"></label>
+            <textarea asp-for="Observation" class="form-control" rows="5"></textarea>
             <span asp-validation-for="Observation" class="text-danger"></span>
         </div>
     </div>
 
-    <partial name="_ModalFooter"  />
+    <partial name="_ModalFooter" />
 
 </form>

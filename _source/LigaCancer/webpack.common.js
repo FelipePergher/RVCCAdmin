@@ -33,9 +33,9 @@ module.exports = {
         "stay": ["./src/sass/stay/index.scss", "./src/scripts/stay/index.js"],
         "admin": ["./src/sass/admin/index.scss", "./src/scripts/admin/index.js"],
         "sale-shirt-2020": ["./src/sass/sale-shirt-2020/index.scss", "./src/scripts/sale-shirt-2020/index.js"],
-        'visitor': ['./src/sass/visitor/index.scss', './src/scripts/visitor/index.js'],
-        'attendance-type': ['./src/sass/attendance-type/index.scss', './src/scripts/attendance-type/index.js'],
-        'visitor-attendance': ['./src/sass/visitor-attendance/index.scss', './src/scripts/visitor-attendance/index.js']
+        "visitor": ["./src/sass/visitor/index.scss", "./src/scripts/visitor/index.js"],
+        "attendance-type": ["./src/sass/attendance-type/index.scss", "./src/scripts/attendance-type/index.js"],
+        "visitor-attendance-type": ["./src/sass/visitor-attendance-type/index.scss", "./src/scripts/visitor-attendance-type/index.js"]
     },
     plugins: [
         new CleanWebpackPlugin(),

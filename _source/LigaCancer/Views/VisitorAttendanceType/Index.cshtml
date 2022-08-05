@@ -1,14 +1,14 @@
 ﻿@model RVCC.Models.SearchModel.VisitorAttendanceTypeSearchModel
 @{
-    ViewData["Title"] = "Visitantes do Atendimento";
+    ViewData["Title"] = "Atendimentos";
 }
 
 @section styles {
     <environment names="Development">
-        <link href="~/dist/css/visitor-attendance.bundle.css" rel="stylesheet" />
+        <link href="~/dist/css/visitor-attendance-type.bundle.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="~/dist/css/visitor-attendance.bundle.css" asp-append-version="true" rel="stylesheet" />
+        <link href="~/dist/css/visitor-attendance-type.bundle.css" asp-append-version="true" rel="stylesheet" />
     </environment>
 }
 
@@ -80,12 +80,12 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-inline float-right">
-                                    <a id="addVisitorAttendanceButton" asp-action="AddVisitorAttendance" data-title="Adicionar Visitante Atendimento " data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                        <span class="fa fa-plus"></span> Adicionar Visitante ao Atendimento
+                                    <a id="addVisitorAttendanceTypeButton" asp-action="AddVisitorAttendanceType" data-title="Adicionar Visitante Atendimento " data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <span class="fa fa-plus"></span> Adicionar Atendimento
                                     </a>
                                 </div>
 
-                                <table class="table table-bordered table-striped text-center" id="visitorAttendanceTable" aria-describedby="Tabela de visitantes do atendimento"></table>
+                                <table class="table table-bordered table-striped text-center" id="visitorAttendanceTypeTable" aria-describedby="Tabela de visitantes do atendimento"></table>
                             </div>
 
                         </div>
@@ -105,9 +105,9 @@
 
 @section scripts {
     <environment names="Development">
-        <script src="~/dist/js/visitor-attendance.bundle.js"></script>
+        <script src="~/dist/js/visitor-attendance-type.bundle.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/dist/js/visitor-attendance.bundle.js" asp-append-version="true"></script>
+        <script src="~/dist/js/visitor-attendance-type.bundle.js" asp-append-version="true"></script>
     </environment>
 }
