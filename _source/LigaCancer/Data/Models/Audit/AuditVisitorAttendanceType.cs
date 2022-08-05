@@ -1,4 +1,4 @@
-﻿// <copyright file="AuditVisitor.cs" company="Doffs">
+﻿// <copyright file="AuditVisitorAttendanceType.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -8,20 +8,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Data.Models.Audit
 {
-    public class AuditVisitor : IAudit, IVisitor
+    public class AuditVisitorAttendanceType : IAudit, IVisitorAttendanceType
     {
         [Key]
-        public int AuditVisitorId { get; set; }
+        public int AuditVisitorAttendanceTypeId { get; set; }
 
-        #region IVisitor
+        #region IVisitorAttendanceType
+
+        public int VisitorAttendanceTypeId { get; set; }
 
         public int VisitorId { get; set; }
 
-        public string Name { get; set; }
+        public int AttendanceTypeId { get; set; }
 
-        public string CPF { get; set; }
+        public DateTime AttendanceDate { get; set; }
 
-        public string Phone { get; set; }
+        public string Observation { get; set; }
 
         #endregion
 

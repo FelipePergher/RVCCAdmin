@@ -7,5 +7,7 @@ namespace RVCC.Data.Interfaces
     public interface IAttendanceType
     {
         public int AttendanceTypeId { get; set; }
+
+        public string Name { get; set; }
     }
 }

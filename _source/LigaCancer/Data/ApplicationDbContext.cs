@@ -73,11 +73,15 @@ namespace RVCC.Data
 
         public DbSet<Setting> Settings { get; set; }
 
+        #endregion
+
+        #region Visitor
+
         public DbSet<Visitor> Visitors { get; set; }
 
         public DbSet<AttendanceType> AttendanceTypes { get; set; }
 
-        public DbSet<VisitorAttendance> VisitorAttendances { get; set; }
+        public DbSet<VisitorAttendanceType> VisitorAttendanceTypes { get; set; }
 
         #endregion
 
@@ -130,6 +134,12 @@ namespace RVCC.Data
         public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
 
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
+
+        public DbSet<AuditVisitor> AuditVisitors { get; set; }
+
+        public DbSet<AuditAttendanceType> AuditAttendanceTypes { get; set; }
+
+        public DbSet<AuditVisitorAttendanceType> AuditVisitorAttendanceTypes { get; set; }
 
         #endregion
 

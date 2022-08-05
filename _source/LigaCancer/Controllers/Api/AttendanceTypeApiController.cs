@@ -62,9 +62,9 @@ namespace RVCC.Controllers.Api
         }
 
         [HttpGet("~/api/AttendanceType/select2Get")]
-        public async Task<IActionResult> Select2GetCancerTypes(string term)
+        public async Task<IActionResult> Select2GetAttendanceTypes(string term)
         {
-            IEnumerable<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync(null, "FirstName", "asc", new AttendanceTypeSearchModel { Name = term });
+            IEnumerable<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync(null, "Name", "asc", new AttendanceTypeSearchModel { Name = term });
             var select2PagedResult = new Select2PagedResult
             {
                 Results = attendanceTypes.Select(x => new Select2Result
@@ -91,11 +91,8 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/AttendanceType/EditAttendanceType/{attendanceType.AttendanceTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Atendimento' class='dropdown-item editAttendanceTypeButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/AttendanceType/DeleteAttendanceType' data-id='{attendanceType.AttendanceTypeId}' class='dropdown-item deleteAttendanceTypeButton'>" +
-                             "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/AttendanceType/DeleteAttendanceType' data-id='{attendanceType.AttendanceTypeId}' class='dropdown-item deleteAttendanceTypeButton'>" +
+                         "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

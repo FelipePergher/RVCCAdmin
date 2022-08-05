@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendanceSearchModel.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceTypeSearchModel.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.SearchModel
 {
-    public class VisitorAttendanceSearchModel
+    public class VisitorAttendanceTypeSearchModel
     {
-        public VisitorAttendanceSearchModel()
+        public VisitorAttendanceTypeSearchModel()
         {
             DateFrom = DateTime.Now.AddDays(-7).ToString("dd/MM/yyyy");
             DateTo = DateTime.Now.ToString("dd/MM/yyyy");

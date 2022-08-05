@@ -9,7 +9,6 @@ using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.Domain;
 using RVCC.Models.FormModel;
-using RVCC.Models.SearchModel;
 using System.Linq;
 using System.Threading.Tasks;
 

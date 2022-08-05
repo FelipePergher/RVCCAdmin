@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendanceApiController.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceTypeApiController.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -21,19 +21,19 @@ namespace RVCC.Controllers.Api
 {
     [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [ApiController]
-    public class VisitorAttendanceApiController : Controller
+    public class VisitorAttendanceTypeApiController : Controller
     {
-        private readonly IDataRepository<VisitorAttendance> _visitorAttendanceService;
-        private readonly ILogger<VisitorAttendanceApiController> _logger;
+        private readonly IDataRepository<VisitorAttendanceType> _visitorAttendanceTypeService;
+        private readonly ILogger<VisitorAttendanceTypeApiController> _logger;
 
-        public VisitorAttendanceApiController(IDataRepository<VisitorAttendance> visitorAttendanceService, ILogger<VisitorAttendanceApiController> logger)
+        public VisitorAttendanceTypeApiController(IDataRepository<VisitorAttendanceType> visitorAttendanceTypeService, ILogger<VisitorAttendanceTypeApiController> logger)
         {
-            _visitorAttendanceService = visitorAttendanceService;
+            _visitorAttendanceTypeService = visitorAttendanceTypeService;
             _logger = logger;
         }
 
-        [HttpPost("~/api/visitorAttendance/search")]
-        public async Task<IActionResult> VisitorAttendanceSearch([FromForm] SearchModel searchModel, [FromForm] VisitorAttendanceSearchModel visitorAttendanceSearchModel)
+        [HttpPost("~/api/visitorAttendanceType/search")]
+        public async Task<IActionResult> VisitorAttendanceSearch([FromForm] SearchModel searchModel, [FromForm] VisitorAttendanceTypeSearchModel visitorAttendanceTypeSearchModel)
         {
             try
             {
@@ -42,19 +42,19 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<VisitorAttendance> visitorAttendances = await _visitorAttendanceService.GetAllAsync(new[] { nameof(VisitorAttendance.Visitor), nameof(VisitorAttendance.AttendanceType) }, sortColumn, sortDirection, visitorAttendanceSearchModel);
+                IEnumerable<VisitorAttendanceType> visitorAttendances = await _visitorAttendanceTypeService.GetAllAsync(new[] { nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) }, sortColumn, sortDirection, visitorAttendanceTypeSearchModel);
                 IEnumerable<VisitorAttendanceViewModel> data = visitorAttendances.Select(x => new VisitorAttendanceViewModel
                 {
-                    Visitor = $"{x.Visitor.Name}",
-                    Date = x.AttendanceDate.ToString("dd/MM/yyyy"),
+                    Visitor = x.Visitor.Name,
+                    Date = x.AttendanceDate.ToDateString(),
                     AttendanceType = x.AttendanceType.Name,
                     Observation = x.Observation,
                     Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
-                int recordsTotal = string.IsNullOrEmpty(visitorAttendanceSearchModel.VisitorId)
-                    ? _visitorAttendanceService.Count()
-                    : ((VisitorAttendanceRepository)_visitorAttendanceService).CountByVisitor(int.Parse(visitorAttendanceSearchModel.VisitorId));
+                int recordsTotal = string.IsNullOrEmpty(visitorAttendanceTypeSearchModel.VisitorId)
+                    ? _visitorAttendanceTypeService.Count()
+                    : ((VisitorAttendanceTypeRepository)_visitorAttendanceTypeService).CountByVisitor(int.Parse(visitorAttendanceTypeSearchModel.VisitorId));
                 int recordsFiltered = visitorAttendances.Count();
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
@@ -68,16 +68,13 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(VisitorAttendance visitorAttendance, ClaimsPrincipal user)
+        private static string GetActionsHtml(VisitorAttendanceType visitorAttendance, ClaimsPrincipal user)
         {
             string options = $"<a href='/VisitorAttendance/EditVisitorAttendance/{visitorAttendance.VisitorAttendanceTypeId}' data-toggle='modal' data-target='#modal-action' " +
                                                   "data-title='Editar Atendimento visitante ' class='dropdown-item editVisitorAttendanceButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $@"<a href='javascript:void(0);' data-url='/VisitorAttendance/DeleteVisitorAttendance' data-visitorAttendanceId='{visitorAttendance.VisitorAttendanceTypeId}' 
+            options += $@"<a href='javascript:void(0);' data-url='/VisitorAttendance/DeleteVisitorAttendance' data-visitorAttendanceId='{visitorAttendance.VisitorAttendanceTypeId}' 
                     class='deleteVisitorAttendanceButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
 
             string actionsHtml =
                 $@"<div class='dropdown'>

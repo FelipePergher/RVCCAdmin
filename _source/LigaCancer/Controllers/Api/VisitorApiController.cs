@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.Domain;
-using RVCC.Data.Repositories;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
 using System;
@@ -42,7 +41,7 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<Visitor> visitors = await _visitorService.GetAllAsync(null, sortColumn, sortDirection, visitorSearch);
+                IEnumerable<Visitor> visitors = await _visitorService.GetAllAsync(new[] { nameof(Visitor.VisitorAttendanceTypes) }, sortColumn, sortDirection, visitorSearch);
                 IEnumerable<VisitorViewModel> data = visitors.Select(x => new VisitorViewModel
                 {
                     Name = x.Name,
@@ -52,7 +51,7 @@ namespace RVCC.Controllers.Api
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _visitorService.Count();
-                int recordsFiltered = _visitorService.Count();
+                int recordsFiltered = visitors.Count();
 
                 return Ok(new { searchModel.Draw, data, recordsTotal, recordsFiltered });
             }
@@ -62,18 +61,16 @@ namespace RVCC.Controllers.Api
                 return BadRequest();
             }
         }
+
         #region Private Methods
 
         private static string GetActionsHtml(Visitor visitor, ClaimsPrincipal user)
         {
             string options = $"<a href='/Visitor/EditVisitor/{visitor.VisitorId}' data-toggle='modal' data-target='#modal-action' " +
-                             "data-title='Editar Médico' class='dropdown-item editVisitorButton'><span class='fas fa-edit'></span> Editar </a>";
+                             "data-title='Editar Visitante' class='dropdown-item editVisitorButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/Visitor/DeleteVisitor' data-id='{visitor.VisitorId}' class='dropdown-item deleteVisitorButton'>" +
-                            "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/Visitor/DeleteVisitor' data-id='{visitor.VisitorId}' class='dropdown-item deleteVisitorButton'>" +
+                        "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

@@ -21,16 +21,16 @@ namespace RVCC.Controllers
 {
     [Authorize(Roles = Roles.AdminSecretarySocialAssistanceAuthorize)]
     [AutoValidateAntiforgeryToken]
-    public class VisitorAttendanceController : Controller
+    public class VisitorAttendanceTypeController : Controller
     {
-        private readonly IDataRepository<VisitorAttendance> _visitorAttendanceService;
+        private readonly IDataRepository<VisitorAttendanceType> _visitorAttendanceTypeTypeService;
         private readonly IDataRepository<Visitor> _visitorService;
         private readonly IDataRepository<AttendanceType> _attendanceTypeService;
-        private readonly ILogger<VisitorAttendanceController> _logger;
+        private readonly ILogger<VisitorAttendanceTypeController> _logger;
 
-        public VisitorAttendanceController(IDataRepository<VisitorAttendance> visitorAttendanceService, IDataRepository<Visitor> visitorService, IDataRepository<AttendanceType> attendanceTypeService, ILogger<VisitorAttendanceController> logger)
+        public VisitorAttendanceTypeController(IDataRepository<VisitorAttendanceType> visitorAttendanceTypeTypeService, IDataRepository<Visitor> visitorService, IDataRepository<AttendanceType> attendanceTypeService, ILogger<VisitorAttendanceTypeController> logger)
         {
-            _visitorAttendanceService = visitorAttendanceService;
+            _visitorAttendanceTypeTypeService = visitorAttendanceTypeTypeService;
             _visitorService = visitorService;
             _attendanceTypeService = attendanceTypeService;
             _logger = logger;
@@ -39,39 +39,39 @@ namespace RVCC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new VisitorAttendanceSearchModel());
+            return View(new VisitorAttendanceTypeSearchModel());
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddVisitorAttendance()
+        public async Task<IActionResult> AddVisitorAttendanceType()
         {
             List<Visitor> visitors = await _visitorService.GetAllAsync();
             List<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync();
-            var visitorAttendanceForm = new VisitorAttendanceFormModel
+            var visitorAttendanceTypeForm = new VisitorAttendanceTypeFormModel
             {
                 Visitors = visitors.Select(x => new SelectListItem($"{x.Name} ", x.VisitorId.ToString())).ToList(),
                 AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList()
             };
 
-            return PartialView("Partials/_AddVisitorAttendance", visitorAttendanceForm);
+            return PartialView("Partials/_AddVisitorAttendanceType", visitorAttendanceTypeForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVisitorAttendance(VisitorAttendanceFormModel visitorAttendanceForm)
+        public async Task<IActionResult> AddVisitorAttendanceType(VisitorAttendanceTypeFormModel visitorAttendanceTypeForm)
         {
             if (ModelState.IsValid)
             {
-                Visitor visitor = await _visitorService.FindByIdAsync(visitorAttendanceForm.VisitorId);
-                var dateTime = DateTime.Parse(visitorAttendanceForm.Date);
-                var visitorAttendance = new VisitorAttendance
+                Visitor visitor = await _visitorService.FindByIdAsync(visitorAttendanceTypeForm.VisitorId);
+                var dateTime = DateTime.Parse(visitorAttendanceTypeForm.Date);
+                var visitorAttendanceType = new VisitorAttendanceType
                 {
                     AttendanceDate = dateTime,
                     VisitorId = visitor.VisitorId,
-                    AttendanceTypeId = int.Parse(visitorAttendanceForm.Attendance),
-                    Observation = visitorAttendanceForm.Observation
+                    AttendanceTypeId = int.Parse(visitorAttendanceTypeForm.Attendance),
+                    Observation = visitorAttendanceTypeForm.Observation
                 };
 
-                TaskResult result = await _visitorAttendanceService.CreateAsync(visitorAttendance);
+                TaskResult result = await _visitorAttendanceTypeTypeService.CreateAsync(visitorAttendanceType);
 
                 if (result.Succeeded)
                 {
@@ -84,49 +84,49 @@ namespace RVCC.Controllers
 
             List<Visitor> visitors = await _visitorService.GetAllAsync();
             List<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync();
-            visitorAttendanceForm.Visitors = visitors.Select(x => new SelectListItem($"{x.Name}", x.VisitorId.ToString())).ToList();
-            visitorAttendanceForm.AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList();
+            visitorAttendanceTypeForm.Visitors = visitors.Select(x => new SelectListItem($"{x.Name}", x.VisitorId.ToString())).ToList();
+            visitorAttendanceTypeForm.AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList();
 
-            return PartialView("Partials/_AddVisitorAttendance", visitorAttendanceForm);
+            return PartialView("Partials/_AddVisitorAttendanceType", visitorAttendanceTypeForm);
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditVisitorAttendance(string id)
+        public async Task<IActionResult> EditVisitorAttendanceType(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
 
-            VisitorAttendance visitorAttendance = await _visitorAttendanceService.FindByIdAsync(id, new[] { nameof(VisitorAttendance.Visitor), nameof(VisitorAttendance.AttendanceType) });
+            VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id, new[] { nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) });
 
-            if (visitorAttendance == null)
+            if (visitorAttendanceType == null)
             {
                 return NotFound();
             }
 
-            var visitorAttendanceForm = new VisitorAttendanceFormModel
+            var visitorAttendanceTypeForm = new VisitorAttendanceTypeFormModel
             {
-                VisitorIdHidden = visitorAttendance.VisitorId,
-                AttendanceTypeIdHidden = visitorAttendance.AttendanceTypeId,
-                VisitorId = $"{visitorAttendance.Visitor.Name}",
-                Date = visitorAttendance.AttendanceDate.ToString("dd/MM/yyyy"),
-                Attendance = visitorAttendance.AttendanceType.Name,
+                VisitorIdHidden = visitorAttendanceType.VisitorId,
+                AttendanceTypeIdHidden = visitorAttendanceType.AttendanceTypeId,
+                VisitorId = $"{visitorAttendanceType.Visitor.Name}",
+                Date = visitorAttendanceType.AttendanceDate.ToString("dd/MM/yyyy"),
+                Attendance = visitorAttendanceType.AttendanceType.Name,
             };
 
-            return PartialView("Partials/_EditVisitorAttendance", visitorAttendanceForm);
+            return PartialView("Partials/_EditVisitorAttendanceType", visitorAttendanceTypeForm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditVisitorAttendance(string id, VisitorAttendanceFormModel visitorAttendanceForm)
+        public async Task<IActionResult> EditVisitorAttendanceType(string id, VisitorAttendanceTypeFormModel visitorAttendanceTypeForm)
         {
             if (ModelState.IsValid)
             {
-                VisitorAttendance visitorAttendance = await _visitorAttendanceService.FindByIdAsync(id);
-                var dateTime = DateTime.Parse(visitorAttendanceForm.Date);
-                visitorAttendance.AttendanceDate = dateTime;
+                VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id);
+                var dateTime = DateTime.Parse(visitorAttendanceTypeForm.Date);
+                visitorAttendanceType.AttendanceDate = dateTime;
 
-                TaskResult result = await _visitorAttendanceService.UpdateAsync(visitorAttendance);
+                TaskResult result = await _visitorAttendanceTypeTypeService.UpdateAsync(visitorAttendanceType);
                 if (result.Succeeded)
                 {
                     return Ok();
@@ -137,9 +137,9 @@ namespace RVCC.Controllers
             }
 
             List<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync();
-            visitorAttendanceForm.AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList();
+            visitorAttendanceTypeForm.AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList();
 
-            return PartialView("Partials/_EditVisitorAttendance", visitorAttendanceForm);
+            return PartialView("Partials/_EditVisitorAttendanceType", visitorAttendanceTypeForm);
         }
 
         [HttpPost]
@@ -150,14 +150,14 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            VisitorAttendance visitorAttendance = await _visitorAttendanceService.FindByIdAsync(id);
+            VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id);
 
-            if (visitorAttendance == null)
+            if (visitorAttendanceType == null)
             {
                 return NotFound();
             }
 
-            TaskResult result = await _visitorAttendanceService.DeleteAsync(visitorAttendance);
+            TaskResult result = await _visitorAttendanceTypeTypeService.DeleteAsync(visitorAttendanceType);
 
             if (result.Succeeded)
             {

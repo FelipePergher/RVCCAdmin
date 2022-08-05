@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendanceRepository.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceTypeRepository.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -14,28 +14,28 @@ using System.Threading.Tasks;
 
 namespace RVCC.Data.Repositories
 {
-    public class VisitorAttendanceRepository : IDataRepository<VisitorAttendance>
+    public class VisitorAttendanceTypeRepository : IDataRepository<VisitorAttendanceType>
     {
         private readonly ApplicationDbContext _context;
 
-        public VisitorAttendanceRepository(ApplicationDbContext context)
+        public VisitorAttendanceTypeRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public int Count()
         {
-            return _context.VisitorAttendances.Count();
+            return _context.VisitorAttendanceTypes.Count();
         }
 
         public int CountByVisitor(int visitorId)
         {
-            return _context.VisitorAttendances.Count(x => x.VisitorId == visitorId);
+            return _context.VisitorAttendanceTypes.Count(x => x.VisitorId == visitorId);
         }
 
-        public Task<VisitorAttendance> FindByIdAsync(string id, string[] includes = null)
+        public Task<VisitorAttendanceType> FindByIdAsync(string id, string[] includes = null)
         {
-            IQueryable<VisitorAttendance> query = _context.VisitorAttendances;
+            IQueryable<VisitorAttendanceType> query = _context.VisitorAttendanceTypes;
 
             if (includes != null)
             {
@@ -45,12 +45,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(query.FirstOrDefault(x => x.VisitorAttendanceTypeId == int.Parse(id)));
         }
 
-        public Task<TaskResult> CreateAsync(VisitorAttendance visitorAttendance)
+        public Task<TaskResult> CreateAsync(VisitorAttendanceType visitorAttendanceType)
         {
             var result = new TaskResult();
             try
             {
-                _context.VisitorAttendances.Add(visitorAttendance);
+                _context.VisitorAttendanceTypes.Add(visitorAttendanceType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -66,12 +66,12 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
-        public Task<TaskResult> DeleteAsync(VisitorAttendance visitorAttendance)
+        public Task<TaskResult> DeleteAsync(VisitorAttendanceType visitorAttendanceType)
         {
             var result = new TaskResult();
             try
             {
-                _context.VisitorAttendances.Remove(visitorAttendance);
+                _context.VisitorAttendanceTypes.Remove(visitorAttendanceType);
                 _context.SaveChanges();
                 result.Succeeded = true;
             }
@@ -87,9 +87,9 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
-        public Task<List<VisitorAttendance>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
+        public Task<List<VisitorAttendanceType>> GetAllAsync(string[] includes = null, string sortColumn = "", string sortDirection = "", object filter = null)
         {
-            IQueryable<VisitorAttendance> query = _context.VisitorAttendances;
+            IQueryable<VisitorAttendanceType> query = _context.VisitorAttendanceTypes;
 
             if (includes != null)
             {
@@ -98,18 +98,18 @@ namespace RVCC.Data.Repositories
 
             if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
             {
-                query = GetOrdinationVisitorAttendances(query, sortColumn, sortDirection);
+                query = GetOrdinationVisitorAttendanceTypes(query, sortColumn, sortDirection);
             }
 
             if (filter != null)
             {
-                query = GetFilteredVisitorAttendances(query, (VisitorAttendanceSearchModel)filter);
+                query = GetFilteredVisitorAttendanceTypes(query, (VisitorAttendanceTypeSearchModel)filter);
             }
 
             return Task.FromResult(query.ToList());
         }
 
-        public Task<TaskResult> UpdateAsync(VisitorAttendance visitorAttendance)
+        public Task<TaskResult> UpdateAsync(VisitorAttendanceType visitorAttendanceType)
         {
             var result = new TaskResult();
             try
@@ -131,14 +131,11 @@ namespace RVCC.Data.Repositories
 
         #region Private Methods
 
-        private static IQueryable<VisitorAttendance> GetOrdinationVisitorAttendances(IQueryable<VisitorAttendance> query, string sortColumn, string sortDirection)
+        private static IQueryable<VisitorAttendanceType> GetOrdinationVisitorAttendanceTypes(IQueryable<VisitorAttendanceType> query, string sortColumn, string sortDirection)
         {
             return sortColumn switch
             {
-                "Attendance" => sortDirection == "asc"
-                    ? query.OrderBy(x => x.Visitor.Name)
-                    : query.OrderByDescending(x => x.Visitor.Name),
-                "Date" => sortDirection == "asc"
+                "AttendanceDate" => sortDirection == "asc"
                     ? query.OrderBy(x => x.AttendanceDate)
                     : query.OrderByDescending(x => x.AttendanceDate),
                 "Observation" => sortDirection == "asc"
@@ -146,35 +143,15 @@ namespace RVCC.Data.Repositories
                     : query.OrderByDescending(x => x.Observation),
                 _ => sortDirection == "asc"
                     ? query.OrderBy(x => x.AttendanceType.Name)
-                    : query.OrderByDescending(x => x.AttendanceType.Name)
+                    : query.OrderByDescending(x => x.AttendanceType.Name),
             };
         }
 
-        private static IQueryable<VisitorAttendance> GetFilteredVisitorAttendances(IQueryable<VisitorAttendance> query, VisitorAttendanceSearchModel visitorAttendanceSearch)
+        private static IQueryable<VisitorAttendanceType> GetFilteredVisitorAttendanceTypes(IQueryable<VisitorAttendanceType> query, VisitorAttendanceTypeSearchModel visitorAttendanceTypeSearch)
         {
-            if (!string.IsNullOrEmpty(visitorAttendanceSearch.VisitorId))
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.VisitorId))
             {
-                query = query.Where(x => x.VisitorId == int.Parse(visitorAttendanceSearch.VisitorId));
-            }
-
-            if (!string.IsNullOrEmpty(visitorAttendanceSearch.Name))
-            {
-                query = query.Where(x => x.Visitor.Name.Contains(visitorAttendanceSearch.Name));
-            }
-
-            if (!string.IsNullOrEmpty(visitorAttendanceSearch.Attendance))
-            {
-                query = query.Where(x => x.AttendanceType.Name.Contains(visitorAttendanceSearch.Attendance));
-            }
-
-            if (visitorAttendanceSearch.DateFrom != null && string.IsNullOrEmpty(visitorAttendanceSearch.VisitorId))
-            {
-                query = query.Where(x => x.AttendanceDate.Date >= DateTime.Parse(visitorAttendanceSearch.DateFrom).Date);
-            }
-
-            if (visitorAttendanceSearch.DateTo != null && string.IsNullOrEmpty(visitorAttendanceSearch.VisitorId))
-            {
-                query = query.Where(x => x.AttendanceDate.Date <= DateTime.Parse(visitorAttendanceSearch.DateTo).Date);
+                query = query.Where(x => x.VisitorId == int.Parse(visitorAttendanceTypeSearch.VisitorId));
             }
 
             return query;

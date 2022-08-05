@@ -13,9 +13,11 @@ namespace RVCC.Data.Models.Audit
         [Key]
         public int AuditAttendanceTypeId { get; set; }
 
-        #region IBenefit
+        #region IAttendanceType
 
         public int AttendanceTypeId { get; set; }
+
+        public string Name { get; set; }
 
         #endregion
 

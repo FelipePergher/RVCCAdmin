@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendanceFormModel.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceTypeFormModel.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -10,9 +10,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.FormModel
 {
-    public class VisitorAttendanceFormModel
+    public class VisitorAttendanceTypeFormModel
     {
-        public VisitorAttendanceFormModel()
+        public VisitorAttendanceTypeFormModel()
         {
             Date = DateTime.Now.ToString("dd/MM/yyyy");
         }

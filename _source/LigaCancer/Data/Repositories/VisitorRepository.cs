@@ -91,6 +91,16 @@ namespace RVCC.Data.Repositories
                 query = includes.Aggregate(query, (current, inc) => current.Include(inc));
             }
 
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = GetOrdinationVisitor(query, sortColumn, sortDirection);
+            }
+
+            if (filter != null)
+            {
+                query = GetFilteredVisitors(query, (VisitorSearchModel)filter);
+            }
+
             return Task.FromResult(query.ToList());
         }
 
@@ -116,6 +126,11 @@ namespace RVCC.Data.Repositories
 
         #region Custom Methods
 
+        public Task<Visitor> FindByNameAsync(string name, int visitorId = -1)
+        {
+            return Task.FromResult(_context.Visitors.FirstOrDefault(x => x.Name == name && x.VisitorId != visitorId));
+        }
+
         #endregion
 
         #region Private Methods
@@ -124,27 +139,16 @@ namespace RVCC.Data.Repositories
         {
             return sortColumn switch
             {
-                "CPF" => sortDirection == "asc" ? query.OrderBy(x => x.CPF) : query.OrderByDescending(x => x.CPF),
-                "Name" => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name),
-                _ => sortDirection == "asc" ? query.OrderBy(x => x.Phone) : query.OrderByDescending(x => x.Phone),
+                "Quantity" => sortDirection == "asc" ? query.OrderBy(x => x.VisitorAttendanceTypes.Count) : query.OrderByDescending(x => x.VisitorAttendanceTypes.Count),
+                _ => sortDirection == "asc" ? query.OrderBy(x => x.Name) : query.OrderByDescending(x => x.Name)
             };
         }
 
-        private static IQueryable<Visitor> GetFilteredDoctors(IQueryable<Visitor> query, VisitorSearchModel visitorSearch)
+        private static IQueryable<Visitor> GetFilteredVisitors(IQueryable<Visitor> query, VisitorSearchModel visitorSearch)
         {
             if (!string.IsNullOrEmpty(visitorSearch.Name))
             {
                 query = query.Where(x => x.Name.Contains(visitorSearch.Name));
-            }
-
-            if (!string.IsNullOrEmpty(visitorSearch.CPF))
-            {
-                query = query.Where(x => x.CPF.Contains(visitorSearch.CPF));
-            }
-
-            if (!string.IsNullOrEmpty(visitorSearch.Phone))
-            {
-                query = query.Where(x => x.Phone.Contains(visitorSearch.Phone));
             }
 
             return query;

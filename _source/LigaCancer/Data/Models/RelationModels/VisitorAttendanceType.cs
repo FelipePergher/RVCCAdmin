@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendance.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceType.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -11,17 +11,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RVCC.Data.Models.RelationModels
 {
-    public class VisitorAttendance : RegisterData, IVisitorAttendanceType
+    public class VisitorAttendanceType : RegisterData, IVisitorAttendanceType
     {
-        public VisitorAttendance()
-        {
-        }
-
-        public VisitorAttendance(AttendanceType attendanceType)
-        {
-            AttendanceType = attendanceType;
-        }
-
         #region IVisitorAttendanceType
 
         [Key]
@@ -37,13 +28,14 @@ namespace RVCC.Data.Models.RelationModels
 
         #endregion
 
-        #region Relations
+        #region Relation
+
+        [ForeignKey(nameof(AttendanceTypeId))]
+        public AttendanceType AttendanceType { get; set; }
 
         [ForeignKey(nameof(VisitorId))]
         public Visitor Visitor { get; set; }
 
-        [ForeignKey(nameof(AttendanceTypeId))]
-        public AttendanceType AttendanceType { get; set; }
         #endregion
     }
 }

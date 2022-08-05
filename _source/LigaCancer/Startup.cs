@@ -134,6 +134,9 @@ namespace RVCC
                             }
                         })
                         .Map<SaleShirt2020, AuditSaleShirt2020>()
+                        .Map<Visitor, AuditVisitor>()
+                        .Map<AttendanceType, AuditAttendanceType>()
+                        .Map<VisitorAttendanceType, AuditVisitorAttendanceType>()
                         .AuditEntityAction<IAudit>((evt, entry, auditEntity) =>
                         {
                             auditEntity.AuditDate = DateTime.Now;
@@ -176,7 +179,7 @@ namespace RVCC
 
             services.AddTransient<IDataRepository<Visitor>, VisitorRepository>();
             services.AddTransient<IDataRepository<AttendanceType>, AttendanceTypeRepository>();
-            services.AddTransient<IDataRepository<VisitorAttendance>, VisitorAttendanceRepository>();
+            services.AddTransient<IDataRepository<VisitorAttendanceType>, VisitorAttendanceTypeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
