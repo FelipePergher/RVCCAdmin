@@ -101,6 +101,11 @@ namespace RVCC.Controllers
             {
                 Phone phone = await _phoneService.FindByIdAsync(id);
 
+                if (phone == null)
+                {
+                    return NotFound();
+                }
+
                 phone.Number = phoneForm.Number;
                 phone.PhoneType = phoneForm.PhoneType;
                 phone.ObservationNote = phoneForm.ObservationNote;

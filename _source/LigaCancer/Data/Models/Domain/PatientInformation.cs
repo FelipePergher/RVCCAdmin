@@ -20,6 +20,7 @@ namespace RVCC.Data.Models.Domain
             PatientInformationDoctors = new List<PatientInformationDoctor>();
             PatientInformationMedicines = new List<PatientInformationMedicine>();
             PatientInformationTreatmentPlaces = new List<PatientInformationTreatmentPlace>();
+            PatientInformationServiceTypes = new List<PatientInformationServiceType>();
         }
 
         [Key]
@@ -29,10 +30,10 @@ namespace RVCC.Data.Models.Domain
 
         public int PatientId { get; set; }
 
+        #region Relations
+
         [ForeignKey(nameof(PatientId))]
         public virtual Patient Patient { get; set; }
-
-        #region Relations
 
         public List<PatientInformationCancerType> PatientInformationCancerTypes { get; set; }
 
@@ -41,6 +42,8 @@ namespace RVCC.Data.Models.Domain
         public List<PatientInformationTreatmentPlace> PatientInformationTreatmentPlaces { get; set; }
 
         public List<PatientInformationMedicine> PatientInformationMedicines { get; set; }
+
+        public List<PatientInformationServiceType> PatientInformationServiceTypes { get; set; }
 
         #endregion
     }

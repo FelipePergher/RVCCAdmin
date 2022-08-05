@@ -41,7 +41,7 @@
                             <div class="card-header">
                                 <span class="fa fa-clipboard"></span> Perfil
                                 <a id="editPatientButton" asp-action="EditPatientProfile" asp-controller="Patient" asp-route-id="@Model.PatientId"
-                                   data-toggle='modal' data-target='#modal-action' data-title='Editar Paciente' class='btn btn-sm btn-primary float-right'>
+                                data-toggle='modal' data-target='#modal-action' data-title='Editar Paciente' class='btn btn-sm btn-primary float-right'>
                                     <span class='fas fa-edit'></span> Editar Perfil
                                 </a>
                             </div>
@@ -91,6 +91,18 @@
                                         <p>@Model.PatientProfile.Profession</p>
                                     </div>
                                 </div>
+
+                                @if (!string.IsNullOrEmpty(Model.PatientProfile.ImmediateNecessities))
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="font-weight-bold">Necessidades Imediatas</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@Model.PatientProfile.ImmediateNecessities (Salvo em: @Model.PatientProfile.ImmediateNecessitiesDateUpdated.ToDateString())</p>
+                                        </div>
+                                    </div>
+                                }
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -146,6 +158,14 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold">Casa de apoio</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>@(Model.PatientProfile.ForwardedToSupportHouse ? "Encaminhado" : "Não encaminhado")</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +180,7 @@
                                     <span class='fas fa-edit'></span> Editar Informação
                                 </a>
                             </div>
+
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4">
@@ -173,19 +194,30 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <div class="list-group" id="list-tab" role="tablist">
-                                            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="tab" href="#list-home"
-                                               role="tab" aria-controls="list-home" aria-selected="true">Cânceres</a>
-                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="tab" href="#list-profile"
-                                               role="tab" aria-controls="list-profile" aria-selected="false">Remédios</a>
-                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="tab" href="#list-messages"
-                                               role="tab" aria-controls="list-messages" aria-selected="false">Locais de tratamento</a>
-                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="tab" href="#list-settings"
-                                               role="tab" aria-controls="list-settings">Médicos</a>
+                                            <a class="list-group-item list-group-item-action active" id="listCancerTypeLabel" data-toggle="tab" href="#listCancerType" role="tab" aria-controls="listCancerType" aria-selected="true">
+                                                Cânceres
+                                            </a>
+
+                                            <a class="list-group-item list-group-item-action" id="listMedicineLabel" data-toggle="tab" href="#listMedicine" role="tab" aria-controls="listMedicine" aria-selected="false">
+                                                Remédios
+                                            </a>
+
+                                            <a class="list-group-item list-group-item-action" id="lisTreatmentPlaceLabel" data-toggle="tab" href="#listTreatmentPlace" role="tab" aria-controls="listTreatmentPlace" aria-selected="false">
+                                                Locais de tratamento
+                                            </a>
+
+                                            <a class="list-group-item list-group-item-action" id="listDoctorLabel" data-toggle="tab" href="#listDoctor" role="tab" aria-controls="listDoctor">
+                                                Médicos
+                                            </a>
+
+                                            <a class="list-group-item list-group-item-action" id="listServiceLabel" data-toggle="tab" href="#listServices" role="tab" aria-controls="listServices">
+                                                Serviços
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-8">
                                         <div class="tab-content h-100" id="nav-tabContent">
-                                            <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                                            <div class="tab-pane fade active show" id="listCancerType" role="tabpanel" aria-labelledby="listCancerTypeLabel">
                                                 <ul>
                                                     @foreach (var cancerType in Model.PatientInformation.CancerTypes)
                                                     {
@@ -193,7 +225,8 @@
                                                     }
                                                 </ul>
                                             </div>
-                                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+
+                                            <div class="tab-pane fade" id="listMedicine" role="tabpanel" aria-labelledby="listMedicineLabel">
                                                 <ul>
                                                     @foreach (var medicine in Model.PatientInformation.Medicines)
                                                     {
@@ -201,7 +234,8 @@
                                                     }
                                                 </ul>
                                             </div>
-                                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+
+                                            <div class="tab-pane fade" id="listTreatmentPlace" role="tabpanel" aria-labelledby="lisTreatmentPlaceLabel">
                                                 <ul>
                                                     @foreach (var treatmentPlace in Model.PatientInformation.TreatmentPlaces)
                                                     {
@@ -209,11 +243,21 @@
                                                     }
                                                 </ul>
                                             </div>
-                                            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+
+                                            <div class="tab-pane fade" id="listDoctor" role="tabpanel" aria-labelledby="listDoctorLabel">
                                                 <ul>
                                                     @foreach (var doctor in Model.PatientInformation.Doctors)
                                                     {
                                                         <li>@doctor</li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="listServices" role="tabpanel" aria-labelledby="listServiceLabel">
+                                                <ul>
+                                                    @foreach (var service in Model.PatientInformation.ServiceTypes)
+                                                    {
+                                                        <li>@service</li>
                                                     }
                                                 </ul>
                                             </div>
@@ -276,11 +320,15 @@
                     </div>
 
                     <div class="col-12">
-                        <partial name="~/Views/PatientBenefit/Partials/_Index.cshtml" />
+                        <partial name="~/Views/PatientExpenseType/Partials/_Index.cshtml" model="new PatientExpenseTypeSearchModel(Model.PatientId)" />
                     </div>
 
                     <div class="col-12">
-                        <partial name="~/Views/Presence/Partials/_Index.cshtml" />
+                        <partial name="~/Views/PatientAuxiliarAccessoryType/Partials/_Index.cshtml" model="new PatientAuxiliarAccessoryTypeSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/PatientBenefit/Partials/_Index.cshtml" />
                     </div>
 
                     <div class="col-12">
@@ -292,14 +340,9 @@
                     </div>
 
                 </div>
-                <!--/col-->
-
             </div>
-            <!--/row-->
-
         </div>
     </div>
-    <!-- /.conainer-fluid -->
 </main>
 
 <partial name="_Modal" />

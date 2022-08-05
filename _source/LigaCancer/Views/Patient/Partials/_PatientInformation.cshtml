@@ -7,6 +7,7 @@
             <input asp-for="TreatmentBeginDate" type="text" class="form-control" />
             <span asp-validation-for="TreatmentBeginDate" class="text-danger"></span>
         </div>
+
         <div class="form-group col-lg-12">
             <label asp-for="CancerTypes" class="control-label"></label>
             <select asp-for="CancerTypes" asp-items="Model.SelectCancerTypes" class="form-control patientInformationSelect" style="width: 100%"
@@ -18,6 +19,7 @@
                     data-allow-clear="true"></select>
             <span asp-validation-for="CancerTypes" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-12">
             <label asp-for="Medicines" class="control-label"></label>
             <select asp-for="Medicines" asp-items="Model.SelectMedicines" class="form-control patientInformationSelect" style="width: 100%"
@@ -29,6 +31,7 @@
                     data-allow-clear="true"></select>
             <span asp-validation-for="Medicines" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-12">
             <label asp-for="Doctors" class="control-label"></label>
             <select asp-for="Doctors" asp-items="Model.SelectDoctors" class="form-control patientInformationSelect" style="width: 100%"
@@ -40,6 +43,7 @@
                     data-allow-clear="true"></select>
             <span asp-validation-for="Doctors" class="text-danger"></span>
         </div>
+
         <div class="form-group col-lg-12">
             <label asp-for="TreatmentPlaces" class="control-label"></label>
             <select asp-for="TreatmentPlaces" asp-items="Model.SelectTreatmentPlaces" class="form-control patientInformationSelect" style="width: 100%"
@@ -50,6 +54,18 @@
                     data-tags="true"
                     data-allow-clear="true"></select>
             <span asp-validation-for="TreatmentPlaces" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-lg-12">
+            <label asp-for="ServiceTypes" class="control-label"></label>
+            <select asp-for="ServiceTypes" asp-items="Model.SelectServiceTypes" class="form-control patientInformationSelect" style="width: 100%"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Serviços"
+                    data-width="resolve"
+                    data-tags="true"
+                    data-allow-clear="true"></select>
+            <span asp-validation-for="ServiceTypes" class="text-danger"></span>
         </div>
     </div>
 </div>

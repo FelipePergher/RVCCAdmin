@@ -4,9 +4,9 @@ import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
-import 'select2';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
+import "select2";
 import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
 import "datatables.net-buttons/js/buttons.html5.min.js";
 
@@ -26,7 +26,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -62,26 +62,26 @@ export default (function () {
                 { data: "date", title: "Data do benefício", name: "Date" },
                 { data: "quantity", title: "Quantidade", name: "Quantity" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editPatientBenefitButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deletePatientBenefitButton").click(function (e) {
+                $(".deletePatientBenefitButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("patientbenefitid"));
                 });
             }
         });
 
-        $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
+        $("#patientBenefitTable").attr("style", "border-collapse: collapse !important");
 
-        $('#DateTo, #DateFrom').datepicker({
+        $("#DateTo, #DateFrom").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -100,13 +100,13 @@ export default (function () {
 
         $(".select2").select2();
 
-        $('#Date').datepicker({
+        $("#Date").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -123,15 +123,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#patientBenefitTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Benefício de paciente registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -144,13 +144,13 @@ export default (function () {
     function initEditForm() {
         $.validator.unobtrusive.parse("#editPatientBenefitForm");
 
-        $('#Date').datepicker({
+        $("#Date").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -167,15 +167,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#patientBenefitTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Benefício de paciente atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -187,17 +187,17 @@ export default (function () {
 
     function initDelete(url, patientBenefitId) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: patientBenefitId, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#patientBenefitTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O benefício de paciente foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

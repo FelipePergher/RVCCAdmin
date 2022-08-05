@@ -12,21 +12,25 @@
             <input asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="Surname" class="control-label label-required"></label>
             <input asp-for="Surname" class="form-control" />
             <span asp-validation-for="Surname" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="RG" class="control-label label-required"></label>
             <input asp-for="RG" class="form-control" />
             <span asp-validation-for="RG" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="CPF" class="control-label label-required"></label>
             <input asp-for="CPF" class="form-control" />
             <span asp-validation-for="CPF" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="Profession" class="control-label"></label>
             <input asp-for="Profession" class="form-control" />
@@ -44,6 +48,7 @@
             <select asp-for="Sex" asp-items="Html.GetEnumSelectList<Enums.Sex>()" class="form-control"></select>
             <span asp-validation-for="Sex" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="CivilState" class="control-label"></label>
             <select asp-for="CivilState" asp-items="Html.GetEnumSelectList<Enums.CivilState>()" class="form-control">
@@ -51,17 +56,20 @@
             </select>
             <span asp-validation-for="CivilState" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="DateOfBirth" class="control-label label-required"></label>
             <input asp-for="DateOfBirth" type="text" class="form-control" />
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
+
         <div class="form-group col-md-6">
             <label asp-for="JoinDate" class="control-label label-required"></label>
             <input asp-for="JoinDate" type="text" class="form-control" />
             <span asp-validation-for="JoinDate" class="text-danger"></span>
         </div>
-        <div class="form-group col-md-6 pt-4">
+
+        <div class="form-group col-md-6">
             <div class="form-row mt-2">
                 <label class="switch switch-label switch-pill switch-success ml-2">
                     <input class="switch-input" asp-for="FamiliarityGroup" />
@@ -69,6 +77,22 @@
                 </label>
                 <span class="ml-2">@Html.DisplayNameFor(model => model.FamiliarityGroup)</span>
             </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <div class="form-row mt-2">
+                <label class="switch switch-label switch-pill switch-success ml-2">
+                    <input class="switch-input" asp-for="ForwardedToSupportHouse" />
+                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                </label>
+                <span class="ml-2">@Html.DisplayNameFor(model => model.ForwardedToSupportHouse)</span>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label asp-for="ImmediateNecessities" class="control-label"></label>
+            <textarea asp-for="ImmediateNecessities" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="ImmediateNecessities" class="text-danger"></span>
         </div>
     </div>
 </div>

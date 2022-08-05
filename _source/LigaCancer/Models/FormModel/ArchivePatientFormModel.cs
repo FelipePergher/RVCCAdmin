@@ -11,7 +11,7 @@ namespace RVCC.Models.FormModel
     {
         public ArchivePatientFormModel()
         {
-            DateTime = System.DateTime.Now.ToString("dd/MM/yyyy");
+            DateTime = System.DateTime.Now.ToDateString();
         }
 
         [Display(Name = "Motivo")]

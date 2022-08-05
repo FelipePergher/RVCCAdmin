@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using RVCC.Business;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Models.FormModel
@@ -42,8 +43,16 @@ namespace RVCC.Models.FormModel
         [StringLength(14, MinimumLength = 14, ErrorMessage = "CPF inválido")]
         public string CPF { get; set; }
 
+        [Display(Name = "Necessidades Imediatas")]
+        public string ImmediateNecessities { get; set; }
+
+        public DateTime ImmediateNecessitiesDateUpdated { get; set; }
+
         [Display(Name = "Grupo de Convivência")]
         public bool FamiliarityGroup { get; set; }
+
+        [Display(Name = "Encaminhado para casa de apoio")]
+        public bool ForwardedToSupportHouse { get; set; }
 
         [Display(Name = "Gênero")]
         public Enums.Sex Sex { get; set; }

@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RVCC.Business.Interface;
 using RVCC.Data.Models.Domain;
+using RVCC.Data.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,6 +61,45 @@ namespace RVCC.Business
             {
                 Text = x.Name,
                 Value = x.MedicineId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetExpenseTypeSelectAsync(IDataRepository<ExpenseType> expenseTypeService, int patientId, int includeExpense = 0)
+        {
+            List<ExpenseType> expenseTypes = await ((ExpenseTypeRepository)expenseTypeService).GetNotRelatedToPatient(patientId, includeExpense);
+
+            var selectListItems = expenseTypes.Select(x => new SelectListItem
+            {
+                Text = $"{x.Name} ({Enums.GetDisplayName(x.ExpenseTypeFrequency)})",
+                Value = x.ExpenseTypeId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetAuxiliarAccessoryTypeSelectAsync(IDataRepository<AuxiliarAccessoryType> auxiliarAccessoryTypeService, int patientId, int includeExpense = 0)
+        {
+            List<AuxiliarAccessoryType> auxiliarAccessoryTypes = await ((AuxiliarAccessoryTypeRepository)auxiliarAccessoryTypeService).GetNotRelatedToPatient(patientId, includeExpense);
+
+            var selectListItems = auxiliarAccessoryTypes.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.AuxiliarAccessoryTypeId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
+        public static async Task<List<SelectListItem>> GetServiceTypesSelectAsync(IDataRepository<ServiceType> serviceTypeService)
+        {
+            List<ServiceType> serviceTypes = await serviceTypeService.GetAllAsync();
+
+            var selectListItems = serviceTypes.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ServiceTypeId.ToString()
             }).ToList();
 
             return selectListItems;

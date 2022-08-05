@@ -5,10 +5,10 @@ import "datatables.net";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
 import "select2";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
 import "jquery-mask-plugin";
-import Dropzone from 'dropzone';
+import Dropzone from "dropzone";
 
 export default (function () {
 
@@ -23,9 +23,10 @@ export default (function () {
         initPhoneTable();
         initAddressTable();
         initFamilyMemberTable();
+        initPatientExpenseTypeTable();
+        initPatientAuxiliarAccessoryTypeTable();
         initFilesTable();
         initPatientBenefitTable();
-        initPresenceTable();
         initStayTable();
     }
 
@@ -51,16 +52,15 @@ export default (function () {
         $("#CPF").mask(global.masks.Cpf);
         $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
 
-        $('#DateOfBirth, #JoinDate').datepicker({
+        $("#DateOfBirth, #JoinDate").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
-        $(".patientProfileSelect2").select2();
 
         $("#editPatientProfileForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -75,21 +75,21 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Paciente atualizado com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 location.reload();
                             });
                         } else {
                             $("#modalBody").html(data);
                             initEditProfileForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -115,21 +115,21 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Naturalidade atualizada com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 location.reload();
                             });
                         } else {
                             $("#modalBody").html(data);
                             initEditNaturalityForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -142,13 +142,13 @@ export default (function () {
     function initEditPatientInformationForm() {
         $.validator.unobtrusive.parse("#editPatientInformationForm");
 
-        $('#TreatmentBeginDate').datepicker({
+        $("#TreatmentBeginDate").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
         $(".patientInformationSelect").select2();
@@ -166,20 +166,20 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             global.swalWithBootstrapButtons.fire({
-                                title: 'Sucesso',
+                                title: "Sucesso",
                                 text: "Informação do paciente atualizadas com sucesso.",
-                                type: 'success'
-                            }).then((result) => {
+                                type: "success"
+                            }).then(() => {
                                 location.reload();
                             });
                         } else {
                             $("#modalBody").html(data);
                             initEditPatientInformationForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -215,17 +215,17 @@ export default (function () {
                 { data: "phoneType", title: "Tipo", name: "PhoneType" },
                 { data: "observationNote", title: "Observação", name: "ObservationNote" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editPhoneButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditPhoneForm);
                 });
 
-                $(".deletePhoneButton").click(function (e) {
+                $(".deletePhoneButton").click(function () {
                     initDeletePhone($(this).data("url"), $(this).data("id"));
                 });
             }
         });
-        $('#phoneTable').attr('style', 'border-collapse: collapse !important');
+        $("#phoneTable").attr("style", "border-collapse: collapse !important");
 
         $("#addPhoneButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initAddPhoneForm);
@@ -233,7 +233,7 @@ export default (function () {
     }
 
     function initAddPhoneForm() {
-        $('#Number').mask(global.SPMaskBehavior, global.spOptions);
+        $("#Number").mask(global.SPMaskBehavior, global.spOptions);
         $.validator.unobtrusive.parse("#addPhoneForm");
 
         $("#addPhoneForm").off("submit").submit(function (e) {
@@ -249,7 +249,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -258,8 +258,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initAddPhoneForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -270,7 +270,7 @@ export default (function () {
     }
 
     function initEditPhoneForm() {
-        $('#Number').mask(global.SPMaskBehavior, global.spOptions);
+        $("#Number").mask(global.SPMaskBehavior, global.spOptions);
         $.validator.unobtrusive.parse("#editPhoneForm");
 
         $("#editPhoneForm").off("submit").submit(function (e) {
@@ -286,7 +286,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#phoneTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -295,8 +295,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initEditPhoneForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -308,18 +308,18 @@ export default (function () {
 
     function initDeletePhone(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#phoneTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O telefone foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
@@ -357,16 +357,16 @@ export default (function () {
                 { data: "monthlyAmmountResidence", title: "Valor Mensal", name: "MonthlyAmmountResidence" },
                 { data: "observationAddress", title: "Observação", name: "ObservationAddress" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editAddressButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditAddressForm);
                 });
-                $(".deleteAddressButton").click(function (e) {
+                $(".deleteAddressButton").click(function () {
                     initDeleteAddress($(this).data("url"), $(this).data("id"));
                 });
             }
         });
-        $('#addressTable').attr('style', 'border-collapse: collapse !important');
+        $("#addressTable").attr("style", "border-collapse: collapse !important");
 
         $("#addAddressButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initAddAddressForm);
@@ -378,8 +378,8 @@ export default (function () {
 
         $.validator.unobtrusive.parse("#addAddressForm");
 
-        $("#ResidenceType").change(function (e) {
-            !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
+        $("#ResidenceType").change(function () {
+            $(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
 
         $("#addAddressForm").off("submit").submit(function (e) {
@@ -395,7 +395,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -404,8 +404,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initAddAddressForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -420,8 +420,8 @@ export default (function () {
 
         $.validator.unobtrusive.parse("#editAddressForm");
 
-        $("#ResidenceType").change(function (e) {
-            !!$(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
+        $("#ResidenceType").change(function () {
+            $(this).val() ? $("#monthlyResidence").show() : $("#monthlyResidence").hide();
         });
 
         $("#editAddressForm").off("submit").submit(function (e) {
@@ -437,7 +437,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#addressTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -446,8 +446,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initEditAddressForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -459,18 +459,18 @@ export default (function () {
 
     function initDeleteAddress(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#addressTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O endereço foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
@@ -503,34 +503,7 @@ export default (function () {
                 { data: "quantity", title: "Quantidade", name: "Quantity" }
             ]
         });
-        $('#patientBenefitTable').attr('style', 'border-collapse: collapse !important');
-    }
-
-    //Presence Functions
-    function initPresenceTable() {
-        $("#presenceTable").DataTable({
-            autoWidth: false,
-            processing: true,
-            serverSide: true,
-            language: global.datatablesLanguage,
-            filter: false,
-            ajax: {
-                url: "/api/presence/search",
-                type: "POST",
-                data: function (d) {
-                    d.patientId = $("#patientId").val();
-                },
-                datatype: "json",
-                error: function () {
-                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
-                }
-            },
-            columns: [
-                { data: "date", title: "Data da presença", name: "Date" },
-                { data: "hour", title: "Hora da presença", name: "Hour" }
-            ],
-        });
-        $('#presenceTable').attr('style', 'border-collapse: collapse !important');
+        $("#patientBenefitTable").attr("style", "border-collapse: collapse !important");
     }
 
     //Stay Functions
@@ -559,7 +532,7 @@ export default (function () {
                 { data: "note", title: "Notas", name: "Note" }
             ],
         });
-        $('#stayTable').attr('style', 'border-collapse: collapse !important');
+        $("#stayTable").attr("style", "border-collapse: collapse !important");
     }
 
     //Family Member Functions
@@ -594,18 +567,20 @@ export default (function () {
                 { data: "kinship", title: "Parentesco", name: "Kinship" },
                 { data: "dateOfBirth", title: "Data de Nascimento", name: "DateOfBirth" },
                 { data: "sex", title: "Gênero", name: "Sex" },
-                { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" }
+                { data: "monthlyIncome", title: "Renda", name: "MonthlyIncome" },
+                { data: "ignoreOnIncome", title: "Ignore Renda no Calculo", name: "IgnoreOnIncome" },
+                { data: "responsible", title: "É responsavel?", name: "Responsible" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editFamilyMemberButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditFamilyMemberForm);
                 });
-                $(".deleteFamilyMemberButton").click(function (e) {
+                $(".deleteFamilyMemberButton").click(function () {
                     initDeleteFamilyMember($(this).data("url"), $(this).data("id"));
                 });
             }
         });
-        $('#familyMemberTable').attr('style', 'border-collapse: collapse !important');
+        $("#familyMemberTable").attr("style", "border-collapse: collapse !important");
 
         $("#addFamilyMemberButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initAddFamilyMemberForm);
@@ -614,13 +589,13 @@ export default (function () {
 
     function initAddFamilyMemberForm() {
         $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
-        $('#dateOfBirth').datepicker({
+        $("#dateOfBirth").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
         $.validator.unobtrusive.parse("#addFamilyMemberForm");
@@ -638,7 +613,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -647,8 +622,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initAddFamilyMemberForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -659,15 +634,15 @@ export default (function () {
     }
 
     function initEditFamilyMemberForm() {
-        $("#MonthlyIncome").mask(masks.Price, { reverse: true });
+        $("#MonthlyIncome").mask(global.masks.Price, { reverse: true });
         $(".familyMemberSelect2").select2();
-        $('#dateOfBirth').datepicker({
+        $("#dateOfBirth").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
         $.validator.unobtrusive.parse("#editFamilyMemberForm");
@@ -685,7 +660,7 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
 
                             $("#familyMemberTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
@@ -694,8 +669,8 @@ export default (function () {
                             $("#modalBody").html(data);
                             initEditFamilyMemberForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -707,18 +682,310 @@ export default (function () {
 
     function initDeleteFamilyMember(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#familyMemberTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "Membro familiar removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
+
+    // Social Economic
+    function initPatientExpenseTypeTable() {
+        $("#patientExpenseTypeTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientExpenseType/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "expenseType", title: "Despesa", name: "ExpenseType" },
+                { data: "frequency", title: "Frequency", name: "Frequency" },
+                { data: "value", title: "Valor", name: "Value" },
+            ],
+            drawCallback: function () {
+                $(".editPatientExpenseTypeButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientExpenseTypeForm);
+                });
+                $(".deletePatientExpenseTypeButton").click(function () {
+                    initDeletePatientExpenseType($(this).data("url"), $(this).data("id"));
+                });
+            }
+        });
+        $("#patientExpenseTypeTable").attr("style", "border-collapse: collapse !important");
+
+        $("#addPatientExpenseTypeButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPatientExpenseTypeForm);
+        });
+    }
+
+    function initAddPatientExpenseTypeForm() {
+        $("#Value").mask(global.masks.Price, { reverse: true });
+        $("#ExpenseType").select2();
+        $.validator.unobtrusive.parse("#addPatientExpenseTypeForm");
+
+        $("#addPatientExpenseTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPatientExpenseTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initEditPatientExpenseTypeForm() {
+        $("#Value").mask(global.masks.Price, { reverse: true });
+        $("#ExpenseType").select2();
+        $.validator.unobtrusive.parse("#editPatientExpenseTypeForm");
+
+        $("#editPatientExpenseTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPatientExpenseTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePatientExpenseType(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: "Você têm certeza?",
+            text: "Você não poderá reverter isso!",
+            type: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
+                    .done(function () {
+                        $("#patientExpenseTypeTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
+                        global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
+
+    // Patient Auxiliar Accessory Type
+    function initPatientAuxiliarAccessoryTypeTable() {
+        $("#patientAuxiliarAccessoryTypeTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientAuxiliarAccessoryType/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "auxiliarAccessoryType", title: "Acessório Auxiliar", name: "AuxiliarAccessoryType" },
+                { data: "auxiliarAccessoryTypeTime", title: "Tipo de uso", name: "AuxiliarAccessoryTypeTime" },
+                { data: "duoDate", title: "Data parar de usar", name: "DuoDate" },
+                { data: "note", title: "Notas", name: "Note" },
+            ],
+            drawCallback: function () {
+                $(".editPatientAuxiliarAccessoryTypeButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientAuxiliarAccessoryTypeForm);
+                });
+                $(".deletePatientAuxiliarAccessoryTypeButton").click(function () {
+                    initDeletePatientAuxiliarAccessoryType($(this).data("url"), $(this).data("id"));
+                });
+            }
+        });
+        $("#patientAuxiliarAccessoryTypeTable").attr("style", "border-collapse: collapse !important");
+
+        $("#addPatientAuxiliarAccessoryTypeButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPatientAuxiliarAccessoryTypeForm);
+        });
+    }
+
+    function initAddPatientAuxiliarAccessoryTypeForm() {
+        $("#duoDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+        $.validator.unobtrusive.parse("#addPatientAuxiliarAccessoryTypeForm");
+
+        $("#addPatientAuxiliarAccessoryTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPatientAuxiliarAccessoryTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initEditPatientAuxiliarAccessoryTypeForm() {
+        $("#duoDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+
+        $.validator.unobtrusive.parse("#editPatientAuxiliarAccessoryTypeForm");
+
+        $("#editPatientAuxiliarAccessoryTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPatientAuxiliarAccessoryTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePatientAuxiliarAccessoryType(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: "Você têm certeza?",
+            text: "Você não poderá reverter isso!",
+            type: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
+                    .done(function () {
+                        $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
+                        global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
@@ -749,21 +1016,21 @@ export default (function () {
             columns: [
                 { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
                 {
-                    render: function (data, type, row, meta) {
+                    render: function (data, type, row) {
                         return row.size + " Mb";
                     },
                     data: "size", title: "Tamanho", name: "Size"
                 },
                 {
                     data: "name", title: "Arquivo", name: "Name",
-                    render: function (data, type, row, meta) {
-                        return '   <span class="editable" data-fileAttachmentId="' + row.fileAttachmentId + '">' + row.name + '</span>' +
-                            '   <a class="float-right fa fa-download mt-1 ml-2" class="fa fa-download" href="' + row.filePath + '" download="' + row.name + row.extension + '"></a>';
+                    render: function (data, type, row) {
+                        return "   <span class=\"editable\" data-fileAttachmentId=\"" + row.fileAttachmentId + "\">" + row.name + "</span>" +
+                            "   <a class=\"float-right fa fa-download mt-1 ml-2\" class=\"fa fa-download\" href=\"" + row.filePath + "\" download=\"" + row.name + row.extension + "\"></a>";
                     }
                 }
             ],
-            drawCallback: function (settings) {
-                $(".deleteFileAttachmentButton").click(function (e) {
+            drawCallback: function () {
+                $(".deleteFileAttachmentButton").click(function () {
                     initDeleteFileAttachment($(this).data("url"), $(this).data("id"));
                 });
 
@@ -788,7 +1055,7 @@ export default (function () {
                 //});
             }
         });
-        $('#attachmentsTable').attr('style', 'border-collapse: collapse !important');
+        $("#attachmentsTable").attr("style", "border-collapse: collapse !important");
 
         $("#addFileButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initFileUpload, true);
@@ -812,7 +1079,7 @@ export default (function () {
 
         var myDropzone = new Dropzone("#dropzoneForm", dropzoneConfiguration);
 
-        myDropzone.on("success", function (file) {
+        myDropzone.on("success", function () {
             $("#attachmentsTable").DataTable().ajax.reload(null, false);
             reloadIframe();
         });
@@ -820,19 +1087,19 @@ export default (function () {
 
     function initDeleteFileAttachment(url, id) {
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: "Você não poderá reverter isso!",
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#attachmentsTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
                         global.swalWithBootstrapButtons.fire("Removido!", "O arquivo foi removido com sucesso.", "success");
-                    }).fail(function (error) {
-                        globa.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }
         });
@@ -840,6 +1107,6 @@ export default (function () {
 
     // Reload Iframe
     function reloadIframe() {
-        document.getElementById('printPatient').contentDocument.location.reload(true);
+        document.getElementById("printPatient").contentDocument.location.reload(true);
     }
 }());

@@ -71,9 +71,7 @@ namespace RVCC.Controllers.Api
                         <span class='fas fa-trash-alt'></span> Excluir 
                     </a>";
 
-            string actionsHtml = user.IsInRole(Roles.SocialAssistance)
-                ? string.Empty
-                : "<div class='dropdown'>" +
+            string actionsHtml = "<div class='dropdown'>" +
                   "  <button type='button' class='btn btn-info dropdown-toggle' data-toggle='dropdown'>Ações</button>" +
                   "  <div class='dropdown-menu'>" +
                   $"      {deleteFileAttachment}" +

@@ -18,84 +18,110 @@ namespace RVCC.Business
         {
             [Display(Name = "Não especificado")]
             [EnumMember(Value = "Não especificado")]
-            NotSpecified,
+            NotSpecified = 0,
 
             [Display(Name = "Homem")]
             [EnumMember(Value = "Homem")]
-            Male,
+            Male = 1,
 
             [Display(Name = "Mulher")]
             [EnumMember(Value = "Mulher")]
-            Female
+            Female = 2
         }
 
         public enum CivilState
         {
             [Display(Name = "Solteiro(a)")]
             [EnumMember(Value = "Solteiro(a)")]
-            Single,
+            Single = 0,
 
             [Display(Name = "Casado(a)")]
             [EnumMember(Value = "Casado(a)")]
-            Married,
+            Married = 1,
 
             [Display(Name = "Separado(a)")]
             [EnumMember(Value = "Separado(a)")]
-            Separate,
+            Separate = 2,
 
             [Display(Name = "Divorciado(a)")]
             [EnumMember(Value = "Divorciado(a)")]
-            Divorced,
+            Divorced = 3,
 
             [Display(Name = "Viúvo(a)")]
             [EnumMember(Value = "Viúvo(a)")]
-            Widowed,
+            Widowed = 4
         }
 
         public enum PhoneType
         {
             [Display(Name = "Fixo")]
             [EnumMember(Value = "Fixo")]
-            Landline,
+            Landline = 0,
 
             [Display(Name = "Celular")]
             [EnumMember(Value = "Celular")]
-            Cellphone
+            Cellphone = 1
         }
 
         public enum ResidenceType
         {
             [Display(Name = "Própria")]
             [EnumMember(Value = "Própria")]
-            Owner,
+            Owner = 0,
 
             [Display(Name = "Cedida")]
             [EnumMember(Value = "Cedida")]
-            Ceded,
+            Ceded = 1,
 
             [Display(Name = "Alugada")]
             [EnumMember(Value = "Alugada")]
-            Leased,
+            Leased = 2,
 
             [Display(Name = "Outros")]
             [EnumMember(Value = "Outros")]
-            Other
+            Other = 3
         }
 
-        // [JsonConverter(typeof(StringEnumConverter<,,>))]
         public enum ArchivePatientType
         {
             [Display(Name = "Alta")]
             [EnumMember(Value = "Alta")]
-            Discharge,
+            Discharge = 0,
 
             [Display(Name = "Mudou-se")]
             [EnumMember(Value = "Mudou-se")]
-            ResidenceChange,
+            ResidenceChange = 1,
 
             [Display(Name = "Óbito")]
             [EnumMember(Value = "Óbito")]
-            Death
+            Death = 2
+        }
+
+        public enum ExpenseTypeFrequency
+        {
+            [Display(Name = "Mensal")]
+            [EnumMember(Value = "Mensal")]
+            Montlhy = 0,
+
+            [Display(Name = "Anual")]
+            [EnumMember(Value = "Anual")]
+            Yearly = 1,
+
+            [Display(Name = "Total")]
+            [EnumMember(Value = "Total")]
+            Total = 2
+        }
+
+        // Todo thing a better name
+        public enum AuxiliarAccessoryTypeTime
+        {
+            [Display(Name = "Temporário")]
+            [EnumMember(Value = "Temporário")]
+            Temporary = 0,
+
+            [Display(Name = "Vida inteira")]
+            [EnumMember(Value = "Vida Inteira")]
+            Lifetime = 1,
         }
 
         #endregion

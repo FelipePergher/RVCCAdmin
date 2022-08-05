@@ -85,6 +85,11 @@ namespace RVCC.Controllers
             {
                 Medicine medicine = await _medicineService.FindByIdAsync(id);
 
+                if (medicine == null)
+                {
+                    return NotFound();
+                }
+
                 medicine.Name = medicineForm.Name;
 
                 TaskResult result = await _medicineService.UpdateAsync(medicine);

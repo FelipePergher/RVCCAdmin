@@ -46,10 +46,11 @@ namespace RVCC.Controllers.Api
                 string[] includes =
                 {
                     nameof(Patient.PatientInformation), nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses),
-                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
-                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
-                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
-                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}", $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
+                    $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationServiceTypes)}.{nameof(PatientInformationServiceType.ServiceType)}",
                 };
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(includes, sortColumn, sortDirection, patientSearchModel);
@@ -60,11 +61,11 @@ namespace RVCC.Controllers.Api
                     LastName = x.Surname,
                     Rg = x.RG,
                     Cpf = x.CPF,
-                    DateOfBirth = x.DateOfBirth.ToString("dd/MM/yyyy"),
-                    JoinDate = x.JoinDate.ToString("dd/MM/yyyy"),
+                    DateOfBirth = x.DateOfBirth.ToDateString(),
+                    JoinDate = x.JoinDate.ToDateString(),
                     Phone = x.Phones.FirstOrDefault()?.Number,
                     Address = GetAddressToTable(x.Addresses.FirstOrDefault()),
-                    TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? string.Empty : x.PatientInformation.TreatmentBeginDate.ToString("dd/MM/yyyy"),
+                    TreatmentBeginDate = x.PatientInformation.TreatmentBeginDate == DateTime.MinValue ? string.Empty : x.PatientInformation.TreatmentBeginDate.ToDateString(),
                     Medicines = string.Join(", ", x.PatientInformation.PatientInformationMedicines.Select(y => y.Medicine.Name).ToList()),
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),

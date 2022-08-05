@@ -111,6 +111,11 @@ namespace RVCC.Controllers
             {
                 Address address = await _addressService.FindByIdAsync(id);
 
+                if (address == null)
+                {
+                    return NotFound();
+                }
+
                 address.Complement = addressForm.Complement;
                 address.City = addressForm.City;
                 address.HouseNumber = addressForm.HouseNumber;

@@ -222,6 +222,11 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.FamiliarityGroup == bool.Parse(patientSearch.FamiliarityGroup));
             }
 
+            if (!string.IsNullOrEmpty(patientSearch.ForwardedToSupportHouse))
+            {
+                query = query.Where(x => x.ForwardedToSupportHouse == bool.Parse(patientSearch.ForwardedToSupportHouse));
+            }
+
             switch (patientSearch.ArchivePatientType)
             {
                 case Enums.ArchivePatientType.Death:
@@ -240,22 +245,32 @@ namespace RVCC.Data.Repositories
 
             foreach (string item in patientSearch.CancerTypes)
             {
-                query = query.Where(x => x.PatientInformation.PatientInformationCancerTypes.FirstOrDefault(y => y.CancerTypeId == int.Parse(item)) != null);
+                query = query.Where(x => x.PatientInformation.PatientInformationCancerTypes.Any(y => y.CancerTypeId == int.Parse(item)));
             }
 
             foreach (string item in patientSearch.TreatmentPlaces)
             {
-                query = query.Where(x => x.PatientInformation.PatientInformationTreatmentPlaces.FirstOrDefault(y => y.TreatmentPlaceId == int.Parse(item)) != null);
+                query = query.Where(x => x.PatientInformation.PatientInformationTreatmentPlaces.Any(y => y.TreatmentPlaceId == int.Parse(item)));
             }
 
             foreach (string item in patientSearch.Doctors)
             {
-                query = query.Where(x => x.PatientInformation.PatientInformationDoctors.FirstOrDefault(y => y.DoctorId == int.Parse(item)) != null);
+                query = query.Where(x => x.PatientInformation.PatientInformationDoctors.Any(y => y.DoctorId == int.Parse(item)));
             }
 
             foreach (string item in patientSearch.Medicines)
             {
-                query = query.Where(x => x.PatientInformation.PatientInformationMedicines.FirstOrDefault(y => y.MedicineId == int.Parse(item)) != null);
+                query = query.Where(x => x.PatientInformation.PatientInformationMedicines.Any(y => y.MedicineId == int.Parse(item)));
+            }
+
+            foreach (string item in patientSearch.ServiceTypes)
+            {
+                query = query.Where(x => x.PatientInformation.PatientInformationServiceTypes.Any(y => y.ServiceTypeId == int.Parse(item)));
+            }
+
+            foreach (string item in patientSearch.PatientAuxiliarAccessoryTypes)
+            {
+                query = query.Where(x => x.PatientAuxiliarAccessoryTypes.Any(y => y.AuxiliarAccessoryTypeId == int.Parse(item)));
             }
 
             if (patientSearch.BirthdayDateFrom != null)

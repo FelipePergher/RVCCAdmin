@@ -2,6 +2,7 @@
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
+using RVCC.Business;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +12,7 @@ namespace RVCC.Models.ViewModel
     {
         public HomeViewModel()
         {
-            ChartDate = DateTime.Now.ToString("dd/MM/yyyy");
+            ChartDate = DateTime.Now.ToDateString();
         }
 
         public int PatientCount { get; set; }

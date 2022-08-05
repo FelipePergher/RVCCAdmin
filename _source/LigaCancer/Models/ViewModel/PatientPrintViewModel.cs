@@ -20,6 +20,8 @@ namespace RVCC.Models.ViewModel
 
         public bool FamiliarityGroup { get; set; }
 
+        public bool ForwardedToSupportHouse { get; set; }
+
         public Enums.Sex Sex { get; set; }
 
         public Enums.CivilState? CivilState { get; set; }
@@ -29,6 +31,10 @@ namespace RVCC.Models.ViewModel
         public DateTime JoinDate { get; set; }
 
         public string Profession { get; set; }
+
+        public string ImmediateNecessities { get; set; }
+
+        public DateTime ImmediateNecessitiesDateUpdated { get; set; }
 
         public string MonthlyIncome { get; set; }
 
@@ -45,6 +51,8 @@ namespace RVCC.Models.ViewModel
         public List<string> TreatmentPlaces { get; set; }
 
         public List<string> Medicines { get; set; }
+
+        public List<string> ServiceTypes { get; set; }
 
         #endregion
 
@@ -64,9 +72,11 @@ namespace RVCC.Models.ViewModel
 
         public IEnumerable<FamilyMemberViewModel> FamilyMembers { get; set; }
 
-        public IEnumerable<PatientBenefitViewModel> Benefits { get; set; }
+        public IEnumerable<PatientExpenseTypeViewModel> PatientExpenseTypes { get; set; }
 
-        public IEnumerable<PresenceViewModel> Presences { get; set; }
+        public IEnumerable<PatientAuxiliarAccessoryTypeViewModel> PatientAuxiliarAccessoryTypes { get; set; }
+
+        public IEnumerable<PatientBenefitViewModel> Benefits { get; set; }
 
         public IEnumerable<StayViewModel> Stays { get; set; }
 

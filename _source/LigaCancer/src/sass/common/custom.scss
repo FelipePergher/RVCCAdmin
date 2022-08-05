@@ -1,17 +1,16 @@
-﻿.modal-spinner {
+.modal-spinner {
     text-align: center;
     margin: 100px;
     font-size: 50px;
     color: #20a8d8;
 }
 
-
 .dt-buttons button {
     margin-right: 5px;
     border-radius: 0.25em !important;
 }
 
-.label-required:after {
+.label-required::after {
     content: "*";
     color: red;
 }
@@ -31,14 +30,14 @@
 }
 
 .select2-container--open {
-    z-index: 1070
+    z-index: 1070;
 }
 
-#attachmentsTable_wrapper{
+#attachmentsTable_wrapper {
     margin-top: 10px;
 }
 
-.select2-search__field{
+.select2-search__field {
     width: 100% !important;
 }
 
@@ -59,7 +58,7 @@
     right: 15px;
     transform: translate(-50%, -50%);
     margin-right: auto;
-    color:#5c6873;
+    color: #5c6873;
     z-index: 10;
 }
 
@@ -79,15 +78,13 @@
 
 .dropzone {
     border-radius: 5px !important;
-    border: 2px dashed rgb(0, 135, 247) !important;
+    border-style: dashed !important;
+    border-color: rgb(0, 135, 247) !important;
 }
 
 .img-logo {
-    margin-top: 10%;
-    margin-bottom: 10%;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10% auto;
     width: 60%;
 }
 

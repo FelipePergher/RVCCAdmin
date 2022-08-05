@@ -54,9 +54,23 @@
                         </a>
                     </li>
 
+
+                    <li class="nav-title">Atendimento</li>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Presence" class="nav-link">
-                            <span class="nav-icon far fa-address-book"></span> Presenças
+                        <a asp-action="Index" asp-controller="AttendanceType" class="nav-link">
+                            <span class="nav-icon fa fa-file-text"></span> Tipos de Atendimento
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="VisitorAttendance" class="nav-link">
+                            <span class="nav-icon fa fa-user"></span> Atendimento
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Visitor" class="nav-link">
+                            <span class="nav-icon fa fa-handshake"></span> Visitantes
                         </a>
                     </li>
 
@@ -102,23 +116,25 @@
                         </a>
                     </li>
 
-                    <li class="nav-title">Atendimento</li>
-                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="AttendanceType" class="nav-link">
-                            <span class="nav-icon fa fa-file-text"></span> Tipos de Atendimento
-                        </a>
-                    </li>
-                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="VisitorAttendance" class="nav-link">
-                            <span class="nav-icon fa fa-user"></span> Atendimento
-                        </a>
-                    </li>
+
+                    <li class="nav-title">Configurações</li>
                     <li class="nav-item">
-                        <a asp-action="Index" asp-controller="Visitor" class="nav-link">
-                            <span class="nav-icon fa fa-handshake"></span> Visitantes
+                        <a asp-action="Index" asp-controller="ExpenseType" class="nav-link">
+                            <span class="nav-icon fa fa-money-bill"></span> Tipos de Despesas
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="AuxiliarAccessoryType" class="nav-link">
+                            <span class="nav-icon fa fa-universal-access"></span> Tipos de Acessorios Auxiliares
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="ServiceType" class="nav-link">
+                            <span class="nav-icon fa fa-id-card-clip"></span> Tipos de Serviços
+                        </a>
+                    </li>
 
                     @if (User.IsInRole(Roles.Admin))
                     {

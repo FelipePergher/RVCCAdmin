@@ -51,6 +51,12 @@ namespace RVCC.Data
 
         public DbSet<FileAttachment> FileAttachments { get; set; }
 
+        public DbSet<PatientExpenseType> PatientExpenseTypes { get; set; }
+
+        public DbSet<PatientAuxiliarAccessoryType> PatientAuxiliarAccessoryTypes { get; set; }
+
+        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+
         #endregion
 
         #region General Models
@@ -63,11 +69,13 @@ namespace RVCC.Data
 
         public DbSet<TreatmentPlace> TreatmentPlaces { get; set; }
 
-        public DbSet<Presence> Presences { get; set; }
-
         public DbSet<Benefit> Benefits { get; set; }
 
-        public DbSet<PatientBenefit> PatientBenefits { get; set; }
+        public DbSet<ExpenseType> ExpenseTypes { get; set; }
+
+        public DbSet<AuxiliarAccessoryType> AuxiliarAccessoryTypes { get; set; }
+
+        public DbSet<ServiceType> ServiceTypes { get; set; }
 
         public DbSet<Stay> Stays { get; set; }
 
@@ -103,8 +111,6 @@ namespace RVCC.Data
 
         public DbSet<AuditStay> AuditStays { get; set; }
 
-        public DbSet<AuditPresence> AuditPresences { get; set; }
-
         public DbSet<AuditSetting> AuditSettings { get; set; }
 
         public DbSet<AuditBenefit> AuditBenefits { get; set; }
@@ -132,6 +138,18 @@ namespace RVCC.Data
         public DbSet<AuditPatientInformationCancerType> AuditPatientInformationCancerTypes { get; set; }
 
         public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
+
+        public DbSet<AuditPatientInformationServiceType> AuditPatientInformationServiceTypes { get; set; }
+
+        public DbSet<AuditExpenseType> AuditExpenseTypes { get; set; }
+
+        public DbSet<AuditPatientExpenseType> AuditPatientExpenseTypes { get; set; }
+
+        public DbSet<AuditAuxiliarAccessoryType> AuditAuxiliarAccessoryTypes { get; set; }
+
+        public DbSet<AuditPatientAuxiliarAccessoryType> AuditPatientAuxiliarAccessoryTypes { get; set; }
+
+        public DbSet<AuditServiceType> AuditServiceTypes { get; set; }
 
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 
@@ -274,6 +292,22 @@ namespace RVCC.Data
                 .HasForeignKey(bc => bc.MedicineId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Patient Information and Cancer Type
+            builder.Entity<PatientInformationServiceType>()
+                .HasKey(bc => new { bc.PatientInformationId, bc.ServiceTypeId });
+
+            builder.Entity<PatientInformationServiceType>()
+                .HasOne(bc => bc.PatientInformation)
+                .WithMany(b => b.PatientInformationServiceTypes)
+                .HasForeignKey(bc => bc.PatientInformationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PatientInformationServiceType>()
+                .HasOne(bc => bc.ServiceType)
+                .WithMany(c => c.PatientInformationServiceTypes)
+                .HasForeignKey(bc => bc.ServiceTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion
 
             #region Unique
@@ -284,6 +318,8 @@ namespace RVCC.Data
             builder.Entity<Patient>().HasIndex(p => p.RG).IsUnique();
             builder.Entity<Patient>().HasIndex(p => p.CPF).IsUnique();
             builder.Entity<TreatmentPlace>().HasIndex(p => p.City).IsUnique();
+            builder.Entity<ExpenseType>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<ServiceType>().HasIndex(p => p.Name).IsUnique();
 
             #endregion
         }

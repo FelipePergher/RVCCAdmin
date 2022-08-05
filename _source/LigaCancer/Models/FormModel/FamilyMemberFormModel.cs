@@ -31,5 +31,11 @@ namespace RVCC.Models.FormModel
 
         [Display(Name = "Renda mensal")]
         public string MonthlyIncome { get; set; }
+
+        [Display(Name = "É responsavel?")]
+        public bool Responsible { get; set; }
+
+        [Display(Name = "Ignore Renda no Calculo")]
+        public bool IgnoreOnIncome { get; set; }
     }
 }

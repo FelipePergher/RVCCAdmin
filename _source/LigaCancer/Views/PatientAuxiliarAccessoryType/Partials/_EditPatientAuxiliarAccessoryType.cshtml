@@ -1,0 +1,40 @@
+﻿@using RVCC.Business
+@model RVCC.Models.FormModel.PatientAuxiliarAccessoryTypeFormModel
+
+<form id="editPatientAuxiliarAccessoryTypeForm" asp-action="EditPatientAuxiliarAccessoryType" method="post">
+
+    <div class="modal-body form-horizontal">
+        <div class="form-group">
+            <label asp-for="AuxiliarAccessoryType" class="control-label"></label>
+             <select asp-for="AuxiliarAccessoryType" asp-items="Model.AuxiliarAccessoryTypes" class="form-control" style="width: 100%"
+                    data-theme="bootstrap"
+                    data-language="pt-BR"
+                    data-placeholder="Acessórios Auxiliares"
+                    data-width="resolve"
+                    data-allow-clear="true">
+            </select>
+            <span asp-validation-for="AuxiliarAccessoryType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AuxiliarAccessoryTypeTime" class="control-label"></label>
+            <select asp-for="AuxiliarAccessoryTypeTime" asp-items="Html.GetEnumSelectList<Enums.AuxiliarAccessoryTypeTime>()" class="form-control"></select>
+            <span asp-validation-for="AuxiliarAccessoryTypeTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DuoDate" class="control-label"></label>
+            <input asp-for="DuoDate" type="text" class="form-control" id="duoDate" />
+            <span asp-validation-for="DuoDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Note" class="control-label"></label>
+            <textarea asp-for="Note" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Note" class="text-danger"></span>
+        </div>
+    </div>
+
+    <partial name="_ModalFooter" />
+
+</form>

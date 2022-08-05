@@ -4,10 +4,10 @@ import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
 import "bootstrap/js/dist/modal";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
 import "jquery-mask-plugin";
-import 'select2';
+import "select2";
 import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
 import "datatables.net-buttons/js/buttons.html5.min.js";
 
@@ -29,7 +29,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -68,16 +68,16 @@ export default (function () {
                 { data: "shirtQuantityTotal", title: "Camisetas", name: "ShirtQuantityTotal" },
                 { data: "priceTotal", title: "Valor", name: "PriceTotal" }
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".detailsSaleShirt2020Button").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initDetails);
                 });
 
-                $(".updateStatusSaleShirt2020Button").click(function (e) {
+                $(".updateStatusSaleShirt2020Button").click(function () {
                     initUpdateStatusSaleShirt2020($(this).data("url"), $(this).data("id"), $(this).data("status"));
                 });
             },
-            footerCallback: function (row, data, start, end, display) {
+            footerCallback: function () {
                 let api = this.api();
                 let dataReceived = api.ajax.json();
 
@@ -87,7 +87,7 @@ export default (function () {
             }
         });
 
-        $('#saleShirt2020Table').attr('style', 'border-collapse: collapse !important');
+        $("#saleShirt2020Table").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -101,21 +101,21 @@ export default (function () {
 
     function initAddForm() {
         $("#modal-dialog").addClass("modal-elg");
-        $('#DateOrdered').datepicker({
+        $("#DateOrdered").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
-        $('#BuyerPhone').mask(global.SPMaskBehavior, global.spOptions);
+        $("#BuyerPhone").mask(global.SPMaskBehavior, global.spOptions);
 
         $.validator.unobtrusive.parse("#addSaleShirt2020Form");
 
         $(".shirtQuantity, #MaskQuantity").change(function () {
-            var totalShirtQuantity = $(".shirtQuantity").toArray().reduce(function (acumulador, valorAtual, index, array) {
+            var totalShirtQuantity = $(".shirtQuantity").toArray().reduce(function (acumulador, valorAtual) {
                 let value = $(valorAtual).val();
                 return parseInt(acumulador) + parseInt(value);
             }, 0);
@@ -145,15 +145,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#saleShirt2020Table").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Pedido de camisetas registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -171,30 +171,30 @@ export default (function () {
         let message = "Você não poderá reverter isso!";
 
         let dateInput =
-            '<form id="dateForm">' +
-            '   <div class="form-group">' +
-            '       <label class="control-label label-required" for="DateOrdered">Data</label>' +
-            '       <input type="text" class="form-control" data-val="true" data-val-required="Este campo é obrigatório!" id="Date" name="Date" data-date-end-date="0d" value="">' +
-            '       <span class="text-danger field-validation-valid" data-valmsg-for="Date" data-valmsg-replace="true"></span>' +
-            '   </div>' +
-            '</form>';
+            "<form id=\"dateForm\">" +
+            "   <div class=\"form-group\">" +
+            "       <label class=\"control-label label-required\" for=\"DateOrdered\">Data</label>" +
+            "       <input type=\"text\" class=\"form-control\" data-val=\"true\" data-val-required=\"Este campo é obrigatório!\" id=\"Date\" name=\"Date\" data-date-end-date=\"0d\" value=\"\">" +
+            "       <span class=\"text-danger field-validation-valid\" data-valmsg-for=\"Date\" data-valmsg-replace=\"true\"></span>" +
+            "   </div>" +
+            "</form>";
 
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: message,
             html: dateInput,
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
-            onOpen: (e) => {
+            onOpen: () => {
                 $.validator.unobtrusive.parse("#dateForm");
-                $('#Date').datepicker({
+                $("#Date").datepicker({
                     clearBtn: true,
                     format: "dd/mm/yyyy",
                     language: "pt-BR",
                     templates: {
-                        leftArrow: '<span class="fas fa-chevron-left"></span>',
-                        rightArrow: '<span class="fas fa-chevron-right"></span>'
+                        leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                        rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
                     }
                 });
             },
@@ -203,10 +203,10 @@ export default (function () {
                 if (form.valid()) {
                     let date = $("#Date").val();
                     $.post(url, { id: id, status: status, date: date, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
-                        .done(function (data, textStatus) {
+                        .done(function () {
                             $("#saleShirt2020Table").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Atualizado!", "O pedido foi atualizado com sucesso.", "success");
-                        }).fail(function (error) {
+                        }).fail(function () {
                             global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                         });
                 }

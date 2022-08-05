@@ -24,14 +24,12 @@ namespace RVCC.Controllers.Api
     {
         private readonly IDataRepository<FamilyMember> _familyMemberService;
         private readonly IDataRepository<Patient> _patientService;
-        private readonly IDataRepository<Setting> _settingRepository;
         private readonly ILogger<FamilyMemberApiController> _logger;
 
-        public FamilyMemberApiController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, IDataRepository<Setting> settingRepository, ILogger<FamilyMemberApiController> logger)
+        public FamilyMemberApiController(IDataRepository<FamilyMember> familyMemberService, IDataRepository<Patient> patientService, ILogger<FamilyMemberApiController> logger)
         {
             _familyMemberService = familyMemberService;
             _patientService = patientService;
-            _settingRepository = settingRepository;
             _logger = logger;
         }
 
@@ -50,18 +48,22 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     Kinship = x.Kinship,
-                    DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd/MM/yyyy") : string.Empty,
+                    DateOfBirth = x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToDateString() : string.Empty,
                     Sex = Enums.GetDisplayName(x.Sex),
                     MonthlyIncome = x.MonthlyIncome.ToString("N2"),
+                    IgnoreOnIncome = x.IgnoreOnIncome ? "<span class='fa fa-check'></span>" : string.Empty,
+                    Responsible = x.Responsible ? "<span class='fa fa-check'></span>" : string.Empty,
                     Actions = GetActionsHtml(x, User)
                 }).Skip(skip).Take(take);
 
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
+                int recordsTotal = familyMembers.Count;
+
+                // Remove ignored on calculations
+                familyMembers = familyMembers.Where(x => !x.IgnoreOnIncome).ToList();
                 var familyIncomeDouble = familyMembers.Sum(x => x.MonthlyIncome) + patient.MonthlyIncome;
                 string familyIncome = familyIncomeDouble.ToString("C2");
                 string perCapitaIncome = (familyIncomeDouble / (familyMembers.Count + 1)).ToString("C2");
-
-                int recordsTotal = familyMembers.Count;
 
                 return Ok(new
                 {

@@ -23,7 +23,7 @@ export default (function () {
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             lengthMenu: [
                 [10, 25, 50, 99999999],
-                ['10', '25', '50', 'Tudo']
+                ["10", "25", "50", "Tudo"]
             ],
             buttons: [
                 {
@@ -44,7 +44,7 @@ export default (function () {
                     d.name = $("#Name").val();
                 },
                 datatype: "json",
-                error: function (e) {
+                error: function () {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
@@ -54,18 +54,18 @@ export default (function () {
                 { data: "name", title: "Nome", name: "Name" },
                 { data: "note", title: "Nota", name: "Note" },
             ],
-            drawCallback: function (settings) {
+            drawCallback: function () {
                 $(".editBenefitButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteBenefitButton").click(function (e) {
+                $(".deleteBenefitButton").click(function () {
                     initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $('#benefitTable').attr('style', 'border-collapse: collapse !important');
+        $("#benefitTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
@@ -93,15 +93,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#benefitTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Benefício registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -127,15 +127,15 @@ export default (function () {
                     .done(function (data, textStatus) {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
-                            $('.modal-backdrop').remove();
+                            $(".modal-backdrop").remove();
                             $("#benefitTable").DataTable().ajax.reload(null, false);
                             global.swalWithBootstrapButtons.fire("Sucesso", "Benefício atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
                         }
-                    }).fail(function (error) {
-                        global.swalWithBootstrapButtons.fire('Ops...', 'Alguma coisa deu errado!', 'error');
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
                     })
                     .always(function () {
                         $(submitButton).removeAttr("disabled").removeClass("disabled");
@@ -152,17 +152,17 @@ export default (function () {
         }
 
         global.swalWithBootstrapButtons.fire({
-            title: 'Você têm certeza?',
+            title: "Você têm certeza?",
             text: message,
-            type: 'warning',
+            type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
-                    .done(function (data, textStatus) {
+                    .done(function () {
                         $("#benefitTable").DataTable().ajax.reload(null, false);
                         global.swalWithBootstrapButtons.fire("Removido!", "O benefício foi removido com sucesso.", "success");
-                    }).fail(function (error) {
+                    }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });
             }

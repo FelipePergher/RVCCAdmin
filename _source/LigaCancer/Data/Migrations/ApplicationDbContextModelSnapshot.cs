@@ -207,6 +207,34 @@ namespace RVCC.Data.Migrations
                     b.ToTable("AuditAddresses");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditAuxiliarAccessoryType", b =>
+                {
+                    b.Property<int>("AuditAuxiliarAccessoryTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditAuxiliarAccessoryTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AuxiliarAccessoryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditAuxiliarAccessoryTypeId");
+
+                    b.ToTable("AuditAuxiliarAccessoryTypes");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditBenefit", b =>
                 {
                     b.Property<int>("AuditBenefitId")
@@ -297,6 +325,37 @@ namespace RVCC.Data.Migrations
                     b.ToTable("AuditDoctors");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditExpenseType", b =>
+                {
+                    b.Property<int>("AuditExpenseTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditExpenseTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExpenseTypeFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpenseTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditExpenseTypeId");
+
+                    b.ToTable("AuditExpenseTypes");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditFamilyMember", b =>
                 {
                     b.Property<int>("AuditFamilyMemberId")
@@ -317,6 +376,9 @@ namespace RVCC.Data.Migrations
                     b.Property<int>("FamilyMemberId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IgnoreOnIncome")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Kinship")
                         .HasColumnType("nvarchar(max)");
 
@@ -331,6 +393,9 @@ namespace RVCC.Data.Migrations
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Responsible")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
@@ -477,6 +542,15 @@ namespace RVCC.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ForwardedToSupportHouse")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ImmediateNecessities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImmediateNecessitiesDateUpdated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
 
@@ -510,6 +584,46 @@ namespace RVCC.Data.Migrations
                     b.HasKey("AuditPatientId");
 
                     b.ToTable("AuditPatients");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientAuxiliarAccessoryType", b =>
+                {
+                    b.Property<int>("AuditAuxiliarAccessoryTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditAuxiliarAccessoryTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AuxiliarAccessoryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuxiliarAccessoryTypeTime")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DuoDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientAuxiliarAccessoryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditAuxiliarAccessoryTypeId");
+
+                    b.ToTable("AuditPatientAuxiliarAccessoryTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientBenefit", b =>
@@ -553,6 +667,40 @@ namespace RVCC.Data.Migrations
                     b.HasKey("AuditPatientBenefitId");
 
                     b.ToTable("AuditPatientBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientExpenseType", b =>
+                {
+                    b.Property<int>("AuditExpenseTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditExpenseTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExpenseTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientExpenseTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("AuditExpenseTypeId");
+
+                    b.ToTable("AuditPatientExpenseTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformation", b =>
@@ -670,6 +818,34 @@ namespace RVCC.Data.Migrations
                     b.ToTable("AuditPatientInformationMedicines");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationServiceType", b =>
+                {
+                    b.Property<int>("AuditPatientInformationServiceTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPatientInformationServiceTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditPatientInformationServiceTypeId");
+
+                    b.ToTable("AuditPatientInformationServiceTypes");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPatientInformationTreatmentPlace", b =>
                 {
                     b.Property<int>("AuditPatientInformationTreatmentPlaceId")
@@ -733,40 +909,6 @@ namespace RVCC.Data.Migrations
                     b.HasKey("AuditPhoneId");
 
                     b.ToTable("AuditPhones");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditPresence", b =>
-                {
-                    b.Property<int>("AuditPresenceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditPresenceId"), 1L, 1);
-
-                    b.Property<string>("AuditAction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AuditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PresenceDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PresenceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuditPresenceId");
-
-                    b.ToTable("AuditPresences");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditSaleShirt2020", b =>
@@ -882,6 +1024,34 @@ namespace RVCC.Data.Migrations
                     b.HasKey("AuditShirtSaleId");
 
                     b.ToTable("AuditSaleShirt2020s");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Audit.AuditServiceType", b =>
+                {
+                    b.Property<int>("AuditServiceTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditServiceTypeId"), 1L, 1);
+
+                    b.Property<string>("AuditAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuditServiceTypeId");
+
+                    b.ToTable("AuditServiceTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Audit.AuditSetting", b =>
@@ -1161,13 +1331,13 @@ namespace RVCC.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.AttendanceType", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.AuxiliarAccessoryType", b =>
                 {
-                    b.Property<int>("AttendanceTypeId")
+                    b.Property<int>("AuxiliarAccessoryTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceTypeId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuxiliarAccessoryTypeId"), 1L, 1);
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1184,9 +1354,9 @@ namespace RVCC.Data.Migrations
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AttendanceTypeId");
+                    b.HasKey("AuxiliarAccessoryTypeId");
 
-                    b.ToTable("AttendanceTypes");
+                    b.ToTable("AuxiliarAccessoryTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Domain.Benefit", b =>
@@ -1289,6 +1459,41 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Doctors");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ExpenseType", b =>
+                {
+                    b.Property<int>("ExpenseTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseTypeId"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExpenseTypeFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("RegisterTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExpenseTypeId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
+                    b.ToTable("ExpenseTypes");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Domain.FamilyMember", b =>
                 {
                     b.Property<int>("FamilyMemberId")
@@ -1302,6 +1507,9 @@ namespace RVCC.Data.Migrations
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IgnoreOnIncome")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Kinship")
                         .HasColumnType("nvarchar(max)");
@@ -1320,6 +1528,9 @@ namespace RVCC.Data.Migrations
 
                     b.Property<DateTime>("RegisterTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Responsible")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
@@ -1480,6 +1691,15 @@ namespace RVCC.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .UseCollation("Latin1_General_CI_AI");
 
+                    b.Property<bool>("ForwardedToSupportHouse")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ImmediateNecessities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImmediateNecessitiesDateUpdated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
 
@@ -1601,42 +1821,6 @@ namespace RVCC.Data.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.Presence", b =>
-                {
-                    b.Property<int>("PresenceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PresenceId"), 1L, 1);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PresenceDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RegisterTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PresenceId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Presences");
-                });
-
             modelBuilder.Entity("RVCC.Data.Models.Domain.SaleShirt2020", b =>
                 {
                     b.Property<int>("ShirtSaleId")
@@ -1752,6 +1936,38 @@ namespace RVCC.Data.Migrations
                     b.ToTable("SalesShirt2020");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ServiceType", b =>
+                {
+                    b.Property<int>("ServiceTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceTypeId"), 1L, 1);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("RegisterTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ServiceTypeId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
+                    b.ToTable("ServiceTypes");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.Domain.Setting", b =>
                 {
                     b.Property<int>("SettingId")
@@ -1847,79 +2063,36 @@ namespace RVCC.Data.Migrations
                     b.ToTable("TreatmentPlaces");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.Visitor", b =>
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientAuxiliarAccessoryType", b =>
                 {
-                    b.Property<int>("VisitorId")
+                    b.Property<int>("PatientAuxiliarAccessoryTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VisitorId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientAuxiliarAccessoryTypeId"), 1L, 1);
 
-                    b.Property<string>("CPF")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("VisitorId");
-
-                    b.ToTable("Visitors");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Domain.VisitorAttendanceType", b =>
-                {
-                    b.Property<int>("VisitorAttendanceTypeId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AuxiliarAccessoryTypeId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VisitorAttendanceTypeId"), 1L, 1);
-
-                    b.Property<DateTime>("AttendanceDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("AttendanceTypeId")
+                    b.Property<int>("AuxiliarAccessoryTypeTime")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Observation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterTime")
+                    b.Property<DateTime>("DuoDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("VisitorId")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.HasKey("VisitorAttendanceTypeId");
+                    b.HasKey("PatientAuxiliarAccessoryTypeId");
 
-                    b.HasIndex("AttendanceTypeId");
+                    b.HasIndex("AuxiliarAccessoryTypeId");
 
-                    b.HasIndex("VisitorId");
+                    b.HasIndex("PatientId");
 
-                    b.ToTable("VisitorAttendanceType");
+                    b.ToTable("PatientAuxiliarAccessoryTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientBenefit", b =>
@@ -1961,6 +2134,32 @@ namespace RVCC.Data.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("PatientBenefits");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientExpenseType", b =>
+                {
+                    b.Property<int>("PatientExpenseTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientExpenseTypeId"), 1L, 1);
+
+                    b.Property<int>("ExpenseTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("PatientExpenseTypeId");
+
+                    b.HasIndex("ExpenseTypeId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PatientExpenseTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationCancerType", b =>
@@ -2006,6 +2205,21 @@ namespace RVCC.Data.Migrations
                     b.HasIndex("MedicineId");
 
                     b.ToTable("PatientInformationMedicine");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationServiceType", b =>
+                {
+                    b.Property<int>("PatientInformationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientInformationId", "ServiceTypeId");
+
+                    b.HasIndex("ServiceTypeId");
+
+                    b.ToTable("PatientInformationServiceType");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
@@ -2151,17 +2365,6 @@ namespace RVCC.Data.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.Presence", b =>
-                {
-                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
-                        .WithMany("Presences")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("RVCC.Data.Models.Domain.Stay", b =>
                 {
                     b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
@@ -2171,23 +2374,23 @@ namespace RVCC.Data.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.VisitorAttendanceType", b =>
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientAuxiliarAccessoryType", b =>
                 {
-                    b.HasOne("RVCC.Data.Models.Domain.AttendanceType", "AttendanceType")
-                        .WithMany("VisitorAttendanceTypes")
-                        .HasForeignKey("AttendanceTypeId")
+                    b.HasOne("RVCC.Data.Models.Domain.AuxiliarAccessoryType", "AuxiliarAccessoryType")
+                        .WithMany("PatientAuxiliarAccessoryTypes")
+                        .HasForeignKey("AuxiliarAccessoryTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RVCC.Data.Models.Domain.Visitor", "Visitor")
-                        .WithMany("VisitorAttendanceTypes")
-                        .HasForeignKey("VisitorId")
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
+                        .WithMany("PatientAuxiliarAccessoryTypes")
+                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AttendanceType");
+                    b.Navigation("AuxiliarAccessoryType");
 
-                    b.Navigation("Visitor");
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientBenefit", b =>
@@ -2205,6 +2408,25 @@ namespace RVCC.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Benefit");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientExpenseType", b =>
+                {
+                    b.HasOne("RVCC.Data.Models.Domain.ExpenseType", "ExpenseType")
+                        .WithMany("PatientExpenseTypes")
+                        .HasForeignKey("ExpenseTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RVCC.Data.Models.Domain.Patient", "Patient")
+                        .WithMany("PatientExpenseTypes")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseType");
 
                     b.Navigation("Patient");
                 });
@@ -2266,6 +2488,25 @@ namespace RVCC.Data.Migrations
                     b.Navigation("PatientInformation");
                 });
 
+            modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationServiceType", b =>
+                {
+                    b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
+                        .WithMany("PatientInformationServiceTypes")
+                        .HasForeignKey("PatientInformationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RVCC.Data.Models.Domain.ServiceType", "ServiceType")
+                        .WithMany("PatientInformationServiceTypes")
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientInformation");
+
+                    b.Navigation("ServiceType");
+                });
+
             modelBuilder.Entity("RVCC.Data.Models.RelationModels.PatientInformationTreatmentPlace", b =>
                 {
                     b.HasOne("RVCC.Data.Models.Domain.PatientInformation", "PatientInformation")
@@ -2285,9 +2526,9 @@ namespace RVCC.Data.Migrations
                     b.Navigation("TreatmentPlace");
                 });
 
-            modelBuilder.Entity("RVCC.Data.Models.Domain.AttendanceType", b =>
+            modelBuilder.Entity("RVCC.Data.Models.Domain.AuxiliarAccessoryType", b =>
                 {
-                    b.Navigation("VisitorAttendanceTypes");
+                    b.Navigation("PatientAuxiliarAccessoryTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Domain.Benefit", b =>
@@ -2303,6 +2544,11 @@ namespace RVCC.Data.Migrations
             modelBuilder.Entity("RVCC.Data.Models.Domain.Doctor", b =>
                 {
                     b.Navigation("PatientInformationDoctors");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ExpenseType", b =>
+                {
+                    b.Navigation("PatientExpenseTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Domain.Medicine", b =>
@@ -2322,13 +2568,15 @@ namespace RVCC.Data.Migrations
 
                     b.Navigation("Naturality");
 
+                    b.Navigation("PatientAuxiliarAccessoryTypes");
+
                     b.Navigation("PatientBenefits");
+
+                    b.Navigation("PatientExpenseTypes");
 
                     b.Navigation("PatientInformation");
 
                     b.Navigation("Phones");
-
-                    b.Navigation("Presences");
 
                     b.Navigation("Stays");
                 });
@@ -2341,17 +2589,19 @@ namespace RVCC.Data.Migrations
 
                     b.Navigation("PatientInformationMedicines");
 
+                    b.Navigation("PatientInformationServiceTypes");
+
                     b.Navigation("PatientInformationTreatmentPlaces");
+                });
+
+            modelBuilder.Entity("RVCC.Data.Models.Domain.ServiceType", b =>
+                {
+                    b.Navigation("PatientInformationServiceTypes");
                 });
 
             modelBuilder.Entity("RVCC.Data.Models.Domain.TreatmentPlace", b =>
                 {
                     b.Navigation("PatientInformationTreatmentPlaces");
-                });
-
-            modelBuilder.Entity("RVCC.Data.Models.Domain.Visitor", b =>
-                {
-                    b.Navigation("VisitorAttendanceTypes");
                 });
 #pragma warning restore 612, 618
         }

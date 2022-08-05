@@ -27,10 +27,10 @@ export default (function () {
                 $(submitButton).prop("disabled", "disabled").addClass("disabled");
                 $("#submitSpinner").show();
                 $.post("ChangePassword", form.serialize())
-                    .done(function (data) {
+                    .done(function () {
                         global.swalWithBootstrapButtons.fire("Sucesso", "Senha alterada com sucesso.", "success");
                     })
-                    .fail(function (error) {
+                    .fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     })
                     .always(function () {

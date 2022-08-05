@@ -46,7 +46,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<PatientBenefitViewModel> data = patientBenefits.Select(x => new PatientBenefitViewModel
                 {
                     Patient = $"{x.Patient.FirstName} {x.Patient.Surname}",
-                    Date = x.BenefitDate.ToString("dd/MM/yyyy"),
+                    Date = x.BenefitDate.ToDateString(),
                     Benefit = x.Benefit.Name,
                     Quantity = x.Quantity.ToString(),
                     Actions = GetActionsHtml(x, User)
@@ -73,11 +73,8 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
                                                   "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
+            options += $@"<a href='javascript:void(0);' data-url='/PatientBenefit/DeletePatientBenefit' data-patientBenefitId='{patientBenefit.PatientBenefitId}' 
                     class='deletePatientBenefitButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
 
             string actionsHtml =
                 $@"<div class='dropdown'>

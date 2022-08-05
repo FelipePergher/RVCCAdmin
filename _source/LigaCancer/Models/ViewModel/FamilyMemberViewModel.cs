@@ -16,6 +16,10 @@ namespace RVCC.Models.ViewModel
 
         public string MonthlyIncome { get; set; }
 
+        public string Responsible { get; set; }
+
+        public string IgnoreOnIncome { get; set; }
+
         public string Actions { get; set; }
     }
 }

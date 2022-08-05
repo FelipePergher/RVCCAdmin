@@ -13,6 +13,7 @@ namespace RVCC.Data.Models.Domain
     public class Stay : RegisterData, IStay
     {
         #region IStay
+
         [Key]
         public int StayId { get; set; }
 

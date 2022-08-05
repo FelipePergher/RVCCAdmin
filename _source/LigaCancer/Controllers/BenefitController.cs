@@ -91,6 +91,11 @@ namespace RVCC.Controllers
             {
                 Benefit benefit = await _benefitService.FindByIdAsync(id);
 
+                if (benefit == null)
+                {
+                    return NotFound();
+                }
+
                 benefit.Name = benefitForm.Name;
                 benefit.Note = benefitForm.Note;
 

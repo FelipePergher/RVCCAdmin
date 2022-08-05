@@ -104,9 +104,9 @@ namespace RVCC
                         .Map<Doctor, AuditDoctor>()
                         .Map<TreatmentPlace, AuditTreatmentPlace>()
                         .Map<CancerType, AuditCancerType>()
+                        .Map<ServiceType, AuditServiceType>()
                         .Map<Medicine, AuditMedicine>()
                         .Map<Stay, AuditStay>()
-                        .Map<Presence, AuditPresence>()
                         .Map<Setting, AuditSetting>()
                         .Map<Benefit, AuditBenefit>()
                         .Map<Patient, AuditPatient>()
@@ -120,6 +120,7 @@ namespace RVCC
                         .Map<PatientInformationDoctor, AuditPatientInformationDoctor>()
                         .Map<PatientInformationMedicine, AuditPatientInformationMedicine>()
                         .Map<PatientInformationTreatmentPlace, AuditPatientInformationTreatmentPlace>()
+                        .Map<PatientInformationServiceType, AuditPatientInformationServiceType>()
                         .Map<PatientBenefit, AuditPatientBenefit>((patientBenefit, auditPatientBenefit) =>
                         {
                             ServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -133,6 +134,10 @@ namespace RVCC
                                 auditPatientBenefit.PatientName = patientBenefitData.Patient != null ? $"{patientBenefitData.Patient?.FirstName} {patientBenefitData.Patient.Surname}" : string.Empty;
                             }
                         })
+                        .Map<ExpenseType, AuditExpenseType>()
+                        .Map<PatientExpenseType, AuditPatientExpenseType>()
+                        .Map<AuxiliarAccessoryType, AuditAuxiliarAccessoryType>()
+                        .Map<PatientAuxiliarAccessoryType, AuditPatientAuxiliarAccessoryType>()
                         .Map<SaleShirt2020, AuditSaleShirt2020>()
                         .Map<Visitor, AuditVisitor>()
                         .Map<AttendanceType, AuditAttendanceType>()
@@ -159,6 +164,11 @@ namespace RVCC
             services.AddTransient<IDataRepository<TreatmentPlace>, TreatmentPlaceRepository>();
             services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
             services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
+            services.AddTransient<IDataRepository<ExpenseType>, ExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<PatientExpenseType>, PatientExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<AuxiliarAccessoryType>, AuxiliarAccessoryTypeRepository>();
+            services.AddTransient<IDataRepository<PatientAuxiliarAccessoryType>, PatientAuxiliarAccessoryTypeRepository>();
+            services.AddTransient<IDataRepository<ServiceType>, ServiceTypeRepository>();
 
             services.AddTransient<IDataRepository<Patient>, PatientRepository>();
             services.AddTransient<IDataRepository<PatientInformation>, PatientInformationRepository>();
@@ -169,7 +179,6 @@ namespace RVCC
             services.AddTransient<IDataRepository<FamilyMember>, FamilyMemberRepository>();
             services.AddTransient<IDataRepository<FileAttachment>, FileAttachmentRepository>();
 
-            services.AddTransient<IDataRepository<Presence>, PresenceRepository>();
             services.AddTransient<IDataRepository<Benefit>, BenefitRepository>();
             services.AddTransient<IDataRepository<PatientBenefit>, PatientBenefitRepository>();
             services.AddTransient<IDataRepository<Stay>, StayRepository>();

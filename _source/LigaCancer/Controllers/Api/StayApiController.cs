@@ -46,7 +46,7 @@ namespace RVCC.Controllers.Api
                 IEnumerable<StayViewModel> data = stays.Select(x => new StayViewModel
                 {
                     Patient = x.PatientName,
-                    Date = x.StayDateTime.ToString("dd/MM/yyyy"),
+                    Date = x.StayDateTime.ToDateString(),
                     Note = x.Note,
                     City = x.City,
                     Actions = GetActionsHtml(x, User)
@@ -74,11 +74,8 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/Stay/EditStay/{stay.StayId}' data-toggle='modal' data-target='#modal-action' " +
                              "data-title='Editar Presença' class='dropdown-item editStayButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/Stay/DeleteStay' data-id='{stay.StayId}' " +
-                           "class='deleteStayButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/Stay/DeleteStay' data-id='{stay.StayId}' " +
+                       "class='deleteStayButton dropdown-item'><span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 $@"<div class='dropdown'>

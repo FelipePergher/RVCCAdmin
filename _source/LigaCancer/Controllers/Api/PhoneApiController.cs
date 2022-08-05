@@ -68,11 +68,8 @@ namespace RVCC.Controllers.Api
             string options = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            if (user.IsInRole(Roles.Admin) || user.IsInRole(Roles.Secretary))
-            {
-                options += $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
-                           "<span class='fas fa-trash-alt'></span> Excluir </a>";
-            }
+            options += $"<a href='javascript:void(0);' data-url='/Phone/DeletePhone' data-id='{phone.PhoneId}' class='dropdown-item deletePhoneButton'>" +
+                       "<span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 $@"<div class='dropdown'>

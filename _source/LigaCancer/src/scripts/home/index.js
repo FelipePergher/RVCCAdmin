@@ -1,8 +1,8 @@
 ﻿"use strict";
 import "jquery-validation";
 import "jquery-validation-unobtrusive";
-import 'bootstrap-datepicker';
-import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min';
+import "bootstrap-datepicker";
+import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
 import Chart from "chart.js";
 
 export default (function () {
@@ -20,13 +20,13 @@ export default (function () {
     function initPage() {
         getChart();
 
-        $('#ChartDate').datepicker({
+        $("#ChartDate").datepicker({
             clearBtn: true,
             format: "dd/mm/yyyy",
             language: "pt-BR",
             templates: {
-                leftArrow: '<span class="fas fa-chevron-left"></span>',
-                rightArrow: '<span class="fas fa-chevron-right"></span>'
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
             }
         });
 
@@ -67,7 +67,7 @@ export default (function () {
                     }
                 })
                 .fail(function () {
-                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                    //global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 });
         }
     }

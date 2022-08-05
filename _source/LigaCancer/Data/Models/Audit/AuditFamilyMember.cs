@@ -28,10 +28,18 @@ namespace RVCC.Data.Models.Audit
 
         public double MonthlyIncome { get; set; }
 
-        [Obsolete("Use MonthlyIncome instead")]
-        public double MonthlyIncomeMinSalary { get; set; }
+        public bool Responsible { get; set; }
+
+        public bool IgnoreOnIncome { get; set; }
 
         public int PatientId { get; set; }
+
+        #endregion
+
+        #region Obsolete
+
+        [Obsolete("Use MonthlyIncome instead")]
+        public double MonthlyIncomeMinSalary { get; set; }
 
         #endregion
 

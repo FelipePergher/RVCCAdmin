@@ -17,6 +17,8 @@ namespace RVCC.Models.SearchModel
             Doctors = new List<string>();
             TreatmentPlaces = new List<string>();
             Medicines = new List<string>();
+            ServiceTypes = new List<string>();
+            PatientAuxiliarAccessoryTypes = new List<string>();
         }
 
         [Display(Name = "Nome")]
@@ -40,6 +42,9 @@ namespace RVCC.Models.SearchModel
         [Display(Name = "Grupo de convivência")]
         public string FamiliarityGroup { get; set; }
 
+        [Display(Name = "Encaminhado Casa de apoio")]
+        public string ForwardedToSupportHouse { get; set; }
+
         [Display(Name = "Status")]
         public Enums.ArchivePatientType? ArchivePatientType { get; set; }
 
@@ -55,12 +60,25 @@ namespace RVCC.Models.SearchModel
         [Display(Name = "Locais de Tratamentos")]
         public List<string> TreatmentPlaces { get; set; }
 
+        [Display(Name = "Serviços")]
+        public List<string> ServiceTypes { get; set; }
+
+        [Display(Name = "Acessórios Auxiliares")]
+        public List<string> PatientAuxiliarAccessoryTypes { get; set; }
+
         public List<SelectListItem> FamiliarityGroups => new List<SelectListItem>
-            {
-                new SelectListItem(string.Empty, string.Empty),
-                new SelectListItem("Participa", "true"),
-                new SelectListItem("Não Participa", "false")
-            };
+        {
+            new SelectListItem(string.Empty, string.Empty),
+            new SelectListItem("Participa", "true"),
+            new SelectListItem("Não Participa", "false")
+        };
+
+        public List<SelectListItem> ForwardedToSupportHouseOptions => new List<SelectListItem>
+        {
+            new SelectListItem(string.Empty, string.Empty),
+            new SelectListItem("Encaminhado", "true"),
+            new SelectListItem("Não encaminhado", "false")
+        };
 
         [Display(Name = "Data Nascimento Inicial")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
