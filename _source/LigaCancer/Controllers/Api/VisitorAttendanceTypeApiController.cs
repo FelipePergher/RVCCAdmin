@@ -65,6 +65,18 @@ namespace RVCC.Controllers.Api
             }
         }
 
+        [HttpPost("~/api/visitorAttendanceType/getChartData")]
+        public IActionResult GetChartData([FromForm] HomeViewModel home)
+        {
+            var dateTime = DateTime.Parse(home.ChartDate);
+            List<int> monthChartDate = ((VisitorAttendanceTypeRepository)_visitorAttendanceTypeService).GetMonthChartData(dateTime);
+            List<int> yearChartDate = ((VisitorAttendanceTypeRepository)_visitorAttendanceTypeService).GetYearChartData(dateTime);
+
+            int daysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+
+            return Ok(new { monthChartDate, yearChartDate, daysInMonth });
+        }
+
         #region Private Methods
 
         private static string GetActionsHtml(VisitorAttendanceType visitorAttendanceType)

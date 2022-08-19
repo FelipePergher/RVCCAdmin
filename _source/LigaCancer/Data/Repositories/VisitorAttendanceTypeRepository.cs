@@ -129,6 +129,42 @@ namespace RVCC.Data.Repositories
             return Task.FromResult(result);
         }
 
+        #region Custom Methods
+
+        public List<int> GetMonthChartData(DateTime chartDate)
+        {
+            var data = new List<int>();
+
+            var monthPresences = _context.VisitorAttendanceTypes
+                .Where(x => x.AttendanceDate.Year == chartDate.Year && x.AttendanceDate.Month == chartDate.Month) as IEnumerable<VisitorAttendanceType>;
+
+            int daysInMonth = DateTime.DaysInMonth(chartDate.Year, chartDate.Month);
+            for (int i = 1; i <= daysInMonth; i++)
+            {
+                int dayCount = monthPresences.Count(x => x.AttendanceDate.Day == i);
+                data.Add(dayCount);
+            }
+
+            return data;
+        }
+
+        public List<int> GetYearChartData(DateTime chartDate)
+        {
+            var data = new List<int>();
+
+            var yearPresences = _context.VisitorAttendanceTypes.Where(x => x.AttendanceDate.Year == chartDate.Year) as IEnumerable<VisitorAttendanceType>;
+
+            for (int i = 1; i < 13; i++)
+            {
+                int monthCount = yearPresences.Count(x => x.AttendanceDate.Month == i);
+                data.Add(monthCount);
+            }
+
+            return data;
+        }
+
+        #endregion
+
         #region Private Methods
 
         private static IQueryable<VisitorAttendanceType> GetOrdinationVisitorAttendanceTypes(IQueryable<VisitorAttendanceType> query, string sortColumn, string sortDirection)
