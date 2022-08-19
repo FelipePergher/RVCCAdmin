@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -48,7 +47,7 @@ namespace RVCC.Controllers.Api
                     Name = x.Name,
                     CRM = x.CRM,
                     Quantity = x.PatientInformationDoctors.Count(),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _doctorService.Count();
@@ -88,7 +87,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Doctor doctor, ClaimsPrincipal user)
+        private static string GetActionsHtml(Doctor doctor)
         {
             string options = $"<a href='/Doctor/EditDoctor/{doctor.DoctorId}' data-toggle='modal' data-target='#modal-action' " +
                              "data-title='Editar Médico' class='dropdown-item editDoctorButton'><span class='fas fa-edit'></span> Editar </a>";

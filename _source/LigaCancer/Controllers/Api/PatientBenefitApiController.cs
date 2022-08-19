@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -49,7 +48,7 @@ namespace RVCC.Controllers.Api
                     Date = x.BenefitDate.ToDateString(),
                     Benefit = x.Benefit.Name,
                     Quantity = x.Quantity.ToString(),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = string.IsNullOrEmpty(patientBenefitSearchModel.PatientId)
@@ -68,7 +67,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(PatientBenefit patientBenefit, ClaimsPrincipal user)
+        private static string GetActionsHtml(PatientBenefit patientBenefit)
         {
             string options = $"<a href='/PatientBenefit/EditPatientBenefit/{patientBenefit.PatientBenefitId}' data-toggle='modal' data-target='#modal-action' " +
                                                   "data-title='Editar Benefício de Paciente ' class='dropdown-item editPatientBenefitButton'><span class='fas fa-edit'></span> Editar </a>";

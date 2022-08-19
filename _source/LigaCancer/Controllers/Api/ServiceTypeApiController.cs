@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -47,7 +46,7 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     Quantity = x.PatientInformationServiceTypes.Count(),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _serviceTypeService.Count();
@@ -87,7 +86,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(ServiceType serviceType, ClaimsPrincipal user)
+        private static string GetActionsHtml(ServiceType serviceType)
         {
             string options = $"<a href='/ServiceType/EditServiceType/{serviceType.ServiceTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Serviço' class='dropdown-item editServiceTypeButton'><span class='fas fa-edit'></span> Editar </a>";

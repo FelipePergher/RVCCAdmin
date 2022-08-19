@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -48,7 +47,7 @@ namespace RVCC.Controllers.Api
                     Name = x.Name,
                     ExpenseTypeFrequency = Enums.GetDisplayName(x.ExpenseTypeFrequency),
                     Quantity = x.PatientExpenseTypes.Count(),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _expenseTypeService.Count();
@@ -88,7 +87,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(ExpenseType expenseType, ClaimsPrincipal user)
+        private static string GetActionsHtml(ExpenseType expenseType)
         {
             string options = $"<a href='/ExpenseType/EditExpenseType/{expenseType.ExpenseTypeId}' data-toggle='modal' data-target='#modal-action' " +
                 "data-title='Editar Tipo de Despesa' class='dropdown-item editExpenseTypeButton'><span class='fas fa-edit'></span> Editar </a>";

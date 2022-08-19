@@ -56,6 +56,7 @@ export default (function () {
                 { data: "name", title: "Nome", name: "Name" },
                 { data: "cpf", title: "CPF", name: "CPF" },
                 { data: "phone", title: "Phone", name: "Phone" },
+                { data: "quantity", title: "Atendimentos", name: "Quantity" }
             ],
             drawCallback: function () {
                 $(".editVisitorButton").click(function () {
@@ -148,8 +149,11 @@ export default (function () {
         });
     }
 
-    function initDelete(url, id) {
+    function initDelete(url, id, relation) {
         let message = "Você não poderá reverter isso!";
+        if (relation) {
+            message = "Este Visitante possuí atendimentos, deseja prosseguir mesmo assim?";
+        }
 
         global.swalWithBootstrapButtons.fire({
             title: "Você têm certeza?",

@@ -4,7 +4,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using static RVCC.Business.Enums;
 
 namespace RVCC.Models.FormModel
 {

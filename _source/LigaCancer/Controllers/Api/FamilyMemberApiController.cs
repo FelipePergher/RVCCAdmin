@@ -13,7 +13,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -53,7 +52,7 @@ namespace RVCC.Controllers.Api
                     MonthlyIncome = x.MonthlyIncome.ToString("N2"),
                     IgnoreOnIncome = x.IgnoreOnIncome ? "<span class='fa fa-check'></span>" : string.Empty,
                     Responsible = x.Responsible ? "<span class='fa fa-check'></span>" : string.Empty,
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 Patient patient = await _patientService.FindByIdAsync(familyMemberSearch.PatientId);
@@ -85,7 +84,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(FamilyMember familyMember, ClaimsPrincipal user)
+        private static string GetActionsHtml(FamilyMember familyMember)
         {
             string options = $"<a href='/FamilyMember/EditFamilyMember/{familyMember.FamilyMemberId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Membro Familiar' class='dropdown-item editFamilyMemberButton'><span class='fas fa-edit'></span> Editar </a>";

@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -49,7 +48,7 @@ namespace RVCC.Controllers.Api
                     Date = x.StayDateTime.ToDateString(),
                     Note = x.Note,
                     City = x.City,
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = string.IsNullOrEmpty(staySearchModel.PatientId)
@@ -69,7 +68,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Stay stay, ClaimsPrincipal user)
+        private static string GetActionsHtml(Stay stay)
         {
             string options = $"<a href='/Stay/EditStay/{stay.StayId}' data-toggle='modal' data-target='#modal-action' " +
                              "data-title='Editar Presença' class='dropdown-item editStayButton'><span class='fas fa-edit'></span> Editar </a>";

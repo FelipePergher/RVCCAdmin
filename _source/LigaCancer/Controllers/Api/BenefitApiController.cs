@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -46,7 +45,7 @@ namespace RVCC.Controllers.Api
                 {
                     Name = x.Name,
                     Note = x.Note,
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _benefitService.Count();
@@ -87,7 +86,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Benefit benefit, ClaimsPrincipal user)
+        private static string GetActionsHtml(Benefit benefit)
         {
             string options = $"<a href='/Benefit/EditBenefit/{benefit.BenefitId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Remédio' class='dropdown-item editBenefitButton'><span class='fas fa-edit'></span> Editar </a>";

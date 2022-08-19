@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -50,7 +49,7 @@ namespace RVCC.Controllers.Api
                     ExpenseType = x.ExpenseType.Name,
                     Frequency = Enums.GetDisplayName(x.ExpenseType.ExpenseTypeFrequency),
                     Value = x.Value.ToString("N2"),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 Patient patient = await _patientService.FindByIdAsync(patientExpenseTypeSearch.PatientId);
@@ -73,7 +72,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(PatientExpenseType patientExpenseType, ClaimsPrincipal user)
+        private static string GetActionsHtml(PatientExpenseType patientExpenseType)
         {
             string options = $"<a href='/PatientExpenseType/EditPatientExpenseType/{patientExpenseType.PatientExpenseTypeId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Despesa' class='dropdown-item editPatientExpenseTypeButton'><span class='fas fa-edit'></span> Editar </a>";

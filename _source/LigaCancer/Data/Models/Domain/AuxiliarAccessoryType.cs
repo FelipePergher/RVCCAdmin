@@ -7,7 +7,6 @@ using RVCC.Data.Models.Audit;
 using RVCC.Data.Models.RelationModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static RVCC.Business.Enums;
 
 namespace RVCC.Data.Models.Domain
 {

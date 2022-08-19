@@ -13,7 +13,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -47,7 +46,8 @@ namespace RVCC.Controllers.Api
                     Name = x.Name,
                     CPF = x.CPF,
                     Phone = x.Phone,
-                    Actions = GetActionsHtml(x, User)
+                    Quantity = x.VisitorAttendanceTypes.Count(),
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _visitorService.Count();
@@ -64,13 +64,14 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Visitor visitor, ClaimsPrincipal user)
+        private static string GetActionsHtml(Visitor visitor)
         {
             string options = $"<a href='/Visitor/EditVisitor/{visitor.VisitorId}' data-toggle='modal' data-target='#modal-action' " +
                              "data-title='Editar Visitante' class='dropdown-item editVisitorButton'><span class='fas fa-edit'></span> Editar </a>";
 
-            options += $"<a href='javascript:void(0);' data-url='/Visitor/DeleteVisitor' data-id='{visitor.VisitorId}' class='dropdown-item deleteVisitorButton'>" +
-                        "<span class='fas fa-trash-alt'></span> Excluir </a>";
+            options += $@"<a href='javascript:void(0);' data-url='/Visitor/DeleteVisitor' data-id='{visitor.VisitorId}' 
+                        data-relation='{visitor.VisitorAttendanceTypes.Count > 0}' class='dropdown-item deleteVisitorButton'>
+                        <span class='fas fa-trash-alt'></span> Excluir </a>";
 
             string actionsHtml =
                 "<div class='dropdown'>" +

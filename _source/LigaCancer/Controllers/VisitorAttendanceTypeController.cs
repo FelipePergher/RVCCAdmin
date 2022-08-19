@@ -1,4 +1,4 @@
-﻿// <copyright file="VisitorAttendanceController.cs" company="Doffs">
+﻿// <copyright file="VisitorAttendanceTypeController.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 

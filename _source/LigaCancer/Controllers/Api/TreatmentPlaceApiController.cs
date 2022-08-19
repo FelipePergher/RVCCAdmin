@@ -14,7 +14,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -47,7 +46,7 @@ namespace RVCC.Controllers.Api
                 {
                     City = x.City,
                     Quantity = x.PatientInformationTreatmentPlaces.Count(),
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = _treatmentPlaceService.Count();
@@ -87,7 +86,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(TreatmentPlace treatmentPlace, ClaimsPrincipal user)
+        private static string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
             string options = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";

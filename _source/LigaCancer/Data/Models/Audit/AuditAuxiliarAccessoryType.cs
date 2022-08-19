@@ -5,7 +5,6 @@
 using RVCC.Data.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
-using static RVCC.Business.Enums;
 
 namespace RVCC.Data.Models.Audit
 {

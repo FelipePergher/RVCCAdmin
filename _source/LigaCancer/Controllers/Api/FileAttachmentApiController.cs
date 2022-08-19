@@ -13,7 +13,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -49,7 +48,7 @@ namespace RVCC.Controllers.Api
                     Extension = x.FileExtension,
                     Size = x.FileSize.ToString("N"),
                     FilePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{x.FilePath}",
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = fileAttachments.Count();
@@ -65,7 +64,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(FileAttachment fileAttachment, ClaimsPrincipal user)
+        private static string GetActionsHtml(FileAttachment fileAttachment)
         {
             string deleteFileAttachment = $@"<a href='javascript:void(0);' data-url='/FileAttachment/DeleteFileAttachment' data-id='{fileAttachment.FileAttachmentId}' class='dropdown-item deleteFileAttachmentButton'>
                         <span class='fas fa-trash-alt'></span> Excluir 

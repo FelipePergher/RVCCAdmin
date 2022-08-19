@@ -13,7 +13,6 @@ using RVCC.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RVCC.Controllers.Api
@@ -47,7 +46,7 @@ namespace RVCC.Controllers.Api
                     Number = x.Number,
                     PhoneType = Enums.GetDisplayName(x.PhoneType),
                     ObservationNote = x.ObservationNote,
-                    Actions = GetActionsHtml(x, User)
+                    Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
                 int recordsTotal = phones.Count;
@@ -63,7 +62,7 @@ namespace RVCC.Controllers.Api
 
         #region Private Methods
 
-        private static string GetActionsHtml(Phone phone, ClaimsPrincipal user)
+        private static string GetActionsHtml(Phone phone)
         {
             string options = $"<a href='/Phone/EditPhone/{phone.PhoneId}' data-toggle='modal' " +
                              "data-target='#modal-action' data-title='Editar Telefone' class='dropdown-item editPhoneButton'><span class='fas fa-edit'></span> Editar </a>";
