@@ -25,6 +25,24 @@ namespace RVCC.Models.ViewModel
 
         public int TreatmentPlaceCount { get; set; }
 
+        public int AttendanceTypeCount { get; set; }
+
+        public int VisitorCount { get; set; }
+
+        public int VisitorAttendanceTypeCount { get; set; }
+
+        public int BenefitTypeCount { get; set; }
+
+        public int BenefitCount { get; set; }
+
+        public int StaysCount { get; set; }
+
+        public int ServiceTypeCount { get; set; }
+
+        public int AuxiliarAcessoryTypeCount { get; set; }
+
+        public int ExpenseTypeCount { get; set; }
+
         [Display(Name = "Data do gráfico")]
         [Required(ErrorMessage = "Este campo é obrigatório!")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]

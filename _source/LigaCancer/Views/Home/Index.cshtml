@@ -1,4 +1,5 @@
-﻿@model RVCC.Models.ViewModel.HomeViewModel
+﻿@using RVCC.Business
+@model RVCC.Models.ViewModel.HomeViewModel
 @{
     ViewData["Title"] = "Homepage";
 }
@@ -46,53 +47,159 @@
                     </div>
                     <!-- /.row-->
                     <div class="chart-wrapper">
-                        <canvas class="chart" style="max-height: 64vh; display: none;" id="dayChart"></canvas>
-                        <canvas class="chart" style="max-height:64vh;" id="monthChart"></canvas>
-                        <canvas class="chart" style="max-height:64vh; display: none;" id="yearChart"></canvas>
+                        <canvas class="chart" style="max-height: 56.5vh; display: none;" id="dayChart"></canvas>
+                        <canvas class="chart" style="max-height: 56.5vh;" id="monthChart"></canvas>
+                        <canvas class="chart" style="max-height: 56.5vh; display: none;" id="yearChart"></canvas>
                     </div>
                 </div>
                 <div class="card-footer">
                     <div class="row text-center">
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <div class="text-muted">Pacientes</div>
-                            <a asp-action="Index" asp-controller="Patient" class="no-decoration"><strong>@Model.PatientCount</strong></a>
-                            <div class="progress progress-xs mt-2">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <a asp-action="Index" asp-controller="Patient" class="no-decoration">
+                                <div class="text-muted">Pacientes</div>
+                                <strong>@Model.PatientCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
                         </div>
-                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <div class="text-muted">Médicos</div>
-                            <a asp-action="Index" asp-controller="Doctor" class="no-decoration"><strong>@Model.DoctorCount</strong></a>
-                            <div class="progress progress-xs mt-2">
-                                <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+
+                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="Visitor" class="no-decoration">
+                                <div class="text-muted">Visitantes</div>
+                                <strong>@Model.VisitorCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
                         </div>
+                       
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <div class="text-muted">Remédios</div>
-                            <a asp-action="Index" asp-controller="Medicine" class="no-decoration"><strong>@Model.MedicineCount</strong></a>
-                            <div class="progress progress-xs mt-2">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <a asp-action="Index" asp-controller="VisitorAttendanceType" class="no-decoration">
+                                <div class="text-muted">Atendimentos</div>
+                                <strong>@Model.VisitorAttendanceTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
                         </div>
+                        
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <div class="text-muted">Cânceres</div>
-                            <a asp-action="Index" asp-controller="CancerType" class="no-decoration"><strong>@Model.CancerTypeCount</strong></a>
-                            <div class="progress progress-xs mt-2">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <a asp-action="Index" asp-controller="PatientBenefit" class="no-decoration">
+                                <div class="text-muted">Beneficios</div>
+                                <strong>@Model.BenefitCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
                         </div>
+                        
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <div class="text-muted">Locais de tratamento</div>
-                            <a asp-action="Index" asp-controller="TreatmentPlace" class="no-decoration"><strong>@Model.TreatmentPlaceCount</strong></a>
-                            <div class="progress progress-xs mt-2">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <a asp-action="Index" asp-controller="Stay" class="no-decoration">
+                                <div class="text-muted">Estadias</div>
+                                <strong>@Model.StaysCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="Benefit" class="no-decoration">
+                                <div class="text-muted">Tipos de Beneficíos</div>
+                                <strong>@Model.BenefitTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="AttendanceType" class="no-decoration">
+                                <div class="text-muted">Tipos de Atendimentos</div>
+                                <strong>@Model.AttendanceTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row text-center">
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="Doctor" class="no-decoration">
+                                <div class="text-muted">Médicos</div>
+                                <strong>@Model.DoctorCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="Medicine" class="no-decoration">
+                                <div class="text-muted">Remédios</div>
+                                <strong>@Model.MedicineCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="CancerType" class="no-decoration">
+                                <div class="text-muted">Cânceres</div>
+                                <strong>@Model.CancerTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="TreatmentPlace" class="no-decoration">
+                                <div class="text-muted">Locais de tratamento</div>
+                                <strong>@Model.TreatmentPlaceCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="ServiceType" class="no-decoration">
+                                <div class="text-muted">Tipo de Serviços</div>
+                                <strong>@Model.ServiceTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="ExpenseType" class="no-decoration">
+                                <div class="text-muted">Tipos de Despesas</div>
+                                <strong>@Model.ExpenseTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="AuxiliarAccessoryType" class="no-decoration">
+                                <div class="text-muted">Acessórios Auxiliares</div>
+                                <strong>@Model.AuxiliarAcessoryTypeCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- /.row-->
         </div>
     </div>
 </main>
