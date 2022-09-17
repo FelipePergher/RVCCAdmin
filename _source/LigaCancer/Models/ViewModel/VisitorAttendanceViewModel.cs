@@ -8,6 +8,8 @@ namespace RVCC.Models.ViewModel
     {
         public string Visitor { get; set; }
 
+        public string Attendant { get; set; }
+
         public string Date { get; set; }
 
         public string AttendanceType { get; set; }

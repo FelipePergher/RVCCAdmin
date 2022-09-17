@@ -171,7 +171,16 @@ namespace RVCC.Data.Repositories
         {
             return sortColumn switch
             {
-                "AttendanceDate" => sortDirection == "asc"
+                "Visitor" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Visitor.Name)
+                    : query.OrderByDescending(x => x.Visitor.Name),
+                "Attendant" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.Attendant.Name)
+                    : query.OrderByDescending(x => x.Attendant.Name),
+                "AttendanceType" => sortDirection == "asc"
+                    ? query.OrderBy(x => x.AttendanceType.Name)
+                    : query.OrderByDescending(x => x.AttendanceType.Name),
+                "Date" => sortDirection == "asc"
                     ? query.OrderBy(x => x.AttendanceDate)
                     : query.OrderByDescending(x => x.AttendanceDate),
                 "Observation" => sortDirection == "asc"
@@ -185,9 +194,29 @@ namespace RVCC.Data.Repositories
 
         private static IQueryable<VisitorAttendanceType> GetFilteredVisitorAttendanceTypes(IQueryable<VisitorAttendanceType> query, VisitorAttendanceTypeSearchModel visitorAttendanceTypeSearch)
         {
-            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.VisitorId))
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.Name))
             {
-                query = query.Where(x => x.VisitorId == int.Parse(visitorAttendanceTypeSearch.VisitorId));
+                query = query.Where(x => x.Visitor.Name.Contains(visitorAttendanceTypeSearch.Name));
+            }
+
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.Attendant))
+            {
+                query = query.Where(x => x.Attendant.Name.Contains(visitorAttendanceTypeSearch.Attendant));
+            }
+
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.Attendance))
+            {
+                query = query.Where(x => x.AttendanceType.Name.Contains(visitorAttendanceTypeSearch.Attendance));
+            }
+
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.DateFrom))
+            {
+                query = query.Where(x => x.AttendanceDate.Date >= DateTime.Parse(visitorAttendanceTypeSearch.DateFrom).Date);
+            }
+
+            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.DateTo))
+            {
+                query = query.Where(x => x.AttendanceDate.Date <= DateTime.Parse(visitorAttendanceTypeSearch.DateTo).Date);
             }
 
             return query;

@@ -1,0 +1,27 @@
+﻿@model RVCC.Models.FormModel.AttendantFormModel
+
+<input asp-for="AttendantId" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="CPF" class="control-label"></label>
+    <input asp-for="CPF" class="form-control" />
+    <span asp-validation-for="CPF" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Phone" class="control-label"></label>
+    <input asp-for="Phone" class="form-control" />
+    <span asp-validation-for="Phone" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Note" class="control-label"></label>
+    <textarea asp-for="Note" class="form-control" rows="5" ></textarea>
+    <span asp-validation-for="Note" class="text-danger"></span>
+</div>

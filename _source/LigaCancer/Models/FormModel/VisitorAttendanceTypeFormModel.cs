@@ -27,6 +27,10 @@ namespace RVCC.Models.FormModel
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string VisitorId { get; set; }
 
+        [Display(Name = "Atendente")]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
+        public string AttendantId { get; set; }
+
         [Display(Name = "Data")]
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         [DisplayFormat(DataFormatString = @"{0:dd\/MM\/yyyy}", ApplyFormatInEditMode = true)]
@@ -45,5 +49,7 @@ namespace RVCC.Models.FormModel
         public List<SelectListItem> Visitors { get; set; }
 
         public List<SelectListItem> AttendanceTypes { get; set; }
+
+        public List<SelectListItem> Attendants { get; set; }
     }
 }

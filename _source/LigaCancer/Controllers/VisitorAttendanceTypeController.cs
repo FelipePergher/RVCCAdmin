@@ -24,13 +24,20 @@ namespace RVCC.Controllers
     public class VisitorAttendanceTypeController : Controller
     {
         private readonly IDataRepository<VisitorAttendanceType> _visitorAttendanceTypeTypeService;
+        private readonly IDataRepository<Attendant> _attendantService;
         private readonly IDataRepository<Visitor> _visitorService;
         private readonly IDataRepository<AttendanceType> _attendanceTypeService;
         private readonly ILogger<VisitorAttendanceTypeController> _logger;
 
-        public VisitorAttendanceTypeController(IDataRepository<VisitorAttendanceType> visitorAttendanceTypeTypeService, IDataRepository<Visitor> visitorService, IDataRepository<AttendanceType> attendanceTypeService, ILogger<VisitorAttendanceTypeController> logger)
+        public VisitorAttendanceTypeController(
+            IDataRepository<VisitorAttendanceType> visitorAttendanceTypeTypeService,
+            IDataRepository<Attendant> attendantService,
+            IDataRepository<Visitor> visitorService,
+            IDataRepository<AttendanceType> attendanceTypeService,
+            ILogger<VisitorAttendanceTypeController> logger)
         {
             _visitorAttendanceTypeTypeService = visitorAttendanceTypeTypeService;
+            _attendantService = attendantService;
             _visitorService = visitorService;
             _attendanceTypeService = attendanceTypeService;
             _logger = logger;
@@ -47,10 +54,13 @@ namespace RVCC.Controllers
         {
             List<Visitor> visitors = await _visitorService.GetAllAsync();
             List<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync();
+            List<Attendant> attendants = await _attendantService.GetAllAsync();
+
             var visitorAttendanceTypeForm = new VisitorAttendanceTypeFormModel
             {
                 Visitors = visitors.Select(x => new SelectListItem($"{x.Name} ", x.VisitorId.ToString())).ToList(),
-                AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList()
+                AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList(),
+                Attendants = attendants.Select(x => new SelectListItem(x.Name, x.AttendantId.ToString())).ToList()
             };
 
             return PartialView("Partials/_AddVisitorAttendanceType", visitorAttendanceTypeForm);
@@ -62,11 +72,19 @@ namespace RVCC.Controllers
             if (ModelState.IsValid)
             {
                 Visitor visitor = await _visitorService.FindByIdAsync(visitorAttendanceTypeForm.VisitorId);
+                Attendant attendant = await _attendantService.FindByIdAsync(visitorAttendanceTypeForm.AttendantId);
+
+                if (visitor == null || attendant == null)
+                {
+                    return BadRequest();
+                }
+
                 var dateTime = DateTime.Parse(visitorAttendanceTypeForm.Date);
                 var visitorAttendanceType = new VisitorAttendanceType
                 {
                     AttendanceDate = dateTime,
                     VisitorId = visitor.VisitorId,
+                    AttendantId = attendant.AttendantId,
                     AttendanceTypeId = int.Parse(visitorAttendanceTypeForm.Attendance),
                     Observation = visitorAttendanceTypeForm.Observation
                 };
@@ -98,7 +116,7 @@ namespace RVCC.Controllers
                 return BadRequest();
             }
 
-            VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id, new[] { nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) });
+            VisitorAttendanceType visitorAttendanceType = await _visitorAttendanceTypeTypeService.FindByIdAsync(id, new[] { nameof(VisitorAttendanceType.Attendant), nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) });
 
             if (visitorAttendanceType == null)
             {
@@ -110,6 +128,7 @@ namespace RVCC.Controllers
                 VisitorIdHidden = visitorAttendanceType.VisitorId,
                 AttendanceTypeIdHidden = visitorAttendanceType.AttendanceTypeId,
                 VisitorId = $"{visitorAttendanceType.Visitor.Name}",
+                AttendantId = $"{visitorAttendanceType.Attendant.Name}",
                 Date = visitorAttendanceType.AttendanceDate.ToString("dd/MM/yyyy"),
                 Attendance = visitorAttendanceType.AttendanceType.Name,
                 Observation = visitorAttendanceType.Observation

@@ -41,10 +41,11 @@ namespace RVCC.Controllers.Api
                 int take = searchModel.Length != null ? int.Parse(searchModel.Length) : 0;
                 int skip = searchModel.Start != null ? int.Parse(searchModel.Start) : 0;
 
-                IEnumerable<VisitorAttendanceType> visitorAttendances = await _visitorAttendanceTypeService.GetAllAsync(new[] { nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) }, sortColumn, sortDirection, visitorAttendanceTypeSearchModel);
+                IEnumerable<VisitorAttendanceType> visitorAttendances = await _visitorAttendanceTypeService.GetAllAsync(new[] { nameof(VisitorAttendanceType.Attendant), nameof(VisitorAttendanceType.Visitor), nameof(VisitorAttendanceType.AttendanceType) }, sortColumn, sortDirection, visitorAttendanceTypeSearchModel);
                 IEnumerable<VisitorAttendanceViewModel> data = visitorAttendances.Select(x => new VisitorAttendanceViewModel
                 {
                     Visitor = x.Visitor.Name,
+                    Attendant = x.Attendant.Name,
                     Date = x.AttendanceDate.ToDateString(),
                     AttendanceType = x.AttendanceType.Name,
                     Observation = x.Observation,

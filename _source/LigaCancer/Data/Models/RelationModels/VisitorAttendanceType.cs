@@ -20,6 +20,8 @@ namespace RVCC.Data.Models.RelationModels
 
         public int VisitorId { get; set; }
 
+        public int AttendantId { get; set; }
+
         public int AttendanceTypeId { get; set; }
 
         public DateTime AttendanceDate { get; set; }
@@ -35,6 +37,9 @@ namespace RVCC.Data.Models.RelationModels
 
         [ForeignKey(nameof(VisitorId))]
         public Visitor Visitor { get; set; }
+
+        [ForeignKey(nameof(AttendantId))]
+        public Attendant Attendant { get; set; }
 
         #endregion
     }

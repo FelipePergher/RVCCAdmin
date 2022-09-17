@@ -140,6 +140,7 @@ namespace RVCC
                         .Map<PatientAuxiliarAccessoryType, AuditPatientAuxiliarAccessoryType>()
                         .Map<SaleShirt2020, AuditSaleShirt2020>()
                         .Map<Visitor, AuditVisitor>()
+                        .Map<Attendant, AuditAttendant>()
                         .Map<AttendanceType, AuditAttendanceType>()
                         .Map<VisitorAttendanceType, AuditVisitorAttendanceType>()
                         .AuditEntityAction<IAudit>((evt, entry, auditEntity) =>
@@ -187,6 +188,7 @@ namespace RVCC
             services.AddTransient<UserResolverService>();
 
             services.AddTransient<IDataRepository<Visitor>, VisitorRepository>();
+            services.AddTransient<IDataRepository<Attendant>, AttendantRepository>();
             services.AddTransient<IDataRepository<AttendanceType>, AttendanceTypeRepository>();
             services.AddTransient<IDataRepository<VisitorAttendanceType>, VisitorAttendanceTypeRepository>();
         }

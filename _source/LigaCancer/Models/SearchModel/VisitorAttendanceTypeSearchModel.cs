@@ -17,8 +17,11 @@ namespace RVCC.Models.SearchModel
 
         public string VisitorId { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Visitante")]
         public string Name { get; set; }
+
+        [Display(Name = "Atendente")]
+        public string Attendant { get; set; }
 
         [Display(Name = "Atendimento")]
         public string Attendance { get; set; }

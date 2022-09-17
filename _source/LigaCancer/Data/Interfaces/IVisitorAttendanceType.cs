@@ -12,6 +12,8 @@ namespace RVCC.Data.Interfaces
 
         public int VisitorId { get; set; }
 
+        public int AttendantId { get; set; }
+
         public int AttendanceTypeId { get; set; }
 
         public DateTime AttendanceDate { get; set; }

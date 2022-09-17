@@ -9,13 +9,19 @@
 
         <div class="form-group">
             <label asp-for="VisitorId" class="control-label"></label>
-            <input asp-for="VisitorId" class="form-control" value="@Model.VisitorId" readonly="" />
+            <input asp-for="VisitorId" class="form-control" readonly="" />
             <span asp-validation-for="VisitorId" class="text-danger"></span>
         </div>
 
         <div class="form-group">
+            <label asp-for="AttendantId" class="control-label"></label>
+            <input asp-for="AttendantId" class="form-control" readonly="" />
+            <span asp-validation-for="AttendantId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="Attendance" class="control-label"></label>
-            <input asp-for="Attendance" class="form-control" value="@Model.Attendance" readonly="" />
+            <input asp-for="Attendance" class="form-control" readonly="" />
             <span asp-validation-for="Attendance" class="text-danger"></span>
         </div>
 

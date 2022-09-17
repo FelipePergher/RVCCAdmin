@@ -38,22 +38,27 @@
                             <div class="card-body collapse show" id="filterCollapse">
                                 <form id="searchForm">
                                     <div class="form-row form-group">
-                                        <div class="col-lg-3">
+                                        <div class="col">
                                             <label asp-for="Name"></label>
                                             <input asp-for="Name" class="form-control" />
                                             <span asp-validation-for="Name" class="text-danger"></span>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <div class="col">
+                                            <label asp-for="Attendant"></label>
+                                            <input asp-for="Attendant" class="form-control" />
+                                            <span asp-validation-for="Attendant" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
                                             <label asp-for="Attendance"></label>
                                             <input asp-for="Attendance" class="form-control" />
                                             <span asp-validation-for="Attendance" class="text-danger"></span>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <div class="col">
                                             <label asp-for="DateFrom"></label>
                                             <input asp-for="DateFrom" type="text" class="form-control" />
                                             <span asp-validation-for="DateFrom" class="text-danger"></span>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <div class="col">
                                             <label asp-for="DateTo"></label>
                                             <input asp-for="DateTo" type="text" class="form-control" />
                                             <span asp-validation-for="DateTo" class="text-danger"></span>
@@ -80,7 +85,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-inline float-right">
-                                    <a id="addVisitorAttendanceTypeButton" asp-action="AddVisitorAttendanceType" data-title="Adicionar Visitante Atendimento " data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                    <a id="addVisitorAttendanceTypeButton" asp-action="AddVisitorAttendanceType" data-title="Adicionar Atendimento " data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
                                         <span class="fa fa-plus"></span> Adicionar Atendimento
                                     </a>
                                 </div>

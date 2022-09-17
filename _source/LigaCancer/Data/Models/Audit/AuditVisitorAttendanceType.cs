@@ -19,6 +19,8 @@ namespace RVCC.Data.Models.Audit
 
         public int VisitorId { get; set; }
 
+        public int AttendantId { get; set; }
+
         public int AttendanceTypeId { get; set; }
 
         public DateTime AttendanceDate { get; set; }

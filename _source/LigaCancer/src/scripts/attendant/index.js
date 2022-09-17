@@ -3,12 +3,9 @@ import "jquery-validation";
 import "jquery-validation-unobtrusive";
 import "datatables.net";
 import "datatables.net-bs4";
-import "bootstrap/js/dist/modal";
-import "bootstrap-datepicker";
-import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-br.min";
-import "select2";
 import "datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js";
 import "datatables.net-buttons/js/buttons.html5.min.js";
+import "bootstrap/js/dist/modal";
 
 export default (function () {
 
@@ -19,7 +16,7 @@ export default (function () {
     });
 
     function initPage() {
-        let visitorAttendanceTypeTable = $("#visitorAttendanceTypeTable").DataTable({
+        let attendantTable = $("#attendantTable").DataTable({
             dom:
                 "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'B>>" +
                 "<'row'<'col-sm-12'tr>>" +
@@ -32,7 +29,7 @@ export default (function () {
                 {
                     extend: "csv",
                     exportOptions: {
-                        columns: [1, 2, 3, 4, 5]
+                        columns: [1, 2, 3, 4]
                     }
                 }
             ],
@@ -41,78 +38,55 @@ export default (function () {
             language: global.datatablesLanguage,
             filter: false,
             ajax: {
-                url: "/api/visitorAttendanceType/search",
+                url: "/api/attendant/search",
                 type: "POST",
                 data: function (d) {
                     d.name = $("#Name").val();
-                    d.attendant = $("#Attendant").val();
-                    d.attendance = $("#Attendance").val();
-                    d.dateFrom = $("#DateFrom").val();
-                    d.dateTo = $("#DateTo").val();
+                    d.CPF = $("#CPF").val();
+                    d.Phone = $("#Phone").val();
+                    d.Note = $("#Note").val();
                 },
                 datatype: "json",
                 error: function () {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
                 }
             },
-            order: [2, "desc"],
+            order: [1, "asc"],
             columns: [
-                { data: "actions", title: "Ações", name: "Actions", orderable: false },
-                { data: "visitor", title: "Visitante", name: "Visitor" },
-                { data: "attendant", title: "Atendente", name: "Attendant" },
-                { data: "attendanceType", title: "Tipo Atendimento", name: "AttendanceType" },
-                { data: "date", title: "Data do atendimento", name: "Date" },
-                { data: "observation", title: "Observação", name: "Observation" },
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "name", title: "Nome", name: "Name" },
+                { data: "cpf", title: "CPF", name: "CPF" },
+                { data: "phone", title: "Telefone", name: "Phone" },
+                { data: "note", title: "Nota", name: "Note" },
+                { data: "quantity", title: "Atendimentos", name: "Quantity" }
             ],
             drawCallback: function () {
-                $(".editVisitorAttendanceTypeButton").click(function () {
+                $(".editAttendantButton").click(function () {
                     global.openModal($(this).attr("href"), $(this).data("title"), initEditForm);
                 });
 
-                $(".deleteVisitorAttendanceTypeButton").click(function () {
-                    initDelete($(this).data("url"), $(this).data("visitorattendancetypeid"));
+                $(".deleteAttendantButton").click(function () {
+                    initDelete($(this).data("url"), $(this).data("id"), $(this).data("relation") === "True");
                 });
             }
         });
 
-        $("#visitorAttendanceTypeTable").attr("style", "border-collapse: collapse !important");
-
-        $("#DateTo, #DateFrom").datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
-                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
-            }
-        });
+        $("#attendantTable").attr("style", "border-collapse: collapse !important");
 
         $("#searchForm").off("submit").submit(function (e) {
             e.preventDefault();
-            visitorAttendanceTypeTable.search("").draw("");
+            attendantTable.search("").draw("");
         });
 
-        $("#addVisitorAttendanceTypeButton").click(function () {
+        $("#addAttendantButton").click(function () {
             global.openModal($(this).attr("href"), $(this).data("title"), initAddForm);
         });
     }
 
     function initAddForm() {
-        $.validator.unobtrusive.parse("#addVisitorAttendanceTypeForm");
+        $.validator.unobtrusive.parse("#addAttendantForm");
 
-        $(".select2").select2();
-
-        $("#Date").datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
-                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
-            }
-        });
-
-        $("#addVisitorAttendanceTypeForm").off("submit").submit(function (e) {
+        $("#addAttendantForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -126,8 +100,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $(".modal-backdrop").remove();
-                            $("#visitorAttendanceTypeTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Atendimento registrado com sucesso.", "success");
+                            $("#attendantTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Atendente registrado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddForm();
@@ -144,19 +118,9 @@ export default (function () {
     }
 
     function initEditForm() {
-        $.validator.unobtrusive.parse("#editVisitorAttendanceTypeForm");
+        $.validator.unobtrusive.parse("#editAttendantForm");
 
-        $("#Date").datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            templates: {
-                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
-                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
-            }
-        });
-
-        $("#editVisitorAttendanceTypeForm").off("submit").submit(function (e) {
+        $("#editAttendantForm").off("submit").submit(function (e) {
             e.preventDefault();
 
             let form = $(this);
@@ -170,8 +134,8 @@ export default (function () {
                         if (!data && textStatus === "success") {
                             $("#modal-action").modal("hide");
                             $(".modal-backdrop").remove();
-                            $("#visitorAttendanceTypeTable").DataTable().ajax.reload(null, false);
-                            global.swalWithBootstrapButtons.fire("Sucesso", "Atendimento atualizado com sucesso.", "success");
+                            $("#attendantTable").DataTable().ajax.reload(null, false);
+                            global.swalWithBootstrapButtons.fire("Sucesso", "Atendente atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditForm();
@@ -187,18 +151,23 @@ export default (function () {
         });
     }
 
-    function initDelete(url, visitorAttendanceTypeId) {
+    function initDelete(url, id, relation) {
+        let message = "Você não poderá reverter isso!";
+        if (relation) {
+            message = "Este Atendente possuí atendimentos, deseja prosseguir mesmo assim?";
+        }
+
         global.swalWithBootstrapButtons.fire({
             title: "Você têm certeza?",
-            text: "Você não poderá reverter isso!",
+            text: message,
             type: "warning",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                $.post(url, { id: visitorAttendanceTypeId, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val()  })
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
                     .done(function () {
-                        $("#visitorAttendanceTypeTable").DataTable().ajax.reload(null, false);
-                        global.swalWithBootstrapButtons.fire("Removido!", "O atendimento foi removido com sucesso.", "success");
+                        $("#attendantTable").DataTable().ajax.reload(null, false);
+                        global.swalWithBootstrapButtons.fire("Removido!", "O atendente foi removido com sucesso.", "success");
                     }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

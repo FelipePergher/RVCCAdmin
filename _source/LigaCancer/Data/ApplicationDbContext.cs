@@ -87,6 +87,8 @@ namespace RVCC.Data
 
         public DbSet<Visitor> Visitors { get; set; }
 
+        public DbSet<Attendant> Attendants { get; set; }
+
         public DbSet<AttendanceType> AttendanceTypes { get; set; }
 
         public DbSet<VisitorAttendanceType> VisitorAttendanceTypes { get; set; }
@@ -154,6 +156,8 @@ namespace RVCC.Data
         public DbSet<AuditSaleShirt2020> AuditSaleShirt2020s { get; set; }
 
         public DbSet<AuditVisitor> AuditVisitors { get; set; }
+
+        public DbSet<AuditAttendant> AuditAttendants { get; set; }
 
         public DbSet<AuditAttendanceType> AuditAttendanceTypes { get; set; }
 

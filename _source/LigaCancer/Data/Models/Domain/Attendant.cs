@@ -1,4 +1,4 @@
-﻿// <copyright file="Visitor.cs" company="Doffs">
+﻿// <copyright file="Attendant.cs" company="Doffs">
 // Copyright (c) Doffs. All Rights Reserved.
 // </copyright>
 
@@ -10,29 +10,32 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVCC.Data.Models.Domain
 {
-    public class Visitor : RegisterData, IVisitor
+    public class Attendant : RegisterData, IAttendant
     {
-        public Visitor()
+        public Attendant()
         {
         }
 
-        public Visitor(string name, string cpf, string phone)
+        public Attendant(string name, string cpf, string phone, string note)
         {
             Name = name;
             CPF = cpf;
             Phone = phone;
+            Note = note;
         }
 
-        #region IVisitor
+        #region IAttendant
 
         [Key]
-        public int VisitorId { get; set; }
+        public int AttendantId { get; set; }
 
         public string Name { get; set; }
 
         public string CPF { get; set; }
 
         public string Phone { get; set; }
+
+        public string Note { get; set; }
 
         #endregion
 

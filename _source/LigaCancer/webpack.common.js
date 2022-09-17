@@ -34,6 +34,7 @@ module.exports = {
         "admin": ["./src/sass/admin/index.scss", "./src/scripts/admin/index.js"],
         "sale-shirt-2020": ["./src/sass/sale-shirt-2020/index.scss", "./src/scripts/sale-shirt-2020/index.js"],
         "visitor": ["./src/sass/visitor/index.scss", "./src/scripts/visitor/index.js"],
+        "attendant": ["./src/sass/attendant/index.scss", "./src/scripts/attendant/index.js"],
         "attendance-type": ["./src/sass/attendance-type/index.scss", "./src/scripts/attendance-type/index.js"],
         "visitor-attendance-type": ["./src/sass/visitor-attendance-type/index.scss", "./src/scripts/visitor-attendance-type/index.js"]
     },
