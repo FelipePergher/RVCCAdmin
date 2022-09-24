@@ -27,6 +27,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Benefit> _benefitService;
         private readonly IDataRepository<ExpenseType> _expenseTypeService;
         private readonly IDataRepository<ServiceType> _serviceTypeService;
+        private readonly IDataRepository<Attendant> _attendantService;
         private readonly IDataRepository<AttendanceType> _attendanceTypeService;
         private readonly IDataRepository<VisitorAttendanceType> _visitorAttendanceTypeTypeService;
         private readonly IDataRepository<AuxiliarAccessoryType> _auxiliarAccessoryTypeService;
@@ -43,6 +44,7 @@ namespace RVCC.Controllers
             IDataRepository<Benefit> benefitService,
             IDataRepository<ExpenseType> expenseTypeService,
             IDataRepository<ServiceType> serviceTypeService,
+            IDataRepository<Attendant> attendantService,
             IDataRepository<AttendanceType> attendanceTypeService,
             IDataRepository<VisitorAttendanceType> visitorAttendanceTypeTypeService,
             IDataRepository<AuxiliarAccessoryType> auxiliarAccessoryTypeService)
@@ -58,6 +60,7 @@ namespace RVCC.Controllers
             _benefitService = benefitService;
             _expenseTypeService = expenseTypeService;
             _serviceTypeService = serviceTypeService;
+            _attendantService = attendantService;
             _attendanceTypeService = attendanceTypeService;
             _visitorAttendanceTypeTypeService = visitorAttendanceTypeTypeService;
             _auxiliarAccessoryTypeService = auxiliarAccessoryTypeService;
@@ -74,6 +77,7 @@ namespace RVCC.Controllers
                 PatientCount = _patientService.Count(),
                 TreatmentPlaceCount = _treatmentPlaceService.Count(),
                 AttendanceTypeCount = _attendanceTypeService.Count(),
+                AttendantCount = _attendanceTypeService.Count(),
                 AuxiliarAcessoryTypeCount = _auxiliarAccessoryTypeService.Count(),
                 BenefitCount = _patientBenefitService.Count(),
                 BenefitTypeCount = _benefitService.Count(),

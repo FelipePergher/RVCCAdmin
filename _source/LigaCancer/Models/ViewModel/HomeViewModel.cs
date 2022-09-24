@@ -25,6 +25,8 @@ namespace RVCC.Models.ViewModel
 
         public int TreatmentPlaceCount { get; set; }
 
+        public int AttendantCount { get; set; }
+
         public int AttendanceTypeCount { get; set; }
 
         public int VisitorCount { get; set; }
