@@ -136,6 +136,7 @@ namespace RVCC.Controllers
                 nameof(Patient.Naturality), nameof(Patient.ActivePatient), nameof(Patient.Phones), nameof(Patient.Addresses), nameof(Patient.FamilyMembers), nameof(Patient.Stays), nameof(Patient.FileAttachments),
                 $"{nameof(Patient.PatientBenefits)}.{nameof(PatientBenefit.Benefit)}",
                 $"{nameof(Patient.PatientExpenseTypes)}.{nameof(PatientExpenseType.ExpenseType)}",
+                $"{nameof(Patient.PatientTreatmentTypes)}.{nameof(PatientTreatmentType.TreatmentType)}",
                 $"{nameof(Patient.PatientAuxiliarAccessoryTypes)}.{nameof(PatientAuxiliarAccessoryType.AuxiliarAccessoryType)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationDoctors)}.{nameof(PatientInformationDoctor.Doctor)}",
                 $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationCancerTypes)}.{nameof(PatientInformationCancerType.CancerType)}",
@@ -206,6 +207,13 @@ namespace RVCC.Controllers
                     ExpenseType = x.ExpenseType.Name,
                     Frequency = Enums.GetDisplayName(x.ExpenseType.ExpenseTypeFrequency),
                     Value = x.Value.ToString("N2"),
+                }),
+                PatientTreatmentTypes = patient.PatientTreatmentTypes.Select(x => new PatientTreatmentTypeViewModel
+                {
+                    TreatmentType = x.TreatmentType.Name,
+                    StartDate = x.StartDate.HasValue ? x.StartDate.Value.ToDateString() : string.Empty,
+                    EndDate = x.EndDate.HasValue ? x.EndDate.Value.ToDateString() : string.Empty,
+                    Note = x.Note,
                 }),
                 PatientAuxiliarAccessoryTypes = patient.PatientAuxiliarAccessoryTypes.Select(x => new PatientAuxiliarAccessoryTypeViewModel
                 {

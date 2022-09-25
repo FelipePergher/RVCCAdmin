@@ -125,7 +125,7 @@
             </div>
 
             <div class="col-12 d-flex">
-                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Inicio do tratamento:</label>
+                <label class="d-flex align-items-end font-weight-bold m-0 pr-2">Início do tratamento:</label>
                 <span class="d-flex align-items-end">@(Model.TreatmentBeginDate == DateTime.MinValue ? string.Empty : Model.TreatmentBeginDate.ToShortDateString())</span>
             </div>
 
@@ -342,7 +342,44 @@
             </div>
         }
 
-         @if (Model.PatientAuxiliarAccessoryTypes.Any())
+        @if (Model.PatientTreatmentTypes.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <p class="h2">
+                        Tratamentos
+                    </p>
+                </div>
+
+                <div class="col-12">
+                    <hr class="w-100" />
+
+                    <table class="table table-bordered text-center" aria-hidden="true">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tratamento</th>
+                                <th scope="col">Início</th>
+                                <th scope="col">Térimo</th>
+                                <th scope="col">Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var patientTreatmentType in Model.PatientTreatmentTypes)
+                            {
+                                <tr>
+                                    <td>@patientTreatmentType.TreatmentType</td>
+                                    <td>@patientTreatmentType.StartDate</td>
+                                    <td>@patientTreatmentType.EndDate</td>
+                                    <td>@patientTreatmentType.Note</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if (Model.PatientAuxiliarAccessoryTypes.Any())
         {
             <div class="row mt-5">
                 <div class="col-12">

@@ -136,6 +136,8 @@ namespace RVCC
                         })
                         .Map<ExpenseType, AuditExpenseType>()
                         .Map<PatientExpenseType, AuditPatientExpenseType>()
+                        .Map<TreatmentType, AuditTreatmentType>()
+                        .Map<PatientTreatmentType, AuditPatientTreatmentType>()
                         .Map<AuxiliarAccessoryType, AuditAuxiliarAccessoryType>()
                         .Map<PatientAuxiliarAccessoryType, AuditPatientAuxiliarAccessoryType>()
                         .Map<SaleShirt2020, AuditSaleShirt2020>()
@@ -166,7 +168,9 @@ namespace RVCC
             services.AddTransient<IDataRepository<CancerType>, CancerTypeRepository>();
             services.AddTransient<IDataRepository<Medicine>, MedicineRepository>();
             services.AddTransient<IDataRepository<ExpenseType>, ExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<TreatmentType>, TreatmentTypeRepository>();
             services.AddTransient<IDataRepository<PatientExpenseType>, PatientExpenseTypeRepository>();
+            services.AddTransient<IDataRepository<PatientTreatmentType>, PatientTreatmentTypeRepository>();
             services.AddTransient<IDataRepository<AuxiliarAccessoryType>, AuxiliarAccessoryTypeRepository>();
             services.AddTransient<IDataRepository<PatientAuxiliarAccessoryType>, PatientAuxiliarAccessoryTypeRepository>();
             services.AddTransient<IDataRepository<ServiceType>, ServiceTypeRepository>();

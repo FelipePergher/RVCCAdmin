@@ -1,0 +1,24 @@
+﻿@model RVCC.Models.SearchModel.PatientTreatmentTypeSearchModel
+
+<div class="card">
+    <div class="card-header" data-toggle="collapse" data-target="#patientTreatmentTypeCollapse" aria-expanded="true">
+        <span class="fa fa-x-ray"></span>Tratamentos
+
+        <div class="card-header-actions">
+            <a class="card-header-action btn-minimize" href="#">
+                <span class="fa fa-minus"></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body collapse" id="patientTreatmentTypeCollapse">
+        <div class="form-inline float-right">
+            <a id="addPatientTreatmentTypeButton" asp-action="AddPatientTreatmentType" asp-controller="PatientTreatmentType" asp-route-id="@Model.PatientId" data-title="Adicionar Tratamento" class="btn btn-primary"
+               data-toggle="modal" data-target="#modal-action">
+                <span class="fa fa-plus"></span> Adicionar Tratamento
+            </a>
+        </div>
+
+        <table class="table table-bordered table-striped text-center" id="patientTreatmentTypeTable" aria-describedby="Tabela de tratamentos"></table>
+    </div>
+</div>

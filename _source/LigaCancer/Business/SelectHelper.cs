@@ -79,6 +79,19 @@ namespace RVCC.Business
             return selectListItems;
         }
 
+        public static async Task<List<SelectListItem>> GetTreatmentTypeSelectAsync(IDataRepository<TreatmentType> treatmentTypeService, int patientId, int includeTreatment = 0)
+        {
+            List<TreatmentType> treatmentTypes = await ((TreatmentTypeRepository)treatmentTypeService).GetNotRelatedToPatient(patientId, includeTreatment);
+
+            var selectListItems = treatmentTypes.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.TreatmentTypeId.ToString()
+            }).ToList();
+
+            return selectListItems;
+        }
+
         public static async Task<List<SelectListItem>> GetAuxiliarAccessoryTypeSelectAsync(IDataRepository<AuxiliarAccessoryType> auxiliarAccessoryTypeService, int patientId, int includeExpense = 0)
         {
             List<AuxiliarAccessoryType> auxiliarAccessoryTypes = await ((AuxiliarAccessoryTypeRepository)auxiliarAccessoryTypeService).GetNotRelatedToPatient(patientId, includeExpense);

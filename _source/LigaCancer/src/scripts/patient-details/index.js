@@ -24,6 +24,7 @@ export default (function () {
         initAddressTable();
         initFamilyMemberTable();
         initPatientExpenseTypeTable();
+        initPatientTreatmentTypeTable();
         initPatientAuxiliarAccessoryTypeTable();
         initFilesTable();
         initPatientBenefitTable();
@@ -838,6 +839,165 @@ export default (function () {
         });
     }
 
+    // Treatments
+    function initPatientTreatmentTypeTable() {
+        $("#patientTreatmentTypeTable").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            language: global.datatablesLanguage,
+            filter: false,
+            ajax: {
+                url: "/api/patientTreatmentType/search",
+                type: "POST",
+                data: function (d) {
+                    d.patientId = $("#patientId").val();
+                },
+                datatype: "json",
+                error: function () {
+                    global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");
+                }
+            },
+            order: [1, "asc"],
+            columns: [
+                { data: "actions", title: "Ações", name: "actions", width: "20px", orderable: false },
+                { data: "treatmentType", title: "Tratamento", name: "TreatmentType" },
+                { data: "startDate", title: "Início", name: "StartDate" },
+                { data: "endDate", title: "Fim", name: "EndDate" },
+                { data: "note", title: "Nota", name: "Note" },
+            ],
+            drawCallback: function () {
+                $(".editPatientTreatmentTypeButton").click(function () {
+                    global.openModal($(this).attr("href"), $(this).data("title"), initEditPatientTreatmentTypeForm);
+                });
+                $(".deletePatientTreatmentTypeButton").click(function () {
+                    initDeletePatientTreatmentType($(this).data("url"), $(this).data("id"));
+                });
+            }
+        });
+        $("#patientTreatmentTypeTable").attr("style", "border-collapse: collapse !important");
+
+        $("#addPatientTreatmentTypeButton").click(function () {
+            global.openModal($(this).attr("href"), $(this).data("title"), initAddPatientTreatmentTypeForm);
+        });
+    }
+
+    function initAddPatientTreatmentTypeForm() {
+        $("#TreatmentType").select2();
+
+        $("#StartDate, #EndDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+
+        $.validator.unobtrusive.parse("#addPatientTreatmentTypeForm");
+
+        $("#addPatientTreatmentTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientTreatmentTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Tratamento adicionado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initAddPatientTreatmentTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initEditPatientTreatmentTypeForm() {
+        $("#TreatmentType").select2();
+
+        $("#StartDate, #EndDate").datepicker({
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            language: "pt-BR",
+            templates: {
+                leftArrow: "<span class=\"fas fa-chevron-left\"></span>",
+                rightArrow: "<span class=\"fas fa-chevron-right\"></span>"
+            }
+        });
+
+        $.validator.unobtrusive.parse("#editPatientTreatmentTypeForm");
+
+        $("#editPatientTreatmentTypeForm").off("submit").submit(function (e) {
+            e.preventDefault();
+
+            let form = $(this);
+            if (form.valid()) {
+                let submitButton = $(this).find("button[type='submit']");
+                $(submitButton).prop("disabled", "disabled").addClass("disabled");
+                $("#submitSpinner").show();
+
+                $.post($(form).attr("action"), form.serialize())
+                    .done(function (data, textStatus) {
+                        if (!data && textStatus === "success") {
+                            $("#modal-action").modal("hide");
+                            $(".modal-backdrop").remove();
+
+                            $("#patientTreatmentTypeTable").DataTable().ajax.reload(null, false);
+                            reloadIframe();
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Tratamento atualizado com sucesso.", "success");
+                        } else {
+                            $("#modalBody").html(data);
+                            initEditPatientTreatmentTypeForm();
+                        }
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Ops...", "Alguma coisa deu errado!", "error");
+                    })
+                    .always(function () {
+                        $(submitButton).removeAttr("disabled").removeClass("disabled");
+                        $("#submitSpinner").hide();
+                    });
+            }
+        });
+    }
+
+    function initDeletePatientTreatmentType(url, id) {
+        global.swalWithBootstrapButtons.fire({
+            title: "Você têm certeza?",
+            text: "Você não poderá reverter isso!",
+            type: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                $.post(url, { id: id, __RequestVerificationToken: $("input[name=__RequestVerificationToken").val() })
+                    .done(function () {
+                        $("#patientTreatmentTypeTable").DataTable().ajax.reload(null, false);
+                        reloadIframe();
+                        global.swalWithBootstrapButtons.fire("Removido!", "Tratamento removido com sucesso.", "success");
+                    }).fail(function () {
+                        global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
+                    });
+            }
+        });
+    }
+
     // Patient Auxiliar Accessory Type
     function initPatientAuxiliarAccessoryTypeTable() {
         $("#patientAuxiliarAccessoryTypeTable").DataTable({
@@ -910,7 +1070,7 @@ export default (function () {
 
                             $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
-                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa adicionado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Acessório Auxiliar adicionado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initAddPatientAuxiliarAccessoryTypeForm();
@@ -956,7 +1116,7 @@ export default (function () {
 
                             $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
                             reloadIframe();
-                            global.swalWithBootstrapButtons.fire("Sucesso!", "Despesa atualizado com sucesso.", "success");
+                            global.swalWithBootstrapButtons.fire("Sucesso!", "Acessório Auxiliar atualizado com sucesso.", "success");
                         } else {
                             $("#modalBody").html(data);
                             initEditPatientAuxiliarAccessoryTypeForm();
@@ -984,7 +1144,7 @@ export default (function () {
                     .done(function () {
                         $("#patientAuxiliarAccessoryTypeTable").DataTable().ajax.reload(null, false);
                         reloadIframe();
-                        global.swalWithBootstrapButtons.fire("Removido!", "Despesa removido com sucesso.", "success");
+                        global.swalWithBootstrapButtons.fire("Removido!", "Acessório Auxiliar removido com sucesso.", "success");
                     }).fail(function () {
                         global.swalWithBootstrapButtons.fire("Oops...", "Alguma coisa deu errado!\n", "error");
                     });

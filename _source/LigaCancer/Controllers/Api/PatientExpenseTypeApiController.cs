@@ -23,13 +23,11 @@ namespace RVCC.Controllers.Api
     public class PatientExpenseTypeApiController : Controller
     {
         private readonly IDataRepository<PatientExpenseType> _patientExpenseTypeService;
-        private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<PatientExpenseTypeApiController> _logger;
 
-        public PatientExpenseTypeApiController(IDataRepository<PatientExpenseType> patientExpenseTypeService, IDataRepository<Patient> patientService, ILogger<PatientExpenseTypeApiController> logger)
+        public PatientExpenseTypeApiController(IDataRepository<PatientExpenseType> patientExpenseTypeService, ILogger<PatientExpenseTypeApiController> logger)
         {
             _patientExpenseTypeService = patientExpenseTypeService;
-            _patientService = patientService;
             _logger = logger;
         }
 
@@ -52,7 +50,6 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                Patient patient = await _patientService.FindByIdAsync(patientExpenseTypeSearch.PatientId);
                 int recordsTotal = patientExpenseTypes.Count;
 
                 return Ok(new
@@ -65,7 +62,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(LogEvents.ListItems, e, "Family Member Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "patient Expense Type Search Error");
                 return BadRequest();
             }
         }

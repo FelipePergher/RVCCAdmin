@@ -1,0 +1,17 @@
+﻿@using RVCC.Business
+@model RVCC.Models.FormModel.TreatmentTypeFormModel
+
+<input asp-for="TreatmentTypeId" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Note" class="control-label"></label>
+    <textarea asp-for="Note" class="form-control" rows="5" ></textarea>
+    <span asp-validation-for="Note" class="text-danger"></span>
+</div>
+

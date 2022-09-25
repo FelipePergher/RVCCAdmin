@@ -184,7 +184,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4">
-                                        <label class="font-weight-bold">Inicio do tratamento</label>
+                                        <label class="font-weight-bold">Início do tratamento</label>
                                     </div>
                                     <div class="col-8">
                                         <p>@Model.PatientInformation.TreatmentBeginDate</p>
@@ -321,6 +321,10 @@
 
                     <div class="col-12">
                         <partial name="~/Views/PatientExpenseType/Partials/_Index.cshtml" model="new PatientExpenseTypeSearchModel(Model.PatientId)" />
+                    </div>
+
+                    <div class="col-12">
+                        <partial name="~/Views/PatientTreatmentType/Partials/_Index.cshtml" model="new PatientTreatmentTypeSearchModel(Model.PatientId)" />
                     </div>
 
                     <div class="col-12">

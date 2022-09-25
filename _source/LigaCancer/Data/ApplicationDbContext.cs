@@ -53,6 +53,8 @@ namespace RVCC.Data
 
         public DbSet<PatientExpenseType> PatientExpenseTypes { get; set; }
 
+        public DbSet<PatientTreatmentType> PatientTreatmentTypes { get; set; }
+
         public DbSet<PatientAuxiliarAccessoryType> PatientAuxiliarAccessoryTypes { get; set; }
 
         public DbSet<PatientBenefit> PatientBenefits { get; set; }
@@ -72,6 +74,8 @@ namespace RVCC.Data
         public DbSet<Benefit> Benefits { get; set; }
 
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
+
+        public DbSet<TreatmentType> TreatmentTypes { get; set; }
 
         public DbSet<AuxiliarAccessoryType> AuxiliarAccessoryTypes { get; set; }
 
@@ -142,6 +146,10 @@ namespace RVCC.Data
         public DbSet<AuditPatientInformationMedicine> AuditPatientInformationMedicines { get; set; }
 
         public DbSet<AuditPatientInformationServiceType> AuditPatientInformationServiceTypes { get; set; }
+
+        public DbSet<AuditTreatmentType> AuditTreatmentTypes { get; set; }
+
+        public DbSet<AuditPatientTreatmentType> AuditPatientTreatmentTypes { get; set; }
 
         public DbSet<AuditExpenseType> AuditExpenseTypes { get; set; }
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVCC.Business;
 using RVCC.Business.Interface;
-using RVCC.Data.Models.Domain;
 using RVCC.Data.Models.RelationModels;
 using RVCC.Models.SearchModel;
 using RVCC.Models.ViewModel;
@@ -23,13 +22,11 @@ namespace RVCC.Controllers.Api
     public class PatientAuxiliarAccessoryTypeApiController : Controller
     {
         private readonly IDataRepository<PatientAuxiliarAccessoryType> _patientAuxiliarAccessoryTypeService;
-        private readonly IDataRepository<Patient> _patientService;
         private readonly ILogger<PatientAuxiliarAccessoryTypeApiController> _logger;
 
-        public PatientAuxiliarAccessoryTypeApiController(IDataRepository<PatientAuxiliarAccessoryType> patientAuxiliarAccessoryTypeService, IDataRepository<Patient> patientService, ILogger<PatientAuxiliarAccessoryTypeApiController> logger)
+        public PatientAuxiliarAccessoryTypeApiController(IDataRepository<PatientAuxiliarAccessoryType> patientAuxiliarAccessoryTypeService, ILogger<PatientAuxiliarAccessoryTypeApiController> logger)
         {
             _patientAuxiliarAccessoryTypeService = patientAuxiliarAccessoryTypeService;
-            _patientService = patientService;
             _logger = logger;
         }
 
@@ -53,7 +50,6 @@ namespace RVCC.Controllers.Api
                     Actions = GetActionsHtml(x)
                 }).Skip(skip).Take(take);
 
-                Patient patient = await _patientService.FindByIdAsync(patientAuxiliarAccessoryTypeSearch.PatientId);
                 int recordsTotal = patientAuxiliarAccessoryTypes.Count;
 
                 return Ok(new
@@ -66,7 +62,7 @@ namespace RVCC.Controllers.Api
             }
             catch (Exception e)
             {
-                _logger.LogError(LogEvents.ListItems, e, "Family Member Search Error");
+                _logger.LogError(LogEvents.ListItems, e, "Auxiliar Acessory Search Error");
                 return BadRequest();
             }
         }
