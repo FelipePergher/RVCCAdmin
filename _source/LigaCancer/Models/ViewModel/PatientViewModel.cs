@@ -33,5 +33,7 @@ namespace RVCC.Models.ViewModel
         public string TreatmentPlaces { get; set; }
 
         public string Doctors { get; set; }
+
+        public string Treatments { get; set; }
     }
 }

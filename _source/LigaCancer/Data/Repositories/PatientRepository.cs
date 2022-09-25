@@ -253,6 +253,11 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.PatientInformation.PatientInformationTreatmentPlaces.Any(y => y.TreatmentPlaceId == int.Parse(item)));
             }
 
+            foreach (string item in patientSearch.PatientTreatmentTypes)
+            {
+                query = query.Where(x => x.PatientTreatmentTypes.Any(y => y.TreatmentTypeId == int.Parse(item)));
+            }
+
             foreach (string item in patientSearch.Doctors)
             {
                 query = query.Where(x => x.PatientInformation.PatientInformationDoctors.Any(y => y.DoctorId == int.Parse(item)));

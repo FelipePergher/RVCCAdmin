@@ -67,6 +67,7 @@ export default (function () {
                     d.medicines = $("#Medicines").val();
                     d.doctors = $("#Doctors").val();
                     d.treatmentPlaces = $("#TreatmentPlaces").val();
+                    d.patientTreatmentTypes = $("#PatientTreatmentTypes").val();
                     d.serviceTypes = $("#ServiceTypes").val();
                     d.patientAuxiliarAccessoryTypes = $("#PatientAuxiliarAccessoryTypes").val();
                     d.familiarityGroup = $("#FamiliarityGroup").val();
@@ -96,7 +97,8 @@ export default (function () {
                 { data: "address", title: "Endereço", name: "Address", orderable: false },
                 { data: "medicines", title: "Remédios", name: "Medicines", orderable: false },
                 { data: "canceres", title: "Cânceres", name: "Canceres", orderable: false },
-                { data: "doctors", title: "Médicos", name: "Doctors", orderable: false }
+                { data: "doctors", title: "Médicos", name: "Doctors", orderable: false },
+                { data: "treatments", title: "Tratamentos", name: "Treatments", orderable: false },
             ],
             drawCallback: function () {
                 $(".archivePatientButton").click(function () {

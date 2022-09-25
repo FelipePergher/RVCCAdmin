@@ -51,6 +51,7 @@ namespace RVCC.Controllers.Api
                     $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationMedicines)}.{nameof(PatientInformationMedicine.Medicine)}",
                     $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationTreatmentPlaces)}.{nameof(PatientInformationTreatmentPlace.TreatmentPlace)}",
                     $"{nameof(Patient.PatientInformation)}.{nameof(PatientInformation.PatientInformationServiceTypes)}.{nameof(PatientInformationServiceType.ServiceType)}",
+                    $"{nameof(Patient.PatientTreatmentTypes)}.{nameof(PatientTreatmentType.TreatmentType)}",
                 };
 
                 IEnumerable<Patient> patients = await _patientService.GetAllAsync(includes, sortColumn, sortDirection, patientSearchModel);
@@ -70,6 +71,7 @@ namespace RVCC.Controllers.Api
                     Canceres = string.Join(", ", x.PatientInformation.PatientInformationCancerTypes.Select(y => y.CancerType.Name).ToList()),
                     Doctors = string.Join(", ", x.PatientInformation.PatientInformationDoctors.Select(y => y.Doctor.Name).ToList()),
                     TreatmentPlaces = string.Join(", ", x.PatientInformation.PatientInformationTreatmentPlaces.Select(y => y.TreatmentPlace.City).ToList()),
+                    Treatments = string.Join(", ", x.PatientTreatmentTypes.Select(y => y.TreatmentType.Name).ToList()),
                     Actions = GetActionsHtml(x, User)
                 });
 
