@@ -72,7 +72,7 @@
                         </div>
                        
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                            <a asp-action="Index" asp-controller="VisitorAttendanceType" class="no-decoration">
+                            <a asp-action="Index" asp-controller="Attendant" class="no-decoration">
                                 <div class="text-muted">Atendentes</div>
                                 <strong>@Model.AttendantCount</strong>
                                 <div class="progress progress-xs mt-2">
@@ -113,7 +113,7 @@
                         
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
                             <a asp-action="Index" asp-controller="Benefit" class="no-decoration">
-                                <div class="text-muted">Tipos de Beneficíos</div>
+                                <div class="text-muted">Tipos de Beneficío</div>
                                 <strong>@Model.BenefitTypeCount</strong>
                                 <div class="progress progress-xs mt-2">
                                     <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -124,7 +124,7 @@
 
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
                             <a asp-action="Index" asp-controller="AttendanceType" class="no-decoration">
-                                <div class="text-muted">Tipos de Atendimentos</div>
+                                <div class="text-muted">Tipos de Atendimento</div>
                                 <strong>@Model.AttendanceTypeCount</strong>
                                 <div class="progress progress-xs mt-2">
                                     <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -176,6 +176,16 @@
                         </div>
 
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                            <a asp-action="Index" asp-controller="TreatmentType" class="no-decoration">
+                                <div class="text-muted">Tipos de tratamento</div>
+                                <strong>@Model.TreatmentTypesCount</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-12 col-md mb-sm-2 mb-0">
                             <a asp-action="Index" asp-controller="ServiceType" class="no-decoration">
                                 <div class="text-muted">Tipo de Serviços</div>
                                 <strong>@Model.ServiceTypeCount</strong>
@@ -187,7 +197,7 @@
 
                         <div class="col-sm-12 col-md mb-sm-2 mb-0">
                             <a asp-action="Index" asp-controller="ExpenseType" class="no-decoration">
-                                <div class="text-muted">Tipos de Despesas</div>
+                                <div class="text-muted">Tipos de Despesa</div>
                                 <strong>@Model.ExpenseTypeCount</strong>
                                 <div class="progress progress-xs mt-2">
                                     <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>

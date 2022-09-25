@@ -1,6 +1,6 @@
 ﻿@model RVCC.Models.SearchModel.BenefitSearchModel
 @{
-    ViewData["Title"] = "Benefícios";
+    ViewData["Title"] = "Tipos de Benefício";
 }
 
 @section styles {
@@ -18,7 +18,7 @@
             <a asp-controller="Home" asp-action="Index">Home</a>
         </li>
         <li class="breadcrumb-item">
-            Benefícios
+            Tipos de Benefício
         </li>
     </ol>
     <div class="container-fluid">
@@ -57,16 +57,16 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <span class="fa fa-clipboard"></span> Benefícios
+                                <span class="fa fa-clipboard"></span> Tipos de Benefício
                             </div>
                             <div class="card-body">
                                 <div class="form-inline float-right">
-                                    <a id="addBenefitButton" asp-action="AddBenefit" data-title="Adicionar Benefício" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                        <span class="fa fa-plus"></span> Adicionar Benefício
+                                    <a id="addBenefitButton" asp-action="AddBenefit" data-title="Adicionar Tipo de Benefício" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <span class="fa fa-plus"></span> Adicionar Tipo de Benefício
                                     </a>
                                 </div>
 
-                                <table class="table table-bordered table-striped text-center" id="benefitTable" aria-describedby="Tabela de benefícios"></table>
+                                <table class="table table-bordered table-striped text-center" id="benefitTable" aria-describedby="Tabela de tipos de benefício"></table>
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ namespace RVCC.Models.SearchModel
 {
     public class TreatmentPlaceSearchModel
     {
-        [Display(Name = "Cidade")]
+        [Display(Name = "Local de Tratamento")]
         public string City { get; set; }
     }
 }

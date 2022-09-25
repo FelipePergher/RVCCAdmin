@@ -89,7 +89,7 @@ namespace RVCC.Controllers.Api
         private static string GetActionsHtml(TreatmentPlace treatmentPlace)
         {
             string options = $"<a href='/TreatmentPlace/EditTreatmentPlace/{treatmentPlace.TreatmentPlaceId}' data-toggle='modal' " +
-                             "data-target='#modal-action' data-title='Editar Cidade' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
+                             "data-target='#modal-action' data-title='Editar Local de Tratamento' class='dropdown-item editTreatmentPlaceButton'><span class='fas fa-edit'></span> Editar </a>";
 
             options += $"<a href='javascript:void(0);' data-url='/TreatmentPlace/DeleteTreatmentPlace' data-id='{treatmentPlace.TreatmentPlaceId}' " +
                        $"data-relation='{treatmentPlace.PatientInformationTreatmentPlaces.Count > 0}' class='dropdown-item deleteTreatmentPlaceButton'>" +

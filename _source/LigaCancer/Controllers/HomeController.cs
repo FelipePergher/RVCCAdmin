@@ -19,6 +19,7 @@ namespace RVCC.Controllers
         private readonly IDataRepository<Patient> _patientService;
         private readonly IDataRepository<Doctor> _doctorService;
         private readonly IDataRepository<TreatmentPlace> _treatmentPlaceService;
+        private readonly IDataRepository<TreatmentType> _treatmentTypeService;
         private readonly IDataRepository<Medicine> _medicineService;
         private readonly IDataRepository<CancerType> _cancerTypeService;
         private readonly IDataRepository<Visitor> _visitorService;
@@ -36,6 +37,7 @@ namespace RVCC.Controllers
             IDataRepository<Patient> patientService,
             IDataRepository<Doctor> doctorService,
             IDataRepository<TreatmentPlace> treatmentPlaceService,
+            IDataRepository<TreatmentType> treatmentTypeService,
             IDataRepository<Medicine> medicineService,
             IDataRepository<CancerType> cancerTypeService,
             IDataRepository<Visitor> visitorService,
@@ -52,6 +54,7 @@ namespace RVCC.Controllers
             _patientService = patientService;
             _doctorService = doctorService;
             _treatmentPlaceService = treatmentPlaceService;
+            _treatmentTypeService = treatmentTypeService;
             _medicineService = medicineService;
             _cancerTypeService = cancerTypeService;
             _visitorService = visitorService;
@@ -76,6 +79,7 @@ namespace RVCC.Controllers
                 MedicineCount = _medicineService.Count(),
                 PatientCount = _patientService.Count(),
                 TreatmentPlaceCount = _treatmentPlaceService.Count(),
+                TreatmentTypesCount = _treatmentTypeService.Count(),
                 AttendanceTypeCount = _attendanceTypeService.Count(),
                 AttendantCount = _attendanceTypeService.Count(),
                 AuxiliarAcessoryTypeCount = _auxiliarAccessoryTypeService.Count(),

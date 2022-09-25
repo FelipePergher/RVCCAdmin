@@ -1,6 +1,6 @@
 ﻿@model RVCC.Models.SearchModel.TreatmentPlaceSearchModel
 @{
-    ViewData["Title"] = "Cidades";
+    ViewData["Title"] = "Locais de Tratamento";
 }
 
 @section styles {
@@ -18,7 +18,7 @@
             <a asp-controller="Home" asp-action="Index">Home</a>
         </li>
         <li class="breadcrumb-item">
-            Cidades
+            Locais de Tratamento
         </li>
     </ol>
     <div class="container-fluid">
@@ -57,12 +57,12 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <span class="fa fa-hospital-alt"></span> Cidades
+                                <span class="fa fa-hospital-alt"></span> Locais de Tratamento
                             </div>
                             <div class="card-body">
                                 <div class="form-inline float-right">
-                                    <a id="addTreatmentPlaceButton" asp-action="AddTreatmentPlace" data-title="Adicionar Cidade" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
-                                        <span class="fa fa-plus"></span> Adicionar Cidade
+                                    <a id="addTreatmentPlaceButton" asp-action="AddTreatmentPlace" data-title="Adicionar Local de Tratamento" data-toggle="modal" data-target="#modal-action" class="btn btn-primary">
+                                        <span class="fa fa-plus"></span> Adicionar Local de Tratamento
                                     </a>
                                 </div>
 
