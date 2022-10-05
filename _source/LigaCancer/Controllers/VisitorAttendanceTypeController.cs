@@ -44,9 +44,16 @@ namespace RVCC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new VisitorAttendanceTypeSearchModel());
+            List<AttendanceType> attendanceTypes = await _attendanceTypeService.GetAllAsync();
+            List<Attendant> attendants = await _attendantService.GetAllAsync();
+
+            return View(new VisitorAttendanceTypeSearchModel
+            {
+                AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList(),
+                Attendants = attendants.Select(x => new SelectListItem(x.Name, x.AttendantId.ToString())).ToList()
+            });
         }
 
         [HttpGet]
@@ -58,7 +65,7 @@ namespace RVCC.Controllers
 
             var visitorAttendanceTypeForm = new VisitorAttendanceTypeFormModel
             {
-                Visitors = visitors.Select(x => new SelectListItem($"{x.Name} ", x.VisitorId.ToString())).ToList(),
+                Visitors = visitors.Select(x => new SelectListItem($"{x.Name}{(string.IsNullOrEmpty(x.CPF) ? string.Empty : $" ({x.CPF})")}", x.VisitorId.ToString())).ToList(),
                 AttendanceTypes = attendanceTypes.Select(x => new SelectListItem(x.Name, x.AttendanceTypeId.ToString())).ToList(),
                 Attendants = attendants.Select(x => new SelectListItem(x.Name, x.AttendantId.ToString())).ToList()
             };

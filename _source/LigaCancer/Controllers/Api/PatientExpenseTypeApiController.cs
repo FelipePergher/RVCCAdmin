@@ -52,12 +52,27 @@ namespace RVCC.Controllers.Api
 
                 int recordsTotal = patientExpenseTypes.Count;
 
+                var expenseTypeMontlhy = patientExpenseTypes.Where(x => x.ExpenseType.ExpenseTypeFrequency == Enums.ExpenseTypeFrequency.Montlhy).Sum(x => x.Value);
+                var expenseTypeYearly = patientExpenseTypes.Where(x => x.ExpenseType.ExpenseTypeFrequency == Enums.ExpenseTypeFrequency.Yearly).Sum(x => x.Value);
+                var expenseTypeTotal = patientExpenseTypes.Where(x => x.ExpenseType.ExpenseTypeFrequency == Enums.ExpenseTypeFrequency.Total).Sum(x => x.Value);
+
+                string monthlyExpense = expenseTypeMontlhy.ToString("C2");
+                string annuallyExpense = expenseTypeYearly.ToString("C2");
+                string monthlyExpenseEstimated = (expenseTypeMontlhy + (expenseTypeYearly / 12)).ToString("C2");
+                string annuallyExpenseEstimated = ((expenseTypeMontlhy * 12) + expenseTypeYearly).ToString("C2");
+                string totalExpense = (expenseTypeTotal + expenseTypeYearly + (expenseTypeMontlhy * 12)).ToString("C2");
+
                 return Ok(new
                 {
                     searchModel.Draw,
                     data,
                     recordsTotal,
-                    recordsFiltered = recordsTotal
+                    recordsFiltered = recordsTotal,
+                    monthlyExpense,
+                    annuallyExpense,
+                    monthlyExpenseEstimated,
+                    annuallyExpenseEstimated,
+                    totalExpense
                 });
             }
             catch (Exception e)

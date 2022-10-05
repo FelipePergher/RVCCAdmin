@@ -43,21 +43,35 @@
                                             <input asp-for="Name" class="form-control" />
                                             <span asp-validation-for="Name" class="text-danger"></span>
                                         </div>
+
                                         <div class="col">
                                             <label asp-for="Attendant"></label>
-                                            <input asp-for="Attendant" class="form-control" />
-                                            <span asp-validation-for="Attendant" class="text-danger"></span>
+                                            <select asp-for="Attendant" asp-items="Model.Attendants" class="form-control filterSelect" style="width: 100%"
+                                                    data-theme="bootstrap"
+                                                    data-width="resolve"
+                                                    data-language="pt-BR"
+                                                    data-placeholder="Atendente">
+                                                <option value=""></option>
+                                            </select>
                                         </div>
+
                                         <div class="col">
                                             <label asp-for="Attendance"></label>
-                                            <input asp-for="Attendance" class="form-control" />
-                                            <span asp-validation-for="Attendance" class="text-danger"></span>
+                                            <select asp-for="Attendance" asp-items="Model.AttendanceTypes" class="form-control filterSelect" style="width: 100%"
+                                                    data-theme="bootstrap"
+                                                    data-width="resolve"
+                                                    data-language="pt-BR"
+                                                    data-placeholder="Tipo Atendimento">
+                                                <option value=""></option>
+                                            </select>
                                         </div>
+
                                         <div class="col">
                                             <label asp-for="DateFrom"></label>
                                             <input asp-for="DateFrom" type="text" class="form-control" />
                                             <span asp-validation-for="DateFrom" class="text-danger"></span>
                                         </div>
+
                                         <div class="col">
                                             <label asp-for="DateTo"></label>
                                             <input asp-for="DateTo" type="text" class="form-control" />

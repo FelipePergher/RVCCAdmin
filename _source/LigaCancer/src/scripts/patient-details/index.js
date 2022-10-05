@@ -715,6 +715,14 @@ export default (function () {
                 data: function (d) {
                     d.patientId = $("#patientId").val();
                 },
+                dataSrc: function (data) {
+                    $("#monthlyExpense").text(data.monthlyExpense);
+                    $("#annuallyExpense").text(data.annuallyExpense);
+                    $("#monthlyExpenseEstimated").text(data.monthlyExpenseEstimated);
+                    $("#annuallyExpenseEstimated").text(data.annuallyExpenseEstimated);
+                    $("#totalExpense").text(data.totalExpense);
+                    return data.data;
+                },
                 datatype: "json",
                 error: function () {
                     global.swalWithBootstrapButtons.fire("Oops...", "Não foi possível carregar as informações!\n Se o problema persistir contate o administrador!", "error");

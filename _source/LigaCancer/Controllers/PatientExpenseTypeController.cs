@@ -110,7 +110,7 @@ namespace RVCC.Controllers
             return PartialView("Partials/_EditPatientExpenseType", new PatientExpenseTypeFormModel
             {
                 ExpenseType = patientExpenseType.ExpenseTypeId.ToString(),
-                Value = patientExpenseType.Value.ToString("C2"),
+                Value = patientExpenseType.Value.ToString("N2"),
                 ExpenseTypes = await SelectHelper.GetExpenseTypeSelectAsync(_expenseTypeService, patientExpenseType.PatientId, patientExpenseType.ExpenseTypeId)
             });
         }

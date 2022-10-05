@@ -101,7 +101,7 @@ namespace RVCC.Controllers
             {
                 DateOfBirth = familyMember.DateOfBirth.HasValue ? familyMember.DateOfBirth.Value.ToDateString() : string.Empty,
                 Kinship = familyMember.Kinship,
-                MonthlyIncome = familyMember.MonthlyIncome.ToString("C2"),
+                MonthlyIncome = familyMember.MonthlyIncome.ToString("N2"),
                 Name = familyMember.Name,
                 Sex = familyMember.Sex,
                 IgnoreOnIncome = familyMember.IgnoreOnIncome,

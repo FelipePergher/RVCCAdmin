@@ -98,7 +98,7 @@ namespace RVCC.Controllers
                 ObservationAddress = address.ObservationAddress,
                 Street = address.Street,
                 ResidenceType = address.ResidenceType,
-                MonthlyAmmountResidence = address.MonthlyAmountResidence.ToString("C2")
+                MonthlyAmmountResidence = address.MonthlyAmountResidence.ToString("N2")
             };
 
             return PartialView("Partials/_EditAddress", addressForm);

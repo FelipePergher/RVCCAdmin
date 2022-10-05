@@ -77,11 +77,7 @@ namespace RVCC
                 options.SlidingExpiration = true;
             });
 
-            IMvcBuilder mvcBuilder = services.AddControllersWithViews();
-
-#if DEBUG
-            mvcBuilder.AddRazorRuntimeCompilation();
-#endif
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddRazorPages();
 

@@ -199,14 +199,14 @@ namespace RVCC.Data.Repositories
                 query = query.Where(x => x.Visitor.Name.Contains(visitorAttendanceTypeSearch.Name));
             }
 
-            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.Attendant))
+            if (visitorAttendanceTypeSearch.Attendant.Any())
             {
-                query = query.Where(x => x.Attendant.Name.Contains(visitorAttendanceTypeSearch.Attendant));
+                query = query.Where(x => visitorAttendanceTypeSearch.Attendant.Any(y => y == x.AttendantId.ToString()));
             }
 
-            if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.Attendance))
+            if (visitorAttendanceTypeSearch.Attendance.Any())
             {
-                query = query.Where(x => x.AttendanceType.Name.Contains(visitorAttendanceTypeSearch.Attendance));
+                query = query.Where(x => visitorAttendanceTypeSearch.Attendance.Any(y => y == x.AttendanceTypeId.ToString()));
             }
 
             if (!string.IsNullOrEmpty(visitorAttendanceTypeSearch.DateFrom))

@@ -75,6 +75,12 @@ export default (function () {
             }
         });
 
+        $(".filterSelect").select2();
+
+        $("#searchForm").on("reset", function () {
+            $(".filterSelect").val("").trigger("change");
+        });
+
         $("#visitorAttendanceTypeTable").attr("style", "border-collapse: collapse !important");
 
         $("#DateTo, #DateFrom").datepicker({

@@ -81,7 +81,7 @@ namespace RVCC.Controllers
                 TreatmentPlaceCount = _treatmentPlaceService.Count(),
                 TreatmentTypesCount = _treatmentTypeService.Count(),
                 AttendanceTypeCount = _attendanceTypeService.Count(),
-                AttendantCount = _attendanceTypeService.Count(),
+                AttendantCount = _attendantService.Count(),
                 AuxiliarAcessoryTypeCount = _auxiliarAccessoryTypeService.Count(),
                 BenefitCount = _patientBenefitService.Count(),
                 BenefitTypeCount = _benefitService.Count(),
